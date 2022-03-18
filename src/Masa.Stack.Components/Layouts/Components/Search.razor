@@ -1,0 +1,26 @@
+﻿@namespace Masa.Stack.Components.Layouts
+
+<MMenu OffsetY Bottom Right CloseOnContentClick="false"
+       MinWidth=340
+       ContentClass="@(string.IsNullOrEmpty(_search) ? "hide-shadow" : "")">
+    <ActivatorContent>
+        <div @attributes="@context.Attrs">
+            <MTextField @bind-Value="_search" Class="rounded-2" Style="width:340px;height:40px;"
+                        Flat Dense Solo
+                        BackgroundColor="fill-lighten-1"
+                        HideDetails="@("auto")" Placeholder="Search">
+                <PrependInnerContent>
+                    <MIcon Size=16 Class="mr-2 neutral-lighten-1--text">mdi-magnify</MIcon>
+                </PrependInnerContent>
+            </MTextField>
+        </div>
+    </ActivatorContent>
+    <ChildContent>
+    </ChildContent>
+</MMenu>
+
+@code {
+
+    string _search;
+
+}

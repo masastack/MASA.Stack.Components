@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Masa.Blazor" Version="0.3.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="wwwroot\i18n\en-US.json" />
+	  <_ContentIncludedByDefault Remove="wwwroot\i18n\languageConfig.json" />
+	  <_ContentIncludedByDefault Remove="wwwroot\i18n\zh-CN.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="wwwroot\img" />
+	</ItemGroup>
+</Project>

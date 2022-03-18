@@ -1,0 +1,26 @@
+﻿@inherits MasaComponentBase
+@namespace Masa.Stack.Components.Layouts
+@inject GlobalConfig GlobalConfig
+
+<MIcon Class="ml-5"
+       Color="neutral-lighten-3"
+       Size="20"
+       OnClick="() => value = true">
+    mdi-cog-outline
+</MIcon>
+
+<PDrawer @bind-Value="value"
+         Title="@T("Settings")"
+         Width="300">
+    <MRadioGroup @bind-Value="GlobalConfig.PageMode"
+                 Label="@T("Mode")">
+        <MRadio Label="@T("Breadcrumb")" Value="PageModes.Breadcrumbs" />
+        <MRadio Label="@T("PageTab")" Value="PageModes.PageTabs" />
+    </MRadioGroup>
+</PDrawer>
+
+@code {
+
+    bool value;
+
+}
