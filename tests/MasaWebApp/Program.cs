@@ -5,11 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMasaBlazor(builder =>
 {
     builder.UseTheme(option =>
-        {
-            option.Primary = "#4318FF";
-            option.Accent = "#4318FF";
-        }
-    );
+    {
+        option.Primary = "#4318FF";
+        option.Accent = "#4318FF";
+    });
 });
 
 builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n");
