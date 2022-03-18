@@ -4,7 +4,8 @@ namespace Masa.Stack.Components.Layouts
 {
     public partial class Breadcrumbs : MasaComponentBase
     {
-        [Parameter, EditorRequired] public List<NavModel> FlattenedNavs { get; set; } = new();
+        [Parameter, EditorRequired]
+        public List<NavModel> FlattenedNavs { get; set; } = new();
 
         protected override void OnParametersSet()
         {

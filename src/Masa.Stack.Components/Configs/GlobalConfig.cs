@@ -22,10 +22,10 @@ public class GlobalConfig
     public event GlobalConfigChanged? OnPageModeChanged;
     public event GlobalConfigChanged? OnLanguageChanged;
 
-    public GlobalConfig(CookieStorage cookieStorage, I18nConfig i18NConfig, IHttpContextAccessor httpContextAccessor)
+    public GlobalConfig(CookieStorage cookieStorage, I18nConfig i18nConfig, IHttpContextAccessor httpContextAccessor)
     {
         _cookieStorage = cookieStorage;
-        _i18NConfig = i18NConfig;
+        _i18NConfig = i18nConfig;
 
         if (httpContextAccessor.HttpContext is not null)
             Initialization(httpContextAccessor.HttpContext.Request.Cookies);

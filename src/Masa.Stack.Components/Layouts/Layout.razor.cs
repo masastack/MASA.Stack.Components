@@ -7,13 +7,17 @@ public partial class Layout : IDisposable
     /// <summary>
     /// @Body
     /// </summary>
-    [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
+    [Parameter, EditorRequired] 
+    public RenderFragment? ChildContent { get; set; }
 
-    [Parameter, EditorRequired] public string? DefaultRoute { get; set; }
+    [Parameter, EditorRequired]
+    public string? DefaultRoute { get; set; }
 
-    [Parameter, EditorRequired] public string? Logo { get; set; }
+    [Parameter, EditorRequired] 
+    public string? Logo { get; set; }
 
-    [Parameter, EditorRequired] public string? MiniLogo { get; set; }
+    [Parameter, EditorRequired]
+    public string? MiniLogo { get; set; }
 
     protected override void OnInitialized()
     {

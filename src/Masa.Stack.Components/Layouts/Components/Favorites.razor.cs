@@ -5,9 +5,11 @@ namespace Masa.Stack.Components.Layouts;
 
 public partial class Favorites
 {
-    [Inject] private CookieStorage CookieStorage { get; set; }
+    [Inject] 
+    private CookieStorage CookieStorage { get; set; }
 
-    [Parameter, EditorRequired] public List<NavModel>? FlattenedNavs { get; set; }
+    [Parameter, EditorRequired]
+    public List<NavModel>? FlattenedNavs { get; set; }
 
     protected override void OnParametersSet()
     {
