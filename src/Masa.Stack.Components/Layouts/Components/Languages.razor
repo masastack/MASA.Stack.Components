@@ -1,0 +1,40 @@
+﻿@namespace Masa.Stack.Components.Layouts
+@inject GlobalConfig GlobalConfig
+@inject I18n I18N
+
+<MMenu OffsetY Bottom>
+    <ActivatorContent>
+        <MIcon Size="20" Class="mx-5" Color="neutral-lighten-3"
+               @attributes="@context.Attrs">
+            mdi-google-translate
+        </MIcon>
+    </ActivatorContent>
+    <ChildContent>
+        <MList Class="py-0">
+            <MListItemGroup ActiveClass="primary" Value="GlobalConfig.Language">
+                @foreach (var (language, map) in I18n.ToDictionary())
+                {
+                    <MListItem OnClick="() => OnLanguageChange(language)" Value="(StringNumber)language">
+                        <ItemContent>
+                            <MListItemContent>
+                                <span Class="@(context.Active ? "white--text" : "neutral-lighten-4--text") text-btn">
+                                    @map.GetValueOrDefault("$Text")
+                                </span>
+                            </MListItemContent>
+                        </ItemContent>
+                    </MListItem>
+                }
+            </MListItemGroup>
+        </MList>
+    </ChildContent>
+</MMenu>
+
+@code {
+
+    void OnLanguageChange(string language)
+    {
+        I18N.SetLang(language);
+        GlobalConfig.Language = language;
+    }
+
+}

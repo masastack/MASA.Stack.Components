@@ -1,0 +1,46 @@
+﻿@namespace Masa.Stack.Components.Layouts
+@inherits MasaComponentBase
+
+<MMenu OffsetY>
+    <ActivatorContent>
+        <div class="text-center border-left-solid" style="width:88px;">
+            <MAvatar @attributes="@context.Attrs" Size=40>
+                <MImage Src="/img/avatar/2.svg"></MImage>
+            </MAvatar>
+        </div>
+    </ActivatorContent>
+    <ChildContent>
+        <MList Dense>
+            <MListItem>
+                <MListItemIcon Class="mr-4">
+                    <MIcon Size=20 Color="neutral-lighten-4">fas fa-user-circle</MIcon>
+                </MListItemIcon>
+                <MListItemContent>
+                    <MListItemTitle>
+                        <span class="neutral-lighten-4--text">@T("UserInfo")</span>
+                    </MListItemTitle>
+                </MListItemContent>
+            </MListItem>
+            <MListItem>
+                <MListItemIcon Class="mr-4">
+                    <MIcon Size=20 Color="neutral-lighten-4">fas fa-sign-in-alt</MIcon>
+                </MListItemIcon>
+                <MListItemContent>
+                    <MListItemTitle>
+                        <span class="neutral-lighten-4--text">@T("UpdatePassword")</span>
+                    </MListItemTitle>
+                </MListItemContent>
+            </MListItem>
+            <MListItem>
+                <MListItemIcon Class="mr-4">
+                    <MIcon Size=20 Color="neutral-lighten-4">fas fa-sign-in-alt</MIcon>
+                </MListItemIcon>
+                <MListItemContent>
+                    <MListItemTitle>
+                        <span class="neutral-lighten-4--text">@T("Logout")</span>
+                    </MListItemTitle>
+                </MListItemContent>
+            </MListItem>
+        </MList>
+    </ChildContent>
+</MMenu>

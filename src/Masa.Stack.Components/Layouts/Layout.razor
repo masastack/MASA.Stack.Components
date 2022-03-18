@@ -1,0 +1,42 @@
+﻿@using Masa.Stack.Components.Layouts
+@namespace Masa.Stack.Components
+@inject GlobalConfig GlobalConfig
+
+<MApp>
+    <MAppBar App
+             Class="@AppBarClass"
+             Elevation="0"
+             MaxHeight="60">
+        <Favorites FlattenedNavs="FlattenedNavs" />
+        <MSpacer />
+        <Search />
+        <Notification />
+        <Settings />
+        <Languages />
+        <User />
+    </MAppBar>
+
+    <Navigation Items="Navs"
+                Logo="@Logo"
+                MiniLogo="@MiniLogo" />
+
+    <MMain Class="fill-lighten-1 pt-15">
+        @if (GlobalConfig.PageMode == PageModes.PageTabs)
+        {
+            <PageTabs Items="@PageTabItems">
+                @ChildContent
+            </PageTabs>
+        }
+        else
+        {
+            <div class="pa-6 max-width">
+                <Breadcrumbs FlattenedNavs="FlattenedNavs" />
+                @ChildContent
+            </div>
+        }
+    </MMain>
+</MApp>
+
+@code {
+    string AppBarClass => GlobalConfig.PageMode == PageModes.PageTabs ? "mx-6" : "rounded-b-4";
+}
