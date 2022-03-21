@@ -20,6 +20,8 @@ public class NavModel
 
     public List<NavModel>? Children { get; set; }
 
+    public bool IsFavorite { get; set; }
+
     public bool IsActive(string url)
     {
         if (Url is null)

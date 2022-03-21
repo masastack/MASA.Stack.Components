@@ -1,3 +1,96 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 
-<h3>Global Navigation</h3>
+<MDialog @bind-Value="_visible"
+         Fullscreen
+         Transition="dialog-top-transition">
+    <ActivatorContent>
+        @ActivatorContent?.Invoke(context)
+    </ActivatorContent>
+    <ChildContent>
+        <MCard>
+            <div class="global-nav">
+                <div class="global-nav-left">
+                    <div class="global-nav-left__content">
+                        <div class="global-nav-left__title">
+                            快捷访问
+                        </div>
+                    </div>
+                </div>
+                <div class="global-nav-right">
+                    <div class="global-nav-header">
+                        <span class="global-nav-header__title">全局导航</span>
+                        <MSpacer />
+                        <MButton Icon OnClick="() => _visible = false"><MIcon>mdi-close</MIcon></MButton>
+                    </div>
+                    <div class="global-nav-content">
+                        <div class="global-nav-content__main">
+                            @foreach (var topic in Topics)
+                            {
+                                <div class="topic">
+                                    <div class="topic__header">@topic.Name</div>
+                                    <MExpansionPanels Accordion
+                                                  Flat
+                                                  Multiple
+                                                  Class="apps">
+                                        @foreach (var app in topic.Apps)
+                                        {
+                                            <MExpansionPanel @key="app" Class="app" Value="app.Code">
+                                                <MExpansionPanelHeader>@app.Name</MExpansionPanelHeader>
+                                                <MExpansionPanelContent>
+                                                    @foreach (var nav in app.Navs)
+                                                    {
+                                                        <MCard @key="nav" Class="nav" Outlined>
+                                                            <MList Dense Class="pa-0">
+                                                                <MHover Disabled="@(nav.Children != null && nav.Children.Any())">
+                                                                    <MListItem @attributes="@context.Attrs" Href="@nav.Url" Class="nav-item">
+                                                                        <MListItemContent>
+                                                                            <MListItemTitle>@nav.Name</MListItemTitle>
+                                                                        </MListItemContent>
+                                                                        @if (context.Hover || nav.IsFavorite)
+                                                                        {
+                                                                            <MListItemAction Class="ma-0">
+                                                                                <MButton Icon Small Color="@(nav.IsFavorite? "#FFB547" : "")">
+                                                                                    <MIcon>mdi-star</MIcon>
+                                                                                </MButton>
+                                                                            </MListItemAction>
+                                                                        }
+                                                                    </MListItem>
+                                                                </MHover>
+                                                                @if (nav.Children is not null)
+                                                                {
+                                                                    @foreach (var subNav in nav.Children)
+                                                                    {
+                                                                        <MHover Disabled="@(subNav.Children != null && subNav.Children.Any())">
+                                                                            <MListItem @attributes="context.Attrs" Href="@subNav.Url" Class="sub-nav-item">
+                                                                                <MListItemContent>
+                                                                                    <MListItemTitle>@subNav.Name</MListItemTitle>
+                                                                                </MListItemContent>
+                                                                                @if (context.Hover || subNav.IsFavorite)
+                                                                                {
+                                                                                    <MListItemAction Class="ma-0">
+                                                                                        <MButton Icon Small Color="@(subNav.IsFavorite? "#FFB547" : "")">
+                                                                                            <MIcon>mdi-star</MIcon>
+                                                                                        </MButton>
+                                                                                    </MListItemAction>
+                                                                                }
+                                                                            </MListItem>
+                                                                        </MHover>
+                                                                    }
+                                                                }
+                                                            </MList>
+                                                        </MCard>
+                                                    }
+                                                </MExpansionPanelContent>
+                                            </MExpansionPanel>
+                                        }
+                                    </MExpansionPanels>
+                                </div>
+                            }
+                        </div>
+                        <div class="global-nav-content__side"></div>
+                    </div>
+                </div>
+            </div>
+        </MCard>
+    </ChildContent>
+</MDialog>
