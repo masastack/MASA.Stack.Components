@@ -14,63 +14,117 @@
                         <div class="global-nav-left__title">
                             快捷访问
                         </div>
+                        <MListItemGroup Value="@("/users")" Class="full-width mt-3">
+                            @foreach (var item in FavoriteNavs)
+                            {
+                                <MListItem Dense Value="item.Nav.Url"
+                                           Class="mb-4 full-width br-2"
+                                           ActiveClass="primary white--text"
+                                           OnClick="() => NavigateTo(item.Nav.Url)">
+                                    <ItemContent>
+                                        <div class="global-nav-left__favorite-item full-width masa-text-2-2 @(context.ActiveClass)">
+                                            <MListItemContent>
+                                                <MListItemTitle>@item.Nav.Name</MListItemTitle>
+                                            </MListItemContent>
+                                            <MListItemAction Class="ma-0">
+                                                <AutoLoadingButton Icon Small Color="@(item.Nav.IsFavorite ? "#FFB547" : "")"
+                                                                   OnClick="() => ToggleFavorite(item.Topic, item.App, item.Nav)" StopPropagation>
+                                                    <MIcon>mdi-star</MIcon>
+                                                </AutoLoadingButton>
+                                            </MListItemAction>
+                                        </div>
+                                    </ItemContent>
+                                </MListItem>
+                            }
+                        </MListItemGroup>
                     </div>
                 </div>
                 <div class="global-nav-right">
                     <div class="global-nav-header">
-                        <span class="global-nav-header__title">全局导航</span>
-                        <MSpacer />
-                        <MButton Icon OnClick="() => _visible = false"><MIcon>mdi-close</MIcon></MButton>
+                        <div class="d-flex">
+                            <span class="global-nav-header__title">全局导航</span>
+                            <MSpacer NumberProps="props => {props.step=}" />
+                            <Search Dense Style="max-width:341px" Class="mr-6" />
+                            <MButton Icon OnClick="() => _visible = false">
+                                <MIcon>mdi-close</MIcon>
+                            </MButton>
+                        </div>
+                        <div class="mt-4">
+                            <span class="masa-text-3-1">最近访问</span>
+                            @foreach (var (name, url) in RecentVisits)
+                            {
+                                <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" Href="@url">@name</MChip>
+                            }
+                        </div>
                     </div>
                     <div class="global-nav-content">
                         <div class="global-nav-content__main">
                             @foreach (var topic in Topics)
                             {
-                                <div class="topic">
+                                if (TopicCodes.TryGetValue(topic.Code, out var values))
+                                {
+                                    topic.BindValues = values;
+                                }
+                                else
+                                {
+                                    topic.BindValues = new();
+                                }
+                                
+                                <div class="topic" id="@topic.TagId()">
                                     <div class="topic__header">@topic.Name</div>
                                     <MExpansionPanels Accordion
-                                                  Flat
-                                                  Multiple
-                                                  Class="apps">
+                                                      Flat
+                                                      Multiple
+                                                      Class="apps"
+                                                      Style="@topic.TagStyle"
+                                                      Values="topic.BindValues"
+                                                      ValuesChanged="(v) => TopicValuesChanged(v, topic)">
                                         @foreach (var app in topic.Apps)
                                         {
-                                            <MExpansionPanel @key="app" Class="app" Value="app.Code">
-                                                <MExpansionPanelHeader>@app.Name</MExpansionPanelHeader>
+                                            <MExpansionPanel @key="app" Class="app" Value="app.Code" Id="@($"topic-{topic.Code}-app-{app.Code}")"
+                                                             Style="position: absolute" >
+                                                <MExpansionPanelHeader Class="masa-text-highlight-1">@app.Name</MExpansionPanelHeader>
                                                 <MExpansionPanelContent>
                                                     @foreach (var nav in app.Navs)
                                                     {
                                                         <MCard @key="nav" Class="nav" Outlined>
                                                             <MList Dense Class="pa-0">
-                                                                <MHover Disabled="@(nav.Children != null && nav.Children.Any())">
-                                                                    <MListItem @attributes="@context.Attrs" Href="@nav.Url" Class="nav-item">
+                                                                <MHover Disabled="@(nav.HasChildren)">
+                                                                    <MListItem @attributes="@context.Attrs" OnClick="() => NavigateTo(nav.Url)" Class="masa-text-highlight-2 nav-item">
                                                                         <MListItemContent>
                                                                             <MListItemTitle>@nav.Name</MListItemTitle>
                                                                         </MListItemContent>
                                                                         @if (context.Hover || nav.IsFavorite)
                                                                         {
                                                                             <MListItemAction Class="ma-0">
-                                                                                <MButton Icon Small Color="@(nav.IsFavorite? "#FFB547" : "")">
+                                                                                <AutoLoadingButton Icon Small Color="@(nav.IsFavorite ? "#FFB547" : "")"
+                                                                                                   OnClick="() => ToggleFavorite(topic.Code, app.Code, nav)" StopPropagation>
                                                                                     <MIcon>mdi-star</MIcon>
-                                                                                </MButton>
+                                                                                </AutoLoadingButton>
                                                                             </MListItemAction>
                                                                         }
                                                                     </MListItem>
+                                                                    @if (nav.HasChildren)
+                                                                    {
+                                                                        <MDivider></MDivider>
+                                                                    }
                                                                 </MHover>
                                                                 @if (nav.Children is not null)
                                                                 {
                                                                     @foreach (var subNav in nav.Children)
                                                                     {
                                                                         <MHover Disabled="@(subNav.Children != null && subNav.Children.Any())">
-                                                                            <MListItem @attributes="context.Attrs" Href="@subNav.Url" Class="sub-nav-item">
+                                                                            <MListItem @attributes="context.Attrs" OnClick="() => NavigateTo(subNav.Url)" Class="masa-text-2-2 sub-nav-item">
                                                                                 <MListItemContent>
                                                                                     <MListItemTitle>@subNav.Name</MListItemTitle>
                                                                                 </MListItemContent>
                                                                                 @if (context.Hover || subNav.IsFavorite)
                                                                                 {
                                                                                     <MListItemAction Class="ma-0">
-                                                                                        <MButton Icon Small Color="@(subNav.IsFavorite? "#FFB547" : "")">
+                                                                                        <AutoLoadingButton Icon Small Color="@(subNav.IsFavorite ? "#FFB547" : "")"
+                                                                                                           OnClick="@(() => ToggleFavorite(topic.Code, app.Code, subNav))" StopPropagation>
                                                                                             <MIcon>mdi-star</MIcon>
-                                                                                        </MButton>
+                                                                                        </AutoLoadingButton>
                                                                                     </MListItemAction>
                                                                                 }
                                                                             </MListItem>
@@ -87,7 +141,44 @@
                                 </div>
                             }
                         </div>
-                        <div class="global-nav-content__side"></div>
+                        <div class="global-nav-content__side">
+                            <MTimeline AlignTop Dense>
+                                @foreach (var topic in Topics)
+                                {
+                                    <MTimelineItem Left Small FillDot>
+                                        <IconContent>
+                                            <span>
+                                            </span>
+                                        </IconContent>
+                                        <ChildContent>
+                                            <MButton Small Plain Ripple="false"
+                                                     Class="pa-0 masa-text-2-2" Style="height: initial"
+                                                     OnClick="@(() => ScrollTo(topic.TagId(), ".global-nav-content__main"))">
+                                                @topic.Name
+                                            </MButton>
+                                        </ChildContent>
+                                    </MTimelineItem>
+
+                                    @foreach (var app in topic.Apps)
+                                    {
+                                        <MTimelineItem Left Color="white" Small FillDot>
+                                            <IconContent>
+                                                <span class="secondary-dot_wrapper">
+                                                </span>
+                                            </IconContent>
+                                            <ChildContent>
+                                                <MButton Small Plain Ripple="false"
+                                                         Class="pa-0 masa-text-2-2" Style="height: initial"
+                                                         MinWidth="0"
+                                                         OnClick="@(() => ScrollTo(app.TagId(topic.Code), ".global-nav-content__main"))">
+                                                    @app.Name
+                                                </MButton>
+                                            </ChildContent>
+                                        </MTimelineItem>
+                                    }
+                                }
+                            </MTimeline>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -22,6 +22,8 @@ public class NavModel
 
     public bool IsFavorite { get; set; }
 
+    public bool HasChildren => Children is not null && Children.Any();
+
     public bool IsActive(string url)
     {
         if (Url is null)

@@ -1071,23 +1071,3 @@ tr:hover {
 .m-dialog--drawer .m-card {
     border-radius: 0;
 }
-
-.global-nav-panel {
-    display: flex;
-}
-
-.global-nav-panel__start {
-    width: 180px;
-}
-
-.global-nav-panel__content {
-    width: 900px;
-}
-
-.global-nav-panel__content-header {
-    display: flex;
-}
-
-.global-nav-panel__end {
-    width: 180px;
-}
