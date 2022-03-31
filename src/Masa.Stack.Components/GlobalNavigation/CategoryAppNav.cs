@@ -1,12 +1,14 @@
 ﻿namespace Masa.Stack.Components.GlobalNavigation;
 
-public class CategoryAppNav
+public record CategoryAppNav
 {
     public string Category { get;  }
 
     public string App { get;  }
 
     public string Nav { get;  }
+
+    public string Id => $"{Category}%{App}%{Nav}";
 
     public CategoryAppNav()
     {

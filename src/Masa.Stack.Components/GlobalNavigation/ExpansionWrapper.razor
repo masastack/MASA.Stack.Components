@@ -4,7 +4,7 @@
 
 <div class="global-nav-content__main">
     <p>
-        @(string.Join(",", Value.Select(v => v.ToString())))
+        @(string.Join(",", Value.Select(v => v.Id)))
     </p>
     @foreach (var category in Categories!)
     {
@@ -71,7 +71,7 @@
     public List<FavoriteNav>? FavoriteNavs { get; set; }
 
     [Parameter]
-    public List<CategoryAppNav>? Value { get; set; } = new();
+    public List<CategoryAppNav>? Value { get; set; } = new(); // TODO: 传入值时勾选
 
     [Parameter]
     public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }

@@ -5,7 +5,14 @@
                  Id="@App.TagId(CategoryCode)"
                  Style="position: absolute"
                  Value="App.Code">
-    <MExpansionPanelHeader Class="masa-text-highlight-1">@App.Name</MExpansionPanelHeader>
+    <MExpansionPanelHeader Class="masa-text-highlight-1">
+        <MSimpleCheckbox
+            Value="AppChecked"
+            OnInput="AppCheckedChanged"
+            Style="flex:none">
+        </MSimpleCheckbox>
+        @App.Name
+    </MExpansionPanelHeader>
     <MExpansionPanelContent>
         @foreach (var nav in App.Navs)
         {
@@ -20,7 +27,7 @@
                                 <ItemContent Context="item">
                                     @if (Checkable)
                                     {
-                                        <MListItemAction>
+                                        <MListItemAction Class="mr-2">
                                             <MCheckbox IsActive="@item.Active"></MCheckbox>
                                         </MListItemAction>
                                     }
@@ -59,8 +66,8 @@
                                         <ItemContent Context="item">
                                             @if (Checkable)
                                             {
-                                                <MListItemAction>
-                                                    <MCheckbox IsActive="@item.Active"></MCheckbox>
+                                                <MListItemAction Class="mr-2">
+                                                    <MCheckbox Class="m" IsActive="@item.Active"></MCheckbox>
                                                 </MListItemAction>
                                             }
 
@@ -112,6 +119,9 @@
     public bool Checkable { get; set; }
 
     private List<StringNumber> _values = new();
+    private List<CategoryAppNav> _categoryAppNavs = new();
+
+    private bool AppChecked { get; set; }
 
     protected override void OnParametersSet()
     {
@@ -122,9 +132,34 @@
     {
         _values = v;
 
-        var values = _values.Select(u => new CategoryAppNav(CategoryCode, App.Code, u.ToString()));
+        _categoryAppNavs = _values
+            .Select(u => new CategoryAppNav(CategoryCode, App.Code, u.ToString()))
+            .ToList();
 
-        await ExpansionWrapper!.UpdateValues(App.Code, values.ToList());
+        if (AppChecked)
+        {
+            _categoryAppNavs.Add(new CategoryAppNav(CategoryCode, App.Code));
+        }
+
+        await ExpansionWrapper!.UpdateValues(App.Code, _categoryAppNavs);
+    }
+
+    private async Task AppCheckedChanged(bool v)
+    {
+        AppChecked = v;
+
+        var categoryAppNav = new CategoryAppNav(CategoryCode, App.Code);
+
+        if (AppChecked)
+        {
+            _categoryAppNavs.Add(categoryAppNav);
+        }
+        else
+        {
+            _categoryAppNavs.Remove(categoryAppNav);
+        }
+
+        await ExpansionWrapper!.UpdateValues(App.Code, _categoryAppNavs);
     }
 
     private void NavigateTo(string url)
