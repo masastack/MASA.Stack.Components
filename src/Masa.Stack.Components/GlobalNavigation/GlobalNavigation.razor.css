@@ -49,7 +49,7 @@
     display: flex;
 }
 
-.global-nav .global-nav-content__main {
+.global-nav ::deep .global-nav-content__main {
     width: calc(100% - 308px);
     min-width: 1272px;
     overflow: auto;
@@ -59,30 +59,30 @@
     margin-bottom: 24px;
 }
 
-.global-nav .global-nav-content__main::-webkit-scrollbar {
+.global-nav ::deep .global-nav-content__main::-webkit-scrollbar {
     width: 8px;
 }
 
-.global-nav .global-nav-content__main::-webkit-scrollbar-thumb {
+.global-nav ::deep .global-nav-content__main::-webkit-scrollbar-thumb {
     background: #A3AED0;
     border-radius: 4px;
 }
 
-.global-nav .global-nav-content__main::-webkit-scrollbar-track {
+.global-nav ::deep .global-nav-content__main::-webkit-scrollbar-track {
     background: #F0F3FA;
     border-radius: 6px;
 }
 
-.global-nav .global-nav-content__side {
+.global-nav ::deep .global-nav-content__side {
     width: 300px;
     margin-right: 8px;
 }
 
-.global-nav .topic {
+.global-nav ::deep .topic {
     margin-bottom: 24px;
 }
 
-.global-nav .topic .topic__header {
+.global-nav ::deep .topic .topic__header {
     background: #4318FF;
     border-radius: 8px;
     color: white;

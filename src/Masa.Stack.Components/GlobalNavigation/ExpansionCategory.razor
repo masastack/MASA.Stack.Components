@@ -1,0 +1,67 @@
+﻿@namespace Masa.Stack.Components.GlobalNavigation
+@inject IJSRuntime JsRuntime
+
+<div class="topic" id="@Category.TagId()" @attributes="@Attributes">
+    <div class="topic__header">@Category.Name</div>
+    <MExpansionPanels Accordion
+                      Flat
+                      Multiple
+                      Class="apps"
+                      Style="@Category.TagStyle"
+                      Values="@Category.BindValues"
+                      ValuesChanged="ValuesChanged">
+        @foreach (var app in Category.Apps)
+        {
+            @ChildContent(app)
+        }
+    </MExpansionPanels>
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public Topic Category { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment<App> ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; } = new();
+
+    private bool _hasResizeNav;
+    private bool _refreshWaterFull;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_hasResizeNav || _refreshWaterFull)
+        {
+            _hasResizeNav = true;
+            _refreshWaterFull = false;
+
+            // TODO: How to wait for elements to be rendered
+            await Task.Delay(256);
+
+            await ResizeNav(Category);
+
+            StateHasChanged();
+        }
+    }
+
+    private void ValuesChanged(List<StringNumber> values)
+    {
+        Category.BindValues = values;
+
+        _refreshWaterFull = true;
+    }
+
+    private async Task ResizeNav(Topic topic)
+    {
+        var height = await JsRuntime.InvokeAsync<double>(
+            "MasaStackComponents.waterFull",
+            $"#{topic.TagId()} .apps",
+            ".app");
+
+        topic.TagStyle = $"position:relative; height:{height}px;";
+    }
+
+}

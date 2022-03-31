@@ -1,7 +1,7 @@
 ﻿using BlazorComponent;
 using Microsoft.JSInterop;
 
-namespace Masa.Stack.Components.Layouts;
+namespace Masa.Stack.Components.GlobalNavigation;
 
 public partial class GlobalNavigation
 {
@@ -19,8 +19,6 @@ public partial class GlobalNavigation
     private List<FavoriteNav> FavoriteNavs { get; set; } = new();
     private List<(string name, string url)> RecentVisits { get; set; } = new();
     private List<Topic> Topics { get; set; } = new();
-    private Dictionary<string, List<StringNumber>> TopicCodes { get; set; } = new();
-
     private bool _refreshWaterFull;
     private bool _isFirstVisible = true;
 
@@ -29,8 +27,6 @@ public partial class GlobalNavigation
         if (firstRender)
         {
             Topics = await FetchTopics();
-
-            Topics.ForEach(topic => { TopicCodes.Add(topic.Code, topic.Apps.Select(a => (StringNumber)a.Code).ToList()); });
 
             var favorites = await FetchFavorites();
 
@@ -58,7 +54,6 @@ public partial class GlobalNavigation
                 }
 
                 StateHasChanged();
-
             }
         }
     }
@@ -274,11 +269,6 @@ public partial class GlobalNavigation
 
         // TODO: add recentVisits
         _ = Task.Delay(1000);
-    }
-
-    private async Task ScrollTo(string tagId, string insideSelector)
-    {
-        await JsRuntime.InvokeVoidAsync("MasaStackComponents.scrollTo", $"#{tagId}", insideSelector);
     }
 }
 

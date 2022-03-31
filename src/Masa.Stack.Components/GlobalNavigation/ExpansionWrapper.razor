@@ -1,0 +1,137 @@
+﻿@namespace Masa.Stack.Components.GlobalNavigation
+@inject IJSRuntime JsRuntime
+
+
+<div class="global-nav-content__main">
+    <p>
+        @(string.Join(",", Value.Select(v => v.ToString())))
+    </p>
+    @foreach (var category in Categories!)
+    {
+        category.BindValues = CategoryCodes.TryGetValue(category.Code, out var values)
+            ? values
+            : new List<StringNumber>();
+
+        <CascadingValue Value="this">
+            <ExpansionCategory Category="category" Context="app">
+                <ExpansionApp App="app"
+                              CategoryCode="@category.Code"
+                              Checkable
+                              FavoriteNavs="@FavoriteNavs" />
+            </ExpansionCategory>
+        </CascadingValue>
+    }
+</div>
+
+<div class="global-nav-content__side">
+    <MTimeline AlignTop Dense>
+        @foreach (var category in Categories)
+        {
+            <MTimelineItem Left Small FillDot>
+                <IconContent>
+                    <span>
+                    </span>
+                </IconContent>
+                <ChildContent>
+                    <MButton Small Plain Ripple="false"
+                             Class="pa-0 masa-text-2-2" Style="height: initial"
+                             OnClick="@(() => ScrollTo(category.TagId(), ".global-nav-content__main"))">
+                        @category.Name
+                    </MButton>
+                </ChildContent>
+            </MTimelineItem>
+
+            @foreach (var app in category.Apps)
+            {
+                <MTimelineItem Left Color="white" Small FillDot>
+                    <IconContent>
+                        <span class="secondary-dot_wrapper">
+                        </span>
+                    </IconContent>
+                    <ChildContent>
+                        <MButton Small Plain Ripple="false"
+                                 Class="pa-0 masa-text-2-2" Style="height: initial"
+                                 MinWidth="0"
+                                 OnClick="@(() => ScrollTo(app.TagId(category.Code), ".global-nav-content__main"))">
+                            @app.Name
+                        </MButton>
+                    </ChildContent>
+                </MTimelineItem>
+            }
+        }
+    </MTimeline>
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public List<Topic>? Categories { get; set; }
+
+    [Parameter, EditorRequired]
+    public List<FavoriteNav>? FavoriteNavs { get; set; }
+
+    [Parameter]
+    public List<CategoryAppNav>? Value { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
+
+    private Dictionary<string, List<CategoryAppNav>> _valuesDic = new();
+
+    private Dictionary<string, List<StringNumber>> CategoryCodes
+    {
+        get
+        {
+            var codes = new Dictionary<string, List<StringNumber>>();
+
+            Categories!.ForEach(category => { codes.Add(category.Code, category.Apps.Select(app => (StringNumber)app.Code).ToList()); });
+
+            return codes;
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        Categories ??= new();
+        FavoriteNavs ??= new();
+    }
+
+    internal async Task UpdateValues(string key, List<CategoryAppNav> value)
+    {
+        if (_valuesDic.TryGetValue(key, out _))
+        {
+            _valuesDic[key] = value;
+        }
+        else
+        {
+            _valuesDic.Add(key, value);
+        }
+
+        List<CategoryAppNav> values = new();
+        _valuesDic.ForEach(item => { values.AddRange(item.Value); });
+
+        await UpdateValue(values);
+
+        StateHasChanged();
+    }
+
+    private async Task ScrollTo(string tagId, string insideSelector)
+    {
+        await JsRuntime.InvokeVoidAsync("MasaStackComponents.scrollTo", $"#{tagId}", insideSelector);
+    }
+
+    private async Task UpdateValue(List<CategoryAppNav> value)
+    {
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(value);
+        }
+        else
+        {
+            Value = value;
+        }
+    }
+
+}

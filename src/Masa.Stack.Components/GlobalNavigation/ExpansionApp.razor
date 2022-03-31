@@ -1,0 +1,164 @@
+﻿@namespace Masa.Stack.Components.GlobalNavigation
+@inject NavigationManager NavigationManager
+
+<MExpansionPanel Class="app"
+                 Id="@App.TagId(CategoryCode)"
+                 Style="position: absolute"
+                 Value="App.Code">
+    <MExpansionPanelHeader Class="masa-text-highlight-1">@App.Name</MExpansionPanelHeader>
+    <MExpansionPanelContent>
+        @foreach (var nav in App.Navs)
+        {
+            <MCard @key="nav" Class="nav" Outlined>
+                <MList Dense Class="pa-0">
+                    <MListItemGroup Values="_values" ValuesChanged="ValuesChanged" Multiple>
+                        <MHover Disabled="@nav.HasChildren">
+                            <MListItem @attributes="@context.Attrs"
+                                       Class="masa-text-highlight-2 nav-item"
+                                       OnClick="() => NavigateTo(nav.Url)"
+                                       Value="@nav.Code">
+                                <ItemContent Context="item">
+                                    @if (Checkable)
+                                    {
+                                        <MListItemAction>
+                                            <MCheckbox IsActive="@item.Active"></MCheckbox>
+                                        </MListItemAction>
+                                    }
+                                    <MListItemContent>
+                                        <MListItemTitle>@nav.Name</MListItemTitle>
+                                    </MListItemContent>
+                                    @if (!Checkable && (context.Hover || nav.IsFavorite))
+                                    {
+                                        <MListItemAction Class="ma-0">
+                                            <AutoLoadingButton
+                                                Icon
+                                                Small
+                                                Color="@(nav.IsFavorite ? "#FFB547" : "")"
+                                                OnClick="@(() => ToggleFavorite(CategoryCode, App.Code, nav))"
+                                                StopPropagation>
+                                                <MIcon>mdi-star</MIcon>
+                                            </AutoLoadingButton>
+                                        </MListItemAction>
+                                    }
+                                </ItemContent>
+                            </MListItem>
+                            @if (nav.HasChildren)
+                            {
+                                <MDivider></MDivider>
+                            }
+                        </MHover>
+                        @if (nav.Children is not null)
+                        {
+                            @foreach (var subNav in nav.Children)
+                            {
+                                <MHover Disabled="@(subNav.HasChildren || !Checkable)">
+                                    <MListItem @attributes="context.Attrs"
+                                               Class="masa-text-2-2 sub-nav-item"
+                                               OnClick="() => NavigateTo(subNav.Url)"
+                                               Value="@subNav.Code">
+                                        <ItemContent Context="item">
+                                            @if (Checkable)
+                                            {
+                                                <MListItemAction>
+                                                    <MCheckbox IsActive="@item.Active"></MCheckbox>
+                                                </MListItemAction>
+                                            }
+
+                                            <MListItemContent>
+                                                <MListItemTitle>@subNav.Name</MListItemTitle>
+                                            </MListItemContent>
+
+                                            @if (!Checkable && (context.Hover || subNav.IsFavorite))
+                                            {
+                                                <MListItemAction Class="ma-0">
+                                                    <AutoLoadingButton
+                                                        Color="@(subNav.IsFavorite ? "#FFB547" : "")"
+                                                        Icon
+                                                        Small
+                                                        OnClick="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))"
+                                                        StopPropagation>
+                                                        <MIcon>mdi-star</MIcon>
+                                                    </AutoLoadingButton>
+                                                </MListItemAction>
+                                            }
+                                        </ItemContent>
+                                    </MListItem>
+                                </MHover>
+                            }
+                        }
+                    </MListItemGroup>
+
+                </MList>
+            </MCard>
+        }
+    </MExpansionPanelContent>
+</MExpansionPanel>
+
+@code {
+
+    [CascadingParameter]
+    public ExpansionWrapper ExpansionWrapper { get; set; }
+
+    [Parameter, EditorRequired]
+    public App App { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public string CategoryCode { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public List<FavoriteNav>? FavoriteNavs { get; set; }
+
+    [Parameter]
+    public bool Checkable { get; set; }
+
+    private List<StringNumber> _values = new();
+
+    protected override void OnParametersSet()
+    {
+        FavoriteNavs ??= new();
+    }
+
+    private async Task ValuesChanged(List<StringNumber> v)
+    {
+        _values = v;
+
+        var values = _values.Select(u => new CategoryAppNav(CategoryCode, App.Code, u.ToString()));
+
+        await ExpansionWrapper!.UpdateValues(App.Code, values.ToList());
+    }
+
+    private void NavigateTo(string url)
+    {
+        if (Checkable)
+        {
+            return;
+        }
+
+        NavigationManager.NavigateTo(url, true);
+    }
+
+    private async Task ToggleFavorite(string category, string app, NavModel nav)
+    {
+        var favoriteNav = new FavoriteNav(category, app, nav);
+        var item = FavoriteNavs!.FirstOrDefault(f => f.Id == favoriteNav.Id);
+        if (item is not null)
+        {
+    // TODO: remove favorite
+            await Task.Delay(1000);
+
+            FavoriteNavs!.Remove(item);
+
+            nav.IsFavorite = false;
+        }
+        else
+        {
+    // TODO: add favorite
+            await Task.Delay(1000);
+
+            FavoriteNavs!.Add(favoriteNav);
+
+            nav.IsFavorite = true;
+        }
+    }
+
+}
