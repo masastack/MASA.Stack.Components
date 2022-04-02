@@ -1,22 +1,18 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigation
 @inject IJSRuntime JsRuntime
 
-
 <div class="global-nav-content__main">
-    <p>
-        @(string.Join(",", Value.Select(v => v.Id)))
-    </p>
     @foreach (var category in Categories!)
     {
-        category.BindValues = CategoryCodes.TryGetValue(category.Code, out var values)
+        category.BindValues ??= CategoryCodes.TryGetValue(category.Code, out var values)
             ? values
             : new List<StringNumber>();
 
         <CascadingValue Value="this">
-            <ExpansionCategory Category="category" Context="app">
+            <ExpansionCategory Category="category" Checkable="@Checkable" Context="app">
                 <ExpansionApp App="app"
                               CategoryCode="@category.Code"
-                              Checkable
+                              Checkable="@Checkable"
                               FavoriteNavs="@FavoriteNavs" />
             </ExpansionCategory>
         </CascadingValue>
@@ -65,17 +61,22 @@
 @code {
 
     [Parameter, EditorRequired]
-    public List<Topic>? Categories { get; set; }
+    public List<Category>? Categories { get; set; }
+
+    [Parameter]
+    public bool Checkable { get; set; }
 
     [Parameter, EditorRequired]
     public List<FavoriteNav>? FavoriteNavs { get; set; }
 
     [Parameter]
-    public List<CategoryAppNav>? Value { get; set; } = new(); // TODO: 传入值时勾选
+    public List<CategoryAppNav> Value { get; set; } = new();
 
     [Parameter]
     public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
 
+    private bool _initValuesDic;
+    private bool _fromCheckbox;
     private Dictionary<string, List<CategoryAppNav>> _valuesDic = new();
 
     private Dictionary<string, List<StringNumber>> CategoryCodes
@@ -96,10 +97,60 @@
 
         Categories ??= new();
         FavoriteNavs ??= new();
+
+        if (Checkable)
+        {
+            if (Value.Any() && (!_initValuesDic || !_fromCheckbox))
+            {
+                _initValuesDic = true;
+                _valuesDic.Clear();
+
+                foreach (var value in Value)
+                {
+                    if (value.Category is not null && value.App is not null)
+                    {
+                        var categoryAppNav = new CategoryAppNav(value.Category, value.App, value.Nav);
+
+                        var key = $"app_{value.App}";
+
+                        if (_valuesDic.ContainsKey(key))
+                        {
+                            _valuesDic[key].Add(categoryAppNav);
+                        }
+                        else
+                        {
+                            _valuesDic.Add(key, new List<CategoryAppNav>() { categoryAppNav });
+                        }
+                    }
+                    else if (value.Category is not null)
+                    {
+                        var categoryAppNav = new CategoryAppNav(value.Category);
+
+                        var key = $"category_{value.Category}";
+
+                        if (_valuesDic.ContainsKey(key))
+                        {
+                            _valuesDic[key].Add(categoryAppNav);
+                        }
+                        else
+                        {
+                            _valuesDic.Add(key, new List<CategoryAppNav>() { categoryAppNav });
+                        }
+                    }
+                }
+            }
+
+            if (_fromCheckbox)
+            {
+                _fromCheckbox = false;
+            }
+        }
     }
 
     internal async Task UpdateValues(string key, List<CategoryAppNav> value)
     {
+        _fromCheckbox = true;
+
         if (_valuesDic.TryGetValue(key, out _))
         {
             _valuesDic[key] = value;

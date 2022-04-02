@@ -1,8 +1,6 @@
 window.MasaStackComponents = {}
-window.MasaStackComponents.scrollTo = scrollTo;
-window.MasaStackComponents.waterFull = waterFull;
 
-function scrollTo(target, inside = 'window') {
+window.MasaStackComponents.scrollTo = (target, inside = 'window') => {
     const targetElement = document.querySelector(target)
     if (!targetElement) return;
 
@@ -27,7 +25,7 @@ function scrollTo(target, inside = 'window') {
     }
 }
 
-function waterFull(containerSelector, selectors, columns = 4) {
+window.MasaStackComponents.waterFull = (containerSelector, selectors, columns = 4) => {
     const container = document.querySelector(containerSelector);
     const items = document.querySelectorAll(`${containerSelector} ${selectors}`);
     const arr = []

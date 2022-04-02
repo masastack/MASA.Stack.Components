@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigation
+@inherits MasaComponentBase
 
 <MDialog @bind-Value="_visible"
          Fullscreen
@@ -12,7 +13,7 @@
                 <div class="global-nav-left">
                     <div class="global-nav-left__content">
                         <div class="global-nav-left__title">
-                            快捷访问
+                            @T("Favorites")
                         </div>
                         <MListItemGroup Value="@("/users")" Class="full-width mt-3">
                             @foreach (var item in FavoriteNavs)
@@ -28,7 +29,7 @@
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
                                                 <AutoLoadingButton Icon Small Color="@(item.Nav.IsFavorite ? "#FFB547" : "")"
-                                                                   OnClick="() => ToggleFavorite(item.Topic, item.App, item.Nav)" StopPropagation>
+                                                                   OnClick="() => ToggleFavorite(item.CategoryCode, item.AppCode, item.Nav)" StopPropagation>
                                                     <MIcon>mdi-star</MIcon>
                                                 </AutoLoadingButton>
                                             </MListItemAction>
@@ -42,7 +43,7 @@
                 <div class="global-nav-right">
                     <div class="global-nav-header">
                         <div class="d-flex">
-                            <span class="global-nav-header__title">全局导航</span>
+                            <span class="global-nav-header__title">@T("GlobalNavigation")</span>
                             <MSpacer NumberProps="props => {props.step=}" />
                             <Search Dense Style="max-width:341px" Class="mr-6" />
                             <MButton Icon OnClick="() => _visible = false">
@@ -50,7 +51,7 @@
                             </MButton>
                         </div>
                         <div class="mt-4">
-                            <span class="masa-text-3-1">最近访问</span>
+                            <span class="masa-text-3-1">@T("RecentVisits")</span>
                             @foreach (var (name, url) in RecentVisits)
                             {
                                 <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" Href="@url">@name</MChip>
@@ -58,7 +59,11 @@
                         </div>
                     </div>
                     <div class="global-nav-content">
-                        <ExpansionWrapper Categories="@Topics" FavoriteNavs="@FavoriteNavs" />
+                        <CascadingValue Value="this">
+                            <ExpansionWrapper
+                                Categories="@Categories"
+                                FavoriteNavs="@FavoriteNavs" />
+                        </CascadingValue>
                     </div>
                 </div>
             </div>

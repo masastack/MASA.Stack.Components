@@ -6,11 +6,16 @@
                  Style="position: absolute"
                  Value="App.Code">
     <MExpansionPanelHeader Class="masa-text-highlight-1">
-        <MSimpleCheckbox
-            Value="AppChecked"
-            OnInput="AppCheckedChanged"
-            Style="flex:none">
-        </MSimpleCheckbox>
+        @if (Checkable)
+        {
+            <MSimpleCheckbox
+                Color="primary"
+                Ripple="false"
+                Value="@AppChecked"
+                ValueChanged="@AppCheckedChanged"
+                Style="flex:none">
+            </MSimpleCheckbox>
+        }
         @App.Name
     </MExpansionPanelHeader>
     <MExpansionPanelContent>
@@ -23,28 +28,32 @@
                             <MListItem @attributes="@context.Attrs"
                                        Class="masa-text-highlight-2 nav-item"
                                        OnClick="() => NavigateTo(nav.Url)"
-                                       Value="@nav.Code">
+                                       Value="@nav.Code"
+                                       Disabled="@nav.HasChildren"
+                                       ActiveClass="primary--text">
                                 <ItemContent Context="item">
-                                    @if (Checkable)
-                                    {
-                                        <MListItemAction Class="mr-2">
-                                            <MCheckbox IsActive="@item.Active"></MCheckbox>
-                                        </MListItemAction>
-                                    }
                                     <MListItemContent>
                                         <MListItemTitle>@nav.Name</MListItemTitle>
                                     </MListItemContent>
-                                    @if (!Checkable && (context.Hover || nav.IsFavorite))
+
+                                    @if (context.Hover)
                                     {
                                         <MListItemAction Class="ma-0">
-                                            <AutoLoadingButton
-                                                Icon
-                                                Small
-                                                Color="@(nav.IsFavorite ? "#FFB547" : "")"
-                                                OnClick="@(() => ToggleFavorite(CategoryCode, App.Code, nav))"
-                                                StopPropagation>
-                                                <MIcon>mdi-star</MIcon>
-                                            </AutoLoadingButton>
+                                            @if (Checkable)
+                                            {
+                                                <MCheckbox Dense IsActive="@item.Active"></MCheckbox>
+                                            }
+                                            else
+                                            {
+                                                <AutoLoadingButton
+                                                    Icon
+                                                    Small
+                                                    Color="@(nav.IsFavorite ? "#FFB547" : "")"
+                                                    OnClick="@(() => ToggleFavorite(CategoryCode, App.Code, nav))"
+                                                    StopPropagation>
+                                                    <MIcon>mdi-star</MIcon>
+                                                </AutoLoadingButton>
+                                            }
                                         </MListItemAction>
                                     }
                                 </ItemContent>
@@ -58,34 +67,35 @@
                         {
                             @foreach (var subNav in nav.Children)
                             {
-                                <MHover Disabled="@(subNav.HasChildren || !Checkable)">
+                                <MHover Disabled="@subNav.HasChildren">
                                     <MListItem @attributes="context.Attrs"
                                                Class="masa-text-2-2 sub-nav-item"
                                                OnClick="() => NavigateTo(subNav.Url)"
-                                               Value="@subNav.Code">
+                                               Value="@subNav.Code"
+                                               ActiveClass="primary--text">
                                         <ItemContent Context="item">
-                                            @if (Checkable)
-                                            {
-                                                <MListItemAction Class="mr-2">
-                                                    <MCheckbox Class="m" IsActive="@item.Active"></MCheckbox>
-                                                </MListItemAction>
-                                            }
-
                                             <MListItemContent>
                                                 <MListItemTitle>@subNav.Name</MListItemTitle>
                                             </MListItemContent>
 
-                                            @if (!Checkable && (context.Hover || subNav.IsFavorite))
+                                            @if (context.Hover)
                                             {
                                                 <MListItemAction Class="ma-0">
-                                                    <AutoLoadingButton
-                                                        Color="@(subNav.IsFavorite ? "#FFB547" : "")"
-                                                        Icon
-                                                        Small
-                                                        OnClick="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))"
-                                                        StopPropagation>
-                                                        <MIcon>mdi-star</MIcon>
-                                                    </AutoLoadingButton>
+                                                    @if (Checkable)
+                                                    {
+                                                        <MCheckbox Dense IsActive="@item.Active"></MCheckbox>
+                                                    }
+                                                    else
+                                                    {
+                                                        <AutoLoadingButton
+                                                            Color="@(subNav.IsFavorite ? "#FFB547" : "")"
+                                                            Icon
+                                                            Small
+                                                            OnClick="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))"
+                                                            StopPropagation>
+                                                            <MIcon>mdi-star</MIcon>
+                                                        </AutoLoadingButton>
+                                                    }
                                                 </MListItemAction>
                                             }
                                         </ItemContent>
@@ -104,7 +114,10 @@
 @code {
 
     [CascadingParameter]
-    public ExpansionWrapper ExpansionWrapper { get; set; }
+    public ExpansionWrapper? ExpansionWrapper { get; set; }
+    
+    [CascadingParameter]
+    public GlobalNavigation? GlobalNavigation { get; set; }
 
     [Parameter, EditorRequired]
     public App App { get; set; } = null!;
@@ -118,6 +131,8 @@
     [Parameter]
     public bool Checkable { get; set; }
 
+    private bool _initValues;
+    private bool _fromCheckbox;
     private List<StringNumber> _values = new();
     private List<CategoryAppNav> _categoryAppNavs = new();
 
@@ -126,6 +141,23 @@
     protected override void OnParametersSet()
     {
         FavoriteNavs ??= new();
+
+        if (Checkable)
+        {
+            if (ExpansionWrapper is not null && ExpansionWrapper.Value.Any() && (!_initValues || !_fromCheckbox))
+            {
+                _initValues = true;
+
+                var categoryAppNavs = ExpansionWrapper.Value.Where(v => v.Category == CategoryCode && v.App == App.Code).ToList();
+                _values = categoryAppNavs.Select(c => (StringNumber)c.Nav).Where(n => n is not null).ToList();
+                AppChecked = categoryAppNavs.Any(c => c.Nav is null);
+            }
+
+            if (_fromCheckbox)
+            {
+                _fromCheckbox = false;
+            }
+        }
     }
 
     private async Task ValuesChanged(List<StringNumber> v)
@@ -141,7 +173,7 @@
             _categoryAppNavs.Add(new CategoryAppNav(CategoryCode, App.Code));
         }
 
-        await ExpansionWrapper!.UpdateValues(App.Code, _categoryAppNavs);
+        await UpdateValues(App.Code, _categoryAppNavs);
     }
 
     private async Task AppCheckedChanged(bool v)
@@ -159,12 +191,21 @@
             _categoryAppNavs.Remove(categoryAppNav);
         }
 
-        await ExpansionWrapper!.UpdateValues(App.Code, _categoryAppNavs);
+        await UpdateValues(App.Code, _categoryAppNavs);
     }
 
-    private void NavigateTo(string url)
+    private async Task UpdateValues(string appCode, List<CategoryAppNav> values)
     {
-        if (Checkable)
+        _fromCheckbox = true;
+
+        var key = $"app_{App.Code}";
+
+        await ExpansionWrapper!.UpdateValues(key, values);
+    }
+
+    private void NavigateTo(string? url)
+    {
+        if (Checkable || url is null)
         {
             return;
         }
@@ -172,7 +213,7 @@
         NavigationManager.NavigateTo(url, true);
     }
 
-    private async Task ToggleFavorite(string category, string app, NavModel nav)
+    private async Task ToggleFavorite(string category, string app, Nav nav)
     {
         var favoriteNav = new FavoriteNav(category, app, nav);
         var item = FavoriteNavs!.FirstOrDefault(f => f.Id == favoriteNav.Id);
@@ -194,6 +235,9 @@
 
             nav.IsFavorite = true;
         }
+        
+        // TODO: need to notify parent
+        GlobalNavigation?.InvokeStateHasChanged();
     }
 
 }

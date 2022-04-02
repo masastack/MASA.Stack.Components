@@ -5,7 +5,7 @@ public abstract class MasaComponentBase : ComponentBase
     [Inject]
     public I18n LanguageProvider
     {
-        get => _languageProvider ?? throw new Exception("please Inject I18n!");
+        get => _languageProvider ?? throw new Exception("please inject I18n!");
         set => _languageProvider = value;
     }
 

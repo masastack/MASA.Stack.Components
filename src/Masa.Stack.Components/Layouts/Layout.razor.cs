@@ -38,18 +38,18 @@ public partial class Layout : IDisposable
         }
     }
 
-    private List<NavModel> Navs { get; set; } = new();
+    private List<Nav> Navs { get; set; } = new();
 
     private List<PageTabItem> PageTabItems =>
         FlattenedNavs.Where(n => n.Url is not null)
                      .Select(nav => new PageTabItem(nav.Name, nav.Url, nav.Icon))
                      .ToList();
 
-    private List<NavModel> FlattenedNavs { get; set; } = new();
+    private List<Nav> FlattenedNavs { get; set; } = new();
 
-    private List<NavModel> FlattenNavs(List<NavModel> tree)
+    private List<Nav> FlattenNavs(List<Nav> tree)
     {
-        var res = new List<NavModel>();
+        var res = new List<Nav>();
 
         foreach (var nav in tree)
         {
@@ -64,16 +64,16 @@ public partial class Layout : IDisposable
         return res;
     }
 
-    private async Task<List<NavModel>> FetchSystemNavs()
+    private async Task<List<Nav>> FetchSystemNavs()
     {
-        return new List<NavModel>()
+        return new List<Nav>()
         {
-            new NavModel("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/", 1),
-            new NavModel("counter", "Counter", "mdi-pencil", "/counter", 1),
-            new NavModel("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
-            new NavModel("father", "Father", "mdi-numeric-0-box-outline", 1, new List<NavModel>
+            new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/", 1),
+            new Nav("counter", "Counter", "mdi-pencil", "/counter", 1),
+            new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
+            new Nav("father", "Father", "mdi-numeric-0-box-outline", 1, new List<Nav>
             {
-                new NavModel("children", "ChildOne", "mdi-numeric-1-box-outline", "/has-children", 2, "father")
+                new Nav("children", "ChildOne", "mdi-numeric-1-box-outline", "/has-children", 2, "father")
             }),
         };
     }

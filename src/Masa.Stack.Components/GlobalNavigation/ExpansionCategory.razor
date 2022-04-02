@@ -1,8 +1,19 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigation
 @inject IJSRuntime JsRuntime
 
-<div class="topic" id="@Category.TagId()" @attributes="@Attributes">
-    <div class="topic__header">@Category.Name</div>
+<div class="category" id="@Category.TagId()" @attributes="@Attributes">
+    <div class="category__header">
+        @Category.Name
+        @if (Checkable)
+        {
+            <MSimpleCheckbox Color="white"
+                             Value="@CategoryChecked"
+                             ValueChanged="@CategoryCheckedValueChanged"
+                             Ripple="false"
+                             Class="mr-n2">
+            </MSimpleCheckbox>
+        }
+    </div>
     <MExpansionPanels Accordion
                       Flat
                       Multiple
@@ -12,33 +23,64 @@
                       ValuesChanged="ValuesChanged">
         @foreach (var app in Category.Apps)
         {
-            @ChildContent(app)
+            @ChildContent?.Invoke(app)
         }
     </MExpansionPanels>
 </div>
 
 @code {
 
+    [CascadingParameter]
+    public ExpansionWrapper? ExpansionWrapper { get; set; }
+
     [Parameter, EditorRequired]
-    public Topic Category { get; set; } = null!;
+    public Category Category { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment<App> ChildContent { get; set; }
+    public bool Checkable { get; set; }
+
+    [Parameter]
+    public RenderFragment<App>? ChildContent { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> Attributes { get; set; } = new();
 
+    private bool _initCheckbox;
+    private bool _fromCheckbox;
+
     private bool _hasResizeNav;
     private bool _refreshWaterFull;
 
+    private bool CategoryChecked { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Checkable)
+        {
+            if (ExpansionWrapper is not null && ExpansionWrapper.Value.Any() && (!_initCheckbox || !_fromCheckbox))
+            {
+                _initCheckbox = true;
+
+                var exists = ExpansionWrapper.Value.Any(v => v.Category == Category.Code && v.App is null && v.Nav is null);
+
+                CategoryChecked = exists;
+            }
+
+            if (_fromCheckbox)
+            {
+                _fromCheckbox = false;
+            }
+        }
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_hasResizeNav || _refreshWaterFull)
+        if (!_hasResizeNav || _refreshWaterFull)
         {
             _hasResizeNav = true;
             _refreshWaterFull = false;
 
-            // TODO: How to wait for elements to be rendered
+    // TODO: How to wait for elements to be rendered
             await Task.Delay(256);
 
             await ResizeNav(Category);
@@ -54,14 +96,36 @@
         _refreshWaterFull = true;
     }
 
-    private async Task ResizeNav(Topic topic)
+    private async Task CategoryCheckedValueChanged(bool v)
+    {
+        _fromCheckbox = true;
+
+        CategoryChecked = v;
+
+        CategoryAppNav categoryAppNav = new(Category.Code);
+
+        var key = $"category_{Category.Code}";
+        var values = new List<CategoryAppNav>();
+
+        if (CategoryChecked)
+        {
+            values.Add(categoryAppNav);
+            await ExpansionWrapper!.UpdateValues(key, values);
+        }
+        else
+        {
+            await ExpansionWrapper!.UpdateValues(key, values);
+        }
+    }
+
+    private async Task ResizeNav(Category category)
     {
         var height = await JsRuntime.InvokeAsync<double>(
             "MasaStackComponents.waterFull",
-            $"#{topic.TagId()} .apps",
+            $"#{category.TagId()} .apps",
             ".app");
 
-        topic.TagStyle = $"position:relative; height:{height}px;";
+        category.TagStyle = $"position:relative; height:{height}px;";
     }
 
 }

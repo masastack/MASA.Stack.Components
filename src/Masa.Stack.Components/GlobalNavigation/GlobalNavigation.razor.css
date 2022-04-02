@@ -78,11 +78,14 @@
     margin-right: 8px;
 }
 
-.global-nav ::deep .topic {
+.global-nav ::deep .category {
     margin-bottom: 24px;
 }
 
-.global-nav ::deep .topic .topic__header {
+.global-nav ::deep .category .category__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background: #4318FF;
     border-radius: 8px;
     color: white;
@@ -95,14 +98,10 @@
 }
 
 .global-nav ::deep .apps {
-    /*display: flex;*/
-    /*justify-content: flex-start;*/
-    /*max-height: 480px;*/
-    /*margin: -8px;*/
+    margin: -8px -4px;
 }
 
 .global-nav ::deep .apps .app {
-    /*flex: 0 0 25%;*/
     max-width: 25%;
     min-width: 25%;
     padding: 8px;
@@ -171,6 +170,11 @@
 .global-nav ::deep .m-timeline-item__dot--small {
     height: 16px;
     width: 16px;
+}
+
+.global-nav ::deep .m-input--selection-controls__input:hover .mdi-checkbox-blank-outline {
+    color: inherit !important;
+    caret-color: inherit !important;
 }
 
 ::deep .secondary-dot_wrapper {

@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components.Models;
 
-public class NavModel
+public class Nav
 {
     public string Code { get; set; }
 
@@ -10,15 +10,15 @@ public class NavModel
 
     public int Level { get; set; }
 
-    public string ParentCode { get; set; }
+    public string? ParentCode { get; set; }
 
-    public string ParentIcon { get; set; }
+    public string? ParentIcon { get; set; }
 
     public string? Target { get; set; }
 
     public string? Url { get; set; }
 
-    public List<NavModel>? Children { get; set; }
+    public List<Nav>? Children { get; set; }
 
     public bool IsFavorite { get; set; }
 
@@ -41,43 +41,34 @@ public class NavModel
         return string.Equals(tempUrl, url, StringComparison.OrdinalIgnoreCase);
     }
 
-    public NavModel()
+    public Nav()
     {
     }
 
-    public NavModel(string code, string name, string icon, int level, List<NavModel> children)
+    public Nav(string code, string name, string? url, int level)
+    {
+        Code = code;
+        Name = name;
+        Url = url;
+        Level = level;
+    }
+
+    public Nav(string code, string name, string icon, string? url, int level) : this(code, name, url, level)
+    {
+        Icon = icon;
+    }
+
+    public Nav(string code, string name, string icon, string? url, int level, string parentCode) : this(code, name, icon, url, level)
+    {
+        ParentCode = parentCode;
+    }
+
+    public Nav(string code, string name, string icon, int level, List<Nav> children)
     {
         Code = code;
         Name = name;
         Icon = icon;
         Level = level;
         Children = children;
-    }
-
-    public NavModel(string code, string name, string? url, int level)
-    {
-        Code = code;
-        Name = name;
-        Url = url;
-        Level = level;
-    }
-
-    public NavModel(string code, string name, string icon, string? url, int level)
-    {
-        Code = code;
-        Name = name;
-        Icon = icon;
-        Url = url;
-        Level = level;
-    }
-
-    public NavModel(string code, string name, string icon, string? url, int level, string parentCode)
-    {
-        Code = code;
-        Name = name;
-        Icon = icon;
-        Url = url;
-        Level = level;
-        ParentCode = parentCode;
     }
 }

@@ -9,7 +9,9 @@
   "UserInfo": "UserInfo",
   "UpdatePassword": "Update Password",
   "Logout": "Logout",
-  "GlobalNavigation": "Gloabl Navigation",
+  "GlobalNavigation": "Global Navigation",
+  "RecentVisits": "Recent Visits",
+  "Favorites": "Favorites",
 
   "Counter": "Counter",
   "Fetch data": "Fetch Data",

@@ -5,23 +5,25 @@ namespace Masa.Stack.Components.Layouts;
 
 public partial class Favorites
 {
-    [Inject] 
-    private CookieStorage CookieStorage { get; set; }
+    [Inject]
+    private CookieStorage? CookieStorage { get; set; }
 
     [Parameter, EditorRequired]
-    public List<NavModel>? FlattenedNavs { get; set; }
+    public List<Nav> FlattenedNavs { get; set; } = new();
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        FlattenedNavs ??= new List<NavModel>();
+        FlattenedNavs ??= new List<Nav>();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            ArgumentNullException.ThrowIfNull(CookieStorage);
+
             var cookieFavorite = await CookieStorage.GetCookie(GlobalConfig_Favorite);
 
             if (cookieFavorite is not null)
@@ -39,9 +41,9 @@ public partial class Favorites
 
     private List<string> FavoriteNavCodes { get; set; } = new List<string>();
 
-    private List<NavModel> FavoriteMenus => FlattenedNavs.Where(n => FavoriteNavCodes.Contains(n.Code)).ToList();
+    private List<Nav> FavoriteMenus => FlattenedNavs.Where(n => FavoriteNavCodes.Contains(n.Code)).ToList();
 
-    private IEnumerable<NavModel> SearchedMenus { get; set; } = Enumerable.Empty<NavModel>();
+    private IEnumerable<Nav> SearchedMenus { get; set; } = Enumerable.Empty<Nav>();
 
     private async Task HandleOnSearchKeyDown(KeyboardEventArgs args)
     {
@@ -74,7 +76,7 @@ public partial class Favorites
             FavoriteNavCodes.Add(code);
         }
 
-        CookieStorage.SetItemAsync(GlobalConfig_Favorite, string.Join("|", FavoriteNavCodes));
+        CookieStorage?.SetItemAsync(GlobalConfig_Favorite, string.Join("|", FavoriteNavCodes));
     }
 
     private void MenuValueChanged(bool value)
@@ -88,7 +90,7 @@ public partial class Favorites
         }
     }
 
-    private bool IsMenuActive(NavModel menu)
+    private bool IsMenuActive(Nav menu)
     {
         return (menu.IsActive(NavigationManager.ToBaseRelativePath(NavigationManager.Uri)));
     }

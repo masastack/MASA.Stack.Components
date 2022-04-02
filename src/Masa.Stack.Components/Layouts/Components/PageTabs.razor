@@ -16,7 +16,8 @@
               Ripple="@false"
               @attributes="@context.Attrs">
             <MIcon Size="20">@context.Item.Icon</MIcon>
-            <span class="mx-2 text-capitalize @(context.IsActive ? "neutral--text" : "")" style="min-width:46px;">@T(context.Item.Name)</span>
+            <span class="mx-2 text-capitalize @(context.IsActive ? "neutral--text" : "")"
+                  style="min-width:46px;">@T(context.Item.Name)</span>
             @if (context.Item.Closable)
             {
                 <MIcon OnClick="context.Close" Size="16">mdi-close</MIcon>
@@ -32,14 +33,13 @@
 
 @code {
 
-    [EditorRequired]
-    [Parameter]
+    [Parameter, EditorRequired]
     public List<PageTabItem>? Items { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    private string CurrentUrl { get; set; }
+    private string? CurrentUrl { get; set; }
 
     private StringNumber Value => Items.FindIndex(item => item.Url == CurrentUrl);
 

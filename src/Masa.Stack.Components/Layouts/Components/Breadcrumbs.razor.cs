@@ -5,7 +5,7 @@ namespace Masa.Stack.Components.Layouts
     public partial class Breadcrumbs : MasaComponentBase
     {
         [Parameter, EditorRequired]
-        public List<NavModel> FlattenedNavs { get; set; } = new();
+        public List<Nav> FlattenedNavs { get; set; } = new();
 
         protected override void OnParametersSet()
         {
@@ -32,9 +32,9 @@ namespace Masa.Stack.Components.Layouts
 
         private List<BreadcrumbItem> Items { get; set; } = new();
 
-        private IList<NavModel> GetParents(string parentCode)
+        private IList<Nav> GetParents(string parentCode)
         {
-            var parents = new List<NavModel>();
+            var parents = new List<Nav>();
 
             var found = FlattenedNavs.FirstOrDefault(nav => nav.Code == parentCode);
 
