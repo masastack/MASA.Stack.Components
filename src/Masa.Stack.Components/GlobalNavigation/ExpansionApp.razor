@@ -3,19 +3,26 @@
 <MExpansionPanel Class="app"
                  Id="@App.TagId(CategoryCode)"
                  Style="position: absolute"
-                 Value="App.Code">
+                 Value="@App.Code">
     <MExpansionPanelHeader Class="masa-text-highlight-1">
         @if (Checkable)
         {
+            // TODO: support dense in MSimpleCheckbox
             <MSimpleCheckbox
                 Color="primary"
                 Ripple="false"
                 Value="@AppChecked"
                 ValueChanged="@AppCheckedChanged"
-                Style="flex:none">
+                Style="flex: none;margin-right: -4px;">
             </MSimpleCheckbox>
         }
-        @App.Name
+        <span style="flex:none">
+            @App.Name
+        </span>
+        @if (!context && App.RoutableNavsCount > 0)
+        {
+            <span class="masa-text-3-1 ml-1">@App.RoutableNavsCount</span>
+        }
     </MExpansionPanelHeader>
     <MExpansionPanelContent>
         @foreach (var nav in App.Navs)
@@ -25,11 +32,11 @@
                     <MListItemGroup Values="_values" ValuesChanged="ValuesChanged" Multiple>
                         <MHover Disabled="@nav.HasChildren">
                             <MListItem @attributes="@context.Attrs"
-                                       Class="masa-text-highlight-2 nav-item"
+                                       Class="@($"masa-text-highlight-2 nav-item {(context.Hover ? "masa-text" : "")}")"
                                        OnClick="() => NavigateTo(nav.Url)"
                                        Value="@nav.Code"
                                        Disabled="@nav.HasChildren"
-                                       ActiveClass="primary--text">
+                                       ActiveClass="masa-fill-clicked masa-text">
                                 <ItemContent Context="item">
                                     <MListItemContent>
                                         <MListItemTitle>@nav.Name</MListItemTitle>
@@ -68,10 +75,10 @@
                             {
                                 <MHover Disabled="@subNav.HasChildren">
                                     <MListItem @attributes="context.Attrs"
-                                               Class="masa-text-2-2 sub-nav-item"
+                                               Class="@($"masa-text-2-2 sub-nav-item {(context.Hover ? "masa-text" : "")}")"
                                                OnClick="() => NavigateTo(subNav.Url)"
                                                Value="@subNav.Code"
-                                               ActiveClass="primary--text">
+                                               ActiveClass="masa-fill-clicked masa-text">
                                         <ItemContent Context="item">
                                             <MListItemContent>
                                                 <MListItemTitle>@subNav.Name</MListItemTitle>

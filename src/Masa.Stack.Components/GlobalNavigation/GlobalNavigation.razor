@@ -44,7 +44,7 @@
                     <div class="global-nav-header">
                         <div class="d-flex">
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
-                            <MSpacer NumberProps="props => {props.step=}" />
+                            <MSpacer />
                             <Search Dense Style="max-width:341px" Class="mr-6" />
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>
@@ -61,6 +61,7 @@
                     <div class="global-nav-content">
                         <CascadingValue Value="this">
                             <ExpansionWrapper
+                                Checkable
                                 Categories="@Categories"
                                 FavoriteNavs="@FavoriteNavs" />
                         </CascadingValue>

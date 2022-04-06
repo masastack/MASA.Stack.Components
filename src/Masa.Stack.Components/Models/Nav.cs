@@ -2,6 +2,8 @@
 
 public class Nav
 {
+    private List<Nav>? _children;
+
     public string Code { get; set; }
 
     public string? Icon { get; set; }
@@ -18,11 +20,15 @@ public class Nav
 
     public string? Url { get; set; }
 
-    public List<Nav>? Children { get; set; }
+    public List<Nav> Children
+    {
+        get => _children ?? new();
+        set => _children = value;
+    }
 
     public bool IsFavorite { get; set; }
 
-    public bool HasChildren => Children is not null && Children.Any();
+    public bool HasChildren => Children.Any();
 
     public bool IsActive(string url)
     {

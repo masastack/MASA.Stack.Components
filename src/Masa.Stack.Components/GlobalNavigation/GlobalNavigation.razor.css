@@ -93,7 +93,7 @@
     line-height: 40px;
     font-size: 20px;
     font-weight: 700;
-    padding: 0 16px;
+    padding: 0 24px;
     margin-bottom: 16px;
 }
 
@@ -194,6 +194,11 @@
     font-weight: 500;
 }
 
+::deep .masa-text {
+    color: #000000 !important;
+    font-weight: 700 !important;
+}
+
 ::deep .masa-text-2-1 {
     color: #485585 !important;
     font-weight: 400;
@@ -206,7 +211,15 @@
 
 ::deep .masa-text-3-1 {
     color: #A3AED0;
-    font-weight: 400;
+    font-weight: 500;
+}
+
+::deep .masa-fill-clicked {
+    background-color: #E9EDF7;
+}
+
+::deep .masa-fill-clicked::before {
+    opacity: 0 !important;
 }
 
 ::deep .br-1 {
