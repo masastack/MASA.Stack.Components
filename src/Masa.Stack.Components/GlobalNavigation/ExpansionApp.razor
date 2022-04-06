@@ -32,14 +32,14 @@
                     <MListItemGroup Values="_values" ValuesChanged="ValuesChanged" Multiple>
                         <MHover Disabled="@nav.HasChildren">
                             <MListItem @attributes="@context.Attrs"
-                                       Class="@($"masa-text-highlight-2 nav-item {(context.Hover ? "masa-text" : "")}")"
+                                       Class="@($"masa-text-2-2 nav-item {(context.Hover ? "masa-text masa-fill-clicked" : "")}")"
                                        OnClick="() => NavigateTo(nav.Url)"
                                        Value="@nav.Code"
                                        Disabled="@nav.HasChildren"
-                                       ActiveClass="masa-fill-clicked masa-text">
+                                       ActiveClass="masa-text clear-before-opacity">
                                 <ItemContent Context="item">
                                     <MListItemContent>
-                                        <MListItemTitle>@nav.Name</MListItemTitle>
+                                        <MListItemTitle Style="font-weight: inherit">@nav.Name</MListItemTitle>
                                     </MListItemContent>
 
                                     @if (context.Hover)
@@ -75,13 +75,13 @@
                             {
                                 <MHover Disabled="@subNav.HasChildren">
                                     <MListItem @attributes="context.Attrs"
-                                               Class="@($"masa-text-2-2 sub-nav-item {(context.Hover ? "masa-text" : "")}")"
+                                               Class="@($"masa-text-3-1 sub-nav-item {(context.Hover ? "masa-text-1-1 masa-fill-clicked" : "")}")"
                                                OnClick="() => NavigateTo(subNav.Url)"
                                                Value="@subNav.Code"
-                                               ActiveClass="masa-fill-clicked masa-text">
+                                               ActiveClass="masa-text-1-1 clear-before-opacity">
                                         <ItemContent Context="item">
                                             <MListItemContent>
-                                                <MListItemTitle>@subNav.Name</MListItemTitle>
+                                                <MListItemTitle Style="font-weight: inherit">@subNav.Name</MListItemTitle>
                                             </MListItemContent>
 
                                             @if (context.Hover)
