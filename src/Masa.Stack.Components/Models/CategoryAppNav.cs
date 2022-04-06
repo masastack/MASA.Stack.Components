@@ -1,4 +1,4 @@
-﻿namespace Masa.Stack.Components.GlobalNavigation;
+﻿namespace Masa.Stack.Components.Models;
 
 public record CategoryAppNav
 {
