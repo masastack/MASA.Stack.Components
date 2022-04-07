@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components
 
 <div class="m-click-extend full-width">
-    <div Style="@(IsExpanded ? displayNone : displayFlex)" class="d-flex justify-space-between full-width">
+    <div Style="@(IsExpanded ? displayNone : displayFlex)" class="d-flex align-center justify-space-between full-width">
         @ChildContent
         <MIcon OnClick="()=> { IsExpanded = true; }">mdi-magnify</MIcon>
     </div>
