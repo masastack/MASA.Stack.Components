@@ -1,12 +1,13 @@
-﻿using Microsoft.JSInterop;
+﻿using System.Text.Json;
+using Microsoft.JSInterop;
 
 namespace Masa.Stack.Components.GlobalNavigation;
 
-public partial class ExpansionWrapper
+public partial class ExpansionWrapper: IDisposable
 {
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
-    
+
     [Parameter, EditorRequired]
     public List<Category>? Categories { get; set; }
 
@@ -24,6 +25,7 @@ public partial class ExpansionWrapper
 
     private bool _initValuesDic;
     private bool _fromCheckbox;
+    private DotNetObjectReference<ExpansionWrapper>? objRef;
     private Dictionary<string, List<CategoryAppNav>> _valuesDic = new();
 
     private Dictionary<string, List<StringNumber>> CategoryCodes
@@ -94,6 +96,15 @@ public partial class ExpansionWrapper
         }
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            objRef = DotNetObjectReference.Create(this);
+            await JsRuntime.InvokeVoidAsync("MasaStackComponents.listenScroll", ".global-nav-content__main", objRef);
+        }
+    }
+
     internal async Task UpdateValues(string key, List<CategoryAppNav> value)
     {
         _fromCheckbox = true;
@@ -120,15 +131,26 @@ public partial class ExpansionWrapper
         await JsRuntime.InvokeVoidAsync("MasaStackComponents.scrollTo", $"#{tagId}", insideSelector);
     }
 
+    [JSInvokable]
+    public async Task ComputeActiveCategory(double position)
+    {
+        Console.WriteLine($"position:{position}");
+    }
+
     private async Task UpdateValue(List<CategoryAppNav> value)
     {
+        value = value.Distinct().ToList();
+
         if (ValueChanged.HasDelegate)
         {
             await ValueChanged.InvokeAsync(value);
         }
-        else
-        {
-            Value = value;
-        }
+
+        Value = value;
+    }
+    
+    public void Dispose()
+    {
+        objRef?.Dispose();
     }
 }

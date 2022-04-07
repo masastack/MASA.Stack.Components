@@ -4,15 +4,15 @@
                  Id="@App.TagId(CategoryCode)"
                  Style="position: absolute"
                  Value="@App.Code">
-    <MExpansionPanelHeader Class="masa-text-highlight-1">
+    <MExpansionPanelHeader Class="masa-text-highlight-1" Ripple="false">
         @if (Checkable)
         {
-            // TODO: support dense in MSimpleCheckbox
             <MSimpleCheckbox
                 Color="primary"
                 Ripple="false"
                 Value="@AppChecked"
                 ValueChanged="@AppCheckedChanged"
+                Class="masa-icon-size-20"
                 Style="flex: none;margin-right: -4px;">
             </MSimpleCheckbox>
         }
@@ -32,11 +32,11 @@
                     <MListItemGroup Values="_values" ValuesChanged="ValuesChanged" Multiple>
                         <MHover Disabled="@nav.HasChildren">
                             <MListItem @attributes="@context.Attrs"
-                                       Class="@($"masa-text-2-2 nav-item {(context.Hover ? "masa-text masa-fill-clicked" : "")}")"
+                                       Class="@($"masa-text-1-2 nav-item clear-before-opacity {(context.Hover ? "masa-text masa-fill-clicked" : "")}")"
                                        OnClick="() => NavigateTo(nav.Url)"
                                        Value="@nav.Code"
                                        Disabled="@nav.HasChildren"
-                                       ActiveClass="masa-text clear-before-opacity">
+                                       ActiveClass="masa-text">
                                 <ItemContent Context="item">
                                     <MListItemContent>
                                         <MListItemTitle Style="font-weight: inherit">@nav.Name</MListItemTitle>
@@ -75,10 +75,10 @@
                             {
                                 <MHover Disabled="@subNav.HasChildren">
                                     <MListItem @attributes="context.Attrs"
-                                               Class="@($"masa-text-3-1 sub-nav-item {(context.Hover ? "masa-text-1-1 masa-fill-clicked" : "")}")"
+                                               Class="@($"masa-text-3-1 sub-nav-item clear-before-opacity {(context.Hover ? "masa-text-1-1 masa-fill-clicked" : "")}")"
                                                OnClick="() => NavigateTo(subNav.Url)"
                                                Value="@subNav.Code"
-                                               ActiveClass="masa-text-1-1 clear-before-opacity">
+                                               ActiveClass="masa-text-1-1">
                                         <ItemContent Context="item">
                                             <MListItemContent>
                                                 <MListItemTitle Style="font-weight: inherit">@subNav.Name</MListItemTitle>

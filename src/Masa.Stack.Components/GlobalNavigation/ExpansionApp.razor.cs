@@ -54,7 +54,7 @@ public partial class ExpansionApp
 
     private async Task ValuesChanged(List<StringNumber> v)
     {
-        _values = v;
+        _values = v.Where(u => u.Value is not null).ToList();
 
         _categoryAppNavs = _values
                            .Select(u => new CategoryAppNav(CategoryCode, App.Code, u.ToString()))

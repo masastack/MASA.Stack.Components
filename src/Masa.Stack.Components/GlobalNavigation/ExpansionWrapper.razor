@@ -19,40 +19,16 @@
 </div>
 
 <div class="global-nav-content__side">
-    <MTimeline AlignTop Dense>
-        @foreach (var category in Categories)
-        {
-            <MTimelineItem Left Small FillDot>
-                <IconContent>
-                    <span>
-                    </span>
-                </IconContent>
-                <ChildContent>
-                    <MButton Small Plain Ripple="false"
-                             Class="pa-0 masa-text-2-2" Style="height: initial"
-                             OnClick="@(() => ScrollTo(category.TagId(), ".global-nav-content__main"))">
-                        @category.Name
-                    </MButton>
-                </ChildContent>
-            </MTimelineItem>
-
-            @foreach (var app in category.Apps)
+    <MNavigationDrawer Floating Right Width="256" Class="toc">
+        <ul>
+            @foreach (var category in Categories)
             {
-                <MTimelineItem Left Color="white" Small FillDot>
-                    <IconContent>
-                        <span class="secondary-dot_wrapper">
-                        </span>
-                    </IconContent>
-                    <ChildContent>
-                        <MButton Small Plain Ripple="false"
-                                 Class="pa-0 masa-text-2-2" Style="height: initial"
-                                 MinWidth="0"
-                                 OnClick="@(() => ScrollTo(app.TagId(category.Code), ".global-nav-content__main"))">
-                            @app.Name
-                        </MButton>
-                    </ChildContent>
-                </MTimelineItem>
+                <li class="masa-text-2-2 pl-3 py-1"
+                    @onclick="@(() => ScrollTo(category.TagId(), ".global-nav-content__main"))">
+                    <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>
+                    @category.Name
+                </li>
             }
-        }
-    </MTimeline>
+        </ul>
+    </MNavigationDrawer>
 </div>

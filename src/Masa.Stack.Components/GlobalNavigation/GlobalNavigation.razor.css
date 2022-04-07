@@ -177,9 +177,17 @@
     caret-color: inherit !important;
 }
 
-::deep .secondary-dot_wrapper {
-    border: 1px solid #4318FF;
-    border-radius: 50%;
-    height: inherit;
-    width: inherit;
+.global-nav ::deep .toc ul {
+    list-style-type: none;
+}
+
+.global-nav ::deep .toc li {
+    border-left: 1px solid #E2E7F4;
+    height: 40px;
+    line-height: 32px;
+    cursor: pointer;
+}
+
+.global-nav ::deep .toc li .dot {
+    margin-left: -22px;
 }

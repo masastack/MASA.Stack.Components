@@ -54,3 +54,24 @@ window.MasaStackComponents.waterFull = (containerSelector, selectors, columns = 
     const maxHeight = arr[arr.length - 1];
     return maxHeight.height;
 }
+
+window.MasaStackComponents.listenScroll = (selector, dotNet) => {
+    let last_known_scroll_position = 0;
+    let ticking = false;
+
+    let el = document.querySelector(selector);
+    console.log('el', el)
+    if (!el) return;
+
+    el.addEventListener("scroll", function (e) {
+        last_known_scroll_position = e.target.scrollTop;
+        if (!ticking) {
+            window.requestAnimationFrame(function () {
+                dotNet.invokeMethodAsync("ComputeActiveCategory", last_known_scroll_position)
+                ticking = false;
+            })
+
+            ticking = true;
+        }
+    })
+}

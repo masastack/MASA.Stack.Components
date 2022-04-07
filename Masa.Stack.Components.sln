@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasaWebApp", "tests\MasaWeb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Stack.Components", "src\Masa.Stack.Components\Masa.Stack.Components.csproj", "{DEE455D8-999F-426D-A5D4-D5EAF5E337B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Blazor", "..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj", "{2BE1B7C9-4010-4D81-BC47-BF1A28811745}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorComponent", "..\MASA.Blazor\src\BlazorComponent\src\Component\BlazorComponent\BlazorComponent.csproj", "{C641463B-2DD2-4459-A1FD-8854375B7837}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{DEE455D8-999F-426D-A5D4-D5EAF5E337B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEE455D8-999F-426D-A5D4-D5EAF5E337B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEE455D8-999F-426D-A5D4-D5EAF5E337B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BE1B7C9-4010-4D81-BC47-BF1A28811745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BE1B7C9-4010-4D81-BC47-BF1A28811745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BE1B7C9-4010-4D81-BC47-BF1A28811745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BE1B7C9-4010-4D81-BC47-BF1A28811745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C641463B-2DD2-4459-A1FD-8854375B7837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C641463B-2DD2-4459-A1FD-8854375B7837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C641463B-2DD2-4459-A1FD-8854375B7837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C641463B-2DD2-4459-A1FD-8854375B7837}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
