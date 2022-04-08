@@ -1,5 +1,4 @@
-﻿@using Masa.Stack.Components.Models
-@namespace Masa.Stack.Components.Layouts
+﻿@namespace Masa.Stack.Components.Layouts
 @inherits MasaComponentBase
 @implements IDisposable
 @inject GlobalConfig GlobalConfig
@@ -12,45 +11,24 @@
                    Width="300"
                    @bind-MiniVariant="GlobalConfig.Mini">
 
-    <div style="height:132px"
-         class="@($"block-center {(GlobalConfig.Mini ? "px-4" : "px-12")}")"
-         @onclick="@NavigateToDefaultRoute">
-        @if (GlobalConfig.Mini)
-        {
-            <img height="48" width="48" class="hover-pointer" src="@MiniLogo" alt="mini_log" />
-        }
-        else
-        {
-            <img class="hover-pointer" src="@Logo" alt="logo" />
-        }
-    </div>
-
-    <PDrawer Left Width="1260">
+    <GlobalNavigation>
         <ActivatorContent>
-            <MButton Block
-                     Class="mb-4"
-                     Color="red"
-                     Plain
-                     Icon="@GlobalConfig.Mini"
-                     @attributes="@context.Attrs">
+            <div style="height:132px"
+                 class="@($"block-center {(GlobalConfig.Mini ? "px-4" : "px-12")}")"
+                 @attributes="@context.Attrs">
                 @if (GlobalConfig.Mini)
                 {
-                    <MIcon>mdi-web</MIcon>
+                    <img height="48" width="48" class="hover-pointer" src="@MiniLogo" alt="mini_log" />
                 }
                 else
                 {
-                    <MIcon Left>mdi-web</MIcon>
-                    @T("GlobalNavigation")
+                    <img class="hover-pointer" src="@Logo" alt="logo" />
                 }
-            </MButton>
+            </div>
         </ActivatorContent>
-        <ChildContent>
-            <GlobalNavigation />
-        </ChildContent>
-    </PDrawer>
+    </GlobalNavigation>
 
     <MList Nav Linkage Dense Class="@($"pa-0 {(GlobalConfig.Mini ? "mini-navigation" : "")}")">
-
         @foreach (var nav in Items!)
         {
             if (nav.Children is null)
@@ -98,7 +76,9 @@
     </MList>
 </MNavigationDrawer>
 
-<MButton Small Fab Color="primary"
+<MButton Small 
+         Fab 
+         Color="primary"
          Style="@($"bottom:58px;z-index:7;position: fixed;{(GlobalConfig.Mini ? "left:60px;" : "left:280px;")}")"
          OnClick="() => GlobalConfig.ExpandOnHover = !GlobalConfig.ExpandOnHover">
     <MIcon Class="white--text">
@@ -113,7 +93,7 @@
 
     [EditorRequired]
     [Parameter]
-    public List<NavModel>? Items { get; set; }
+    public List<Nav>? Items { get; set; }
 
     [EditorRequired]
     [Parameter]
@@ -134,15 +114,7 @@
     {
         base.OnParametersSet();
 
-        Items ??= new List<NavModel>();
-    }
-
-    private void NavigateToDefaultRoute()
-    {
-        if (DefaultRoute is not null)
-        {
-            NavigationManager.NavigateTo(DefaultRoute);
-        }
+        Items ??= new List<Nav>();
     }
 
     public void Dispose()

@@ -11,6 +11,8 @@
   "UpdatePassword": "修改密码",
   "Logout": "退出登录",
   "GlobalNavigation": "全局导航",
+  "RecentVisits": "最近访问",
+  "Favorites": "快捷访问",
 
   "Counter": "计数",
   "Fetch data": "拉取数据",

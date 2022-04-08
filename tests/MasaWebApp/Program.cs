@@ -2,9 +2,9 @@ using Masa.Stack.Components;
 using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMasaBlazor(builder =>
+builder.Services.AddMasaBlazor(bd =>
 {
-    builder.UseTheme(option =>
+    bd.UseTheme(option =>
     {
         option.Primary = "#4318FF";
         option.Accent = "#4318FF";

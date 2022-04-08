@@ -2,14 +2,14 @@
 @namespace Masa.Stack.Components
 @inject GlobalConfig GlobalConfig
 
-<MApp>
+<MApp Class="masa-stack-components">
     <MAppBar App
              Class="@AppBarClass"
              Elevation="0"
              MaxHeight="60">
         <Favorites FlattenedNavs="FlattenedNavs" />
         <MSpacer />
-        <Search />
+        <SearchMenu />
         <Notification />
         <Settings />
         <Languages />
@@ -38,5 +38,5 @@
 </MApp>
 
 @code {
-    string AppBarClass => GlobalConfig.PageMode == PageModes.PageTabs ? "mx-6" : "rounded-b-4";
+    string AppBarClass => GlobalConfig.PageMode == PageModes.PageTabs ? "mx-6" : "mx-6 rounded-b-4";
 }
