@@ -55,23 +55,44 @@ window.MasaStackComponents.waterFull = (containerSelector, selectors, columns = 
     return maxHeight.height;
 }
 
-window.MasaStackComponents.listenScroll = (selector, dotNet) => {
-    let last_known_scroll_position = 0;
-    let ticking = false;
-
+window.MasaStackComponents.listenScroll = (selector, childSelectors, dotNet) => {
     let el = document.querySelector(selector);
-    console.log('el', el)
     if (!el) return;
 
-    el.addEventListener("scroll", function (e) {
-        last_known_scroll_position = e.target.scrollTop;
-        if (!ticking) {
-            window.requestAnimationFrame(function () {
-                dotNet.invokeMethodAsync("ComputeActiveCategory", last_known_scroll_position)
-                ticking = false;
-            })
+    const children = document.querySelectorAll(`${selector} ${childSelectors}`);
 
-            ticking = true;
+    let fn = debounce((position) => {
+        const elTop = el.offsetTop;
+
+        const childrenTops = []
+        for (const child of children) {
+            childrenTops.push(child.offsetTop)
         }
+
+        const computedChildrenTops = childrenTops.map(child => child - elTop - 8);
+
+        let index = computedChildrenTops.findIndex(child => child >= position);
+        
+        if (index === -1) {
+            index = computedChildrenTops.length - 1;
+        } else if (index > 0) {
+            index--;
+        }
+
+        dotNet.invokeMethodAsync("ComputeActiveCategory", index)
+    }, 100)
+
+    el.addEventListener("scroll", function (e) {
+        fn(e.target.scrollTop)
     })
+}
+
+function debounce(fn, wait) {
+    let timer = null;
+    return function (...args) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+            fn.apply(this, args)
+        }, wait)
+    }
 }

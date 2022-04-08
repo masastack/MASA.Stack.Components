@@ -21,12 +21,19 @@
 <div class="global-nav-content__side">
     <MNavigationDrawer Floating Right Width="256" Class="toc">
         <ul>
-            @foreach (var category in Categories)
+            @for (var i = 0; i < Categories.Count; i++)
             {
-                <li class="masa-text-2-2 pl-3 py-1"
+                var category = Categories[i];
+
+                <li class="masa-text-2-2 pl-3 py-2"
                     @onclick="@(() => ScrollTo(category.TagId(), ".global-nav-content__main"))">
-                    <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>
-                    @category.Name
+                    @if (i == _activeCategoryIndex)
+                    {
+                        <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>
+                    }
+                    <span>
+                        @category.Name
+                    </span>
                 </li>
             }
         </ul>
