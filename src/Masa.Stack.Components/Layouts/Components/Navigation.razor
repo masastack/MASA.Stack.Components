@@ -31,7 +31,7 @@
     <MList Nav Linkage Dense Class="@($"pa-0 {(GlobalConfig.Mini ? "mini-navigation" : "")}")">
         @foreach (var nav in Items!)
         {
-            if (nav.Children is null)
+            if (!nav.HasChildren)
             {
                 <MBorder Value=false Offset Width=4 Class="rounded-r-1" Border="Borders.Right">
                     <MListItem Ripple=false Class="mb-4" ActiveClass="fill-lighten-1" Href="@nav.Url">

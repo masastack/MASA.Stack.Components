@@ -7,7 +7,7 @@ public partial class Layout : IDisposable
     /// <summary>
     /// @Body
     /// </summary>
-    [Parameter, EditorRequired] 
+    [Parameter] 
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]

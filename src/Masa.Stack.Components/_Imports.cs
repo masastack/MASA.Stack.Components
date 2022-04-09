@@ -6,3 +6,4 @@ global using Microsoft.AspNetCore.Components;
 global using Microsoft.Extensions.DependencyInjection;
 global using Masa.Stack.Components.Models;
 global using Masa.Stack.Components.GlobalNavigations;
+global using Masa.Stack.Components.GlobalUsers;

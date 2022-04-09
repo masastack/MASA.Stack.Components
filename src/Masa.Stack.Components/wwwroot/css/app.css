@@ -199,6 +199,47 @@
     margin-left: 4px;
 }
 
+.masa-stack-components .clear-before-opacity:hover::before {
+    opacity: 0;
+}
+
+.masa-stack-components .clear-before-opacity::before {
+    opacity: 0;
+}
+
+.masa-stack-components .masa-icon-size-20 .m-icon {
+    font-size: 20px;
+}
+
+.masa-stack-components .user-info__left {
+    position: relative;
+    height: 100%;
+    width: 300px;
+    padding: 48px 24px;
+    box-shadow: inset -0.5px 0 0 #E2E7F4;
+    border-radius: 0;
+}
+.masa-stack-components .user-info__left .avatar { 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.masa-stack-components .user-info__left .auths {
+    position: absolute;
+    bottom: 48px;
+    height: 46px;
+    width: 252px;
+}
+
+.masa-stack-components .user-info__right {
+    height: 100%;
+    padding: 48px 24px;
+}
+
 .masa-stack-components .masa-text-highlight-2 {
     color: #323D6F !important;
     font-weight: 500 !important;
@@ -234,6 +275,12 @@
     font-weight: 500 !important;
 }
 
+.masa-stack-components .masa-text-1-2__title {
+    color: #323D6F !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
+
 .masa-stack-components .masa-text {
     color: #000000 !important;
     font-weight: 700 !important;
@@ -251,14 +298,6 @@
     border-radius: 8px;
 }
 
-.masa-stack-components .clear-before-opacity:hover::before {
-    opacity: 0;
-}
-
-.masa-stack-components .clear-before-opacity::before {
-    opacity: 0;
-}
-
-.masa-stack-components .masa-icon-size-20 .m-icon {
-    font-size: 20px;
+.masa-stack-components .br-5 {
+    border-radius: 20px;
 }
