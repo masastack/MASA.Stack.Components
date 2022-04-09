@@ -1,7 +1,7 @@
 ﻿using BlazorComponent;
 using Microsoft.JSInterop;
 
-namespace Masa.Stack.Components.GlobalNavigation;
+namespace Masa.Stack.Components;
 
 public partial class GlobalNavigation : MasaComponentBase
 {
