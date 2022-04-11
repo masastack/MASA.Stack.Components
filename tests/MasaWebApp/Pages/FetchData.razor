@@ -14,7 +14,7 @@
 }
 else
 {
-    <MDataTable Headers="_headers" Items="forecasts" ItemsPerPage="5" Class="elevation-1">
+    <MDataTable Headers="_headers" Items="forecasts" HideDefaultFooter ItemsPerPage="5" Class="elevation-1">
         <ItemColContent>
             @if (context.Header.Value == nameof(WeatherForecast.Date))
             {
@@ -25,6 +25,9 @@ else
                 @context.Value
             }
             </ItemColContent>
+            <FooterContent>
+                <SimpleDataTableFooter Class="mb-4 mt-2" Total="100" Page=1 PageSize=20 />
+            </FooterContent>
     </MDataTable>
 }
 
