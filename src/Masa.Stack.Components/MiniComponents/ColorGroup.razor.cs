@@ -38,4 +38,19 @@ public partial class ColorGroup
         }
         await base.OnAfterRenderAsync(firstRender);
     }
+
+    protected override void OnParametersSet()
+    {
+        if (Colors is null)
+        {
+            Colors = new();
+        }
+        base.OnParametersSet();
+    }
+
+    private async Task OnClickHandler(ItemContext context, string color)
+    {
+        await context.Toggle();
+        await ValueChanged.InvokeAsync(color);
+    }
 }

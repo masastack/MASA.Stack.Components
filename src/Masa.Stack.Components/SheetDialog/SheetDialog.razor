@@ -60,5 +60,15 @@
     [Parameter]
     public RenderFragment? HeaderContent { get; set; }
 
-    private async Task OnClose() => await ValueChanged.InvokeAsync(false);
+    private async Task OnClose()
+    {
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(false); 
+        }
+        else
+        {
+            Value = false;
+        }  
+    }
 }
