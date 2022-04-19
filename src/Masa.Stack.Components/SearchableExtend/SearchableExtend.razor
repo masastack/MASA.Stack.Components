@@ -3,13 +3,13 @@
 @if (Split)
 {
     <div class="@($"m-click-extend full-width {Class}")" Style="@($"max-width:{(MaxWidth.IsT0?$"{MaxWidth}":$"{MaxWidth}px")}; {Style}")">
-        <div Style="@childStyle" class="d-flex align-center full-width">
+        <div Style="@ChildStyle" class="d-flex align-center full-width">
             <MCard Class="m-click-extend-child flex-grow-1" Style="border-radius: 10px !important;">@ChildContent</MCard>
             <MCard Class="ml-4 m-click-extend-trigger" Style="border-radius: 10px !important;display: flex;flex-direction: row;justify-content: center;align-items: center;padding: 0px;width: 40px;min-width: 40px;height: 40px;">
                 <MIcon Size=24 OnClick="()=> { IsExpanded = true; }">@TriggerIcon</MIcon>
             </MCard>
         </div>
-        <MCard Style="@cardStyle" class="m-click-extend-item">
+        <MCard Style="@CardStyle" class="m-click-extend-item">
             <MTextField Autofocus @bind-Value="Value" OnBlur="OnBlurHandler" Outlined Dense Placeholder="search"
                     HideDetails=true PrependInnerIcon="mdi-magnify" OnKeyDown="OnKeyDownHandler">
             </MTextField>
@@ -19,7 +19,7 @@
 else
 {
     <MCard class="@($"m-click-extend full-width {Class}")" Style="@($"max-width:{(MaxWidth.IsT0?$"{MaxWidth}":$"{MaxWidth}px")}; {Style}")">
-        <div Style="@childStyle" class="d-flex align-center full-width">
+        <div Style="@ChildStyle" class="d-flex align-center full-width">
             <div Class="m-click-extend-child flex-grow-1">
                 @ChildContent
             </div>
@@ -27,7 +27,7 @@ else
                 <MIcon Size=24 OnClick="()=> { IsExpanded = true; }">@TriggerIcon</MIcon>
             </div>
         </div>
-        <div Style="@cardStyle" class="m-click-extend-item">
+        <div Style="@CardStyle" class="m-click-extend-item">
             <MTextField Autofocus @bind-Value="Value" OnBlur="OnBlurHandler" Outlined Dense Placeholder="search"
                     HideDetails=true PrependInnerIcon="mdi-magnify" OnKeyDown="OnKeyDownHandler">
             </MTextField>

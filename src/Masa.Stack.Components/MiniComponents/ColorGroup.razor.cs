@@ -31,6 +31,10 @@ public partial class ColorGroup
     {
         if (firstRender)
         {
+            if (Colors is null)
+            {
+                Colors = new();
+            }
             if (Colors.Any())
             {
                 await ValueChanged.InvokeAsync(Colors.First());

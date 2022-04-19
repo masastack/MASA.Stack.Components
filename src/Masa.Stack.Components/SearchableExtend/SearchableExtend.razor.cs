@@ -3,8 +3,12 @@
 public partial class SearchableExtend
 {
     string displayNone = "display:none !important;", displayFlex = "display:flex;";
-    string cardStyle => IsExpanded ? displayFlex : displayNone;
-    string childStyle => IsExpanded ? displayNone : displayFlex;
+
+    bool IsExpanded { get; set; }
+
+    string CardStyle => IsExpanded ? displayFlex : displayNone;
+
+    string ChildStyle => IsExpanded ? displayNone : displayFlex;
 
     [Parameter]
     public string? Class { get; set; }
@@ -35,8 +39,6 @@ public partial class SearchableExtend
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
-
-    public bool IsExpanded { get; set; }
 
     private async Task OnBlurHandler()
     {

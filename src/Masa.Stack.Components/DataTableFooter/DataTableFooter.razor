@@ -19,10 +19,10 @@
     <div class="d-flex justify-end align-center">
         @if (!HideTotal)
         {
-            <span class="mr-4">@string.Format(TotalStringFormat,Total)</span>
+                <span class="mr-4">@string.Format(TotalStringFormat, Total)</span>
         }
         <MIcon Size="24" OnClick="OnPrev" Disabled=!OnPrev.HasDelegate>@PrevIcon</MIcon>
-        <span class="mx-4">@((Page-1)*PageSize+1) - @(Page*PageSize) of @Total</span>
+        <span class="mx-4">@((Page-1) * PageSize + 1) - @(Page*PageSize) of @Total</span>
         <MIcon Size="24" OnClick="OnNext" Disabled=!OnNext.HasDelegate>@NexIcon</MIcon>
     </div>
 </div>
