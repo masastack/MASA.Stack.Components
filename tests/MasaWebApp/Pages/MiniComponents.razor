@@ -1,0 +1,19 @@
+﻿@page "/mini-components"
+
+<h3>GroupBox</h3>
+<GroupBox Title="GroupBox">
+    <MChip Small>
+        UI
+    </MChip>
+    <MChip Small>
+        UX
+    </MChip>
+</GroupBox>
+
+<h3>ColorGroup</h3>
+<ColorGroup @bind-Value="_color" Colors='_colors' />
+
+@code {
+    string _color = "";
+    List<string> _colors = new List<string> { "purple", "green", "yellow", "red", "blue" };
+}
