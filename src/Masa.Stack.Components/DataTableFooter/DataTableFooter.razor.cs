@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public partial class SimpleDataTableFooter
+public partial class DataTableFooter
 {
     [Parameter]
     public string? Class { get; set; }
@@ -9,7 +9,7 @@ public partial class SimpleDataTableFooter
     public string? Style { get; set; }
 
     [Parameter]
-    public bool TotalShow { get; set; }
+    public bool HideTotal { get; set; }
 
     [Parameter]
     public List<int> PageSizes { get; set; } = new List<int> { 10, 20, 30 };
@@ -33,22 +33,17 @@ public partial class SimpleDataTableFooter
     public string TotalStringFormat { get; set; } = "总计：{0}";
 
     [Parameter]
-    public string PreIcon { get; set; } = "mdi-chevron-left";
+    public string PrevIcon { get; set; } = "mdi-chevron-left";
 
     [Parameter]
     public string NexIcon { get; set; } = "mdi-chevron-right";
 
     [Parameter]
-    public EventCallback<int> OnSelectedPageSize { get; set; }
+    public EventCallback<int> OnPageSzieChanged { get; set; }
 
     [Parameter]
     public EventCallback OnNext { get; set; }
 
     [Parameter]
-    public EventCallback OnPrevious { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-    }
+    public EventCallback OnPrev { get; set; }
 }

@@ -31,11 +31,21 @@ public partial class ColorGroup
     {
         if (firstRender)
         {
+            if (Colors is null)
+            {
+                Colors = new();
+            }
             if (Colors.Any())
             {
                 await ValueChanged.InvokeAsync(Colors.First());
             }
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task OnClickHandler(ItemContext context, string color)
+    {
+        await context.Toggle();
+        await ValueChanged.InvokeAsync(color);
     }
 }
