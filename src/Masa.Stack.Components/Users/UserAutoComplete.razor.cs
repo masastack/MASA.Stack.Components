@@ -22,7 +22,7 @@ public partial class UserAutoComplete
     [Parameter]
     public string Style { get; set; } = "";
 
-    public List<UserSelect> UserSelect { get; set; } = new();
+    public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
 
@@ -43,7 +43,7 @@ public partial class UserAutoComplete
         }
         else if (Search == search)
         {
-            var response = await AutoCompleteClient.GetAsync<UserSelect, Guid>(search, new AutoCompleteOptions
+            var response = await AutoCompleteClient.GetAsync<UserSelectModel, Guid>(search, new AutoCompleteOptions
             {
                 Page = Page,
                 PageSize = PageSize,
@@ -52,7 +52,7 @@ public partial class UserAutoComplete
         }
     }
 
-    public string TextView(UserSelect user)
+    public string TextView(UserSelectModel user)
     {
         if (string.IsNullOrEmpty(user.Name) is false) return user.Name;
         if (string.IsNullOrEmpty(user.Account) is false) return user.Account;
