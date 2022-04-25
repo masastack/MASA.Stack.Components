@@ -50,8 +50,7 @@
 }
 
 .masa-stack-components .global-nav .global-nav-content__main {
-    width: calc(100% - 308px);
-    min-width: 1272px;
+    width: calc(100% - 256px);
     overflow: auto;
     height: calc(100vh - 158px);
     padding-right: 16px;

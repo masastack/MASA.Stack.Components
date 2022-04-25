@@ -18,8 +18,7 @@
                       Multiple
                       Class="apps"
                       Style="@Category.TagStyle"
-                      Values="@Category.BindValues"
-                      ValuesChanged="ValuesChanged">
+                      @bind-Values="@Category.BindValues">
         @foreach (var app in Category.Apps)
         {
             @ChildContent?.Invoke(app)

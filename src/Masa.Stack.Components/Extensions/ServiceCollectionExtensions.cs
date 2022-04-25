@@ -6,6 +6,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddMasaI18nForServer(i18nDirectoryPath);
 
+        services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
 
         return services;
@@ -15,6 +16,7 @@ public static class ServiceCollectionExtensions
     {
         _ = services.AddMasaI18nForWasmAsync(i18nDirectoryPath);
 
+        services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
 
         return services;

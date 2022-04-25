@@ -36,6 +36,7 @@ window.MasaStackComponents.waterFull = (containerSelector, selectors, columns = 
         if (width === 0) width = item.clientWidth;
 
         if (index < columns) {
+            item.style['position'] = 'absolute';
             item.style['top'] = "0px";
             const left = width * index;
             item.style['left'] = `${left}px`;
@@ -43,6 +44,7 @@ window.MasaStackComponents.waterFull = (containerSelector, selectors, columns = 
         } else {
             arr.sort((x, y) => x.height - y.height);
             const res = arr[0];
+            item.style['position'] = 'absolute';
             item.style['top'] = `${res.height}px`;
             item.style['left'] = `${res.left}px`;
             res.height = res.height + item.clientHeight;
@@ -72,7 +74,7 @@ window.MasaStackComponents.listenScroll = (selector, childSelectors, dotNet) => 
         const computedChildrenTops = childrenTops.map(child => child - elTop - 8);
 
         let index = computedChildrenTops.findIndex(child => child >= position);
-        
+
         if (index === -1) {
             index = computedChildrenTops.length - 1;
         } else if (index > 0) {
@@ -85,6 +87,13 @@ window.MasaStackComponents.listenScroll = (selector, childSelectors, dotNet) => 
     el.addEventListener("scroll", function (e) {
         fn(e.target.scrollTop)
     })
+}
+
+window.MasaStackComponents.resizeObserver = (selector, invoker) => {
+    const resizeObserver = new ResizeObserver((entries => {
+        invoker.invokeMethodAsync('Invoke');
+    }));
+    resizeObserver.observe(document.querySelector(selector));
 }
 
 function debounce(fn, wait) {
