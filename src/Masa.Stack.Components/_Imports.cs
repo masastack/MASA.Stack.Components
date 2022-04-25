@@ -6,3 +6,5 @@ global using Masa.Stack.Components.Models;
 global using Microsoft.AspNetCore.Components;
 global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.Extensions.DependencyInjection;
+global using Masa.BuildingBlocks.SearchEngine.AutoComplete;
+global using Masa.BuildingBlocks.SearchEngine.AutoComplete.Options;

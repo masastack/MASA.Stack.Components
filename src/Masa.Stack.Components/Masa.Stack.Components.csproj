@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,5 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="Masa.Blazor" Version="0.4.0-preview.1" />
+    <PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.4.0-preview.4" />
   </ItemGroup>
 </Project>

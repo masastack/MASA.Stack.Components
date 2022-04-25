@@ -1,0 +1,17 @@
+﻿@page "/useUserAutoComplete"
+
+<MCard>
+    <MCardText>
+        <UserAutoComplete @bind-Value="UserId" />
+    </MCardText>
+</MCard>
+
+
+@code {
+    Guid UserId;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+    }
+}

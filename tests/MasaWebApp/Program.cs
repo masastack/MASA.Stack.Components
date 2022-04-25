@@ -1,4 +1,6 @@
+using Masa.Contrib.SearchEngine.AutoComplete;
 using Masa.Stack.Components;
+using Masa.Utils.Data.Elasticsearch;
 using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,9 @@ builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n");
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddElasticsearchClient("auth", option => option.UseNodes("http://10.10.90.44:31920/").UseDefault())
+                .AddAutoComplete(option => option.UseIndexName("user_index"));
 
 var app = builder.Build();
 
