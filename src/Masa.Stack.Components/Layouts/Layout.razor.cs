@@ -75,7 +75,8 @@ public partial class Layout : IDisposable
                 new Nav("dialog", "dialog", "mdi-numeric-1-box-outline", "/dialog", 2, "father"),
                 new Nav("tab", "tab", "mdi-numeric-1-box-outline", "/tab", 2, "father"),
                 new Nav("mini", "mini", "mdi-numeric-1-box-outline", "/mini-components", 2, "father"),
-                new Nav("extend", "extend", "mdi-numeric-1-box-outline", "/extend", 2, "father")
+                new Nav("extend", "extend", "mdi-numeric-1-box-outline", "/extend", 2, "father"),
+                new Nav("UseUserAutoComplete","UseUserAutoComplete","mdi-numeric-1-box-outline", "/useUserAutoComplete", 2, "father")
             }),
         };
     }

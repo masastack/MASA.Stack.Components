@@ -175,11 +175,11 @@
     /* BUTTON-按钮 */
     font-family: Roboto !important;
     font-style: normal !important;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
     font-size: 0.875rem !important;
-    line-height: 1rem !important;
+    line-height: 1.25rem !important;
     /* default color */
-    color: #323D6F !important;
+    color: #A3AED0 !important;
 }
 
 .text-caption {
@@ -197,11 +197,11 @@
     /* OVERLINE-眉题 */
     font-family: Roboto !important;
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 400 !important;
     font-size: 0.625rem !important;
     line-height: 0.75rem !important;
     /* identical to box height */
-    letter-spacing: 0.09375rem !important;
+    letter-spacing: 0.09375rem !important;    
     /* default color */
     color: #A3AED0;
 }
