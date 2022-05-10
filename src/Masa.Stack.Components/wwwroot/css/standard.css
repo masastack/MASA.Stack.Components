@@ -1,0 +1,212 @@
+﻿.masa .primary {
+    background-color: #4318FF;
+}
+
+.masa .primary-hover {
+    background-color: #6956FF;
+}
+
+.masa .primary-clicked {
+    background-color: #3613CC;
+}
+
+.masa .primary-disabled {
+    background-color: #A18BFF;
+}
+
+.masa .primary-special {
+    background-color: #D9D1FF;
+}
+
+.masa .primary-lighten {
+    background-color: #ECE8FF;
+}
+
+.masa .fill {
+    background-color: #FFFFFF;
+}
+
+.masa .fill-lighten {
+    background-color: #FAFBFE;
+}
+
+.masa .fill-hover {
+    background-color: #F6F8FD;
+}
+
+.masa .fill-background {
+    background-color: #F0F3FA;
+}
+
+.masa .fill-disabled {
+    background-color: #E9EDF7;
+}
+
+.masa .fill-line {
+    background-color: #E2E7F4;
+}
+
+.masa .fill-overlay {
+    background-color: #141726;
+}
+
+/*
+    color of text
+*/
+
+.masa .primary--text {
+    color: #4318FF;
+}
+
+.masa .primary--text-hover {
+    color: #6956FF;
+}
+
+.masa .primary--text-clicked {
+    color: #3613CC;
+}
+
+.masa .primary--text-disabled {
+    color: #A18BFF;
+}
+
+.masa .primary--text-special {
+    color: #D9D1FF;
+}
+
+.masa .primary--text-lighten {
+    color: #ECE8FF;
+}
+
+.masa .neutral-text-hell {
+    color: #000000;
+}
+
+.masa .neutral-text-emphasis {
+    color: #1B2559;
+}
+
+.masa .neutral-text-emphasis-secondary {
+    color: #323D6F;
+}
+
+.masa .neutral-text-regular {
+    color: #485585;
+}
+
+.masa .neutral-text-regular-secondary {
+    color: #7671AB;
+}
+
+.masa .neutral-text-secondary {
+    color: #A3AED0;
+}
+
+/*
+    font
+*/
+
+.masa .font-10 {
+    font-family: Roboto;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.masa .font-12 {
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.masa .font-14 {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.masa .font-14-medium {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+}
+
+.masa .font-14-bold {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+}
+
+.masa .font-16 {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16px;
+}
+
+.masa .font-16-medium {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px;
+}
+
+.masa .font-16-bold {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 28px;
+}
+
+.masa .font-18 {
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.masa .font-18-medium {
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 27px;
+}
+
+.masa .font-20-bold {
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+}
+
+.masa .font-24-bold {
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 36px;
+}
+
+.masa .font-34-bold {
+    font-family: Roboto;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 42px;
+}
+
+.masa .font-48-bold {
+    font-family: Roboto;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 56px;
+}
+
+.masa .font-60-bold {
+    font-family: Roboto;
+    font-size: 60px;
+    font-weight: 900;
+    line-height: 70px;
+}

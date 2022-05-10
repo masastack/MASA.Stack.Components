@@ -1,4 +1,6 @@
-﻿.masa-stack-components .global-nav {
+﻿@import url(standard.css);
+
+.masa-stack-components .global-nav {
     display: flex;
     height: 100vh;
 }
@@ -231,9 +233,13 @@
 .masa-stack-components .user-info__left .auths {
     position: absolute;
     bottom: 48px;
-    height: 46px;
     width: 252px;
+    padding: 0 8px;
 }
+
+    .masa-stack-components .user-info__left .auths > div:not(:last-child) {
+        margin-bottom: 16px;
+    }
 
 .masa-stack-components .user-info__right {
     height: 100%;
