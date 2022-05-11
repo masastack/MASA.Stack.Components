@@ -1,0 +1,72 @@
+﻿@namespace Masa.Stack.Components
+
+<MButtonGroup Value="_selectedValue" Borderless ValueChanged="ValueChanged" Mandatory Class="elevation-tab" ActiveClass="primary--text">
+    <div class="labeled-radio-slider-wrapper" style="height:100%;@_currentBtnWidthStyle;@_sliderLeftStyle">
+        <div class="labeled-radio-slider white" style="opacity: .5"></div>
+    </div>
+    <MButton Text @ref="btn1">Button 1</MButton>
+    <MButton Text @ref="btn2">Button 2</MButton>
+</MButtonGroup>
+
+<style>
+  .labeled-radio-slider-wrapper {
+      bottom: 0;
+      margin: 0 !important;
+      position: absolute;
+      transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+      /*z-index: 1;*/
+  }
+  
+  .labeled-radio-slider {
+      height: 100%;
+      width: 100%;
+  }
+</style>
+
+@code {
+
+    private StringNumber? _selectedValue;
+
+    private MButton btn1;
+    private MButton btn2;
+
+    private double _sliderLeft;
+    private string _sliderLeftStyle => $"left:{_sliderLeft}px";
+
+    private double _currentBtnWidth;
+    private string _currentBtnWidthStyle => $"width:{_currentBtnWidth}px";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (_selectedValue is null)
+            {
+                await ValueChanged(0);
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task ValueChanged(StringNumber val)
+    {
+        // TODO: height:100% incorrect
+        
+        var btn1Width = 88.56;
+        var btn2Width = 88.56;
+
+        if (btn1.Value == val)
+        {
+            _sliderLeft = 0;
+            _currentBtnWidth = btn1Width;
+        }
+        else if (btn2.Value == val)
+        {
+            _sliderLeft = btn1Width;
+            _currentBtnWidth = btn2Width;
+        }
+
+        _selectedValue = val;
+    }
+
+}
