@@ -1,53 +1,53 @@
 ﻿.masa .primary {
-    background-color: #4318FF;
+    background-color: #4318FF !important;
 }
 
 .masa .primary-hover {
-    background-color: #6956FF;
+    background-color: #6956FF !important;
 }
 
 .masa .primary-clicked {
-    background-color: #3613CC;
+    background-color: #3613CC !important;
 }
 
 .masa .primary-disabled {
-    background-color: #A18BFF;
+    background-color: #A18BFF !important;
 }
 
 .masa .primary-special {
-    background-color: #D9D1FF;
+    background-color: #D9D1FF !important;
 }
 
 .masa .primary-lighten {
-    background-color: #ECE8FF;
+    background-color: #ECE8FF !important;
 }
 
 .masa .fill {
-    background-color: #FFFFFF;
+    background-color: #FFFFFF !important;
 }
 
 .masa .fill-lighten {
-    background-color: #FAFBFE;
+    background-color: #FAFBFE !important;
 }
 
 .masa .fill-hover {
-    background-color: #F6F8FD;
+    background-color: #F6F8FD !important;
 }
 
 .masa .fill-background {
-    background-color: #F0F3FA;
+    background-color: #F0F3FA !important;
 }
 
 .masa .fill-disabled {
-    background-color: #E9EDF7;
+    background-color: #E9EDF7 !important;
 }
 
 .masa .fill-line {
-    background-color: #E2E7F4;
+    background-color: #E2E7F4 !important;
 }
 
 .masa .fill-overlay {
-    background-color: #141726;
+    background-color: #141726 !important;
 }
 
 /*
@@ -55,51 +55,80 @@
 */
 
 .masa .primary--text {
-    color: #4318FF;
+    color: #4318FF !important;
 }
 
 .masa .primary--text-hover {
-    color: #6956FF;
+    color: #6956FF !important;
 }
 
 .masa .primary--text-clicked {
-    color: #3613CC;
+    color: #3613CC !important;
 }
 
 .masa .primary--text-disabled {
-    color: #A18BFF;
+    color: #A18BFF !important;
 }
 
 .masa .primary--text-special {
-    color: #D9D1FF;
+    color: #D9D1FF !important;
 }
 
 .masa .primary--text-lighten {
-    color: #ECE8FF;
+    color: #ECE8FF !important;
+}
+
+
+.masa .fill--text {
+    color: #FFFFFF !important;
+}
+
+.masa .fill--text-lighten {
+    color: #FAFBFE !important;
+}
+
+.masa .fill--text-hover {
+    color: #F6F8FD !important;
+}
+
+.masa .fill--text-background {
+    color: #F0F3FA !important;
+}
+
+.masa .fill--text-disabled {
+    color: #E9EDF7 !important;
+}
+
+.masa .fill--text-line {
+    color: #E2E7F4 !important;
+}
+
+.masa .fill--text-overlay {
+    color: #141726 !important;
 }
 
 .masa .neutral-text-hell {
-    color: #000000;
+    color: #000000 !important;
 }
 
 .masa .neutral-text-emphasis {
-    color: #1B2559;
+    color: #1B2559 !important;
 }
 
 .masa .neutral-text-emphasis-secondary {
-    color: #323D6F;
+    color: #323D6F !important;
 }
 
 .masa .neutral-text-regular {
-    color: #485585;
+    color: #485585 !important;
 }
 
 .masa .neutral-text-regular-secondary {
-    color: #7671AB;
+    color: #7671AB !important;
 }
 
 .masa .neutral-text-secondary {
-    color: #A3AED0;
+    color: #A3AED0 !important;
 }
 
 /*
@@ -110,103 +139,94 @@
     font-family: Roboto;
     font-size: 10px;
     font-weight: 400;
-    line-height: 20px;
 }
 
 .masa .font-12 {
     font-family: Roboto;
     font-size: 12px;
     font-weight: 400;
-    line-height: 20px;
+}
+
+.masa .font-12-medium {
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .masa .font-14 {
     font-family: Roboto;
     font-size: 14px;
     font-weight: 400;
-    line-height: 20px;
 }
 
 .masa .font-14-medium {
     font-family: Roboto;
     font-size: 14px;
     font-weight: 500;
-    line-height: 21px;
 }
 
 .masa .font-14-bold {
     font-family: Roboto;
     font-size: 14px;
     font-weight: 700;
-    line-height: 21px;
 }
 
 .masa .font-16 {
     font-family: Roboto;
     font-size: 14px;
     font-weight: 700;
-    line-height: 16px;
 }
 
 .masa .font-16-medium {
     font-family: Roboto;
     font-size: 16px;
     font-weight: 500;
-    line-height: 28px;
 }
 
 .masa .font-16-bold {
     font-family: Roboto;
     font-size: 16px;
     font-weight: 700;
-    line-height: 28px;
 }
 
 .masa .font-18 {
     font-family: Roboto;
     font-size: 18px;
     font-weight: 400;
-    line-height: 20px;
 }
 
 .masa .font-18-medium {
     font-family: Roboto;
     font-size: 18px;
     font-weight: 500;
-    line-height: 27px;
 }
 
 .masa .font-20-bold {
     font-family: Roboto;
     font-size: 20px;
     font-weight: 700;
-    line-height: 30px;
 }
 
 .masa .font-24-bold {
     font-family: Roboto;
     font-size: 24px;
     font-weight: 700;
-    line-height: 36px;
 }
 
 .masa .font-34-bold {
     font-family: Roboto;
     font-size: 34px;
     font-weight: 700;
-    line-height: 42px;
 }
 
 .masa .font-48-bold {
     font-family: Roboto;
     font-size: 48px;
     font-weight: 900;
-    line-height: 56px;
 }
 
 .masa .font-60-bold {
     font-family: Roboto;
     font-size: 60px;
     font-weight: 900;
-    line-height: 70px;
 }

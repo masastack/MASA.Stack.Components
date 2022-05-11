@@ -8,5 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="Masa.Blazor" Version="0.2.12265" />
+    <PackageReference Include="MASA.Blazor.Experimental.Components" Version="0.2.5" />
   </ItemGroup>
 </Project>

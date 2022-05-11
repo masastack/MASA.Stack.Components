@@ -1,11 +1,18 @@
 ﻿@namespace Masa.Stack.Components
 
-<MRow Style="height: calc(100vh - 124px); overflow-y:hidden;">
-    <MCol Cols="8">
-        <UserInfo></UserInfo>
+<MRow Style="height: calc(100vh - 132px);">
+    <MCol Cols="8" Class="pr-6">
+        <UserInfo User="User"></UserInfo>
     </MCol>
     <MCol Cols="4">
         <Timeline></Timeline>
         <Team></Team>
     </MCol>
 </MRow>
+
+@code {
+
+    [Parameter]
+    public User? User { get; set; }
+
+}

@@ -1,6 +1,41 @@
 ﻿@page "/"
-@using Masa.Stack.Components
+@using Masa.Stack.Components.Models
 
 <PageTitle>Index</PageTitle>
 
-<GlobalUser></GlobalUser>
+<GlobalUser User="AuthedUser"></GlobalUser>
+
+@code {
+
+    private User? AuthedUser { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            AuthedUser = new User()
+            {
+                DisplayName = "JUDY",
+                Name = "朱迪",
+                Account = "xie1wei2zhu3di",
+                Avatar = "https://cdn.masastack.com/stack/images/website/masa-blazor/marcus1.png",
+                Gender = 0,
+                JobNumber = "1214215525",
+                Email = "1356278967@qq.com",
+                Position = "UX",
+                PhoneNumber = "1856278967",
+                Teams = new string[] { "Masa项目团队", "产品设计团队", "IOT研发团队" },
+                CompanyName = "杭州会话科技有限公司",
+                Region = "中国",
+                Address = "浙江省/杭州市/拱墅区/新加坡科技园",
+                Department = "Masa 事业群/IT研发中心/产品设计部",
+                JoinedAt = new DateTime(2021, 9, 24)
+            };
+
+            StateHasChanged();
+        }
+    }
+
+}

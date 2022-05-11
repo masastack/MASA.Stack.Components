@@ -1,28 +1,146 @@
-﻿<MCard Class="user-info full-height br-5">
+﻿@using Action = System.Action
+<MCard Class="user-info br-5">
     <div class="user-info__left">
         <div class="avatar">
             <MAvatar Size="140" Class="mb-6">
-                <MImage Src="https://cdn.masastack.com/stack/images/website/masa-blazor/marcus1.png"
-                        Alt="avatar">
-                </MImage>
+                @if (string.IsNullOrWhiteSpace(User?.Avatar))
+                {
+                    // TODO: default avatar when user.avatar is empty
+                }
+                else
+                {
+                    <MImage Src="@User?.Avatar" alt="avatar" />
+                }
             </MAvatar>
-            <PBlockText Primary="朱迪"
+            <PBlockText Primary="@User?.DisplayName"
                         PrimaryClass="masa-text-1-2__title"
-                        Secondary="xie1wei2zhu32di"
-                        SecondaryClass="masa-text-3-1">
+                        Secondary="@User?.Account"
+                        SecondaryClass="neutral-text-secondary font-14">
             </PBlockText>
         </div>
         <div class="auths">
-            <MDivider><span class="neutral-text-secondary font-12" style="font-size:12px">授权与认证</span></MDivider>
-            <div class="d-flex" style="justify-content: space-around">
-                <MIcon Size="20" Class="masa-text-1-2">mdi-qqchat</MIcon>
-                <MIcon Size="20" Class="masa-text-1-2">mdi-wechat</MIcon>
-                <MIcon Size="20" Class="masa-text-1-2">mdi-cellphone</MIcon>
-                <MIcon Size="20" Class="masa-text-3-1">mdi-email</MIcon>
+            <MDivider>
+                <span class="neutral-text-secondary font-12">授权与认证</span>
+            </MDivider>
+            <div class="d-flex" style="justify-content: space-around; flex-wrap: wrap;">
+                <AuthIcon OnClick="() => _idCardAuthVisible = true">mdi-card-account-details-outline</AuthIcon>
+                <AuthIcon>mdi-cellphone</AuthIcon>
+                <AuthIcon>mdi-wechat</AuthIcon>
+                <AuthIcon>mdi-email</AuthIcon>
             </div>
         </div>
     </div>
+
+    <MDivider Vertical Class="mx-6"></MDivider>
+
     <div class="user-info__right">
-        <div class=""></div>
+        <MWindow Value="_editKey">
+            <MWindowItem>
+                <div class="d-flex mb-12" style="justify-content: space-between;">
+                    <PBlockText Primary="@User?.Name"
+                                PrimaryClass="font-20-bold neutral-text-regular"
+                                SecondaryClass="font-12-medium neutral-text-secondary d-flex"
+                                SecondaryStyle="align-items:center;">
+                        <SecondaryContent>
+                            @User?.GenderText
+                            @if (!string.IsNullOrWhiteSpace(User?.GenderText) && !string.IsNullOrWhiteSpace(User?.JobNumber))
+                            {
+                                <MDivider Vertical Class="mx-1" Height="10"></MDivider>
+                            }
+                            @User?.JobNumber
+                        </SecondaryContent>
+                    </PBlockText>
+                    <MButton Icon Small OnClick="() => _editKey = 1">
+                        <MIcon Size="15" Class="neutral-text-regular">mdi-pencil</MIcon>
+                    </MButton>
+                </div>
+                <Definitions Items="@Items"
+                             Colon=""
+                             Cols="12"
+                             Sm="12"
+                             Md="12"
+                             NoGutters
+                             ItemClass="@(_ => "mb-12")"
+                             ItemStyle="@(_ => "justify-content: space-between;")"
+                             TermClass="@(_ => "font-14 neutral-text-regular")"
+                             DetailClass="@(_ => "font-12 neutral-text-secondary")">
+                    <TermContent>
+                        @{
+                            var term = (ValueTuple<string, string>)context.Value;
+                            <MIcon Size="13" Class="neutral-text-secondary mr-2">@term.Item1</MIcon>
+                            <span>@term.Item2</span>
+                        }
+                    </TermContent>
+                    <DetailContent>@context.Key</DetailContent>
+                </Definitions>
+            </MWindowItem>
+            <MWindowItem>
+                <MButton OnClick="() => _editKey = 0">Test</MButton>
+            </MWindowItem>
+        </MWindow>
     </div>
 </MCard>
+
+<PModal @bind-Value="_idCardAuthVisible"
+        Title="实名认证"
+        FormModel="IdentityCardAuth"
+        Persistent
+        Width="700"
+        OnSave="HandleOnIdCardAuthSave">
+    <MRow>
+        <MCol Cols="12">
+            <DefaultTextfield @bind-Value="@IdentityCardAuth.Name"
+                              Label="真实姓名">
+            </DefaultTextfield>
+        </MCol>
+        <MCol Cols="12">
+            <DefaultTextfield @bind-Value="@IdentityCardAuth.Number"
+                              Label="身份证号码">
+            </DefaultTextfield>
+        </MCol>
+        <MCol Cols="12"></MCol>
+        <MCol Cols="12"></MCol>
+    </MRow>
+</PModal>
+
+@code {
+
+    [Parameter]
+    public User? User { get; set; }
+
+    private bool _idCardAuthVisible;
+    private User? _prevUser = null;
+    private StringNumber _editKey = 0;
+
+    private IdentityCardAuthentication IdentityCardAuth { get; set; } = new();
+    private Dictionary<string, object?>? Items { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (_prevUser != User)
+        {
+            UpdateDefinitionsItems();
+        }
+    }
+
+    private void UpdateDefinitionsItems()
+    {
+        Items = new Dictionary<string, object?>()
+        {
+            ["邮箱"] = ("mdi-email", User?.Email),
+            ["职位"] = ("mdi-briefcase", User?.Position),
+            ["手机号"] = ("mdi-phone", User?.PhoneNumber),
+            ["团队"] = ("mdi-account-supervisor", string.Join(" ", User?.Teams ?? Enumerable.Empty<string>())),
+            ["公司"] = ("mdi-office-building", User?.CompanyName),
+            ["国家或地区"] = ("mdi-earth", User?.Region),
+            ["地址"] = ("mdi-map-marker", User?.Address),
+            ["组织"] = ("mdi-file-tree", User?.Department),
+            ["入职时间"] = ("mdi-clock-outline", User?.JoinedAt?.ToString("yyyy-MM-dd")),
+        };
+    }
+
+    private async Task HandleOnIdCardAuthSave()
+    {
+    }
+
+}

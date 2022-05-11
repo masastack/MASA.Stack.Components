@@ -1,5 +1,9 @@
 ﻿@import url(standard.css);
 
+body, .masa-stack-components {
+    background-color: #F0F3FA !important;
+}
+
 .masa-stack-components .global-nav {
     display: flex;
     height: 100vh;
@@ -213,13 +217,17 @@
     font-size: 20px;
 }
 
+.masa-stack-components .user-info {
+    display: flex;
+    height: 100%;
+    padding: 24px;
+}
+
 .masa-stack-components .user-info__left {
     position: relative;
     height: 100%;
     width: 300px;
-    padding: 48px 24px;
-    box-shadow: inset -0.5px 0 0 #E2E7F4;
-    border-radius: 0;
+    min-width: 300px;
 }
 .masa-stack-components .user-info__left .avatar { 
     height: 100%;
@@ -232,9 +240,8 @@
 
 .masa-stack-components .user-info__left .auths {
     position: absolute;
-    bottom: 48px;
-    width: 252px;
-    padding: 0 8px;
+    bottom: 24px;
+    width: 100%
 }
 
     .masa-stack-components .user-info__left .auths > div:not(:last-child) {
@@ -243,7 +250,7 @@
 
 .masa-stack-components .user-info__right {
     height: 100%;
-    padding: 48px 24px;
+    margin-top: 24px;
 }
 
 .masa-stack-components .masa-text-highlight-2 {
