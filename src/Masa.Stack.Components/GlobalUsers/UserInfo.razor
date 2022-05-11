@@ -34,7 +34,7 @@
     <MDivider Vertical Class="mx-6"></MDivider>
 
     <div class="user-info__right">
-        <MWindow Value="_editKey">
+        <MWindow Value="_windowValue">
             <MWindowItem>
                 <div class="d-flex mb-12" style="justify-content: space-between;">
                     <PBlockText Primary="@User?.Name"
@@ -50,7 +50,7 @@
                             @User?.JobNumber
                         </SecondaryContent>
                     </PBlockText>
-                    <MButton Icon Small OnClick="() => _editKey = 1">
+                    <MButton Icon Small OnClick="() => _windowValue = 1">
                         <MIcon Size="15" Class="neutral-text-regular">mdi-pencil</MIcon>
                     </MButton>
                 </div>
@@ -75,7 +75,7 @@
                 </Definitions>
             </MWindowItem>
             <MWindowItem>
-                <MButton OnClick="() => _editKey = 0">Test</MButton>
+                <MButton OnClick="() => _windowValue = 0">Test</MButton>
             </MWindowItem>
         </MWindow>
     </div>
@@ -110,7 +110,7 @@
 
     private bool _idCardAuthVisible;
     private User? _prevUser = null;
-    private StringNumber _editKey = 0;
+    private StringNumber _windowValue = 0;
 
     private IdentityCardAuthentication IdentityCardAuth { get; set; } = new();
     private Dictionary<string, object?>? Items { get; set; }

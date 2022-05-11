@@ -1,0 +1,15 @@
+﻿@page "/dialog"
+
+<h3>SheetDialog</h3>
+
+<MButton OnClick="() => _sheetDialog = true">Open</MButton>
+
+<SheetDialog Title="Sheet Dialog" ContentClass="pa-12" Value=_sheetDialog>
+    <span>
+        SheetDialog Opened
+    </span>
+</SheetDialog>
+
+@code {
+    bool _sheetDialog = false;
+}

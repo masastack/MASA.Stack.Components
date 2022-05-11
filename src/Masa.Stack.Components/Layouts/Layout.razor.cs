@@ -7,7 +7,7 @@ public partial class Layout : IDisposable
     /// <summary>
     /// @Body
     /// </summary>
-    [Parameter] 
+    [Parameter, EditorRequired]
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]
@@ -73,7 +73,12 @@ public partial class Layout : IDisposable
             new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
             new Nav("father", "Father", "mdi-numeric-0-box-outline", 1, new List<Nav>
             {
-                new Nav("children", "ChildOne", "mdi-numeric-1-box-outline", "/has-children", 2, "father")
+                new Nav("children", "ChildOne", "mdi-numeric-1-box-outline", "/has-children", 2, "father"),
+                new Nav("dialog", "dialog", "mdi-numeric-1-box-outline", "/dialog", 2, "father"),
+                new Nav("tab", "tab", "mdi-numeric-1-box-outline", "/tab", 2, "father"),
+                new Nav("mini", "mini", "mdi-numeric-1-box-outline", "/mini-components", 2, "father"),
+                new Nav("extend", "extend", "mdi-numeric-1-box-outline", "/extend", 2, "father"),
+                new Nav("UseUserAutoComplete","UseUserAutoComplete","mdi-numeric-1-box-outline", "/useUserAutoComplete", 2, "father")
             }),
         };
     }

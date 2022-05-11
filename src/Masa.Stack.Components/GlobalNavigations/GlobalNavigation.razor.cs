@@ -45,7 +45,7 @@ public partial class GlobalNavigation : MasaComponentBase
                         new Nav("permission", "Permissions", "/permissions", 2),
                     })
                 }),
-                new App("pm", "Project Management 项目管理", new List<Nav>()
+                new App("pm", "Project Management", new List<Nav>()
                 {
                     new Nav("all", "All views", "/all-view", 1),
                     new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()
@@ -66,7 +66,7 @@ public partial class GlobalNavigation : MasaComponentBase
                         new Nav("permission", "Permissions", "/permissions", 2),
                     })
                 }),
-                new App("pm2", "Project Management 项目管理", new List<Nav>()
+                new App("pm2", "Project Management", new List<Nav>()
                 {
                     new Nav("all", "All views", "/all-view", 1),
                     new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()
@@ -80,7 +80,7 @@ public partial class GlobalNavigation : MasaComponentBase
                         new Nav("group-7", "Group Name 7", "/group/7", 2),
                     })
                 }),
-                new App("pm3", "Project Management 项目管理", new List<Nav>()
+                new App("pm3", "Project Management", new List<Nav>()
                 {
                     new Nav("all", "All views", "/all-view", 1),
                     new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()
@@ -103,7 +103,7 @@ public partial class GlobalNavigation : MasaComponentBase
                         new Nav("bing", "Bing", "https://www.bing.com", 2),
                     })
                 }),
-                new App("pm", "Project Management 项目管理", new List<Nav>()
+                new App("pm", "Project Management", new List<Nav>()
                 {
                     new Nav("all", "All views", "/all-view", 1),
                     new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()

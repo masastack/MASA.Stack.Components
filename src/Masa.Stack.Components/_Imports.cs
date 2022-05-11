@@ -2,8 +2,11 @@
 global using BlazorComponent.I18n;
 global using Masa.Blazor;
 global using Masa.Stack.Components.Configs;
-global using Microsoft.AspNetCore.Components;
-global using Microsoft.Extensions.DependencyInjection;
 global using Masa.Stack.Components.Models;
+global using Microsoft.AspNetCore.Components;
+global using Microsoft.AspNetCore.Components.Web;
+global using Microsoft.Extensions.DependencyInjection;
+global using Masa.BuildingBlocks.SearchEngine.AutoComplete;
+global using Masa.BuildingBlocks.SearchEngine.AutoComplete.Options;
 global using Masa.Stack.Components.GlobalNavigations;
 global using Masa.Stack.Components.GlobalUsers;

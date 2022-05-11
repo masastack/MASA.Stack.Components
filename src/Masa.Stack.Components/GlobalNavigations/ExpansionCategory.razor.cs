@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Masa.Stack.Components.JsInterop;
+using Microsoft.JSInterop;
 
 namespace Masa.Stack.Components.GlobalNavigations;
 
@@ -6,6 +7,9 @@ public partial class ExpansionCategory
 {
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
+
+    [Inject]
+    private JsDotNetInvoker JsDotNetInvoker { get; set; } = null!;
 
     [CascadingParameter]
     public ExpansionWrapper? ExpansionWrapper { get; set; }
@@ -24,9 +28,6 @@ public partial class ExpansionCategory
 
     private bool _initCheckbox;
     private bool _fromCheckbox;
-
-    private bool _hasResizeNav;
-    private bool _refreshWaterFull;
 
     private bool CategoryChecked { get; set; }
 
@@ -52,25 +53,21 @@ public partial class ExpansionCategory
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!_hasResizeNav || _refreshWaterFull)
+        if (firstRender)
         {
-            _hasResizeNav = true;
-            _refreshWaterFull = false;
+            await JsDotNetInvoker.ResizeObserver(
+                $"#{Category.TagId()}",
+                async () => { await ResizeNav(Category); }
+            );
 
-            // TODO: How to wait for elements to be rendered
-            await Task.Delay(256);
-
-            await ResizeNav(Category);
-
-            StateHasChanged();
+            foreach (var app in Category.Apps)
+            {
+                await JsDotNetInvoker.ResizeObserver(
+                    $"#{app.TagId(Category.Code)}",
+                    async () => { await ResizeNav(Category); }
+                );
+            }
         }
-    }
-
-    private void ValuesChanged(List<StringNumber> values)
-    {
-        Category.BindValues = values;
-
-        _refreshWaterFull = true;
     }
 
     private async Task CategoryCheckedValueChanged(bool v)
@@ -103,5 +100,7 @@ public partial class ExpansionCategory
             ".app");
 
         category.TagStyle = $"position:relative; height:{height}px;";
+
+        StateHasChanged();
     }
 }
