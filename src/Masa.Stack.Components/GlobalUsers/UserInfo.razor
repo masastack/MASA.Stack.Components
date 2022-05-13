@@ -143,6 +143,13 @@
     </MRow>
 </PModal>
 
+<ADialog @bind-Value="_emailUpdateModal"
+         Title="邮箱认证"
+         IconOfTitle="mdi-email"
+         OnOk="() => { }">
+    <DefaultTextfield TValue="string" Label="邮箱地址"></DefaultTextfield>
+</ADialog>
+
 @code {
 
     [Parameter]

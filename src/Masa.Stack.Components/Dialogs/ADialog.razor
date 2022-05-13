@@ -1,0 +1,87 @@
+﻿@namespace Masa.Stack.Components
+
+<MDialog Value="Value"
+         ValueChanged="ValueChanged"
+         Class="pa-6"
+         ContentClass="pa-6 white"
+         Width="400">
+    <div class="d-flex my-@Size" style="flex-direction: column;justify-content: center;align-items: center;">
+        @if (!string.IsNullOrWhiteSpace(IconOfTitle))
+        {
+            <span class="primary d-flex mb-3"
+                  style="height: 48px;width: 48px;border-radius: 50%;align-items: center;justify-content: center;">
+                <MIcon Color="white">@IconOfTitle</MIcon>
+            </span>
+        }
+
+        <span class="font-20-bold neutral-text-emphasis-secondary">
+            @Title
+        </span>
+    </div>
+
+    <div class="py-@Size">
+        @ChildContent
+    </div>
+
+    @if (OnOk.HasDelegate)
+    {
+        <div class="d-flex my-@Size" style="align-items: center;justify-content: space-around">
+            <MButton Color="primary" Large="!Dense" Outlined Rounded Width="140" OnClick="HandleOnCancel">取消</MButton>
+            <MButton Color="primary" Large="!Dense" Rounded Width="140" OnClick="OnOk">确定</MButton>
+        </div>
+    }
+</MDialog>
+
+@code {
+
+    [Parameter]
+    public bool Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string? IconOfTitle { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; }
+
+    [Parameter]
+    public bool Dense { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public EventCallback OnOk { get; set; }
+
+    private int Size => Dense ? 4 : 6;
+
+    private async Task HandleOnCancel()
+    {
+        if (OnCancel.HasDelegate)
+        {
+            await OnCancel.InvokeAsync();
+        }
+        else
+        {
+            await UpdateValue(false);
+        }
+    }
+
+    private async Task UpdateValue(bool val)
+    {
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(val);
+        }
+        else
+        {
+            Value = val;
+        }
+    }
+
+}
