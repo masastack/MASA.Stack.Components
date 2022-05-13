@@ -1,72 +1,70 @@
 ﻿@namespace Masa.Stack.Components
+@using Util.Reflection.Expressions
+@typeparam TValue
 
-<MButtonGroup Value="_selectedValue" Borderless ValueChanged="ValueChanged" Mandatory Class="elevation-tab" ActiveClass="primary--text">
-    <div class="labeled-radio-slider-wrapper" style="height:100%;@_currentBtnWidthStyle;@_sliderLeftStyle">
-        <div class="labeled-radio-slider white" style="opacity: .5"></div>
-    </div>
-    <MButton Text @ref="btn1">Button 1</MButton>
-    <MButton Text @ref="btn2">Button 2</MButton>
-</MButtonGroup>
-
-<style>
-  .labeled-radio-slider-wrapper {
-      bottom: 0;
-      margin: 0 !important;
-      position: absolute;
-      transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-      /*z-index: 1;*/
-  }
-  
-  .labeled-radio-slider {
-      height: 100%;
-      width: 100%;
-  }
-</style>
+<MButton @ref="Instance"
+         Text
+         Class="@Class"
+         Style="@($"border-radius:{LabeledRadioGroup?.BorderRadius}px; {Style}")"
+         Large="Large"
+         XLarge="XLarge"
+         Small="Small"
+         XSmall="XSmall"
+         OnClick="HandleOnClick">
+    @ChildContent
+</MButton>
 
 @code {
 
-    private StringNumber? _selectedValue;
+    [CascadingParameter]
+    public LabeledRadioGroup<TValue>? LabeledRadioGroup { get; set; }
 
-    private MButton btn1;
-    private MButton btn2;
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
 
-    private double _sliderLeft;
-    private string _sliderLeftStyle => $"left:{_sliderLeft}px";
+    [Parameter]
+    public TValue? Value { get; set; }
+    
+    [Parameter]
+    public string? Class { get; set; }
 
-    private double _currentBtnWidth;
-    private string _currentBtnWidthStyle => $"width:{_currentBtnWidth}px";
+    [Parameter]
+    public string? Style { get; set; }
 
+    [Parameter]
+    public bool Large { get; set; }
+
+    [Parameter]
+    public bool XLarge { get; set; }
+
+    [Parameter]
+    public bool Small { get; set; }
+
+    [Parameter]
+    public bool XSmall { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+    
+    internal MButton? Instance { get; private set; }
+
+    internal double Height { get; set; }
+    internal double Width { get; set; }
+    internal double OffsetLeft { get; set; }
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender && LabeledRadioGroup is not null)
         {
-            if (_selectedValue is null)
-            {
-                await ValueChanged(0);
-                StateHasChanged();
-            }
+            await LabeledRadioGroup.AddRadio(this);
         }
     }
 
-    private async Task ValueChanged(StringNumber val)
+    private Task HandleOnClick(MouseEventArgs args)
     {
-        // TODO: height:100% incorrect
-        
-        var btn1Width = 88.56;
-        var btn2Width = 88.56;
-
-        if (btn1.Value == val)
-        {
-            _sliderLeft = 0;
-            _currentBtnWidth = btn1Width;
-        }
-        else if (btn2.Value == val)
-        {
-            _sliderLeft = btn1Width;
-            _currentBtnWidth = btn2Width;
-        }
-
-        _selectedValue = val;
+        return OnClick.HasDelegate
+            ? OnClick.InvokeAsync(args)
+            : Task.CompletedTask;
     }
 
 }

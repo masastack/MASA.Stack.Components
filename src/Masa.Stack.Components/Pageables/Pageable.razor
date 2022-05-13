@@ -1,0 +1,83 @@
+﻿@namespace Masa.Stack.Components
+@typeparam TItem
+
+<div class="pageable-items mb-6">
+    @foreach (var item in VisibleItems)
+    {
+        @ChildContent?.Invoke(item)
+    }
+</div>
+
+<MPagination @bind-Value="_page"
+             Class="@($"pageable {SizeClass} {Class}")"
+             Length="@Length"
+             Circle="Circle" />
+
+@code {
+
+    [Parameter, EditorRequired]
+    public RenderFragment<TItem>? ChildContent { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public IEnumerable<TItem>? Items { get; set; }
+
+    [Parameter]
+    public int ItemsPerPage { get; set; }
+
+    [Parameter]
+    public bool Circle { get; set; }
+
+    [Parameter]
+    public bool Large { get; set; }
+
+    [Parameter]
+    public bool Small { get; set; }
+
+    [Parameter]
+    public bool XSmall { get; set; }
+
+    private int _page = 1;
+
+    private int Length { get; set; }
+
+    private IEnumerable<TItem> VisibleItems =>
+        Items is null ? Enumerable.Empty<TItem>() : Items.Skip((_page - 1) * ItemsPerPage).Take(ItemsPerPage);
+
+    private string SizeClass
+    {
+        get
+        {
+            if (XSmall)
+                return "pageable-size--x-small";
+            if (Small)
+                return "pageable-size--small";
+            if (Large)
+                return "pageable-size--large";
+
+            return "pageable-size--large";
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        Items ??= new List<TItem>();
+
+        if (ItemsPerPage < 1)
+        {
+            ItemsPerPage = 1;
+        }
+
+        Length = Items.Count() / ItemsPerPage;
+        if (Length == 0)
+        {
+            Length = 1;
+        }
+    }
+
+}

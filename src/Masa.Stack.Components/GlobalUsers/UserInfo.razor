@@ -1,21 +1,20 @@
-﻿@using Action = System.Action
-<MCard Class="user-info br-5">
+﻿<MCard Class="user-info br-5">
     <div class="user-info__left">
         <div class="avatar">
             <MAvatar Size="140" Class="mb-6">
-                @if (string.IsNullOrWhiteSpace(User?.Avatar))
+                @if (string.IsNullOrWhiteSpace(Data?.Avatar))
                 {
                     // TODO: default avatar when user.avatar is empty
                 }
                 else
                 {
-                    <MImage Src="@User?.Avatar" alt="avatar" />
+                    <MImage Src="@Data?.Avatar" alt="avatar" />
                 }
             </MAvatar>
-            <PBlockText Primary="@User?.DisplayName"
-                        PrimaryClass="masa-text-1-2__title"
-                        Secondary="@User?.Account"
-                        SecondaryClass="neutral-text-secondary font-14">
+            <PBlockText Primary="@Data?.Name"
+                        PrimaryClass="font-20-bold neutral-text-emphasis-secondary"
+                        Secondary="@Data?.Account"
+                        SecondaryClass="neutral-text-secondary font-14 full-width">
             </PBlockText>
         </div>
         <div class="auths">
@@ -36,48 +35,89 @@
     <div class="user-info__right">
         <MWindow Value="_windowValue">
             <MWindowItem>
-                <div class="d-flex mb-12" style="justify-content: space-between;">
-                    <PBlockText Primary="@User?.Name"
+                <div class="d-flex mb-6" style="justify-content: space-between;">
+                    <PBlockText Primary="@Data?.DisplayName"
                                 PrimaryClass="font-20-bold neutral-text-regular"
                                 SecondaryClass="font-12-medium neutral-text-secondary d-flex"
                                 SecondaryStyle="align-items:center;">
                         <SecondaryContent>
-                            @User?.GenderText
-                            @if (!string.IsNullOrWhiteSpace(User?.GenderText) && !string.IsNullOrWhiteSpace(User?.JobNumber))
+                            @Data?.GenderText
+                            @if (!string.IsNullOrWhiteSpace(Data?.GenderText) && !string.IsNullOrWhiteSpace(Data?.JobNumber))
                             {
                                 <MDivider Vertical Class="mx-1" Height="10"></MDivider>
                             }
-                            @User?.JobNumber
+                            @Data?.JobNumber
                         </SecondaryContent>
                     </PBlockText>
-                    <MButton Icon Small OnClick="() => _windowValue = 1">
+                    <MButton Icon Small OnClick="() => ChangeWindowValue(1)">
                         <MIcon Size="15" Class="neutral-text-regular">mdi-pencil</MIcon>
                     </MButton>
                 </div>
-                <Definitions Items="@Items"
-                             Colon=""
-                             Cols="12"
-                             Sm="12"
-                             Md="12"
-                             NoGutters
-                             ItemClass="@(_ => "mb-12")"
-                             ItemStyle="@(_ => "justify-content: space-between;")"
-                             TermClass="@(_ => "font-14 neutral-text-regular")"
-                             DetailClass="@(_ => "font-12 neutral-text-secondary")">
-                    <TermContent>
-                        @{
-                            var term = (ValueTuple<string, string>)context.Value;
-                            <MIcon Size="13" Class="neutral-text-secondary mr-2">@term.Item1</MIcon>
-                            <span>@term.Item2</span>
-                        }
-                    </TermContent>
-                    <DetailContent>@context.Key</DetailContent>
-                </Definitions>
+                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                    <dt class="d-inline-flex font-14 neutral-text-regular">
+                        <MIcon Class="neutral-text-secondary mr-2" Size="13">mdi-phone</MIcon>
+                        <span>@Data?.PhoneNumber</span>
+                    </dt>
+                    <dd class="font-12 neutral-text-secondary">手机号码</dd>
+                </dl>
+                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                    <dt class="d-inline-flex font-14 neutral-text-regular">
+                        <MIcon Class="neutral-text-secondary mr-2" Size="13">mdi-email</MIcon>
+                        <span>@Data?.Email</span>
+                    </dt>
+                    <dd class="font-12 neutral-text-secondary">邮箱</dd>
+                </dl>
             </MWindowItem>
             <MWindowItem>
-                <MButton OnClick="() => _windowValue = 0">Test</MButton>
+                <div class="d-flex mb-2" style="justify-content: space-between;align-items: center;">
+                    <LabeledRadioGroup @bind-Value="UserForm.Gender" Dense>
+                        <LabeledRadio Value="0" Style="height:36px">女</LabeledRadio>
+                        <LabeledRadio Value="1" Style="height:36px">男</LabeledRadio>
+                    </LabeledRadioGroup>
+                    <span>
+                        <MButton Plain OnClick="() => ChangeWindowValue(0)">取消</MButton>
+                        <MButton Rounded Color="primary">
+                            保存
+                        </MButton>
+                    </span>
+                </div>
+                <MRow Dense Class="mb-2">
+                    <MCol Cols="12">
+                        <DefaultTextfield @bind-Value="UserForm.DisplayName" Label="昵称"></DefaultTextfield>
+                    </MCol>
+                    <MCol Cols="6">
+                        <DefaultTextfield Value="UserForm.PhoneNumber" Label="手机号码" Readonly
+                                          Action="@(a => { a.Content = "修改"; a.OnClick = _ => _phoneNumberUpdateModal = true; })">
+                        </DefaultTextfield>
+                    </MCol>
+                    <MCol Cols="6">
+                        <DefaultTextfield Value="UserForm.Email" Label="邮箱" Readonly
+                                          Action="@(a => { a.Content = "修改"; a.OnClick = _ => _emailUpdateModal = true; })">
+                        </DefaultTextfield>
+                    </MCol>
+                </MRow>
             </MWindowItem>
         </MWindow>
+        <Definitions Items="@Items"
+                     Colon=""
+                     Cols="12"
+                     Sm="12"
+                     Md="12"
+                     NoGutters
+                     ItemClass="@(_ => "mb-4")"
+                     ItemStyle="@(_ => "justify-content: space-between;")"
+                     TermClass="@(_ => "font-14 neutral-text-regular")"
+                     DetailClass="@(_ => "font-12 neutral-text-secondary")">
+            <TermContent>
+                @{
+                    var term = (ValueTuple<string, string>)context.Value;
+                    <MIcon Size="13" Class="neutral-text-secondary mr-2">@term.Item1</MIcon>
+                    <span>@term.Item2</span>
+                }
+            </TermContent>
+            <DetailContent>@context.Key</DetailContent>
+        </Definitions>
+
     </div>
 </MCard>
 
@@ -106,18 +146,23 @@
 @code {
 
     [Parameter]
-    public User? User { get; set; }
+    public User? Data { get; set; }
 
     private bool _idCardAuthVisible;
+    private bool _phoneNumberUpdateModal;
+    private bool _emailUpdateModal;
+
     private User? _prevUser = null;
     private StringNumber _windowValue = 0;
 
     private IdentityCardAuthentication IdentityCardAuth { get; set; } = new();
     private Dictionary<string, object?>? Items { get; set; }
 
+    private User UserForm { get; set; } = new();
+
     protected override void OnParametersSet()
     {
-        if (_prevUser != User)
+        if (_prevUser != Data)
         {
             UpdateDefinitionsItems();
         }
@@ -127,20 +172,34 @@
     {
         Items = new Dictionary<string, object?>()
         {
-            ["邮箱"] = ("mdi-email", User?.Email),
-            ["职位"] = ("mdi-briefcase", User?.Position),
-            ["手机号"] = ("mdi-phone", User?.PhoneNumber),
-            ["团队"] = ("mdi-account-supervisor", string.Join(" ", User?.Teams ?? Enumerable.Empty<string>())),
-            ["公司"] = ("mdi-office-building", User?.CompanyName),
-            ["国家或地区"] = ("mdi-earth", User?.Region),
-            ["地址"] = ("mdi-map-marker", User?.Address),
-            ["组织"] = ("mdi-file-tree", User?.Department),
-            ["入职时间"] = ("mdi-clock-outline", User?.JoinedAt?.ToString("yyyy-MM-dd")),
+            ["职位"] = ("mdi-briefcase", Data?.Position),
+            ["团队"] = ("mdi-account-supervisor", string.Join(" ", Data?.Teams ?? Enumerable.Empty<string>())),
+            ["公司"] = ("mdi-office-building", Data?.CompanyName),
+            ["国家或地区"] = ("mdi-earth", Data?.Region),
+            ["地址"] = ("mdi-map-marker", Data?.Address),
+            ["组织"] = ("mdi-file-tree", Data?.Department),
+            ["入职时间"] = ("mdi-clock-outline", Data?.CreatedAt?.ToString("yyyy-MM-dd")),
         };
     }
 
     private async Task HandleOnIdCardAuthSave()
     {
     }
+
+    private void ChangeWindowValue(int val)
+    {
+        if (val == 0)
+        {
+            UserForm = new();
+        }
+        else
+        {
+            UserForm = Data!.Clone();
+        }
+
+        _windowValue = val;
+    }
+
+
 
 }

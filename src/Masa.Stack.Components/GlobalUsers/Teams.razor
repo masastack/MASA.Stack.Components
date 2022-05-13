@@ -1,0 +1,33 @@
+﻿<div style="height: 288px">
+    <Pageable Items="Data" ItemsPerPage="1" Circle Small>
+        <MCard Class="team br-5 pa-6" Height="230">
+            <div class="d-flex mb-1" style="align-items: center">
+                <MAvatar Class="mr-3" Size="40">
+                    @if (string.IsNullOrWhiteSpace(context.Logo))
+                    {
+                        // TODO: default logo here
+                    }
+                    else
+                    {
+                        <MImage Src="@context.Logo"></MImage>
+                    }
+                </MAvatar>
+                <PBlockText Primary="@context.Name"
+                            PrimaryClass="neutral-text-emphasis font-18-medium"
+                            Secondary="@($"成员：{context.MemberCount}人")"
+                            SecondaryClass="neutral-text-secondary font-14">
+                </PBlockText>
+            </div>
+            <div class="desc font-14 neutral-text-regular-secondary">
+                @context.Description
+            </div>
+        </MCard>
+    </Pageable>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<Team>? Data { get; set; }
+
+}

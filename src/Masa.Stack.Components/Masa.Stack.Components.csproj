@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Masa.Blazor" Version="0.2.12265" />
     <PackageReference Include="MASA.Blazor.Experimental.Components" Version="0.2.5" />
     <PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.4.0-preview.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj" />
   </ItemGroup>
 </Project>
