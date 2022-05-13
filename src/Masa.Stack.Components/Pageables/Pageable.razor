@@ -2,10 +2,12 @@
 @typeparam TItem
 
 <div class="pageable-items mb-6">
-    @foreach (var item in VisibleItems)
-    {
-        @ChildContent?.Invoke(item)
-    }
+    <MWindow>
+        @foreach (var item in VisibleItems)
+        {
+            @ChildContent?.Invoke(item)
+        }
+    </MWindow>
 </div>
 
 <MPagination @bind-Value="_page"
