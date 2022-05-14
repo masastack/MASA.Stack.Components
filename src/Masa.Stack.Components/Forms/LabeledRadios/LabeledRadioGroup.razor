@@ -48,6 +48,9 @@
 
     private StringNumber? _selectedKey;
 
+    private TValue? _prevValue;
+    private bool _valueUpdatedByInternal;
+
     private List<LabeledRadio<TValue>> Items { get; set; } = new();
 
     private double CurrentItemHeight { get; set; }
@@ -62,31 +65,48 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        // TODO: Value changed by input
+        if (!EqualityComparer<TValue>.Default.Equals(_prevValue, Value))
+        {
+            _prevValue = Value;
+
+            if (_valueUpdatedByInternal)
+            {
+                _valueUpdatedByInternal = false;
+            }
+            else
+            {
+                var item = Items.FirstOrDefault(item => EqualityComparer<TValue>.Default.Equals(item.Value, Value));
+                if (item is not null)
+                {
+                    await UpdatePosition(item);
+                }
+            }
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_selectedKey is not null && CurrentItemWidth == 0)
+        if (!firstRender && Items.Any() && _selectedKey is not null && CurrentItemWidth == 0)
         {
+            // 在WindowItem等懒加载的组件中使用时需要轮询等待子元素是否已经被完全加载
+            // 然后才可以通过ref去拿高宽。
+            // TODO: 此处需要优化
+            await Task.Delay(300);
             await SelectedKeyChanged(_selectedKey);
             StateHasChanged();
         }
     }
-    
+
     private async Task SelectedKeyChanged(StringNumber? val)
     {
+        _selectedKey = val;
+
         var item = Items.FirstOrDefault(item => item.Instance?.Value == val);
         if (item is not null)
         {
-            if (item.Width == 0)
-            {
-                await UpdateItemClientRect(item);
-            }
-            
-            CurrentItemHeight = item.Height;
-            CurrentItemWidth = item.Width;
-            CurrentItemOffsetLeft = item.OffsetLeft;
+            await UpdatePosition(item);
+
+            _valueUpdatedByInternal = true;
 
             if (ValueChanged.HasDelegate)
             {
@@ -97,8 +117,18 @@
                 Value = item.Value;
             }
         }
+    }
 
-        _selectedKey = val;
+    private async Task UpdatePosition(LabeledRadio<TValue> radio)
+    {
+        if (radio.Width == 0)
+        {
+            await UpdateItemClientRect(radio);
+        }
+
+        CurrentItemHeight = radio.Height;
+        CurrentItemWidth = radio.Width;
+        CurrentItemOffsetLeft = radio.OffsetLeft;
     }
 
     internal async Task AddRadio(LabeledRadio<TValue> radio)

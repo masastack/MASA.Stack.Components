@@ -1,0 +1,93 @@
+﻿@using System.Text.RegularExpressions
+<ADialog @bind-Value="_visible"
+         Title="@(IsUpdate ? "更换手机号码" : "手机认证")"
+         IconOfTitle="mdi-phone"
+         CancelText="取消"
+         OkText="确定"
+         OkDisabled="!CanFinish"
+         OnCancel="HandleOnCancel"
+         OnOk="HandleOnOk">
+    <DefaultTextField Value="_newPhone"
+                      ValueChanged="NewPhoneChanged"
+                      TValue="string"
+                      Class="mb-6"
+                      Label="手机号码">
+    </DefaultTextField>
+    <DefaultTextField @bind-Value="_captcha"
+                      Label="验证码"
+                      Action="@(a => { a.Content = "获取验证码"; a.Disabled = !_valid; a.OnClick = _ => SendCaptcha();})">
+    </DefaultTextField>
+</ADialog>
+
+@code {
+
+    [Inject]
+    private IPopupService PopupService { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<string> OnFinish { get; set; }
+
+    [Parameter]
+    public bool IsUpdate { get; set; }
+
+    private bool _visible;
+    private string? _newPhone;
+    private string? _captcha;
+    private bool _valid;
+
+    private string? _captchaFromServer;
+
+    private bool CanFinish => _captcha is not null && _captchaFromServer == _captcha;
+
+    internal void Open()
+    {
+        _visible = true;
+        StateHasChanged();
+    }
+
+    private void NewPhoneChanged(string val)
+    {
+        _newPhone = val;
+
+    // TODO: 验证输入的phoneNumber不是旧的phoneNumber
+
+    // TODO: 正则表达式是否不太严谨？
+        var match = Regex.Match(_newPhone, @"^[1]([3-9])[0-9]{9}$");
+        _valid = match.Success;
+    }
+
+    private async Task SendCaptcha()
+    {
+    // TODO: send captcha
+        await Task.Delay(1000);
+        _captchaFromServer = await Task.FromResult("123456");
+
+        if (string.IsNullOrWhiteSpace(_captchaFromServer))
+        {
+            await PopupService.AlertAsync("验证码发送失败，请稍后重试。", AlertTypes.Error);
+        }
+        else
+        {
+            await PopupService.AlertAsync("验证码发送成功，请查收。", AlertTypes.Success);
+        }
+    }
+
+    private void HandleOnCancel()
+    {
+        _newPhone = null;
+        _captcha = null;
+        _captchaFromServer = null;
+        _valid = false;
+    }
+
+    private async Task HandleOnOk()
+    {
+        if (_valid && _captchaFromServer == _captcha)
+        {
+    // TODO: update phone number to user
+
+            await OnFinish.InvokeAsync(_newPhone);
+        }
+    }
+
+}

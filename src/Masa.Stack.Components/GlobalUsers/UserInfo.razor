@@ -53,14 +53,14 @@
                         <MIcon Size="15" Class="neutral-text-regular">mdi-pencil</MIcon>
                     </MButton>
                 </div>
-                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                <dl class="d-flex mb-6" style="align-items: start; justify-content: space-between">
                     <dt class="d-inline-flex font-14 neutral-text-regular">
                         <MIcon Class="neutral-text-secondary mr-2" Size="13">mdi-phone</MIcon>
                         <span>@Data?.PhoneNumber</span>
                     </dt>
                     <dd class="font-12 neutral-text-secondary">手机号码</dd>
                 </dl>
-                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                <dl class="d-flex mb-6" style="align-items: start; justify-content: space-between">
                     <dt class="d-inline-flex font-14 neutral-text-regular">
                         <MIcon Class="neutral-text-secondary mr-2" Size="13">mdi-email</MIcon>
                         <span>@Data?.Email</span>
@@ -69,31 +69,31 @@
                 </dl>
             </MWindowItem>
             <MWindowItem>
-                <div class="d-flex mb-2" style="justify-content: space-between;align-items: center;">
-                    <LabeledRadioGroup @bind-Value="UserForm.Gender" Dense>
+                <div class="d-flex mb-6" style="justify-content: space-between;align-items: center;">
+                    <LabeledRadioGroup @bind-Value="@_userGender" Dense>
                         <LabeledRadio Value="0" Style="height:36px">女</LabeledRadio>
                         <LabeledRadio Value="1" Style="height:36px">男</LabeledRadio>
                     </LabeledRadioGroup>
                     <span>
-                        <MButton Plain OnClick="() => ChangeWindowValue(0)">取消</MButton>
-                        <MButton Rounded Color="primary">
+                        <MButton Rounded Plain Height="40" Width="100" OnClick="() => ChangeWindowValue(0)">取消</MButton>
+                        <AutoLoadingButton Rounded Color="primary" Height="40" Width="100" OnClick="SaveUserInfo">
                             保存
-                        </MButton>
+                        </AutoLoadingButton>
                     </span>
                 </div>
-                <MRow Dense Class="mb-2">
+                <MRow Class="mb-2">
                     <MCol Cols="12">
-                        <DefaultTextfield @bind-Value="UserForm.DisplayName" Label="昵称"></DefaultTextfield>
+                        <DefaultTextField @bind-Value="@_userDisplayName" Label="昵称"></DefaultTextField>
                     </MCol>
                     <MCol Cols="6">
-                        <DefaultTextfield Value="UserForm.PhoneNumber" Label="手机号码" Readonly
-                                          Action="@(a => { a.Content = "修改"; a.OnClick = _ => _phoneNumberUpdateModal = true; })">
-                        </DefaultTextfield>
+                        <DefaultTextField Value="Data?.PhoneNumber" Label="手机号码" Readonly
+                                          Action="@(a => { a.Content = Data?.PhoneNumber is null ? "添加" : "更换"; a.Text = true; a.OnClick = OpenPhoneNumberValidateModal; })">
+                        </DefaultTextField>
                     </MCol>
                     <MCol Cols="6">
-                        <DefaultTextfield Value="UserForm.Email" Label="邮箱" Readonly
-                                          Action="@(a => { a.Content = "修改"; a.OnClick = _ => _emailUpdateModal = true; })">
-                        </DefaultTextfield>
+                        <DefaultTextField Value="Data?.Email" Label="邮箱" Readonly
+                                          Action="@(a => { a.Content = Data?.Email is null ? "添加" : "更换"; a.Text = true; a.OnClick = OpenEmailValidateModal; })">
+                        </DefaultTextField>
                     </MCol>
                 </MRow>
             </MWindowItem>
@@ -104,7 +104,7 @@
                      Sm="12"
                      Md="12"
                      NoGutters
-                     ItemClass="@(_ => "mb-4")"
+                     ItemClass="@(_ => "mb-6")"
                      ItemStyle="@(_ => "justify-content: space-between;")"
                      TermClass="@(_ => "font-14 neutral-text-regular")"
                      DetailClass="@(_ => "font-12 neutral-text-secondary")">
@@ -129,84 +129,20 @@
         OnSave="HandleOnIdCardAuthSave">
     <MRow>
         <MCol Cols="12">
-            <DefaultTextfield @bind-Value="@IdentityCardAuth.Name"
+            <DefaultTextField @bind-Value="@IdentityCardAuth.Name"
                               Label="真实姓名">
-            </DefaultTextfield>
+            </DefaultTextField>
         </MCol>
         <MCol Cols="12">
-            <DefaultTextfield @bind-Value="@IdentityCardAuth.Number"
+            <DefaultTextField @bind-Value="@IdentityCardAuth.Number"
                               Label="身份证号码">
-            </DefaultTextfield>
+            </DefaultTextField>
         </MCol>
         <MCol Cols="12"></MCol>
         <MCol Cols="12"></MCol>
     </MRow>
 </PModal>
 
-<ADialog @bind-Value="_emailUpdateModal"
-         Title="邮箱认证"
-         IconOfTitle="mdi-email"
-         OnOk="() => { }">
-    <DefaultTextfield TValue="string" Label="邮箱地址"></DefaultTextfield>
-</ADialog>
+<EmailValidateModal @ref="_emailValidateModal" IsUpdate="true" />
 
-@code {
-
-    [Parameter]
-    public User? Data { get; set; }
-
-    private bool _idCardAuthVisible;
-    private bool _phoneNumberUpdateModal;
-    private bool _emailUpdateModal;
-
-    private User? _prevUser = null;
-    private StringNumber _windowValue = 0;
-
-    private IdentityCardAuthentication IdentityCardAuth { get; set; } = new();
-    private Dictionary<string, object?>? Items { get; set; }
-
-    private User UserForm { get; set; } = new();
-
-    protected override void OnParametersSet()
-    {
-        if (_prevUser != Data)
-        {
-            UpdateDefinitionsItems();
-        }
-    }
-
-    private void UpdateDefinitionsItems()
-    {
-        Items = new Dictionary<string, object?>()
-        {
-            ["职位"] = ("mdi-briefcase", Data?.Position),
-            ["团队"] = ("mdi-account-supervisor", string.Join(" ", Data?.Teams ?? Enumerable.Empty<string>())),
-            ["公司"] = ("mdi-office-building", Data?.CompanyName),
-            ["国家或地区"] = ("mdi-earth", Data?.Region),
-            ["地址"] = ("mdi-map-marker", Data?.Address),
-            ["组织"] = ("mdi-file-tree", Data?.Department),
-            ["入职时间"] = ("mdi-clock-outline", Data?.CreatedAt?.ToString("yyyy-MM-dd")),
-        };
-    }
-
-    private async Task HandleOnIdCardAuthSave()
-    {
-    }
-
-    private void ChangeWindowValue(int val)
-    {
-        if (val == 0)
-        {
-            UserForm = new();
-        }
-        else
-        {
-            UserForm = Data!.Clone();
-        }
-
-        _windowValue = val;
-    }
-
-
-
-}
+<PhoneNumberValidateModal @ref="_phoneNumberValidateModal" IsUpdate="true" />

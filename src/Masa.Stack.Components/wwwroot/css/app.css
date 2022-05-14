@@ -404,3 +404,10 @@ body, .masa-stack-components {
 
     color: #7681AB;
 }
+
+.m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label {
+    top: 14px;
+}
+.m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label--active {
+    transform: translateY(-20px) scale(0.75);
+}
