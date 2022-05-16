@@ -1,19 +1,17 @@
-﻿namespace Masa.Stack.Components.GlobalUsers;
+﻿namespace Masa.Stack.Components.UserCenters;
 
-public partial class UserInfo
+public partial class UserInfo : MasaComponentBase
 {
     [Parameter]
     public User? Data { get; set; }
 
-    private bool _idCardAuthVisible;
-
-    private PhoneNumberValidateModal? _phoneNumberValidateModal;
     private EmailValidateModal? _emailValidateModal;
+    private IdCardValidateModal? _idCardValidateModal;
+    private PhoneNumberValidateModal? _phoneNumberValidateModal;
 
     private User? _prevUser = null;
     private StringNumber _windowValue = 0;
 
-    private IdentityCardAuthentication IdentityCardAuth { get; set; } = new();
     private Dictionary<string, object?>? Items { get; set; }
 
     private int _userGender;
@@ -23,31 +21,29 @@ public partial class UserInfo
     {
         if (_prevUser != Data)
         {
+            _prevUser = Data;
             UpdateDefinitionsItems();
         }
     }
-    
+
     private void UpdateDefinitionsItems()
     {
+        // TODO: no change after i18n changed 
         Items = new Dictionary<string, object?>()
         {
-            ["职位"] = ("mdi-briefcase", Data?.Position),
-            ["团队"] = ("mdi-account-supervisor", string.Join(" ", Data?.Teams ?? Enumerable.Empty<string>())),
-            ["公司"] = ("mdi-office-building", Data?.CompanyName),
-            ["国家或地区"] = ("mdi-earth", Data?.Region),
-            ["地址"] = ("mdi-map-marker", Data?.Address),
-            ["组织"] = ("mdi-file-tree", Data?.Department),
-            ["入职时间"] = ("mdi-clock-outline", Data?.CreatedAt?.ToString("yyyy-MM-dd")),
+            [T("Position")] = ("mdi-briefcase", Data?.Position),
+            [T("Teams")] = ("mdi-account-supervisor", string.Join(" ", Data?.Teams ?? Enumerable.Empty<string>())),
+            [T("Company")] = ("mdi-office-building", Data?.CompanyName),
+            [T("CountryOrRegion")] = ("mdi-earth", Data?.Region),
+            [T("Address")] = ("mdi-map-marker", Data?.Address),
+            [T("Department")] = ("mdi-file-tree", Data?.Department),
+            [T("CreationTime")] = ("mdi-clock-outline", Data?.CreatedAt?.ToString("yyyy-MM-dd")),
         };
-    }
-
-    private async Task HandleOnIdCardAuthSave()
-    {
     }
 
     private void ChangeWindowValue(int val)
     {
-        if (val == 0)
+        if (val == 1)
         {
             _userGender = Data?.Gender ?? 0;
             _userDisplayName = Data?.DisplayName;
@@ -59,8 +55,8 @@ public partial class UserInfo
     private async Task SaveUserInfo()
     {
         // TODO: save _userGender and _userDisplayName
-        
-        // TODO: validate _userDispalyName
+
+        // TODO: validate _userDisplayName
     }
 
     private Task OpenPhoneNumberValidateModal(MouseEventArgs _)

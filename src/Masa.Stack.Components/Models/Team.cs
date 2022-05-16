@@ -11,4 +11,6 @@ public class Team
     public string? Logo { get; set; }
 
     public int MemberCount { get; set; }
+    
+    public string Role { get; set; }
 }

@@ -1,14 +1,22 @@
-﻿@namespace Masa.Stack.Components
+﻿@using Masa.Stack.Components.UserCenters
+@namespace Masa.Stack.Components
+@inject GlobalConfig GlobalConfig
+@implements IDisposable
 
 <div class="mb-6" style="height: calc(100vh - 460px);">
     <UserInfo Data="User"></UserInfo>
 </div>
-<Teams Data="Teams"></Teams>
+<UserTeams Data="Teams"></UserTeams>
 
 @code {
 
     private User? User { get; set; }
     private List<Team>? Teams { get; set; }
+
+    protected override void OnInitialized()
+    {
+        GlobalConfig.OnLanguageChanged += base.StateHasChanged;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -16,6 +24,11 @@
 
     // TODO: use auth sdk instead
 
+        Teams = new()
+        {
+            new Team() { Name = "MASA Stack", Logo = "https://cdn.masastack.com/stack/images/website/masa-blazor/marcus1.png", MemberCount = 23, Description = "Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!Application 阿是大坏蛋萨哈啥的阿斯法师法大四!Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!", Role = "成员" },
+            new Team() { Name = "MASA Blazor", Logo = "https://cdn.masastack.com/stack/images/website/masa-blazor/doddgu.png", MemberCount = 80, Description = "Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!Application 阿是大坏蛋萨哈啥的阿斯法师法大四!Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!", Role = "成员" },
+        };
         if (firstRender)
         {
             User = new User()
@@ -37,14 +50,13 @@
                 CreatedAt = new DateTime(2021, 9, 24)
             };
 
-            Teams = new()
-            {
-                new Team() { Name = "MASA Stack", Logo = "https://cdn.masastack.com/stack/images/website/masa-blazor/marcus1.png", MemberCount = 23, Description = "Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!Application 阿是大坏蛋萨哈啥的阿斯法师法大四!Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!" },
-                new Team() { Name = "MASA Blazor", Logo = "https://cdn.masastack.com/stack/images/website/masa-blazor/doddgu.png", MemberCount = 80, Description = "Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!Application 阿是大坏蛋萨哈啥的阿斯法师法大四!Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!" },
-            };
-
             StateHasChanged();
         }
+    }
+
+    public void Dispose()
+    {
+        GlobalConfig.OnLanguageChanged -= base.StateHasChanged;
     }
 
 }

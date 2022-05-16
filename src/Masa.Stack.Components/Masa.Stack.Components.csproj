@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="MASA.Blazor.Experimental.Components" Version="0.2.5" />
     <PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.4.0-preview.4" />
+    <PackageReference Include="QRCoder" Version="1.4.3" />
   </ItemGroup>
 
   <ItemGroup>

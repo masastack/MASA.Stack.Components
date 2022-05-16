@@ -1,9 +1,12 @@
 ﻿@using System.Text.RegularExpressions
+@namespace Masa.Stack.Components.UserCenters
+@inherits MasaComponentBase
+
 <ADialog @bind-Value="_visible"
-         Title="@(IsUpdate ? "更换手机号码" : "手机认证")"
+         Title="@(IsUpdate ? T("ChangePhoneNumber") : T("PhoneNumberAuth"))"
          IconOfTitle="mdi-phone"
-         CancelText="取消"
-         OkText="确定"
+         CancelText="@T("Cancel")"
+         OkText="@("Ok")"
          OkDisabled="!CanFinish"
          OnCancel="HandleOnCancel"
          OnOk="HandleOnOk">
@@ -11,11 +14,11 @@
                       ValueChanged="NewPhoneChanged"
                       TValue="string"
                       Class="mb-6"
-                      Label="手机号码">
+                      Label="@("PhoneNumber")">
     </DefaultTextField>
     <DefaultTextField @bind-Value="_captcha"
-                      Label="验证码"
-                      Action="@(a => { a.Content = "获取验证码"; a.Disabled = !_valid; a.OnClick = _ => SendCaptcha();})">
+                      Label="@("Captcha")"
+                      Action="@(a => { a.Content = T("GetCaptcha"); a.Disabled = !_valid; a.OnClick = _ => SendCaptcha();})">
     </DefaultTextField>
 </ADialog>
 

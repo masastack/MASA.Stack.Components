@@ -411,3 +411,7 @@ body, .masa-stack-components {
 .m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label--active {
     transform: translateY(-20px) scale(0.75);
 }
+
+.m-btn {
+    transition: 0.3s cubic-bezier(0, 0, 0.2, 1);
+}

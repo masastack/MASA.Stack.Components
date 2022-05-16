@@ -1,17 +1,20 @@
 ﻿@using System.Text.RegularExpressions
+@namespace Masa.Stack.Components.UserCenters
+@inherits MasaComponentBase
+
 <ADialog @bind-Value="_visible"
-         Title="@(IsUpdate ? "更换邮箱" : "邮箱认证")"
+         Title="@(IsUpdate ? T("ChangeEmail") : T("EmailAuth"))"
          IconOfTitle="mdi-email"
-         CancelText="取消"
-         OkText="发送"
+         CancelText="@T("Cancel")"
+         OkText="@T("Send")"
          OkDisabled="!_valid"
          OnCancel="() => _newEmail = null"
          OnOk="HandleOnOk">
     <DefaultTextField Value="_newEmail"
                       ValueChanged="NewEmailChanged"
                       TValue="string"
-                      Label="邮箱地址"
-                      Hint="将发送一条验证邮件至该邮箱进行验证"
+                      Label="@T("EmailAddress")"
+                      Hint="@T("TipOfEmailAddressVerification")"
                       PersistentHint>
     </DefaultTextField>
 </ADialog>
