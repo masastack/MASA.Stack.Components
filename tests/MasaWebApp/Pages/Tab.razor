@@ -1,23 +1,23 @@
 ﻿@page "/tab"
 
-<h3>ElevationTab @value</h3>
+<div class="white pa-5">
+    <h3>LabeledRadioGroup's value: @value</h3>
 
-<div style="padding: 8px;background-color:white;">
-    <LabeledRadioGroup @bind-Value="value">
+    <LabeledRadioGroup @bind-Value="value" Dense Class="mb-2">
         <LabeledRadio Value="@("menu")">Menu Permission</LabeledRadio>
         <LabeledRadio Value="@("api")">Api Permission</LabeledRadio>
         <LabeledRadio Value="@("action")">Action Permission</LabeledRadio>
     </LabeledRadioGroup>
+    
+    <ElevationTab TabMinWidth="200" ItemsClass="mt-4" Tabs='new List<string> { "Menu Permission", "Api Permission" }' Dense>
+        <ElevationTabItem>
+            Menu Permission
+        </ElevationTabItem>
+        <ElevationTabItem>
+            Api Permission
+        </ElevationTabItem>
+    </ElevationTab>
 </div>
-
-<ElevationTab TabMinWidth="120" TabWindowClass="mt-4" Headers='new List<string> { "Menu Permission", "Api Permission" }' Dense>
-    <ElevationTabItem>
-        Menu Permission
-    </ElevationTabItem>
-    <ElevationTabItem>
-        Api Permission
-    </ElevationTabItem>
-</ElevationTab>
 
 @code {
 

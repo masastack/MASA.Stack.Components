@@ -3,6 +3,7 @@
 
 <MButton @ref="Instance"
          Text
+         MinWidth="@MinWidth"
          Class="@Class"
          Style="@($"border-radius:{LabeledRadioGroup?.BorderRadius}px; {Style}")"
          Large="Large"
@@ -20,6 +21,9 @@
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public StringNumber? MinWidth { get; set; }
 
     [Parameter]
     public TValue? Value { get; set; }

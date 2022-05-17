@@ -2,19 +2,23 @@
 
 <CascadingValue Value="this">
     @ChildContent
-    <div Class="@($"mx-auto d-flex flex-column {Class}")" Style="@Style">
-        <div Class="d-flex justify-center">
-            <MButtonGroup Dense=@Dense Mandatory Borderless Value="TabIndex" ValueChanged="TabChanged" Class="rounded-lg elevation-tab">
-                @for (var i = 0; i < Headers.Count; i++)
-                {
-                    var header = Headers[i];
-                    <MButton Ripple=false Value="@i" Class="rounded-lg" MinWidth=TabMinWidth>
-                        @header
-                    </MButton>
-                }
-            </MButtonGroup>
-        </div>
-        <MWindow @bind-Value="TabIndex" Reverse Class="@($"flex-grow-1 {TabWindowClass}")">
+    <div Class="@($"d-flex flex-column {Class}")" Style="@Style">
+        <LabeledRadioGroup Dense="Dense"
+                           Class="@TabsClass"
+                           Style="@($"width: fit-content {TabsStyle}")"
+                           TValue="StringNumber"
+                           Value="TabIndex"
+                           ValueChanged="TabChanged">
+            @for (var i = 0; i < Tabs.Count; i++)
+            {
+                var header = Tabs[i];
+                <LabeledRadio Value="@((StringNumber)i)" MinWidth="@TabMinWidth">@header</LabeledRadio>
+            }
+        </LabeledRadioGroup>
+
+        <MWindow @bind-Value="TabIndex"
+                 Class="@($"full-width mx-1 {ItemsClass}")"
+                 Style="@ItemsStyle">
             @for (var i = 0; i < _elevationTabItems.Count; i++)
             {
                 var item = _elevationTabItems[i];
@@ -27,21 +31,31 @@
 </CascadingValue>
 
 @code {
+
     [Parameter]
     public string? Class { get; set; }
 
     [Parameter]
-    public string? TabWindowClass { get; set; }
+    public string? ItemsClass { get; set; }
+
+    [Parameter]
+    public string? ItemsStyle { get; set; }
+
+    [Parameter]
+    public string? TabsClass { get; set; }
+
+    [Parameter]
+    public string? TabsStyle { get; set; }
 
     [Parameter]
     public string? Style { get; set; }
 
     [EditorRequired]
     [Parameter]
-    public List<string> Headers { get; set; } = new();
+    public List<string> Tabs { get; set; } = new();
 
     [Parameter]
-    public bool Dense { get; set; } = false;
+    public bool Dense { get; set; }
 
     [Parameter]
     public StringNumber TabMinWidth { get; set; } = "100";
@@ -78,4 +92,5 @@
             TabIndex = v;
         }
     }
+
 }
