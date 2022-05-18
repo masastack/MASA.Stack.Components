@@ -1,0 +1,151 @@
+﻿@namespace Masa.Stack.Components
+@typeparam TValue
+
+<MButtonGroup Value="_selectedKey"
+              ValueChanged="SelectedKeyChanged"
+              Borderless
+              Mandatory
+              Dense="@Dense"
+              Class="@($"labeled-radio-group {Class}")"
+              Style="@ComputedStyle"
+              ActiveClass="@ActiveClass">
+    <div class="labeled-radio-slider-wrapper" style="@CurrentHeightStyle;@CurrentWidthStyle;@LeftStyle">
+        <div class="labeled-radio-slider white" style="@($"border-radius:{BorderRadius}px")"></div>
+    </div>
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</MButtonGroup>
+
+@code {
+
+    [Inject]
+    private IJSRuntime Js { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string? ActiveClass { get; set; }
+
+    [Parameter]
+    public int BorderRadius { get; set; } = 8;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public bool Dense { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public TValue? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<TValue> ValueChanged { get; set; }
+
+    private StringNumber? _selectedKey;
+
+    private TValue? _prevValue;
+    private bool _valueUpdatedByInternal;
+
+    private List<LabeledRadio<TValue>> Items { get; set; } = new();
+
+    private double CurrentItemHeight { get; set; }
+    private double CurrentItemWidth { get; set; }
+    private double CurrentItemOffsetLeft { get; set; }
+
+    private string CurrentHeightStyle => $"height:{CurrentItemHeight}px";
+    private string CurrentWidthStyle => $"width:{CurrentItemWidth}px";
+    private string LeftStyle => $"left:{CurrentItemOffsetLeft}px";
+
+    private string ComputedStyle => $"border-radius:{BorderRadius + 2}px; {Style}";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!EqualityComparer<TValue>.Default.Equals(_prevValue, Value))
+        {
+            _prevValue = Value;
+
+            if (_valueUpdatedByInternal)
+            {
+                _valueUpdatedByInternal = false;
+            }
+            else
+            {
+                var item = Items.FirstOrDefault(item => EqualityComparer<TValue>.Default.Equals(item.Value, Value));
+                if (item is not null)
+                {
+                    await UpdatePosition(item);
+                }
+            }
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender && Items.Any() && _selectedKey is not null && CurrentItemWidth == 0)
+        {
+            // 在WindowItem等懒加载的组件中使用时需要轮询等待子元素是否已经被完全加载
+            // 然后才可以通过ref去拿高宽。
+            // TODO: 此处需要优化
+            await Task.Delay(300);
+            await SelectedKeyChanged(_selectedKey);
+            StateHasChanged();
+        }
+    }
+
+    private async Task SelectedKeyChanged(StringNumber? val)
+    {
+        _selectedKey = val;
+
+        var item = Items.FirstOrDefault(item => item.Instance?.Value == val);
+        if (item is not null)
+        {
+            await UpdatePosition(item);
+
+            _valueUpdatedByInternal = true;
+
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(item.Value);
+            }
+            else
+            {
+                Value = item.Value;
+            }
+        }
+    }
+
+    private async Task UpdatePosition(LabeledRadio<TValue> radio)
+    {
+        if (radio.Width == 0)
+        {
+            await UpdateItemClientRect(radio);
+        }
+
+        CurrentItemHeight = radio.Height;
+        CurrentItemWidth = radio.Width;
+        CurrentItemOffsetLeft = radio.OffsetLeft;
+    }
+
+    internal async Task AddRadio(LabeledRadio<TValue> radio)
+    {
+        if (!Items.Contains(radio))
+        {
+            Items.Add(radio);
+        }
+    }
+
+    private async Task UpdateItemClientRect(LabeledRadio<TValue> radio)
+    {
+        var rect = await Js.InvokeAsync<BlazorComponent.Web.Element>(JsInteropConstants.GetDomInfo, radio.Instance!.Ref);
+
+        radio.Height = rect.ClientHeight;
+        radio.Width = rect.ClientWidth;
+        radio.OffsetLeft = rect.OffsetLeft;
+    }
+
+}

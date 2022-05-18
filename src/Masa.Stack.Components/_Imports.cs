@@ -8,3 +8,5 @@ global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.Extensions.DependencyInjection;
 global using Masa.BuildingBlocks.SearchEngine.AutoComplete;
 global using Masa.BuildingBlocks.SearchEngine.AutoComplete.Options;
+global using Masa.Stack.Components.GlobalNavigations;
+global using Masa.Stack.Components.GlobalUsers;

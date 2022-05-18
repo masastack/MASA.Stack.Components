@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Stack.Components.Models;
+
+namespace Masa.Stack.Components;
 
 public partial class Layout : IDisposable
 {
@@ -16,6 +18,8 @@ public partial class Layout : IDisposable
 
     [Parameter, EditorRequired]
     public string? MiniLogo { get; set; }
+
+    string AppBarClass => GlobalConfig.PageMode == PageModes.PageTabs ? "mx-6" : "mx-6 rounded-b-4";
 
     protected override void OnInitialized()
     {
@@ -76,7 +80,7 @@ public partial class Layout : IDisposable
                 new Nav("tab", "tab", "mdi-numeric-1-box-outline", "/tab", 2, "father"),
                 new Nav("mini", "mini", "mdi-numeric-1-box-outline", "/mini-components", 2, "father"),
                 new Nav("extend", "extend", "mdi-numeric-1-box-outline", "/extend", 2, "father"),
-                new Nav("UseUserAutoComplete","UseUserAutoComplete","mdi-numeric-1-box-outline", "/useUserAutoComplete", 2, "father")
+                new Nav("UseUserAutoComplete", "UseUserAutoComplete", "mdi-numeric-1-box-outline", "/useUserAutoComplete", 2, "father")
             }),
         };
     }

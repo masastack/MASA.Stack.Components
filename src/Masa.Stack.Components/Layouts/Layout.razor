@@ -2,7 +2,7 @@
 @namespace Masa.Stack.Components
 @inject GlobalConfig GlobalConfig
 
-<MApp Class="masa-stack-components">
+<MApp Class="masa masa-stack-components">
     <MAppBar App
              Class="@AppBarClass"
              Elevation="0"
@@ -20,7 +20,7 @@
                 Logo="@Logo"
                 MiniLogo="@MiniLogo" />
 
-    <MMain Class="fill-lighten-1 pt-15">
+    <MMain Class="pt-15">
         @if (GlobalConfig.PageMode == PageModes.PageTabs)
         {
             <PageTabs Items="@PageTabItems">
@@ -36,7 +36,3 @@
         }
     </MMain>
 </MApp>
-
-@code {
-    string AppBarClass => GlobalConfig.PageMode == PageModes.PageTabs ? "mx-6" : "mx-6 rounded-b-4";
-}

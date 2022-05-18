@@ -1,7 +1,7 @@
 ﻿using Masa.Stack.Components.JsInterop;
 using Microsoft.JSInterop;
 
-namespace Masa.Stack.Components.GlobalNavigation;
+namespace Masa.Stack.Components.GlobalNavigations;
 
 public partial class ExpansionCategory
 {

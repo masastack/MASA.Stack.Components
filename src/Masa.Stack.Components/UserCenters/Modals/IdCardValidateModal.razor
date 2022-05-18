@@ -1,0 +1,55 @@
+﻿@namespace Masa.Stack.Components.UserCenters
+@inherits MasaComponentBase
+
+<DefaultModal @bind-Value="_visible"
+              Title="@T("IdentityCardAuth")"
+              FormModel="IdCardAuth"
+              OnCancel="HandleOnCancel"
+              OnSave="HandleOnOk">
+    <MRow>
+        <MCol Cols="12">
+            <DefaultTextField @bind-Value="@IdCardAuth.Name"
+                              Label="@T("RealName")">
+            </DefaultTextField>
+        </MCol>
+        <MCol Cols="12">
+            <DefaultTextField @bind-Value="@IdCardAuth.Number"
+                              Label="@("IdentityCardNumber")">
+            </DefaultTextField>
+        </MCol>
+        <MCol Cols="12">TODO: date</MCol>
+        <MCol Cols="12">TODO: 详情地址</MCol>
+        <MCol Cols="12">TODO: Images</MCol>
+    </MRow>
+</DefaultModal>
+
+@code {
+
+    [Parameter]
+    public EventCallback OnFinish { get; set; }
+
+    private bool _visible;
+
+    private IdentityCardAuthentication IdCardAuth { get; set; } = new();
+
+    internal void Open()
+    {
+        _visible = true;
+        StateHasChanged();
+    }
+
+    private void HandleOnCancel()
+    {
+        IdCardAuth = new();
+        _visible = false;
+    }
+
+    private async Task HandleOnOk()
+    {
+        // TODO: id card save
+        
+        // success
+        await OnFinish.InvokeAsync();
+    }
+
+}

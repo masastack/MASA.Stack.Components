@@ -1,0 +1,44 @@
+﻿@inherits MasaComponentBase
+
+<div style="height: 288px">
+    <Pageable Items="Data" Circle>
+        <MCard Class="team br-5 pa-6" Height="230">
+            <div class="d-flex mb-1" style="align-items: center">
+                @if (string.IsNullOrWhiteSpace(context.Logo))
+                {
+                    <MAvatar Class="mr-3" Size="40" Color="primary">
+                        <span class="white--text text-h6">@context.Name?[..1]</span>
+                    </MAvatar>
+                }
+                else
+                {
+                    <MAvatar Class="mr-3" Size="40">
+                        <MImage Src="@context.Logo" alt="avatar"></MImage>
+                    </MAvatar>
+                }
+                <PBlockText Primary="@context.Name"
+                            PrimaryClass="neutral-text-emphasis font-18-medium"
+                            Secondary="@($"{T("NumberOfPeople")}：{@context.MemberCount}")"
+                            SecondaryClass="neutral-text-secondary font-14">
+                </PBlockText>
+            </div>
+            <div class="desc font-14 neutral-text-regular-secondary">
+                @context.Description
+            </div>
+
+            <MChip style="position:absolute; bottom:24px; right:24px;"
+                   Label
+                   Small
+                   Class="fill-background neutral-text-emphasis-secondary">
+                @context.Role
+            </MChip>
+        </MCard>
+    </Pageable>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<Team>? Data { get; set; }
+
+}

@@ -1,4 +1,11 @@
-﻿.masa-stack-components .global-nav {
+﻿@import url(standard.css);
+@import url(pure-components.css);
+
+body, .masa-stack-components {
+    background-color: #F0F3FA !important;
+}
+
+.masa-stack-components .global-nav {
     display: flex;
     height: 100vh;
 }
@@ -198,6 +205,55 @@
     margin-left: 4px;
 }
 
+.masa-stack-components .clear-before-opacity:hover::before {
+    opacity: 0;
+}
+
+.masa-stack-components .clear-before-opacity::before {
+    opacity: 0;
+}
+
+.masa-stack-components .masa-icon-size-20 .m-icon {
+    font-size: 20px;
+}
+
+.masa-stack-components .user-info {
+    display: flex;
+    height: 100%;
+    padding: 24px;
+}
+
+.masa-stack-components .user-info__left {
+    position: relative;
+    height: 100%;
+    width: 300px;
+    min-width: 300px;
+}
+.masa-stack-components .user-info__left .avatar { 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.masa-stack-components .user-info__left .auths {
+    position: absolute;
+    bottom: 24px;
+    width: 100%
+}
+
+    .masa-stack-components .user-info__left .auths > div:not(:last-child) {
+        margin-bottom: 16px;
+    }
+
+.masa-stack-components .user-info__right {
+    height: 100%;
+    width: 100%;
+    margin-top: 24px;
+}
+
 .masa-stack-components .masa-text-highlight-2 {
     color: #323D6F !important;
     font-weight: 500 !important;
@@ -233,6 +289,12 @@
     font-weight: 500 !important;
 }
 
+.masa-stack-components .masa-text-1-2__title {
+    color: #323D6F !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
+
 .masa-stack-components .masa-text {
     color: #000000 !important;
     font-weight: 700 !important;
@@ -250,16 +312,8 @@
     border-radius: 8px;
 }
 
-.masa-stack-components .clear-before-opacity:hover::before {
-    opacity: 0;
-}
-
-.masa-stack-components .clear-before-opacity::before {
-    opacity: 0;
-}
-
-.masa-stack-components .masa-icon-size-20 .m-icon {
-    font-size: 20px;
+.masa-stack-components .br-5 {
+    border-radius: 20px;
 }
 
 .elevation-tab {
@@ -303,3 +357,14 @@
 
     color: #7681AB;
 }
+
+.m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label {
+    top: 14px;
+}
+.m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label--active {
+    transform: translateY(-20px) scale(0.75);
+}
+
+/*.m-btn {*/
+/*    transition: 0.3s cubic-bezier(0, 0, 0.2, 1);*/
+/*}*/

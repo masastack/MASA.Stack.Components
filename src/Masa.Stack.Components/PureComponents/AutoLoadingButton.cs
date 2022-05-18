@@ -5,6 +5,13 @@ namespace Masa.Stack.Components;
 
 public class AutoLoadingButton : MButton
 {
+    protected override async Task OnParametersSetAsync()
+    {
+        Color = "primary";
+        
+        await base.OnParametersSetAsync();
+    }
+
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
