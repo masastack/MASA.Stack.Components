@@ -25,10 +25,14 @@ public class Nav
         get => _children ?? new();
         set => _children = value;
     }
+    
+    public List<NavAction>? Actions { get; set; }
 
     public bool IsFavorite { get; set; }
 
     public bool HasChildren => Children.Any();
+
+    public bool HasActions => Actions is not null && Actions.Any();
 
     public bool IsActive(string url)
     {
@@ -77,4 +81,14 @@ public class Nav
         Level = level;
         Children = children;
     }
+    
+    public Nav(string code, string name, string icon, int level, List<NavAction> actions)
+    {
+        Code = code;
+        Name = name;
+        Icon = icon;
+        Level = level;
+        Actions = actions;
+    }
+
 }

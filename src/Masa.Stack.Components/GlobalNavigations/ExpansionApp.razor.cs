@@ -2,9 +2,6 @@
 
 public partial class ExpansionApp
 {
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = null!;
-
     [CascadingParameter]
     public ExpansionWrapper? ExpansionWrapper { get; set; }
 
@@ -93,16 +90,6 @@ public partial class ExpansionApp
         var key = $"app_{App.Code}";
 
         await ExpansionWrapper!.UpdateValues(key, values);
-    }
-
-    private void NavigateTo(string? url)
-    {
-        if (Checkable || url is null)
-        {
-            return;
-        }
-
-        NavigationManager.NavigateTo(url, true);
     }
 
     private async Task ToggleFavorite(string category, string app, Nav nav)

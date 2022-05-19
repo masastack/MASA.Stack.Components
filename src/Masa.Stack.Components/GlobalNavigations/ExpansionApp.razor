@@ -29,87 +29,45 @@
             <MCard @key="nav" Class="nav" Outlined>
                 <MList Dense Class="pa-0">
                     <MListItemGroup Values="_values" ValuesChanged="ValuesChanged" Multiple>
-                        <MHover Disabled="@nav.HasChildren">
-                            <MListItem @attributes="@context.Attrs"
-                                       Class="@($"masa-text-1-2 nav-item clear-before-opacity {(context.Hover ? "masa-text masa-fill-clicked" : "")}")"
-                                       OnClick="() => NavigateTo(nav.Url)"
-                                       Value="@nav.Code"
-                                       Disabled="@nav.HasChildren"
-                                       ActiveClass="masa-text">
-                                <ItemContent Context="item">
-                                    <MListItemContent>
-                                        <MListItemTitle Style="font-weight: inherit">@nav.Name</MListItemTitle>
-                                    </MListItemContent>
+                        <ExpansionAppItem Data="nav"
+                                          Level="1"
+                                          Checkable="Checkable"
+                                          ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)">
+                        </ExpansionAppItem>
 
-                                    @if (context.Hover)
-                                    {
-                                        <MListItemAction Class="ma-0">
-                                            @if (Checkable)
-                                            {
-                                                <MCheckbox Dense IsActive="@item.Active"></MCheckbox>
-                                            }
-                                            else
-                                            {
-                                                <AutoLoadingButton
-                                                    Icon
-                                                    Small
-                                                    Color="@(nav.IsFavorite ? "#FFB547" : "")"
-                                                    OnClick="@(() => ToggleFavorite(CategoryCode, App.Code, nav))"
-                                                    StopPropagation>
-                                                    <MIcon>mdi-star</MIcon>
-                                                </AutoLoadingButton>
-                                            }
-                                        </MListItemAction>
-                                    }
-                                </ItemContent>
-                            </MListItem>
-                            @if (nav.HasChildren)
-                            {
-                                <MDivider></MDivider>
-                            }
-                        </MHover>
-                        @if (nav.Children is not null)
+                        @if (nav.HasChildren)
                         {
                             @foreach (var subNav in nav.Children)
                             {
-                                <MHover Disabled="@subNav.HasChildren">
-                                    <MListItem @attributes="context.Attrs"
-                                               Class="@($"masa-text-3-1 sub-nav-item clear-before-opacity {(context.Hover ? "masa-text-1-1 masa-fill-clicked" : "")}")"
-                                               OnClick="() => NavigateTo(subNav.Url)"
-                                               Value="@subNav.Code"
-                                               ActiveClass="masa-text-1-1">
-                                        <ItemContent Context="item">
-                                            <MListItemContent>
-                                                <MListItemTitle Style="font-weight: inherit">@subNav.Name</MListItemTitle>
-                                            </MListItemContent>
+                                <ExpansionAppItem Data="subNav"
+                                                  Checkable="Checkable"
+                                                  Level="2"
+                                                  ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, subNav)">
+                                </ExpansionAppItem>
 
-                                            @if (context.Hover)
-                                            {
-                                                <MListItemAction Class="ma-0">
-                                                    @if (Checkable)
-                                                    {
-                                                        <MCheckbox Dense IsActive="@item.Active"></MCheckbox>
-                                                    }
-                                                    else
-                                                    {
-                                                        <AutoLoadingButton
-                                                            Color="@(subNav.IsFavorite ? "#FFB547" : "")"
-                                                            Icon
-                                                            Small
-                                                            OnClick="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))"
-                                                            StopPropagation>
-                                                            <MIcon>mdi-star</MIcon>
-                                                        </AutoLoadingButton>
-                                                    }
-                                                </MListItemAction>
-                                            }
-                                        </ItemContent>
-                                    </MListItem>
-                                </MHover>
+                                if (Checkable && subNav.HasActions)
+                                {
+                                    foreach (var action in subNav.Actions)
+                                    {
+                                        <ExpansionAppItem Data="action"
+                                                          Checkable="Checkable"
+                                                          Level="3">
+                                        </ExpansionAppItem>
+                                    }
+                                }
+                            }
+                        }
+                        else if (Checkable && nav.HasActions)
+                        {
+                            @foreach (var action in nav.Actions)
+                            {
+                                <ExpansionAppItem Data="action"
+                                                  Checkable="Checkable"
+                                                  Level="3">
+                                </ExpansionAppItem>
                             }
                         }
                     </MListItemGroup>
-
                 </MList>
             </MCard>
         }

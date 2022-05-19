@@ -149,8 +149,8 @@ body, .masa-stack-components {
     padding: 0 16px;
 }
 
-.masa-stack-components .global-nav .nav .sub-nav-item .m-list-item__title {
-    font-size: 14px;
+.masa-stack-components .global-nav .nav .action-item {
+    padding: 0 16px 0 32px;
 }
 
 .masa-stack-components .global-nav .m-timeline {
