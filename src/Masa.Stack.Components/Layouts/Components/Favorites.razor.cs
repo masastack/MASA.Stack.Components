@@ -24,7 +24,7 @@ public partial class Favorites
         {
             ArgumentNullException.ThrowIfNull(CookieStorage);
 
-            var cookieFavorite = await CookieStorage.GetCookie(GlobalConfig_Favorite);
+            var cookieFavorite = await CookieStorage.GetCookieAsync(GlobalConfig_Favorite);
 
             if (cookieFavorite is not null)
             {
