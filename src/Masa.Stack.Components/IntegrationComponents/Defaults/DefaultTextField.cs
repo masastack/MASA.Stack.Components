@@ -21,7 +21,10 @@ public class DefaultTextField<TValue> : MTextField<TValue>
         if (Dense && Height == 48)
         {
             Class ??= string.Empty;
-            Class += " m-input--dense-48";
+            if (!Class.Contains("m-input--dense-48"))
+            {
+                Class += " m-input--dense-48";
+            }
         }
 
         if (Action is not null)
