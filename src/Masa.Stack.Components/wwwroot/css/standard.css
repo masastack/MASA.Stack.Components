@@ -107,28 +107,28 @@
     color: #141726 !important;
 }
 
-.masa .neutral-text-hell {
-    color: #000000 !important;
-}
-
-.masa .neutral-text-emphasis {
-    color: #1B2559 !important;
-}
-
-.masa .neutral-text-emphasis-secondary {
-    color: #323D6F !important;
-}
-
-.masa .neutral-text-regular {
-    color: #485585 !important;
+.masa .neutral-text-secondary {
+    color: #A3AED0 !important;
 }
 
 .masa .neutral-text-regular-secondary {
     color: #7671AB !important;
 }
 
-.masa .neutral-text-secondary {
-    color: #A3AED0 !important;
+.masa .neutral-text-regular {
+    color: #485585 !important;
+}
+
+.masa .neutral-text-emphasis-secondary {
+    color: #323D6F !important;
+}
+
+.masa .neutral-text-emphasis {
+    color: #1B2559 !important;
+}
+
+.masa .neutral-text-hell {
+    color: #000000 !important;
 }
 
 /*

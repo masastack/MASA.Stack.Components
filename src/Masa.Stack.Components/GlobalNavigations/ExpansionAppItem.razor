@@ -1,0 +1,163 @@
+﻿@typeparam TData
+
+@if (Data is not null)
+{
+    <MHover Disabled="@Disabled">
+        @if (Data is Nav nav)
+        {
+            <MListItem @attributes="@context.Attrs"
+                       Class="@GetClass(context.Hover)"
+                       Value="@nav.Code"
+                       Disabled="@Disabled"
+                       OnClick="() => NavigateTo(nav.Url)"
+                       ActiveClass="@ActiveClass">
+                <ItemContent Context="item">
+                    <MListItemContent>
+                        <MListItemTitle Style="font-weight: inherit">@nav.Name</MListItemTitle>
+                    </MListItemContent>
+
+                    @if (context.Hover)
+                    {
+                        <MListItemAction Class="ma-0">
+                            @if (Checkable)
+                            {
+                                <MCheckbox Dense IsActive="@item.Active"></MCheckbox>
+                            }
+                            else if (Level < 3)
+                            {
+                                <AutoLoadingButton
+                                    Icon
+                                    XSmall
+                                    Color="@(nav.IsFavorite ? "#FFB547" : "")"
+                                    OnClick="@ToggleFavorite"
+                                    StopPropagation>
+                                    <MIcon Small>mdi-star</MIcon>
+                                </AutoLoadingButton>
+                            }
+                        </MListItemAction>
+                    }
+                    else if (Checkable && item.Active)
+                    {
+                        <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                    }
+                    else if (nav.IsFavorite)
+                    {
+                        <MIcon Small Style="margin-right: 6px" Color="#FFB547">mdi-star</MIcon>
+                    }
+                </ItemContent>
+            </MListItem>
+            @if (nav.Level == 1 && nav.HasChildren)
+            {
+                <MDivider />
+            }
+        }
+        else if (Data is NavAction navAction)
+        {
+            <MListItem @attributes="@context.Attrs"
+                       Class="@GetClass(context.Hover)"
+                       Value="@navAction.Code"
+                       ActiveClass="@ActiveClass">
+                <ItemContent Context="item">
+                    <MListItemContent>
+                        <MListItemTitle Style="font-weight: inherit">@navAction.Name</MListItemTitle>
+                    </MListItemContent>
+
+                    @if (Checkable)
+                    {
+                        @if (context.Hover)
+                        {
+                            <MListItemAction Class="ma-0">
+                                <MCheckbox Dense IsActive="@item.Active"></MCheckbox>
+                            </MListItemAction>
+                        }
+                        else if (item.Active)
+                        {
+                            <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                        }
+                    }
+                </ItemContent>
+            </MListItem>
+        }
+    </MHover>
+}
+
+@code {
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public TData? Data { get; set; }
+
+    [Parameter]
+    public bool Checkable { get; set; }
+
+    [Parameter, EditorRequired]
+    public int Level { get; set; }
+
+    [Parameter]
+    public EventCallback ToggleFavorite { get; set; }
+
+    private bool Disabled => Data is Nav { HasChildren: true };
+
+    private string ActiveClass
+    {
+        get
+        {
+            switch (Level)
+            {
+                case 1:
+                    return "neutral-text-hell";
+                case 2:
+                case 3:
+                    return "neutral-text-emphasis";
+                default:
+                    return string.Empty;
+            }
+        }
+    }
+
+    private string GetClass(bool hover)
+    {
+        if (Data is not null)
+        {
+            var css = new string[4];
+
+            css[0] = "clear-before-opacity";
+
+            switch (Level)
+            {
+                case 1:
+                    css[1] = "neutral-text-regular-secondary font-14-bold";
+                    css[2] = "nav-item";
+                    css[3] = hover ? "font-14-bold neutral-text-hell fill-hover" : "";
+                    break;
+                case 2:
+                    css[1] = "neutral-text-secondary font-14";
+                    css[2] = "sub-nav-item";
+                    css[3] = hover ? "font-14-medium neutral-text-emphasis fill-hover" : "";
+                    break;
+                default:
+                    css[1] = "neutral-text-secondary font-14";
+                    css[2] = "action-item";
+                    css[3] = hover ? "font-14-medium neutral-text-emphasis fill-hover" : "";
+                    break;
+            }
+
+            return string.Join(" ", css);
+        }
+
+        return string.Empty;
+    }
+
+    private void NavigateTo(string? url)
+    {
+        if (Checkable || url is null)
+        {
+            return;
+        }
+
+        NavigationManager.NavigateTo(url, true);
+    }
+
+}

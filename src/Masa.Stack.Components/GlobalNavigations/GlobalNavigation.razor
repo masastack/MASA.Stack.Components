@@ -28,9 +28,9 @@
                                                 <MListItemTitle>@item.Nav.Name</MListItemTitle>
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
-                                                <AutoLoadingButton Icon Small Color="@(item.Nav.IsFavorite ? "#FFB547" : "")"
+                                                <AutoLoadingButton Icon XSmall Color="@(item.Nav.IsFavorite ? "#FFB547" : "")"
                                                                    OnClick="() => ToggleFavorite(item.CategoryCode, item.AppCode, item.Nav)" StopPropagation>
-                                                    <MIcon>mdi-star</MIcon>
+                                                    <MIcon Small>mdi-star</MIcon>
                                                 </AutoLoadingButton>
                                             </MListItemAction>
                                         </div>
