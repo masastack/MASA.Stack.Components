@@ -2,18 +2,23 @@
 
 <MExpansionPanel Class="app"
                  Id="@App.TagId(CategoryCode)"
-                 Value="@App.Code">
-    <MExpansionPanelHeader Class="masa-text-highlight-1" Ripple="false">
+                 Value="@App.Code"
+                 Readonly="InPreview">
+    <MExpansionPanelHeader Class="masa-text-highlight-1 mb-0">
         @if (Checkable)
         {
-            <MSimpleCheckbox
-                Color="primary"
-                Ripple="false"
-                Value="@AppChecked"
-                ValueChanged="@AppCheckedChanged"
-                Class="masa-icon-size-20"
-                Style="flex: none;margin-right: -4px;">
-            </MSimpleCheckbox>
+            if ((AppChecked && InPreview) || !InPreview)
+            {
+                <MSimpleCheckbox
+                    Color="primary"
+                    Ripple="false"
+                    Value="@AppChecked"
+                    ValueChanged="@AppCheckedChanged"
+                    Class="masa-icon-size-20"
+                    Style="flex: none;margin-right: -4px;"
+                    Readonly="InPreview">
+                </MSimpleCheckbox>
+            }
         }
         <span style="flex:none">
             @App.Name
@@ -23,8 +28,8 @@
             <span class="masa-text-3-1 ml-1">@App.RoutableNavsCount</span>
         }
     </MExpansionPanelHeader>
-    <MExpansionPanelContent>
-        @foreach (var nav in App.Navs)
+    <MExpansionPanelContent Class="mt-4">
+        @foreach (var nav in App.Navs.Where(nav => !IsInPreview(nav)))
         {
             <MCard @key="nav" Class="nav" Outlined>
                 <MList Dense Class="pa-0">
@@ -32,25 +37,28 @@
                         <ExpansionAppItem Data="nav"
                                           Level="1"
                                           Checkable="Checkable"
+                                          InPreview="InPreview"
                                           ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)">
                         </ExpansionAppItem>
 
                         @if (nav.HasChildren)
                         {
-                            @foreach (var subNav in nav.Children)
+                            foreach (var subNav in nav.Children.Where(subNav => !IsInPreview(subNav)))
                             {
-                                <ExpansionAppItem Data="subNav"
-                                                  Checkable="Checkable"
+                                <ExpansionAppItem Data="@subNav"
+                                                  Checkable="@Checkable"
+                                                  InPreview="InPreview"
                                                   Level="2"
-                                                  ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, subNav)">
+                                                  ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))">
                                 </ExpansionAppItem>
 
                                 if (Checkable && subNav.HasActions)
                                 {
-                                    foreach (var action in subNav.Actions)
+                                    foreach (var action in subNav.Actions!.Where(action => !IsInPreview(action)))
                                     {
-                                        <ExpansionAppItem Data="action"
-                                                          Checkable="Checkable"
+                                        <ExpansionAppItem Data="@action"
+                                                          Checkable="@Checkable"
+                                                          InPreview="InPreview"
                                                           Level="3">
                                         </ExpansionAppItem>
                                     }
@@ -59,10 +67,11 @@
                         }
                         else if (Checkable && nav.HasActions)
                         {
-                            @foreach (var action in nav.Actions)
+                            foreach (var action in nav.Actions!.Where(action => !IsInPreview(action)))
                             {
-                                <ExpansionAppItem Data="action"
-                                                  Checkable="Checkable"
+                                <ExpansionAppItem Data="@action"
+                                                  Checkable="@Checkable"
+                                                  InPreview="InPreview"
                                                   Level="3">
                                 </ExpansionAppItem>
                             }

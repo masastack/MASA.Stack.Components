@@ -5,12 +5,16 @@
         @Category.Name
         @if (Checkable)
         {
-            <MSimpleCheckbox Color="white"
-                             Value="@CategoryChecked"
-                             ValueChanged="@CategoryCheckedValueChanged"
-                             Ripple="false"
-                             Class="mr-n2">
-            </MSimpleCheckbox>
+            if ((CategoryChecked && InPreview) || !InPreview)
+            {
+                <MSimpleCheckbox Color="white"
+                                 Value="@CategoryChecked"
+                                 ValueChanged="@CategoryCheckedValueChanged"
+                                 Ripple="false"
+                                 Class="mr-n2"
+                                 Readonly="InPreview">
+                </MSimpleCheckbox>
+            }
         }
     </div>
     <MExpansionPanels Accordion
