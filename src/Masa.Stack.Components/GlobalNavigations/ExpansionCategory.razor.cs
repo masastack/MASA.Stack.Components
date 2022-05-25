@@ -21,6 +21,9 @@ public partial class ExpansionCategory
     public bool Checkable { get; set; }
 
     [Parameter]
+    public bool InPreview { get; set; }
+
+    [Parameter]
     public RenderFragment<App>? ChildContent { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]

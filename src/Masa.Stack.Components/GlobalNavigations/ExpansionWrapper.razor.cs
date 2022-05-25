@@ -14,6 +14,9 @@ namespace Masa.Stack.Components.GlobalNavigations
         [Parameter]
         public bool Checkable { get; set; }
 
+        [Parameter]
+        public bool InPreview { get; set; }
+
         [Parameter, EditorRequired]
         public List<FavoriteNav>? FavoriteNavs { get; set; }
 

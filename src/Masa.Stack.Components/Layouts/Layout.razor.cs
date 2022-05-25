@@ -56,11 +56,7 @@ public partial class Layout : IDisposable
         foreach (var nav in tree)
         {
             res.Add(nav);
-
-            if (nav.Children is not null)
-            {
-                res.AddRange(FlattenNavs(nav.Children));
-            }
+            res.AddRange(FlattenNavs(nav.Children));
         }
 
         return res;

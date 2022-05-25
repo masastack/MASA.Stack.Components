@@ -20,12 +20,17 @@ public partial class ExpansionApp
     [Parameter]
     public bool Checkable { get; set; }
 
+    [Parameter]
+    public bool InPreview { get; set; }
+
     private bool _initValues;
     private bool _fromCheckbox;
     private List<StringNumber> _values = new();
     private List<CategoryAppNav> _categoryAppNavs = new();
 
     private bool AppChecked { get; set; }
+
+    private bool IsCheckable => Checkable && !InPreview;
 
     protected override void OnParametersSet()
     {
@@ -117,5 +122,45 @@ public partial class ExpansionApp
 
         // TODO: need to notify parent
         GlobalNavigation?.InvokeStateHasChanged();
+    }
+
+    private List<Nav> FlattenNavs(List<Nav> tree)
+    {
+        var res = new List<Nav>();
+
+        foreach (var nav in tree)
+        {
+            res.Add(nav);
+
+            if (nav.HasChildren)
+            {
+                res.AddRange(FlattenNavs(nav.Children));
+            }
+
+            if (nav.HasActions)
+            {
+                res.AddRange(nav.Actions!.Select(a => new Nav()
+                {
+                    Code = a.Code,
+                    Name = a.Name
+                }));
+            }
+        }
+
+        return res;
+    }
+
+    private bool IsInPreview(Nav nav)
+    {
+        var flattenNavs = FlattenNavs(new List<Nav>() { nav })
+            .Select(item => (StringNumber)item.Code);
+
+        return InPreview && !_values.Intersect(flattenNavs).Any();
+    }
+
+
+    private bool IsInPreview(NavAction action)
+    {
+        return InPreview && !_values.Contains(action.Code);
     }
 }

@@ -116,7 +116,7 @@ public partial class GlobalNavigation : MasaComponentBase
                         new Nav("bing", "Bing", "https://www.bing.com", 2),
                     })
                 }),
-                new App("pm", "Project Management", new List<Nav>()
+                new App("pm111", "Project Management", new List<Nav>()
                 {
                     new Nav("all", "All views", "/all-view", 1),
                     new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()

@@ -26,5 +26,5 @@ public partial class Category
 
     internal string TagStyle { get; set; }
 
-    internal List<StringNumber> BindValues { get; set; }
+    internal List<StringNumber>? BindValues { get; set; }
 }

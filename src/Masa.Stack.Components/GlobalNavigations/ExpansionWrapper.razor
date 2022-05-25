@@ -8,10 +8,14 @@
             : new List<StringNumber>();
 
         <CascadingValue Value="this">
-            <ExpansionCategory Category="category" Checkable="@Checkable" Context="app">
+            <ExpansionCategory Category="category"
+                               Checkable="@Checkable"
+                               InPreview="InPreview"
+                               Context="app">
                 <ExpansionApp App="app"
                               CategoryCode="@category.Code"
                               Checkable="@Checkable"
+                              InPreview="InPreview"
                               FavoriteNavs="@FavoriteNavs" />
             </ExpansionCategory>
         </CascadingValue>

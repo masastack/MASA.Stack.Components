@@ -3,18 +3,21 @@
 <CascadingValue Value="this">
     @ChildContent
     <div Class="@($"d-flex flex-column {Class}")" Style="@Style">
-        <LabeledRadioGroup Dense="Dense"
-                           Class="@TabsClass"
-                           Style="@($"width: fit-content {TabsStyle}")"
-                           TValue="StringNumber"
-                           Value="TabIndex"
-                           ValueChanged="TabChanged">
-            @for (var i = 0; i < Tabs.Count; i++)
-            {
-                var header = Tabs[i];
-                <LabeledRadio Value="@((StringNumber)i)" MinWidth="@TabMinWidth">@header</LabeledRadio>
-            }
-        </LabeledRadioGroup>
+        @if (Tabs!.Count > 0)
+        {
+            <LabeledRadioGroup Dense="Dense"
+                               Class="@TabsClass"
+                               Style="@($"width: fit-content {TabsStyle}")"
+                               TValue="StringNumber"
+                               Value="TabIndex"
+                               ValueChanged="TabChanged">
+                @for (var i = 0; i < Tabs.Count; i++)
+                {
+                    var header = Tabs[i];
+                    <LabeledRadio Value="@((StringNumber)i)" MinWidth="@TabMinWidth">@header</LabeledRadio>
+                }
+            </LabeledRadioGroup>
+        }
 
         <MWindow @bind-Value="TabIndex"
                  Class="@($"full-width mx-1 {ItemsClass}")"
@@ -52,13 +55,13 @@
 
     [EditorRequired]
     [Parameter]
-    public List<string> Tabs { get; set; } = new();
+    public List<string>? Tabs { get; set; }
 
     [Parameter]
     public bool Dense { get; set; }
 
     [Parameter]
-    public StringNumber TabMinWidth { get; set; } = "100";
+    public StringNumber? TabMinWidth { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -70,6 +73,11 @@
     public EventCallback<StringNumber> TabIndexChanged { get; set; }
 
     List<ElevationTabItem> _elevationTabItems = new();
+
+    protected override void OnParametersSet()
+    {
+        Tabs ??= new List<string>();
+    }
 
     public void AddTabItem(ElevationTabItem tabItem)
     {
