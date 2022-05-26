@@ -59,14 +59,14 @@ public partial class ExpansionCategory
         if (firstRender)
         {
             await JsDotNetInvoker.ResizeObserver(
-                $"#{Category.TagId()}",
+                $"#{Category.TagId(ExpansionWrapper?.TagIdPrefix)}",
                 async () => { await ResizeNav(Category); }
             );
 
             foreach (var app in Category.Apps)
             {
                 await JsDotNetInvoker.ResizeObserver(
-                    $"#{app.TagId(Category.Code)}",
+                    $"#{app.TagId(Category.Code, ExpansionWrapper?.TagIdPrefix)}",
                     async () => { await ResizeNav(Category); }
                 );
             }
@@ -99,7 +99,7 @@ public partial class ExpansionCategory
     {
         var height = await JsRuntime.InvokeAsync<double>(
             "MasaStackComponents.waterFull",
-            $"#{category.TagId()} .apps",
+            $"#{category.TagId(ExpansionWrapper?.TagIdPrefix)} .apps",
             ".app");
 
         category.TagStyle = $"position:relative; height:{height}px;";

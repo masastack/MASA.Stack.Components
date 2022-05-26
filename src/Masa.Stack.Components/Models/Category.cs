@@ -22,7 +22,7 @@ public partial class Category
 
 public partial class Category
 {
-    internal string TagId() => $"category-{Code}";
+    internal string TagId(string? prefix) => $"{prefix}category-{Code}";
 
     internal string TagStyle { get; set; }
 

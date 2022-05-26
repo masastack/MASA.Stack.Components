@@ -36,5 +36,5 @@ public partial class App
 
 public partial class App
 {
-    public string TagId(string categoryCode) => $"category-{categoryCode}-app-{Code}";
+    public string TagId(string categoryCode, string? prefix) => $"{prefix}category-{categoryCode}-app-{Code}";
 }

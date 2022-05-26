@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
 
 <MExpansionPanel Class="app"
-                 Id="@App.TagId(CategoryCode)"
+                 Id="@App.TagId(CategoryCode, ExpansionWrapper?.TagIdPrefix)"
                  Value="@App.Code"
                  Readonly="InPreview">
     <MExpansionPanelHeader Class="masa-text-highlight-1 mb-0">
