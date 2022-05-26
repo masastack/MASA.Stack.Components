@@ -2,22 +2,19 @@
 
 <CascadingValue Value="this">
     @ChildContent
-    <div Class="@($"d-flex flex-column {Class}")" Style="@Style">
-        @if (Tabs!.Count > 0)
-        {
-            <LabeledRadioGroup Dense="Dense"
-                               Class="@TabsClass"
-                               Style="@($"width: fit-content {TabsStyle}")"
-                               TValue="StringNumber"
-                               Value="TabIndex"
-                               ValueChanged="TabChanged">
-                @for (var i = 0; i < Tabs.Count; i++)
-                {
-                    var header = Tabs[i];
-                    <LabeledRadio Value="@((StringNumber)i)" MinWidth="@TabMinWidth">@header</LabeledRadio>
-                }
-            </LabeledRadioGroup>
-        }
+    <div Class="@($"d-flex flex-column {AlignItems} {Class}")" Style="@Style">
+        <LabeledRadioGroup Dense="Dense"
+                           Class="@TabsClass"
+                           Style="@($"width: fit-content {TabsStyle}")"
+                           TValue="StringNumber"
+                           Value="TabIndex"
+                           ValueChanged="TabChanged">
+            @for (var i = 0; i < Tabs!.Count; i++)
+            {
+                var header = Tabs[i];
+                <LabeledRadio Value="@((StringNumber)i)" MinWidth="@TabMinWidth">@header</LabeledRadio>
+            }
+        </LabeledRadioGroup>
 
         <MWindow @bind-Value="TabIndex"
                  Class="@($"full-width mx-1 {ItemsClass}")"
@@ -43,6 +40,12 @@
 
     [Parameter]
     public string? ItemsStyle { get; set; }
+
+    [Parameter]
+    public bool Left { get; set; }
+
+    [Parameter]
+    public bool Right { get; set; }
 
     [Parameter]
     public string? TabsClass { get; set; }
@@ -73,6 +76,24 @@
     public EventCallback<StringNumber> TabIndexChanged { get; set; }
 
     List<ElevationTabItem> _elevationTabItems = new();
+
+    private string AlignItems
+    {
+        get
+        {
+            if (Left)
+            {
+                return "align-start";
+            }
+
+            if (Right)
+            {
+                return "align-end";
+            }
+
+            return "align-center";
+        }
+    }
 
     protected override void OnParametersSet()
     {
