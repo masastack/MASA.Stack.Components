@@ -26,6 +26,9 @@ namespace Masa.Stack.Components.GlobalNavigations
         [Parameter]
         public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
 
+        [Parameter] 
+        public string? TagIdPrefix { get; set; }
+
         private int _activeCategoryIndex;
         private bool _initValuesDic;
         private bool _fromCheckbox;
