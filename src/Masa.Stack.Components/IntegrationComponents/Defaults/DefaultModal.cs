@@ -24,9 +24,9 @@ public class DefaultModal : PModal
         }
 
         HeaderClass ??= string.Empty;
-        if (!HeaderClass.Contains("pa-6 font-20-bold neutral-text-emphasis-secondary"))
+        if (!HeaderClass.Contains("pa-6 font-20-bold default-text-emphasis-secondary"))
         {
-            HeaderClass += " pa-6 font-20-bold neutral-text-emphasis-secondary";
+            HeaderClass += " pa-6 font-20-bold default-text-emphasis-secondary";
         }
 
         ActionsClass ??= string.Empty;

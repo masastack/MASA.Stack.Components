@@ -1,4 +1,8 @@
-﻿.masa .primary {
+﻿/*
+    color of background
+*/
+
+.masa .primary {
     background-color: #4318FF !important;
 }
 
@@ -20,6 +24,30 @@
 
 .masa .primary-lighten {
     background-color: #ECE8FF !important;
+}
+
+.masa .default-hell {
+    background-color: #000000 !important;
+}
+
+.masa .default-emphasis {
+    background-color: #1B2559 !important;
+}
+
+.masa .default-emphasis-secondary {
+    background-color: #323D6F !important;
+}
+
+.masa .default-regular {
+    background-color: #485585 !important;
+}
+
+.masa .default-regular-secondary {
+    background-color: #7671AB !important;
+}
+
+.masa .default-secondary {
+    background-color: #A3AED0 !important;
 }
 
 .masa .fill {
@@ -78,6 +106,29 @@
     color: #ECE8FF !important;
 }
 
+.masa .default-text-hell {
+    color: #000000 !important;
+}
+
+.masa .default-text-emphasis {
+    color: #1B2559 !important;
+}
+
+.masa .default-text-emphasis-secondary {
+    color: #323D6F !important;
+}
+
+.masa .default-text-regular {
+    color: #485585 !important;
+}
+
+.masa .default-text-regular-secondary {
+    color: #7671AB !important;
+}
+
+.masa .default-text-secondary {
+    color: #A3AED0 !important;
+}
 
 .masa .fill--text {
     color: #FFFFFF !important;
@@ -105,30 +156,6 @@
 
 .masa .fill--text-overlay {
     color: #141726 !important;
-}
-
-.masa .neutral-text-secondary {
-    color: #A3AED0 !important;
-}
-
-.masa .neutral-text-regular-secondary {
-    color: #7671AB !important;
-}
-
-.masa .neutral-text-regular {
-    color: #485585 !important;
-}
-
-.masa .neutral-text-emphasis-secondary {
-    color: #323D6F !important;
-}
-
-.masa .neutral-text-emphasis {
-    color: #1B2559 !important;
-}
-
-.masa .neutral-text-hell {
-    color: #000000 !important;
 }
 
 /*
@@ -166,8 +193,8 @@
 }
 
 .masa .font-16 {
-    font-size: 14px !important;
-    font-weight: 700 !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
 }
 
 .masa .font-16-medium {

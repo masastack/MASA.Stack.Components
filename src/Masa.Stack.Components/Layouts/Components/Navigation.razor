@@ -37,10 +37,10 @@
                     <MListItem Ripple=false Class="mb-4" ActiveClass="fill-lighten-1" Href="@nav.Url">
                         <ItemContent>
                             <MListItemIcon>
-                                <MIcon Color="@(context.Active ? "primary" : "neutral-lighten-2")" Size=20>@nav.Icon</MIcon>
+                                <MIcon Color="@(context.Active ? "primary" : "default-lighten-2")" Size=20>@nav.Icon</MIcon>
                             </MListItemIcon>
                             <MListItemContent>
-                                <div class="ml-1 text-truncate white-space:nowrap @(context.Active ? "text-subtitle" : "text-body neutral-lighten-2--text")">
+                                <div class="ml-1 text-truncate white-space:nowrap @(context.Active ? "text-subtitle" : "text-body default-lighten-2--text")">
                                     @T(nav.Name)
                                 </div>
                             </MListItemContent>
@@ -63,7 +63,7 @@
                                 <MListItem Ripple=false ActiveClass="fill-lighten-1" Link Href="@navChild.Url">
                                     <ItemContent>
                                         <MListItemContent>
-                                            <div class="text-truncate white-space:nowrap @(context.Active ? "text-subtitle2" : "text-btn neutral-lighten-2--text")">@T(navChild.Name)</div>
+                                            <div class="text-truncate white-space:nowrap @(context.Active ? "text-subtitle2" : "text-btn default-lighten-2--text")">@T(navChild.Name)</div>
                                         </MListItemContent>
                                     </ItemContent>
                                 </MListItem>

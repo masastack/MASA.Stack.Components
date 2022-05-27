@@ -111,10 +111,10 @@
             switch (Level)
             {
                 case 1:
-                    return "neutral-text-hell";
+                    return "default-text-hell";
                 case 2:
                 case 3:
-                    return "neutral-text-emphasis";
+                    return "default-text-emphasis";
                 default:
                     return string.Empty;
             }
@@ -132,19 +132,19 @@
             switch (Level)
             {
                 case 1:
-                    css[1] = "neutral-text-regular-secondary font-14-bold";
+                    css[1] = "default-text-regular-secondary font-14-bold";
                     css[2] = "nav-item";
-                    css[3] = hover ? "font-14-bold neutral-text-hell fill-hover" : "";
+                    css[3] = hover ? "font-14-bold default-text-hell fill-hover" : "";
                     break;
                 case 2:
-                    css[1] = "neutral-text-secondary font-14";
+                    css[1] = "default-text-secondary font-14";
                     css[2] = "sub-nav-item";
-                    css[3] = hover ? "font-14-medium neutral-text-emphasis fill-hover" : "";
+                    css[3] = hover ? "font-14-medium default-text-emphasis fill-hover" : "";
                     break;
                 default:
-                    css[1] = "neutral-text-secondary font-14";
+                    css[1] = "default-text-secondary font-14";
                     css[2] = "action-item";
-                    css[3] = hover ? "font-14-medium neutral-text-emphasis fill-hover" : "";
+                    css[3] = hover ? "font-14-medium default-text-emphasis fill-hover" : "";
                     break;
             }
 

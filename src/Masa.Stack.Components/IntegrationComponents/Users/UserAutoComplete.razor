@@ -18,7 +18,7 @@
                Style="@($"width:340px;height:40px;{Style}")"
                Class="@($"{Class} rounded-2")">
     <PrependInnerContent>
-        <MIcon Size=16 Class="mr-2 neutral-lighten-1--text">mdi-magnify</MIcon>
+        <MIcon Size=16 Class="mr-2 default-lighten-1--text">mdi-magnify</MIcon>
     </PrependInnerContent>
     <ItemContent Context="data">
         <div class="d-flex" style="height:48px;">
@@ -27,12 +27,12 @@
             </MAvatar>
             <div class="ma-auto ml-2">
                 <div class="d-flex">
-                    <span class="text-btn neutral-lighten-1--text">@data.Item.Name</span>
+                    <span class="text-btn default-lighten-1--text">@data.Item.Name</span>
                     @if (string.IsNullOrEmpty(data.Item.Name) is false && string.IsNullOrEmpty(data.Item.PhoneNumber) is false)
                     {
                         <div class="my-auto mx-2" style="width: 0px;height: 8px;border: 1px solid #E2E7F4;"></div>
                     }
-                    <span class="text-btn neutral-lighten-1--text">@data.Item.PhoneNumber</span>
+                    <span class="text-btn default-lighten-1--text">@data.Item.PhoneNumber</span>
                 </div>
                 <div class="d-flex">
                     <span class="text-overline" style="text-transform: none !important;">@data.Item.Account</span>

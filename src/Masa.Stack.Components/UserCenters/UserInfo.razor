@@ -17,14 +17,14 @@
                 </MAvatar>
             }
             <PBlockText Primary="@Data?.Name"
-                        PrimaryClass="font-20-bold neutral-text-emphasis-secondary"
+                        PrimaryClass="font-20-bold default-text-emphasis-secondary"
                         Secondary="@Data?.Account"
-                        SecondaryClass="neutral-text-secondary font-14 full-width">
+                        SecondaryClass="default-text-secondary font-14 full-width">
             </PBlockText>
         </div>
         <div class="auths">
             <MDivider>
-                <span class="neutral-text-secondary font-12">@T("Auths")</span>
+                <span class="default-text-secondary font-12">@T("Auths")</span>
             </MDivider>
             <div class="d-flex" style="justify-content: space-around; flex-wrap: wrap;">
                 <AuthIcon OnClick="() => _idCardValidateModal?.Open()">mdi-card-account-details-outline</AuthIcon>
@@ -43,8 +43,8 @@
             <MWindowItem>
                 <div class="d-flex mb-6" style="justify-content: space-between;">
                     <PBlockText Primary="@Data?.DisplayName"
-                                PrimaryClass="font-20-bold neutral-text-regular"
-                                SecondaryClass="font-12-medium neutral-text-secondary d-flex"
+                                PrimaryClass="font-20-bold default-text-regular"
+                                SecondaryClass="font-12-medium default-text-secondary d-flex"
                                 SecondaryStyle="align-items:center;">
                         <SecondaryContent>
                             @Data?.GenderText
@@ -56,22 +56,22 @@
                         </SecondaryContent>
                     </PBlockText>
                     <MButton Icon Small OnClick="() => ChangeWindowValue(1)">
-                        <MIcon Size="15" Class="neutral-text-regular">mdi-pencil</MIcon>
+                        <MIcon Size="15" Class="default-text-regular">mdi-pencil</MIcon>
                     </MButton>
                 </div>
                 <dl class="d-flex mb-6" style="align-items: start; justify-content: space-between">
-                    <dt class="d-inline-flex font-14 neutral-text-regular">
-                        <MIcon Class="neutral-text-secondary mr-2" Size="13">mdi-phone</MIcon>
+                    <dt class="d-inline-flex font-14 default-text-regular">
+                        <MIcon Class="default-text-secondary mr-2" Size="13">mdi-phone</MIcon>
                         <span>@Data?.PhoneNumber</span>
                     </dt>
-                    <dd class="font-12 neutral-text-secondary">@T("PhoneNumber")</dd>
+                    <dd class="font-12 default-text-secondary">@T("PhoneNumber")</dd>
                 </dl>
                 <dl class="d-flex mb-6" style="align-items: start; justify-content: space-between">
-                    <dt class="d-inline-flex font-14 neutral-text-regular">
-                        <MIcon Class="neutral-text-secondary mr-2" Size="13">mdi-email</MIcon>
+                    <dt class="d-inline-flex font-14 default-text-regular">
+                        <MIcon Class="default-text-secondary mr-2" Size="13">mdi-email</MIcon>
                         <span>@Data?.Email</span>
                     </dt>
-                    <dd class="font-12 neutral-text-secondary">@T("Email")</dd>
+                    <dd class="font-12 default-text-secondary">@T("Email")</dd>
                 </dl>
             </MWindowItem>
             <MWindowItem>
@@ -118,12 +118,12 @@
                      Style="overflow: auto;height: calc(100% - 216px);"
                      ItemClass="@(_ => "mb-6")"
                      ItemStyle="@(_ => "justify-content: space-between;")"
-                     TermClass="@(_ => "font-14 neutral-text-regular")"
-                     DetailClass="@(_ => "font-12 neutral-text-secondary")">
+                     TermClass="@(_ => "font-14 default-text-regular")"
+                     DetailClass="@(_ => "font-12 default-text-secondary")">
             <TermContent>
                 @{
                     var term = (ValueTuple<string, string>)context.Value;
-                    <MIcon Size="13" Class="neutral-text-secondary mr-2">@term.Item1</MIcon>
+                    <MIcon Size="13" Class="default-text-secondary mr-2">@term.Item1</MIcon>
                     <span>@term.Item2</span>
                 }
             </TermContent>
