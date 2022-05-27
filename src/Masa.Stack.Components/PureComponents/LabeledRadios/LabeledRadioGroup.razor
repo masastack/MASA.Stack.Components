@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components
+@using BlazorComponent.Web
 @typeparam TValue
 
 <MButtonGroup Value="_selectedKey"
@@ -8,7 +9,8 @@
               Dense="@Dense"
               Class="@($"labeled-radio-group {Class}")"
               Style="@ComputedStyle"
-              ActiveClass="@ActiveClass">
+              ActiveClass="@ActiveClass"
+              @ref="ButtonGroup">
     <div class="labeled-radio-slider-wrapper" style="@CurrentHeightStyle;@CurrentWidthStyle;@LeftStyle">
         <div class="labeled-radio-slider white" style="@($"border-radius:{BorderRadius}px")"></div>
     </div>
@@ -21,6 +23,9 @@
 
     [Inject]
     private IJSRuntime Js { get; set; } = null!;
+
+    [Inject]
+    private JsDotNetInvoker JsDotNetInvoker { get; set; } = null!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -50,6 +55,8 @@
 
     private TValue? _prevValue;
     private bool _valueUpdatedByInternal;
+
+    private MButtonGroup? ButtonGroup { get; set; }
 
     private List<LabeledRadio<TValue>> Items { get; set; } = new();
 
@@ -86,15 +93,17 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender && Items.Any() && _selectedKey is not null && CurrentItemWidth == 0)
+        if (firstRender && ButtonGroup?.Ref.Context is not null)
         {
-            // 在WindowItem等懒加载的组件中使用时需要轮询等待子元素是否已经被完全加载
-            // 然后才可以通过ref去拿高宽。
-            // TODO: 此处需要优化
-            await Task.Delay(300);
-            await SelectedKeyChanged(_selectedKey);
-            StateHasChanged();
+            await JsDotNetInvoker.IntersectionObserver(ButtonGroup.Ref.GetSelector(), Intersection);
         }
+    }
+
+    private async Task Intersection()
+    {
+        await SelectedKeyChanged(_selectedKey);
+
+        StateHasChanged();
     }
 
     private async Task SelectedKeyChanged(StringNumber? val)
