@@ -32,6 +32,8 @@ public partial class ExpansionApp
 
     private bool IsCheckable => Checkable && !InPreview;
 
+    internal readonly string ActionCodeFormat = "nav#{0}__action#{1}";
+
     protected override void OnParametersSet()
     {
         FavoriteNavs ??= new();
@@ -40,10 +42,30 @@ public partial class ExpansionApp
         {
             if (ExpansionWrapper is not null && ExpansionWrapper.Value.Any() && (!_initValues || !_fromCheckbox))
             {
-                _initValues = true;
-
                 var categoryAppNavs = ExpansionWrapper.Value.Where(v => v.Category == CategoryCode && v.App == App.Code).ToList();
-                _values = categoryAppNavs.Select(c => (StringNumber)c.Nav).Where(n => n is not null).ToList();
+
+                if (!_initValues)
+                {
+                    _categoryAppNavs = categoryAppNavs;
+                    _initValues = true;
+                }
+
+                _values = categoryAppNavs.Select(c =>
+                {
+                    StringNumber val = null;
+
+                    if (c.Action is not null)
+                    {
+                        val = string.Format(ActionCodeFormat, c.Nav, c.Action);
+                    }
+                    else if (c.Nav is not null)
+                    {
+                        val = c.Nav;
+                    }
+
+                    return val;
+                }).Where(n => n is not null).ToList();
+
                 AppChecked = categoryAppNavs.Any(c => c.Nav is null);
             }
 
@@ -59,7 +81,21 @@ public partial class ExpansionApp
         _values = v.Where(u => u.Value is not null).ToList();
 
         _categoryAppNavs = _values
-                           .Select(u => new CategoryAppNav(CategoryCode, App.Code, u.ToString()))
+                           .Select(u =>
+                           {
+                               var val = u.ToString();
+
+                               if (val.Contains("__action#"))
+                               {
+                                   var navActions = val.Split("__action#");
+                                   var navCode = navActions[0].Replace("nav#", "");
+                                   var actionCode = navActions[1];
+
+                                   return new CategoryAppNav(CategoryCode, App.Code, navCode, actionCode);
+                               }
+
+                               return new CategoryAppNav(CategoryCode, App.Code, val);
+                           })
                            .ToList();
 
         if (AppChecked)
