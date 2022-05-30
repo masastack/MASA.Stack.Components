@@ -78,6 +78,150 @@
     background-color: #141726 !important;
 }
 
+.masa .success {
+    background-color: #00B42A !important;
+}
+
+.masa .success-hover {
+    background-color: #23C343 !important;
+}
+
+.masa .success-clicked {
+    background-color: #009A29 !important;
+}
+
+.masa .success-disabled {
+    background-color: #7BE188 !important;
+}
+
+.masa .success-special {
+    background-color: #AFF0B5 !important;
+}
+
+.masa .success-lighten {
+    background-color: #E8FFEA !important;
+}
+
+.masa .remind {
+    background-color: #FF7D00 !important;
+}
+
+.masa .remind-hover {
+    background-color: #FF9A2E !important;
+}
+
+.masa .remind-clicked {
+    background-color: #D25F00 !important;
+}
+
+.masa .remind-disabled {
+    background-color: #FFCF8B !important;
+}
+
+.masa .remind-special {
+    background-color: #FFE4BA !important;
+}
+
+.masa .remind-lighten {
+    background-color: #FFF7E8 !important;
+}
+
+.masa .warning {
+    background-color: #FF5252 !important;
+}
+
+.masa .warning-hover {
+    background-color: #FF8A80 !important;
+}
+
+.masa .warning-clicked {
+    background-color: #B71C1C !important;
+}
+
+.masa .warning-disabled {
+    background-color: #FBACA3 !important;
+}
+
+.masa .warning-special {
+    background-color: #FDCDC5 !important;
+}
+
+.masa .warning-lighten {
+    background-color: #FFECE8 !important;
+}
+
+.masa .info {
+    background-color: #37A7FF !important;
+}
+
+.masa .info-hover {
+    background-color: #5FB9FF !important;
+}
+
+.masa .info-clicked {
+    background-color: #2C86CC !important;
+}
+
+.masa .info-disabled {
+    background-color: #9BD3FF !important;
+}
+
+.masa .info-special {
+    background-color: #D7EDFF !important;
+}
+
+.masa .info-lighten {
+    background-color: #EBF6FF !important;
+}
+
+.masa .yellow {
+    background-color: #FFB547 !important;
+}
+
+.masa .yellow-hover {
+    background-color: #FFC46C !important;
+}
+
+.masa .yellow-clicked {
+    background-color: #CC9139 !important;
+}
+
+.masa .yellow-disabled {
+    background-color: #FFDAA3 !important;
+}
+
+.masa .yellow-special {
+    background-color: #FFF0DA !important;
+}
+
+.masa .yellow-lighten {
+    background-color: #FFF8ED !important;
+}
+
+.masa .green {
+    background-color: #05CD99 !important;
+}
+
+.masa .green-hover {
+    background-color: #37D7AD !important;
+}
+
+.masa .green-clicked {
+    background-color: #04A47A !important;
+}
+
+.masa .green-disabled {
+    background-color: #82E6CC !important;
+}
+
+.masa .green-special {
+    background-color: #CDF5EB !important;
+}
+
+.masa .green-lighten {
+    background-color: #E6FAF5 !important;
+}
+
 /*
     color of text
 */
@@ -158,10 +302,16 @@
     color: #141726 !important;
 }
 
+.masa .green--text {
+    color: #05CD99 !important;
+}
+
+.masa .green--text-lighten {
+    color: #E6FAF5 !important;
+}
 /*
     font
 */
-
 .masa .font-10 {
     font-size: 10px !important;
     font-weight: 400 !important;
