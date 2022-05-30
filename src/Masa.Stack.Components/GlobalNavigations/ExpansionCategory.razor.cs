@@ -21,6 +21,9 @@ public partial class ExpansionCategory
     public bool Checkable { get; set; }
 
     [Parameter]
+    public bool CheckStrictly { get; set; }
+
+    [Parameter]
     public bool InPreview { get; set; }
 
     [Parameter]
@@ -31,6 +34,7 @@ public partial class ExpansionCategory
 
     private bool _initCheckbox;
     private bool _fromCheckbox;
+    private Dictionary<string, List<CategoryAppNav>> _valuesDic = new();
 
     private bool CategoryChecked { get; set; }
 
@@ -79,19 +83,45 @@ public partial class ExpansionCategory
 
         CategoryChecked = v;
 
-        CategoryAppNav categoryAppNav = new(Category.Code);
-
         var key = $"category_{Category.Code}";
-        var values = new List<CategoryAppNav>();
+
+        var categoryAppNavs = new List<CategoryAppNav>();
 
         if (CategoryChecked)
         {
-            values.Add(categoryAppNav);
-            await ExpansionWrapper!.UpdateValues(key, values);
+            categoryAppNavs.Add(new CategoryAppNav(Category.Code));
+        }
+
+        await ExpansionWrapper!.UpdateValues(key, categoryAppNavs);
+
+        foreach (var app in Category.Apps)
+        {
+            var appKey = $"{key}_app_{app.Code}";
+
+            categoryAppNavs = new List<CategoryAppNav>();
+
+            if (!CheckStrictly && CategoryChecked)
+            {
+                categoryAppNavs.Add(new CategoryAppNav(Category.Code, app.Code));
+
+                categoryAppNavs.AddRange(FlattenNavs(app.Navs, true).Select(nav => nav.IsAction
+                    ? new CategoryAppNav(Category.Code, app.Code, nav.ParentCode, nav.Code)
+                    : new CategoryAppNav(Category.Code, app.Code, nav.Code)));
+            }
+
+            await ExpansionWrapper!.UpdateValues(appKey, categoryAppNavs);
+        }
+    }
+
+    internal async Task UpdateValues(string key, List<CategoryAppNav> value)
+    {
+        if (_valuesDic.TryGetValue(key, out _))
+        {
+            _valuesDic[key] = value;
         }
         else
         {
-            await ExpansionWrapper!.UpdateValues(key, values);
+            _valuesDic.Add(key, value);
         }
     }
 
@@ -105,5 +135,31 @@ public partial class ExpansionCategory
         category.TagStyle = $"position:relative; height:{height}px;";
 
         StateHasChanged();
+    }
+
+    private List<Nav> FlattenNavs(List<Nav> tree, bool excludeNavHasChildren = false)
+    {
+        var res = new List<Nav>();
+
+        foreach (var nav in tree)
+        {
+            if (!(nav.HasChildren && excludeNavHasChildren))
+            {
+                res.Add(nav);
+            }
+
+            if (nav.HasChildren)
+            {
+                res.AddRange(FlattenNavs(nav.Children, excludeNavHasChildren));
+            }
+
+            if (nav.HasActions)
+            {
+                nav.Actions.ForEach(a => a.ParentCode ??= nav.Code);
+                res.AddRange(nav.Actions);
+            }
+        }
+
+        return res;
     }
 }

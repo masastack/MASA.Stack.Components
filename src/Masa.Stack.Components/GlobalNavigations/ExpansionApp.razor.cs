@@ -21,6 +21,9 @@ public partial class ExpansionApp
     public bool Checkable { get; set; }
 
     [Parameter]
+    public bool CheckStrictly { get; set; }
+
+    [Parameter]
     public bool InPreview { get; set; }
 
     private bool _initValues;
@@ -40,13 +43,13 @@ public partial class ExpansionApp
 
         if (Checkable)
         {
-            if (ExpansionWrapper is not null && ExpansionWrapper.Value.Any() && (!_initValues || !_fromCheckbox))
+            if (ExpansionWrapper?.Value != null && (!_initValues || !_fromCheckbox))
             {
                 var categoryAppNavs = ExpansionWrapper.Value.Where(v => v.Category == CategoryCode && v.App == App.Code).ToList();
 
+                    _categoryAppNavs = categoryAppNavs;
                 if (!_initValues)
                 {
-                    _categoryAppNavs = categoryAppNavs;
                     _initValues = true;
                 }
 
@@ -78,6 +81,9 @@ public partial class ExpansionApp
 
     private async Task ValuesChanged(List<StringNumber> v)
     {
+        // TODO: select the nav and select the children and actions
+        // TODO: there is a bug in ItemGroup
+        
         _values = v.Where(u => u.Value is not null).ToList();
 
         _categoryAppNavs = _values
@@ -110,15 +116,31 @@ public partial class ExpansionApp
     {
         AppChecked = v;
 
-        var categoryAppNav = new CategoryAppNav(CategoryCode, App.Code);
+        List<CategoryAppNav> categoryAppNavs = new();
 
-        if (AppChecked)
+        if (!CheckStrictly)
         {
-            _categoryAppNavs.Add(categoryAppNav);
+            var flattenedNavs = FlattenNavs(App.Navs, true).Select(nav => nav.IsAction
+                ? new CategoryAppNav(CategoryCode, App.Code, nav.ParentCode, nav.Code)
+                : new CategoryAppNav(CategoryCode, App.Code, nav.Code));
+            categoryAppNavs.AddRange(flattenedNavs);
         }
-        else
+
+        categoryAppNavs.Add(new CategoryAppNav(CategoryCode, App.Code));
+
+        foreach (var categoryAppNav in categoryAppNavs)
         {
-            _categoryAppNavs.Remove(categoryAppNav);
+            if (_categoryAppNavs.Contains(categoryAppNav))
+            {
+                if (!AppChecked)
+                {
+                    _categoryAppNavs.Remove(categoryAppNav);
+                }
+            }
+            else if (AppChecked)
+            {
+                _categoryAppNavs.Add(categoryAppNav);
+            }
         }
 
         await UpdateValues(App.Code, _categoryAppNavs);
@@ -128,7 +150,7 @@ public partial class ExpansionApp
     {
         _fromCheckbox = true;
 
-        var key = $"app_{App.Code}";
+        var key = $"category_{CategoryCode}_app_{App.Code}";
 
         await ExpansionWrapper!.UpdateValues(key, values);
     }
@@ -160,26 +182,26 @@ public partial class ExpansionApp
         GlobalNavigation?.InvokeStateHasChanged();
     }
 
-    private List<Nav> FlattenNavs(List<Nav> tree)
+    private List<Nav> FlattenNavs(List<Nav> tree, bool excludeNavHasChildren = false)
     {
         var res = new List<Nav>();
 
         foreach (var nav in tree)
         {
-            res.Add(nav);
+            if (!(nav.HasChildren && excludeNavHasChildren))
+            {
+                res.Add(nav);
+            }
 
             if (nav.HasChildren)
             {
-                res.AddRange(FlattenNavs(nav.Children));
+                res.AddRange(FlattenNavs(nav.Children, excludeNavHasChildren));
             }
 
             if (nav.HasActions)
             {
-                res.AddRange(nav.Actions!.Select(a => new Nav()
-                {
-                    Code = a.Code,
-                    Name = a.Name
-                }));
+                nav.Actions.ForEach(a => a.ParentCode ??= nav.Code);
+                res.AddRange(nav.Actions);
             }
         }
 
@@ -188,15 +210,14 @@ public partial class ExpansionApp
 
     private bool IsInPreview(Nav nav)
     {
+        if (nav.IsAction)
+        {
+            return InPreview && !_values.Contains(nav.Code);
+        }
+
         var flattenNavs = FlattenNavs(new List<Nav>() { nav })
             .Select(item => (StringNumber)item.Code);
 
         return InPreview && !_values.Intersect(flattenNavs).Any();
-    }
-
-
-    private bool IsInPreview(NavAction action)
-    {
-        return InPreview && !_values.Contains(action.Code);
     }
 }
