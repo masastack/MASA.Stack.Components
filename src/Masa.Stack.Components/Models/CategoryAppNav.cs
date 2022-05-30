@@ -8,6 +8,8 @@ public record CategoryAppNav
 
     public string? Nav { get; }
 
+    public string? Action { get; }
+
     public CategoryAppNav()
     {
     }
@@ -22,8 +24,13 @@ public record CategoryAppNav
         App = app;
     }
 
-    public CategoryAppNav(string category, string app, string? nav) : this(category, app)
+    public CategoryAppNav(string category, string app, string nav) : this(category, app)
     {
         Nav = nav;
+    }
+
+    public CategoryAppNav(string category, string app, string nav, string action) : this(category, app, nav)
+    {
+        Action = action;
     }
 }

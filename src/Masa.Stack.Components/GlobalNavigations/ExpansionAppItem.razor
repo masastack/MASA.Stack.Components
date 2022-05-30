@@ -56,7 +56,7 @@
             <MListItem @attributes="@context.Attrs"
                        Class="@GetClass(context.Hover)"
                        Disabled="InPreview"
-                       Value="@navAction.Code"
+                       Value="@string.Format(ExpansionApp.ActionCodeFormat, NavCode, navAction.Code)"
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
@@ -87,6 +87,9 @@
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
 
+    [CascadingParameter]
+    public ExpansionApp ExpansionApp { get; set; } = null!;
+
     [Parameter, EditorRequired]
     public TData? Data { get; set; }
 
@@ -98,6 +101,9 @@
 
     [Parameter, EditorRequired]
     public int Level { get; set; }
+
+    [Parameter]
+    public string? NavCode { get; set; }
 
     [Parameter]
     public EventCallback ToggleFavorite { get; set; }
