@@ -9,12 +9,14 @@
 
         <CascadingValue Value="this">
             <ExpansionCategory Category="category"
-                               Checkable="@Checkable"
+                               Checkable="Checkable"
+                               CheckStrictly="CheckStrictly"
                                InPreview="InPreview"
                                Context="app">
                 <ExpansionApp App="app"
                               CategoryCode="@category.Code"
-                              Checkable="@Checkable"
+                              CheckStrictly="CheckStrictly"
+                              Checkable="Checkable"
                               InPreview="InPreview"
                               FavoriteNavs="@FavoriteNavs" />
             </ExpansionCategory>
