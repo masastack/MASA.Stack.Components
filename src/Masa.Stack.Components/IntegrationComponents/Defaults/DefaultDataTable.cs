@@ -9,8 +9,12 @@ public class DefaultDataTable<TItem> : MDataTable<TItem>
     {
         HideDefaultFooter = true;
         await base.SetParametersAsync(parameters);
-        Class ??= "";
-        Class += "table-border-none";
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        Class += " table-border-none";
     }
 }
 
