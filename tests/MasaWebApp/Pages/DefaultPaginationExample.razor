@@ -1,0 +1,8 @@
+﻿@page "/defaultPaginationExample"
+
+<DefaultPagination Class="mt-5" @bind-Page="Page" @bind-PageSize=PageSize Total=100 />
+
+@code{
+    int Page { get; set; } = 1;
+    int PageSize { get; set; } = 10;
+}

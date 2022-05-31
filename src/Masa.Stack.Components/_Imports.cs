@@ -10,3 +10,5 @@ global using Masa.BuildingBlocks.SearchEngine.AutoComplete;
 global using Masa.BuildingBlocks.SearchEngine.AutoComplete.Options;
 global using Masa.Stack.Components.GlobalNavigations;
 global using Masa.Stack.Components.GlobalUsers;
+global using Microsoft.AspNetCore.Components.Rendering;
+global using Microsoft.AspNetCore.Components.RenderTree;
