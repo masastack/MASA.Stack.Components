@@ -18,6 +18,8 @@ public class DefaultTextField<TValue> : MTextField<TValue>
 
     protected override void OnParametersSet()
     {
+        base.OnParametersSet();
+
         if (Dense && Height == 48)
         {
             Class ??= string.Empty;
