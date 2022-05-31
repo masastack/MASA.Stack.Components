@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Auth.Web.Admin.Rcl.Pages.Component;
+namespace Masa.Stack.Components;
 
 public partial class Upload
 {
@@ -63,6 +63,8 @@ public partial class Upload
 
     public InputFile? InputFileRef { get; set; }
 
+    public ElementReference? ElementReference2 { get; set; }
+
     public IReadOnlyList<IBrowserFile> Files { get; set; } = new List<IBrowserFile>();
 
     IJSObjectReference? UploadJs { get; set; }
@@ -71,7 +73,7 @@ public partial class Upload
     {
         if (firstRender)
         {
-            UploadJs = await Js!.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Auth.Web.Admin.Rcl/js/upload.js");
+            UploadJs = await Js!.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Stack.Components/js/upload/upload.js");
         }
     }
 

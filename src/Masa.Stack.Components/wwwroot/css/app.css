@@ -414,3 +414,18 @@ body, .masa-stack-components {
     border-bottom: 0px !important;
     box-shadow: none;
 }
+
+/*
+    uploadImage
+*/
+
+.masa-stack-components .uploadImage {
+    cursor: pointer;
+}
+
+.masa-stack-components .uploadImage input[type=file] {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    max-width: 0;
+}

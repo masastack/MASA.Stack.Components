@@ -80,7 +80,8 @@ public partial class Layout : IDisposable
                 new Nav("defaultButtonExample", "defaultButton", "mdi-numeric-1-box-outline", "/defaultButtonExample", 2, "father"),
                 new Nav("defaultDataTableExample", "defaultDataTable", "mdi-numeric-1-box-outline", "/defaultDataTableExample", 2, "father"),
                 new Nav("defaultIconExample", "defaultIcon", "mdi-numeric-1-box-outline", "/defaultIconExample", 2, "father"),
-                new Nav("defaultPaginationExample", "defaultPagination", "mdi-numeric-1-box-outline", "/defaultPaginationExample", 2, "father")
+                new Nav("defaultPaginationExample", "defaultPagination", "mdi-numeric-1-box-outline", "/defaultPaginationExample", 2, "father"),
+                new Nav("uploadImageExample", "uploadImage", "mdi-numeric-1-box-outline", "/uploadImageExample", 2, "father")
 
             }),
         };

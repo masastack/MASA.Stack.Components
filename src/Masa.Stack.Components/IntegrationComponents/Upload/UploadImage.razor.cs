@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Auth.Web.Admin.Rcl.Pages.Component;
+namespace Masa.Stack.Components;
 
 public partial class UploadImage : Upload
 {
@@ -18,7 +18,7 @@ public partial class UploadImage : Upload
     public uint PreviewImageHeight { get; set; }
 
     [Parameter]
-    public string Icon { get; set; } = "./_content/Masa.Auth.Web.Admin.Rcl/img/upload/upload.svg";
+    public string Icon { get; set; } = "./_content/Masa.Stack.Components/img/upload/upload.svg";
 
     [Parameter]
     public bool Avatar { get; set; }
