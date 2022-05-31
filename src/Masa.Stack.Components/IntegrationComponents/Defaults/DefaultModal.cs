@@ -17,6 +17,8 @@ public class DefaultModal : PModal
 
     protected override void OnParametersSet()
     {
+        base.OnParametersSet();
+
         Class ??= string.Empty;
         if (!Class.Contains("br-5"))
         {
