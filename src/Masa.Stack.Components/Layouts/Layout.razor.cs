@@ -78,8 +78,7 @@ public partial class Layout : IDisposable
                 new Nav("extend", "extend", "mdi-numeric-1-box-outline", "/extend", 2, "father"),
                 new Nav("userAutoCompleteExample", "userAutoComplete", "mdi-numeric-1-box-outline", "/userAutoCompleteExample", 2, "father"),
                 new Nav("defaultButtonExample", "defaultButton", "mdi-numeric-1-box-outline", "/defaultButtonExample", 2, "father"),
-                new Nav("defaultDataTableExample", "defaultDataTable", "mdi-numeric-1-box-outline", "/defaultDataTableExample", 2, "father"),
-                new Nav("defaultIconExample", "defaultIcon", "mdi-numeric-1-box-outline", "/defaultIconExample", 2, "father"),
+                new Nav("defaultDataTableExample", "defaultDataTable", "mdi-numeric-1-box-outline", "/defaultDataTableExample", 2, "father"),              
                 new Nav("paginationExample", "pagination", "mdi-numeric-1-box-outline", "/defaultPaginationExample", 2, "father"),
                 new Nav("uploadImageExample", "uploadImage", "mdi-numeric-1-box-outline", "/uploadImageExample", 2, "father")
 
