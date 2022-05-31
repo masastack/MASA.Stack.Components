@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public partial class Upload
+public partial class Upload : IAsyncDisposable
 {
     [Inject]
     public IJSRuntime? Js { get; set; }
@@ -128,6 +128,11 @@ public partial class Upload
             Value = values.FirstOrDefault();
             if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(Value);
         }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (UploadJs is not null) await UploadJs.DisposeAsync();
     }
 }
 

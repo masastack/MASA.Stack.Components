@@ -8,13 +8,10 @@ public class DefaultButton : MButton
     [Parameter]
     public bool Medium { get; set; }
 
-    protected override void OnInitialized()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
-        base.OnInitialized();
-        if(Class is null || Class.Contains("primary") is false)
-        {
-            Class += " primary";
-        }
+        Color = "primary";
+        await base.SetParametersAsync(parameters);
     }
 
     protected override void SetComponentClass()

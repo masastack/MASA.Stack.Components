@@ -5,9 +5,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services, string i18nDirectoryPath)
     {
         services.AddMasaI18nForServer(i18nDirectoryPath);
-        services.AddMasaBlazor(bd =>
+        services.AddMasaBlazor(builder =>
         {
-            bd.UseTheme(option =>
+            builder.UseTheme(option =>
             {
                 option.Primary = "#4318FF";
                 option.Accent = "#4318FF";
@@ -23,12 +23,12 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static async Task<IServiceCollection> AddMasaStackComponentsForWasm(this IServiceCollection services, string i18nDirectoryPath)
+    public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services, string i18nDirectoryPath)
     {
         await services.AddMasaI18nForWasmAsync(i18nDirectoryPath);
-        services.AddMasaBlazor(bd =>
+        services.AddMasaBlazor(builder =>
         {
-            bd.UseTheme(option =>
+            builder.UseTheme(option =>
             {
                 option.Primary = "#4318FF";
                 option.Accent = "#4318FF";

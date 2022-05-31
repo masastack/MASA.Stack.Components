@@ -26,11 +26,12 @@ public partial class UploadImage : Upload
     [Parameter]
     public uint Size { get; set; }
 
-    protected override void OnInitialized()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
         Accept = "image/*";
         OnInputFileChanged = "GetPreviewImageUrls";
         Class = "mr-4";
+        await base.SetParametersAsync(parameters);
     }
 
     protected override async Task OnParametersSetAsync()

@@ -5,11 +5,12 @@ namespace Masa.Stack.Components;
 
 public class DefaultDataTable<TItem> : MDataTable<TItem>
 {
-    protected override void OnInitialized()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
-        base.OnInitialized();
         HideDefaultFooter = true;
-        Class += "default table-border-none";
+        await base.SetParametersAsync(parameters);
+        Class ??= "";
+        Class += "table-border-none";
     }
 }
 
