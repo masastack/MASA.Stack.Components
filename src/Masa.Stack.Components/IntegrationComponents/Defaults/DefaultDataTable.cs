@@ -14,7 +14,7 @@ public class DefaultDataTable<TItem> : MDataTable<TItem>
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        Class ?? = "";
+        Class ??= "";
         Class += " table-border-none";
     }
 }
