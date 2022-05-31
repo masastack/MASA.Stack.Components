@@ -1,6 +1,6 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
 
-<div class="category" id="@Category.TagId()" @attributes="@Attributes">
+<div class="category" id="@Category.TagId(ExpansionWrapper?.TagIdPrefix)" @attributes="@Attributes">
     <div class="category__header">
         @Category.Name
         @if (Checkable)

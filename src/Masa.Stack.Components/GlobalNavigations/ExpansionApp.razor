@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
 
 <MExpansionPanel Class="app"
-                 Id="@App.TagId(CategoryCode)"
+                 Id="@App.TagId(CategoryCode, ExpansionWrapper?.TagIdPrefix)"
                  Value="@App.Code"
                  Readonly="InPreview">
     <MExpansionPanelHeader Class="masa-text-highlight-1 mb-0">
@@ -54,27 +54,33 @@
 
                                 if (Checkable && subNav.HasActions)
                                 {
-                                    foreach (var action in subNav.Actions!.Where(action => !IsInPreview(action)))
-                                    {
-                                        <ExpansionAppItem Data="@action"
-                                                          Checkable="@Checkable"
-                                                          InPreview="InPreview"
-                                                          Level="3">
-                                        </ExpansionAppItem>
-                                    }
+                                    <CascadingValue Value="this">
+                                        @foreach (var action in subNav.Actions!.Where(action => !IsInPreview(action)))
+                                        {
+                                            <ExpansionAppItem Data="@action"
+                                                              NavCode="@subNav.Code"
+                                                              Checkable="@Checkable"
+                                                              InPreview="InPreview"
+                                                              Level="3">
+                                            </ExpansionAppItem>
+                                        }
+                                    </CascadingValue>
                                 }
                             }
                         }
                         else if (Checkable && nav.HasActions)
                         {
-                            foreach (var action in nav.Actions!.Where(action => !IsInPreview(action)))
-                            {
-                                <ExpansionAppItem Data="@action"
-                                                  Checkable="@Checkable"
-                                                  InPreview="InPreview"
-                                                  Level="3">
-                                </ExpansionAppItem>
-                            }
+                            <CascadingValue Value="this">
+                                @foreach (var action in nav.Actions!.Where(action => !IsInPreview(action)))
+                                {
+                                    <ExpansionAppItem Data="@action"
+                                                      NavCode="@nav.Code"
+                                                      Checkable="@Checkable"
+                                                      InPreview="InPreview"
+                                                      Level="3">
+                                    </ExpansionAppItem>
+                                }
+                            </CascadingValue>
                         }
                     </MListItemGroup>
                 </MList>

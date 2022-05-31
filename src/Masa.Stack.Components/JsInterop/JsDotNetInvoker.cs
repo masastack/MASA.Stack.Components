@@ -25,6 +25,18 @@ public class JsDotNetInvoker : IDisposable
         );
     }
 
+    public async Task IntersectionObserver(string selector, Func<Task> func)
+    {
+        var invoker = DotNetObjectReference.Create(new Invoker(func));
+
+        _references.Add(invoker);
+
+        await _jsRuntime.InvokeVoidAsync(
+            "MasaStackComponents.intersectionObserver",
+            selector,
+            invoker);
+    }
+
     public void Dispose()
     {
         foreach (var reference in _references)

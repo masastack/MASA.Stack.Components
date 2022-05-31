@@ -15,16 +15,22 @@ namespace Masa.Stack.Components.GlobalNavigations
         public bool Checkable { get; set; }
 
         [Parameter]
+        public bool CheckStrictly { get; set; }
+
+        [Parameter]
         public bool InPreview { get; set; }
 
-        [Parameter, EditorRequired]
+        [Parameter]
         public List<FavoriteNav>? FavoriteNavs { get; set; }
 
         [Parameter]
-        public List<CategoryAppNav> Value { get; set; } = new();
+        public List<CategoryAppNav>? Value { get; set; } = new();
 
         [Parameter]
         public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
+
+        [Parameter] 
+        public string? TagIdPrefix { get; set; }
 
         private int _activeCategoryIndex;
         private bool _initValuesDic;
@@ -53,7 +59,7 @@ namespace Masa.Stack.Components.GlobalNavigations
 
             if (Checkable)
             {
-                if (Value.Any() && (!_initValuesDic || !_fromCheckbox))
+                if (Value is not null && (!_initValuesDic || !_fromCheckbox))
                 {
                     _initValuesDic = true;
                     _valuesDic.Clear();

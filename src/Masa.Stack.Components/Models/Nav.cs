@@ -1,14 +1,10 @@
 ﻿namespace Masa.Stack.Components.Models;
 
-public class Nav
+public class Nav : NavBase
 {
     private List<Nav>? _children;
 
-    public string Code { get; set; }
-
     public string? Icon { get; set; }
-
-    public string Name { get; set; }
 
     public int Level { get; set; }
 
@@ -26,13 +22,15 @@ public class Nav
         set => _children = value;
     }
     
-    public List<NavAction>? Actions { get; set; }
+    public bool IsAction { get; set; }
+
+    public List<Nav> Actions => Children.Where(item => item.IsAction).ToList();
 
     public bool IsFavorite { get; set; }
 
-    public bool HasChildren => Children.Any();
+    public bool HasChildren => Children.Any() && !HasActions;
 
-    public bool HasActions => Actions is not null && Actions.Any();
+    public bool HasActions => Actions.Any();
 
     public bool IsActive(string url)
     {
@@ -53,6 +51,32 @@ public class Nav
 
     public Nav()
     {
+    }
+
+    /// <summary>
+    /// Initializes a nav-action.
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="name"></param>
+    public Nav(string code, string name)
+    {
+        Code = code;
+        Name = name;
+        IsAction = true;
+    }
+
+    /// <summary>
+    /// Initializes a nav-action.
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="name"></param>
+    /// <param name="parentCode"></param>
+    public Nav(string code, string name, string parentCode)
+    {
+        Code = code;
+        Name = name;
+        ParentCode = parentCode;
+        IsAction = true;
     }
 
     public Nav(string code, string name, string? url, int level)
@@ -81,14 +105,4 @@ public class Nav
         Level = level;
         Children = children;
     }
-    
-    public Nav(string code, string name, string icon, int level, List<NavAction> actions)
-    {
-        Code = code;
-        Name = name;
-        Icon = icon;
-        Level = level;
-        Actions = actions;
-    }
-
 }

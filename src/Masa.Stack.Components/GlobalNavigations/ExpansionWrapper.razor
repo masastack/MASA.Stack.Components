@@ -9,12 +9,14 @@
 
         <CascadingValue Value="this">
             <ExpansionCategory Category="category"
-                               Checkable="@Checkable"
+                               Checkable="Checkable"
+                               CheckStrictly="CheckStrictly"
                                InPreview="InPreview"
                                Context="app">
                 <ExpansionApp App="app"
                               CategoryCode="@category.Code"
-                              Checkable="@Checkable"
+                              CheckStrictly="CheckStrictly"
+                              Checkable="Checkable"
                               InPreview="InPreview"
                               FavoriteNavs="@FavoriteNavs" />
             </ExpansionCategory>
@@ -30,7 +32,7 @@
                 var category = Categories[i];
 
                 <li class="masa-text-2-2 pl-3 py-2"
-                    @onclick="@(() => ScrollTo(category.TagId(), ".global-nav-content__main"))">
+                    @onclick="@(() => ScrollTo(category.TagId(TagIdPrefix), ".global-nav-content__main"))">
                     @if (i == _activeCategoryIndex)
                     {
                         <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>

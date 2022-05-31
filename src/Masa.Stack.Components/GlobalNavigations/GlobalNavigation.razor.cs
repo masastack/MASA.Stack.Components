@@ -38,19 +38,19 @@ public partial class GlobalNavigation : MasaComponentBase
             {
                 new App("auth", "Auth", new List<Nav>()
                 {
-                    new Nav("user", "Users", "/users", 1, new List<NavAction>()
+                    new Nav("user", "Users", "/users", 1, new List<Nav>()
                     {
-                        new NavAction("user-action1", "User Action 1"),
-                        new NavAction("user-action2", "User Action 2"),
-                        new NavAction("user-action3", "User Action 3"),
+                        new Nav("user-action1", "User Action 1"),
+                        new Nav("user-action2", "User Action 2"),
+                        new Nav("user-action3", "User Action 3"),
                     }),
                     new Nav("role-permission", "Role and Permission", "mdi-users", 1, new List<Nav>()
                     {
                         new Nav("role", "Roles", "/roles", 2),
-                        new Nav("permission", "Permissions", "/permissions", 2, new List<NavAction>()
+                        new Nav("permission", "Permissions", "/permissions", 2, new List<Nav>()
                         {
-                            new NavAction("action1", "Action 1"),
-                            new NavAction("action2", "Action 2"),
+                            new Nav("action1", "Action 1"),
+                            new Nav("action2", "Action 2"),
                         }),
                     })
                 }),
@@ -59,10 +59,10 @@ public partial class GlobalNavigation : MasaComponentBase
                     new Nav("all", "All views", "/all-view", 1),
                     new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()
                     {
-                        new Nav("group-1", "Group Name 1", "/group/1", 2, new List<NavAction>()
+                        new Nav("group-1", "Group Name 1", "/group/1", 2, new List<Nav>()
                         {
-                            new NavAction("group-1-action1", "Action 1"),
-                            new NavAction("group-1-action2", "Action 2"),
+                            new Nav("group-1-action1", "Action 1"),
+                            new Nav("group-1-action2", "Action 2"),
                         }),
                         new Nav("group-2", "Group Name 2", "/group/2", 2),
                         new Nav("group-3", "Group Name 3", "/group/3", 2),
