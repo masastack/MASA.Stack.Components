@@ -63,8 +63,6 @@ public partial class Upload
 
     public InputFile? InputFileRef { get; set; }
 
-    public ElementReference? ElementReference2 { get; set; }
-
     public IReadOnlyList<IBrowserFile> Files { get; set; } = new List<IBrowserFile>();
 
     IJSObjectReference? UploadJs { get; set; }
