@@ -405,24 +405,6 @@
     box-shadow: inset 0px -1px 0px #F0F3FA !important;
 }
 
-.rounded-2 {
-    border-radius: 10px !important;
-}
-
-.rounded-4 {
-    border-radius: 20px !important;
-}
-
-.rounded-b-4 {
-    border-bottom-left-radius: 20px !important;
-    border-bottom-right-radius: 20px !important;
-}
-
-.rounded-r-1 {
-    border-top-right-radius: 5px !important;
-    border-bottom-right-radius: 5px !important;
-}
-
 .block-center {
     /*flex 布局*/
     display: flex;
@@ -452,11 +434,6 @@
 
 .m-navigation-drawer__border {
     width: 0
-}
-
-.m-toolbar__content {
-    padding: 0 0 0 0;
-    background-color: white;
 }
 
 .m-card {

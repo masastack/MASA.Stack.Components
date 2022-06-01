@@ -11,22 +11,18 @@
                    Width="300"
                    @bind-MiniVariant="GlobalConfig.Mini">
 
-    <GlobalNavigation>
-        <ActivatorContent>
-            <div style="height:132px"
-                 class="@($"block-center {(GlobalConfig.Mini ? "px-4" : "px-12")}")"
-                 @attributes="@context.Attrs">
-                @if (GlobalConfig.Mini)
-                {
-                    <img height="48" width="48" class="hover-pointer" src="@MiniLogo" alt="mini_log" />
-                }
-                else
-                {
-                    <img class="hover-pointer" src="@Logo" alt="logo" />
-                }
-            </div>
-        </ActivatorContent>
-    </GlobalNavigation>
+
+    <div style="height:132px"
+         class="@($"block-center {(GlobalConfig.Mini ? "px-4" : "px-12")}")">
+        @if (GlobalConfig.Mini)
+        {
+            <img height="48" width="48" class="hover-pointer" src="@MiniLogo" alt="mini_log" />
+        }
+        else
+        {
+            <img class="hover-pointer" src="@Logo" alt="logo" />
+        }
+    </div>
 
     <MList Nav Linkage Dense Class="@($"pa-0 {(GlobalConfig.Mini ? "mini-navigation" : "")}")">
         @foreach (var nav in Items!)
@@ -76,8 +72,8 @@
     </MList>
 </MNavigationDrawer>
 
-<MButton Small 
-         Fab 
+<MButton Small
+         Fab
          Color="primary"
          Style="@($"bottom:58px;z-index:7;position: fixed;{(GlobalConfig.Mini ? "left:60px;" : "left:280px;")}")"
          OnClick="() => GlobalConfig.ExpandOnHover = !GlobalConfig.ExpandOnHover">

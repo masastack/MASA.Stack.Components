@@ -2,93 +2,72 @@
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
 
-<div class="ml-10">
-    @foreach (var menu in FavoriteMenus)
-    {
+<MMenu Value="_menuValue"
+       ValueChanged="MenuValueChanged"
+       Bottom
+       CloseOnContentClick="false"
+       MinWidth="@("auto")"
+       OffsetY
+       Right>
+    <ActivatorContent>
         <MTooltip Color="primary" Bottom>
-            <ActivatorContent>
-                <span class="hover-pointer mr-8"
-                      @attributes="@context.Attrs"
-                      @onclick="() => NavigationManager.NavigateTo(menu.Url!)">
-                    <MIcon Color="@(IsMenuActive(menu) ? "primary" : "default-lighten-3")"
-                           Size=24>
-                        @menu.Icon
+            <ActivatorContent Context="tooltipContext">
+                @{
+                    var attrs = new Dictionary<string, object>();
+                    foreach (var (key, value) in context.Attrs)
+                    {
+                        attrs.Add(key, value);
+                    }
+                    foreach (var (key, value) in tooltipContext.Attrs)
+                    {
+                        if (attrs.ContainsKey(key) is false) attrs.Add(key, value);
+                    }
+                }
+                <MButton Icon Class="default-text-emphasis-secondary mr-6" @attributes="@attrs">
+                    <MIcon Size="20">
+                        mdi-star
                     </MIcon>
-                </span>
+                </MButton>
             </ActivatorContent>
             <ChildContent>
-                <span>@T(menu.Name)</span>
+                <span>@T("Favorite")</span>
             </ChildContent>
         </MTooltip>
-    }
-
-    <MMenu Value="_menuValue"
-           ValueChanged="MenuValueChanged"
-           Bottom
-           CloseOnContentClick="false"
-           MinWidth="@("auto")"
-           OffsetY
-           Right>
-        <ActivatorContent>
-            <MTooltip Color="primary" Bottom>
-                <ActivatorContent Context="tooltipContext">
-                    @{
-                        var attrs = new Dictionary<string, object>();
-                        foreach (var (key, value) in context.Attrs)
-                        {
-                            attrs.Add(key, value);
-                        }
-                        foreach (var (key, value) in tooltipContext.Attrs)
-                        {
-                            if (attrs.ContainsKey(key) is false) attrs.Add(key, value);
-                        }
-                    }
-                    <MIcon Color="dark-yellow"
-                           Size=20
-                           @attributes="@attrs">
-                        mdi-star-outline
-                    </MIcon>
-                </ActivatorContent>
-                <ChildContent>
-                    <span>@T("Favorite")</span>
-                </ChildContent>
-            </MTooltip>
-        </ActivatorContent>
-        <ChildContent>
-            <MList Class="pb-1" Style="min-width:320px;">
-                <MListItem Class="mb-1">
-                    <MTextField @bind-Value="_searchKey"
-                                Class="rounded-2"
-                                HideDetails="@("auto")"
-                                Flat Dense Solo
-                                BackgroundColor="fill-lighten-1"
-                                Placeholder="Search"
-                                OnKeyDown="HandleOnSearchKeyDown">
-                    </MTextField>
+    </ActivatorContent>
+    <ChildContent>
+        <MList Class="pb-1" Style="min-width:320px;">
+            <MListItem Class="mb-1">
+                <MTextField @bind-Value="_searchKey"
+                            Class="rounded-2"
+                            HideDetails="@("auto")"
+                            Flat Dense Solo
+                            BackgroundColor="fill-lighten-1"
+                            Placeholder="Search"
+                            OnKeyDown="HandleOnSearchKeyDown">
+                </MTextField>
+            </MListItem>
+            @foreach (var nav in SearchedMenus)
+            {
+                <MListItem Dense
+                           Class="px-4"
+                           OnClick="() => NavigationManager.NavigateTo(nav.Url!)">
+                    <MListItemAction Class="mr-3">
+                        <MIcon Size=20 Color="default-lighten-3">@nav.Icon</MIcon>
+                    </MListItemAction>
+                    <MListItemContent>
+                        <span Class="text-btn">@T(nav.Name)</span>
+                    </MListItemContent>
+                    <MListItemIcon Class="my-1">
+                        <MButton Color="dark-yellow"
+                                 StopPropagation
+                                 Text
+                                 Icon
+                                 OnClick="() => ToggleFavorite(nav.Code)">
+                            <MIcon Size=20>@(FavoriteNavCodes.Contains(nav.Code) ? "mdi-star" : "mdi-star-outline")</MIcon>
+                        </MButton>
+                    </MListItemIcon>
                 </MListItem>
-                @foreach (var nav in SearchedMenus)
-                {
-                    <MListItem Dense
-                               Class="px-4"
-                               OnClick="() => NavigationManager.NavigateTo(nav.Url!)">
-                        <MListItemAction Class="mr-3">
-                            <MIcon Size=20 Color="default-lighten-3">@nav.Icon</MIcon>
-                        </MListItemAction>
-                        <MListItemContent>
-                            <span Class="text-btn">@T(nav.Name)</span>
-                        </MListItemContent>
-                        <MListItemIcon Class="my-1">
-                            <MButton Color="dark-yellow"
-                                     Icon
-                                     StopPropagation
-                                     Text
-                                     OnClick="() => ToggleFavorite(nav.Code)">
-                                <MIcon Size=20>@(FavoriteNavCodes.Contains(nav.Code) ? "mdi-star" : "mdi-star-outline")</MIcon>
-                            </MButton>
-                        </MListItemIcon>
-                    </MListItem>
-                }
-            </MList>
-        </ChildContent>
-    </MMenu>
-</div>
+            }
+        </MList>
+    </ChildContent>
+</MMenu>

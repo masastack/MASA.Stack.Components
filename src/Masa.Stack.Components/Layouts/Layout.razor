@@ -6,21 +6,31 @@
     <MAppBar App
              Class="@AppBarClass"
              Elevation="0"
-             MaxHeight="60">
-        <Favorites FlattenedNavs="FlattenedNavs" />
-        <MSpacer />
+             Height="96">
+        <GlobalNavigation>
+            <ActivatorContent>
+                <MButton Icon Class="white mr-6" Color="black" @attributes="@context.Attrs">
+                    <MIcon>mdi-view-dashboard</MIcon>
+                </MButton>
+            </ActivatorContent>
+        </GlobalNavigation>
         <SearchMenu />
-        <Notification />
-        <Settings />
+        <MSpacer />
+        <Favorites FlattenedNavs="FlattenedNavs" />
         <Languages />
-        <User />
+        <Settings />
+        <MDivider Vertical Height="48" />
+        <MSheet class="d-flex align-center justify-space-between rounded-6 pa-1 ml-6 mr-n3" Width="100">
+            <Notification />
+            <User />
+        </MSheet>
     </MAppBar>
 
     <Navigation Items="Navs"
                 Logo="@Logo"
                 MiniLogo="@MiniLogo" />
 
-    <MMain Class="pt-15">
+    <MMain>
         @if (GlobalConfig.PageMode == PageModes.PageTabs)
         {
             <PageTabs Items="@PageTabItems">
@@ -29,7 +39,7 @@
         }
         else
         {
-            <div class="pa-6 max-width">
+            <div class="px-6 max-width">
                 <Breadcrumbs FlattenedNavs="FlattenedNavs" />
                 @ChildContent
             </div>

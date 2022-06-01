@@ -5,6 +5,14 @@ body, .masa-stack-components {
     background-color: #F0F3FA !important;
 }
 
+.masa-stack-components .m-app-bar {
+    background-color: transparent !important;
+}
+
+.masa-stack-components .m-app-bar .m-toolbar__content {
+    background-color: inherit;
+}
+
 .masa-stack-components .global-nav {
     display: flex;
     height: 100vh;
