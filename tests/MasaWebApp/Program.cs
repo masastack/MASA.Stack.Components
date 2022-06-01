@@ -4,14 +4,6 @@ using Masa.Utils.Data.Elasticsearch;
 using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMasaBlazor(bd =>
-{
-    bd.UseTheme(option =>
-    {
-        option.Primary = "#4318FF";
-        option.Accent = "#4318FF";
-    });
-});
 
 builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n");
 

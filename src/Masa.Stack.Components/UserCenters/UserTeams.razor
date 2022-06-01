@@ -17,19 +17,19 @@
                     </MAvatar>
                 }
                 <PBlockText Primary="@context.Name"
-                            PrimaryClass="neutral-text-emphasis font-18-medium"
+                            PrimaryClass="default-text-emphasis font-18-medium"
                             Secondary="@($"{T("NumberOfPeople")}：{@context.MemberCount}")"
-                            SecondaryClass="neutral-text-secondary font-14">
+                            SecondaryClass="default-text-secondary font-14">
                 </PBlockText>
             </div>
-            <div class="desc font-14 neutral-text-regular-secondary">
+            <div class="desc font-14 default-text-regular-secondary">
                 @context.Description
             </div>
 
             <MChip style="position:absolute; bottom:24px; right:24px;"
                    Label
                    Small
-                   Class="fill-background neutral-text-emphasis-secondary">
+                   Class="fill-background default-text-emphasis-secondary">
                 @context.Role
             </MChip>
         </MCard>

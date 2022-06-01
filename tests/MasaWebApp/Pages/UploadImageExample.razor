@@ -1,0 +1,9 @@
+﻿@page "/uploadImageExample"
+
+<MCard>
+    <UploadImage Avatar Size="120" @bind-Value="Value" />
+</MCard>
+
+@code {
+    string Value { get; set; }
+}

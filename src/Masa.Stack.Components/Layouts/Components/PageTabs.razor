@@ -16,7 +16,7 @@
               Ripple="@false"
               @attributes="@context.Attrs">
             <MIcon Size="20">@context.Item.Icon</MIcon>
-            <span class="mx-2 text-capitalize @(context.IsActive ? "neutral--text" : "")"
+            <span class="mx-2 text-capitalize @(context.IsActive ? "default--text" : "")"
                   style="min-width:46px;">@T(context.Item.Name)</span>
             @if (context.Item.Closable)
             {

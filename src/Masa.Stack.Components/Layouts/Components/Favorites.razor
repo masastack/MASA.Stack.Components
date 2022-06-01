@@ -10,7 +10,7 @@
                 <span class="hover-pointer mr-8"
                       @attributes="@context.Attrs"
                       @onclick="() => NavigationManager.NavigateTo(menu.Url!)">
-                    <MIcon Color="@(IsMenuActive(menu) ? "primary" : "neutral-lighten-3")"
+                    <MIcon Color="@(IsMenuActive(menu) ? "primary" : "default-lighten-3")"
                            Size=24>
                         @menu.Icon
                     </MIcon>
@@ -72,7 +72,7 @@
                                Class="px-4"
                                OnClick="() => NavigationManager.NavigateTo(nav.Url!)">
                         <MListItemAction Class="mr-3">
-                            <MIcon Size=20 Color="neutral-lighten-3">@nav.Icon</MIcon>
+                            <MIcon Size=20 Color="default-lighten-3">@nav.Icon</MIcon>
                         </MListItemAction>
                         <MListItemContent>
                             <span Class="text-btn">@T(nav.Name)</span>
