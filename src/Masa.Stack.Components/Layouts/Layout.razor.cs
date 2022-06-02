@@ -71,17 +71,19 @@ public partial class Layout : IDisposable
             new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
             new Nav("father", "Father", "mdi-numeric-0-box-outline", 1, new List<Nav>
             {
-                new Nav("children", "ChildOne", "mdi-numeric-1-box-outline", "/has-children", 2, "father"),
-                new Nav("dialog", "dialog", "mdi-numeric-1-box-outline", "/dialog", 2, "father"),
-                new Nav("tab", "tab", "mdi-numeric-1-box-outline", "/tab", 2, "father"),
-                new Nav("mini", "mini", "mdi-numeric-1-box-outline", "/mini-components", 2, "father"),
-                new Nav("extend", "extend", "mdi-numeric-1-box-outline", "/extend", 2, "father"),
-                new Nav("userAutoCompleteExample", "userAutoComplete", "mdi-numeric-1-box-outline", "/userAutoCompleteExample", 2, "father"),
-                new Nav("defaultButtonExample", "defaultButton", "mdi-numeric-1-box-outline", "/defaultButtonExample", 2, "father"),
-                new Nav("defaultDataTableExample", "defaultDataTable", "mdi-numeric-1-box-outline", "/defaultDataTableExample", 2, "father"),              
-                new Nav("paginationExample", "pagination", "mdi-numeric-1-box-outline", "/defaultPaginationExample", 2, "father"),
-                new Nav("uploadImageExample", "uploadImage", "mdi-numeric-1-box-outline", "/uploadImageExample", 2, "father")
-
+                new Nav("children2", "ChildTwo", 2, "father", new List<Nav>()
+                {
+                    new Nav("children", "ChildOne", "/has-children", 3, "children2"),
+                }),
+                new Nav("dialog", "dialog", "/dialog", 2, "father"),
+                new Nav("tab", "tab", "/tab", 2, "father"),
+                new Nav("mini", "mini", "/mini-components", 2, "father"),
+                new Nav("extend", "extend", "/extend", 2, "father"),
+                new Nav("userAutoCompleteExample", "userAutoComplete", "/userAutoCompleteExample", 2, "father"),
+                new Nav("defaultButtonExample", "defaultButton", "/defaultButtonExample", 2, "father"),
+                new Nav("defaultDataTableExample", "defaultDataTable", "/defaultDataTableExample", 2, "father"),
+                new Nav("paginationExample", "pagination", "/defaultPaginationExample", 2, "father"),
+                new Nav("uploadImageExample", "uploadImage", "/uploadImageExample", 2, "father")
             }),
         };
     }

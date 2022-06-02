@@ -7,7 +7,6 @@ public class GlobalConfig
     private const string DarkCookieKey = "GlobalConfig_IsDark";
     private const string PageModeKey = "GlobalConfig_PageMode";
     private const string MiniCookieKey = "GlobalConfig_NavigationMini";
-    private const string ExpandOnHoverCookieKey = "GlobalConfig_ExpandOnHover";
     private const string FavoriteCookieKey = "GlobalConfig_Favorite";
 
     private readonly CookieStorage? _cookieStorage;
@@ -15,7 +14,6 @@ public class GlobalConfig
     private bool _dark;
     private string? _pageMode;
     private bool _mini;
-    private bool _expandOnHover;
     private string _favorite;
 
     public delegate void GlobalConfigChanged();
@@ -76,16 +74,6 @@ public class GlobalConfig
             _cookieStorage?.SetItemAsync(MiniCookieKey, value);
         }
     }
-    
-    public bool ExpandOnHover
-    {
-        get => _expandOnHover;
-        set
-        {
-            _expandOnHover = value;
-            _cookieStorage?.SetItemAsync(ExpandOnHoverCookieKey, value);
-        }
-    }
 
     public string Favorite
     {
@@ -102,7 +90,6 @@ public class GlobalConfig
         _dark = Convert.ToBoolean(cookies[DarkCookieKey]);
         _pageMode = cookies[PageModeKey];
         _mini = Convert.ToBoolean(cookies[MiniCookieKey]);
-        _expandOnHover = Convert.ToBoolean(cookies[ExpandOnHoverCookieKey]);
         _favorite = cookies[FavoriteCookieKey];
     }
 }
