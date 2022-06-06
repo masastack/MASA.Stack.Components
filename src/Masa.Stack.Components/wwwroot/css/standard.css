@@ -401,6 +401,10 @@
     border-radius: 8px !important;
 }
 
+.masa .rounded-3 {
+    border-radius: 12px !important;
+}
+
 .masa .rounded-4 {
     border-radius: 16px !important;
 }

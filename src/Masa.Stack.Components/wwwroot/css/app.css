@@ -283,6 +283,10 @@ body, .masa-stack-components {
     margin-bottom: 0;
 }
 
+.masa-stack-components .m-list--nav .m-list-item, .m-list--nav .m-list-item:before {
+    border-radius: 12px;
+}
+
 .masa-stack-components .masa-text-highlight-2 {
     color: #323D6F !important;
     font-weight: 500 !important;
