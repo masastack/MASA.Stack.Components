@@ -2,6 +2,11 @@
     color of background
 */
 
+.masa {
+    font-family: 'Roboto';
+    font-size:16px;
+}
+
 .masa .primary {
     background-color: #4318FF !important;
 }
@@ -352,11 +357,82 @@
 /*
     font
 */
-.masa .h1{
-
+.masa .h1 {
+    font-size: 6rem !important;
+    font-weight: 300 !important;
 }
 
-.masa .font-10 {
+.masa .h2 {
+    font-size: 3.75rem !important;
+    font-weight: 300 !important;
+}
+
+.masa .h3 {
+    font-size: 3rem !important;
+    font-weight: 900 !important;
+}
+
+.masa .h4 {
+    font-size: 2.125rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .h5 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .h6 {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .h7 {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .subtitle {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+}
+
+.masa .subtitle2 {
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .subtitle2 {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .body {
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+}
+
+.masa .body2 {
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+}
+
+.masa .btn {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+}
+
+.masa .caption {
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+}
+
+.masa .Overline {
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+}
+
+/*.masa .font-10 {
     font-size: 10px !important;
     font-weight: 400 !important;
 }
@@ -439,4 +515,4 @@
 .masa .font-60-bold {
     font-size: 60px !important;
     font-weight: 900 !important;
-}
+}*/
