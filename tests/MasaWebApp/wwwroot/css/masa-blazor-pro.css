@@ -171,7 +171,7 @@
     color: #485585;
 }
 
-.text-btn {
+.font-14-medium {
     /* BUTTON-按钮 */
     font-family: Roboto !important;
     font-style: normal !important;
@@ -290,7 +290,7 @@
     background: #E9EDF7;
 }
 
-.fill-lighten-1 {
+.emphasis2--text {
     background: #F0F3FA !important;
 }
 
@@ -812,7 +812,7 @@
     pointer-events: none;
 }
 
-.text-btn .m-label {
+.font-14-medium .m-label {
     color: #323D6F;
     font-family: Roboto;
     font-style: normal;

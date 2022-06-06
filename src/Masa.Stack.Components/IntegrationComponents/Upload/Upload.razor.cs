@@ -130,6 +130,8 @@ public partial class Upload : IAsyncDisposable
         }
     }
 
+    protected async Task SetValueAsync(string value) => await SetValueAsync(new List<string> { value });
+
     public async ValueTask DisposeAsync()
     {
         if (UploadJs is not null) await UploadJs.DisposeAsync();

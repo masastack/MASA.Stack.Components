@@ -2,7 +2,7 @@
 
 <DefaultDataTable Headers="Headers" Items="Users" TItem="User">
     <HeaderColContent Context="header">
-        <span class="text-btn">@header.Text</span>
+        <span class="font-14-medium">@header.Text</span>
     </HeaderColContent>
     <ItemColContent>
         @switch (context.Header.Value)
@@ -17,8 +17,8 @@
                 <span class="text-body3">@context.Item.Age</span>
                 break;
             case "Action":
-                <MIcon Small Color="default-regular">mdi-pencil</MIcon>
-                <MIcon Small Color="default-regular" Class="ml-7">mdi-shield-half-full</MIcon>
+                <MIcon Small Color="regular">mdi-pencil</MIcon>
+                <MIcon Small Color="regular" Class="ml-7">mdi-shield-half-full</MIcon>
                 break;
             default:
                 <span class="text-body3">@context.Value</span>

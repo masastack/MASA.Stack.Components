@@ -38,7 +38,7 @@ public partial class UploadImage : Upload
     {
         if (string.IsNullOrEmpty(DefaultImage) is false && string.IsNullOrEmpty(Value) && MultipleValue.Count == 0)
         {
-            await SetValueAsync(new() { DefaultImage });
+            await SetValueAsync(DefaultImage);
         }
     }
 
