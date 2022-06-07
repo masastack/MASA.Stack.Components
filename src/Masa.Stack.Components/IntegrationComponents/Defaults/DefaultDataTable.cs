@@ -15,7 +15,8 @@ public class DefaultDataTable<TItem> : MDataTable<TItem>
     {
         base.OnParametersSet();
         Class ??= "";
-        Class += " table-border-none";
+        if(Class.Contains("table-border-none") is false)
+            Class += " table-border-none";
     }
 }
 
