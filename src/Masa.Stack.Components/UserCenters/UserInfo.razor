@@ -24,7 +24,7 @@
         </div>
         <div class="auths">
             <MDivider>
-                <span class="default-text-secondary font-12">@T("Auths")</span>
+                <span class="default-text-secondary overline">@T("Auths")</span>
             </MDivider>
             <div class="d-flex" style="justify-content: space-around; flex-wrap: wrap;">
                 <AuthIcon OnClick="() => _idCardValidateModal?.Open()">mdi-card-account-details-outline</AuthIcon>
@@ -44,7 +44,7 @@
                 <div class="d-flex mb-6" style="justify-content: space-between;">
                     <PBlockText Primary="@Data?.DisplayName"
                                 PrimaryClass="font-20-bold default-text-regular"
-                                SecondaryClass="font-12-medium default-text-secondary d-flex"
+                                SecondaryClass="caption default-text-secondary d-flex"
                                 SecondaryStyle="align-items:center;">
                         <SecondaryContent>
                             @Data?.GenderText
@@ -64,14 +64,14 @@
                         <MIcon Class="default-text-secondary mr-2" Size="13">mdi-phone</MIcon>
                         <span>@Data?.PhoneNumber</span>
                     </dt>
-                    <dd class="font-12 default-text-secondary">@T("PhoneNumber")</dd>
+                    <dd class="overline default-text-secondary">@T("PhoneNumber")</dd>
                 </dl>
                 <dl class="d-flex mb-6" style="align-items: start; justify-content: space-between">
                     <dt class="d-inline-flex font-14 default-text-regular">
                         <MIcon Class="default-text-secondary mr-2" Size="13">mdi-email</MIcon>
                         <span>@Data?.Email</span>
                     </dt>
-                    <dd class="font-12 default-text-secondary">@T("Email")</dd>
+                    <dd class="overline default-text-secondary">@T("Email")</dd>
                 </dl>
             </MWindowItem>
             <MWindowItem>
@@ -119,7 +119,7 @@
                      ItemClass="@(_ => "mb-6")"
                      ItemStyle="@(_ => "justify-content: space-between;")"
                      TermClass="@(_ => "font-14 default-text-regular")"
-                     DetailClass="@(_ => "font-12 default-text-secondary")">
+                     DetailClass="@(_ => "overline default-text-secondary")">
             <TermContent>
                 @{
                     var term = (ValueTuple<string, string>)context.Value;

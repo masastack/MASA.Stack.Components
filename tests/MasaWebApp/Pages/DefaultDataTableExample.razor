@@ -1,31 +1,35 @@
 ﻿@page "/defaultDataTableExample"
 
-<DefaultDataTable Headers="Headers" Items="Users" TItem="User">
-    <HeaderColContent Context="header">
-        <span class="font-14-medium">@header.Text</span>
-    </HeaderColContent>
-    <ItemColContent>
-        @switch (context.Header.Value)
-        {
-            case (nameof(User.Name)):
-                <span class="text-body3">@context.Item.Name</span>
-                break;
-            case nameof(User.DisplayName):
-                <span class="text-body3">@context.Item.DisplayName</span>
-                break;
-            case (nameof(User.Age)):
-                <span class="text-body3">@context.Item.Age</span>
-                break;
-            case "Action":
-                <MIcon Small Color="regular">mdi-pencil</MIcon>
-                <MIcon Small Color="regular" Class="ml-7">mdi-shield-half-full</MIcon>
-                break;
-            default:
-                <span class="text-body3">@context.Value</span>
-                break;
-        }
-    </ItemColContent>
-</DefaultDataTable>
+<MCard>
+    <MCardText>
+        <DefaultDataTable Headers="Headers" Items="Users" TItem="User">
+            <HeaderColContent Context="header">
+                <span class="font-14-medium">@header.Text</span>
+            </HeaderColContent>
+            <ItemColContent>
+                @switch (context.Header.Value)
+                {
+                    case (nameof(User.Name)):
+                        <span class="text-body3">@context.Item.Name</span>
+                        break;
+                    case nameof(User.DisplayName):
+                        <span class="text-body3">@context.Item.DisplayName</span>
+                        break;
+                    case (nameof(User.Age)):
+                        <span class="text-body3">@context.Item.Age</span>
+                        break;
+                    case "Action":
+                        <MIcon Small Color="regular">mdi-pencil</MIcon>
+                        <MIcon Small Color="regular" Class="ml-7">mdi-shield-half-full</MIcon>
+                        break;
+                    default:
+                        <span class="text-body3">@context.Value</span>
+                        break;
+                }
+            </ItemColContent>
+        </DefaultDataTable>
+    </MCardText>
+</MCard>
 
 @code {
     List<DataTableHeader<User>> Headers { get; set; } = new()

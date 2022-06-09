@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<div class="mt-5 d-flex">
+<div class="@Class d-flex">
     <div class="d-flex" style="height: 30px !important;">
         <MSelect Value=PageSize
                  ValueChanged=PageSizeChanged
@@ -15,18 +15,18 @@
                  HideDetails="@("auto")"
                  Class="rounded-2 small">
         </MSelect>
-        <div class="ml-2 mt-1 block-center font-12-medium">@T("Rows per page")</div>
-        <div class="ml-2 mt-1 block-center font-12-medium">
+        <div class="ml-2 mt-1 block-center caption default2--text">@T("Rows per page")</div>
+        <div class="ml-2 mt-1 block-center caption default2--text">
             <span>@T("Total") @Total @T("Item")</span>
         </div>
     </div>
-    <div class="@Class ml-auto">
+    <div class="ml-auto">
         <span @onclick=Previous>
-            <MIcon Class="hover-pointer" Disabled=PreviousDisabled Size=24>mdi-chevron-left</MIcon>
+            <MIcon Class="hover-pointer default2--text" Disabled=PreviousDisabled Size=24>mdi-chevron-left</MIcon>
         </span>
-        <span class="ma-5 font-12">@Page/@TotalPage</span>
+        <span class="ma-5 regular--text overline">@Page/@TotalPage</span>
         <span @onclick=Next>
-            <MIcon Class="hover-pointer" Disabled=NextDisabled Size=24>mdi-chevron-right</MIcon>
+            <MIcon Class="hover-pointer default2--text" Disabled=NextDisabled Size=24>mdi-chevron-right</MIcon>
         </span>
     </div>
 </div>

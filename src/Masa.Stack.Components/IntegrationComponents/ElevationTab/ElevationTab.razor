@@ -12,7 +12,10 @@
             @for (var i = 0; i < Tabs!.Count; i++)
             {
                 var header = Tabs[i];
-                <LabeledRadio Value="@((StringNumber)i)" MinWidth="@TabMinWidth">@header</LabeledRadio>
+                var index = i;
+                <LabeledRadio Value="@((StringNumber)i)" MinWidth="@TabMinWidth">
+                    <span class="@(TabIndex == index ? "subtitle2 emphasis2--text":"btn regular2--text")">@header</span>                
+                </LabeledRadio>
             }
         </LabeledRadioGroup>
 
