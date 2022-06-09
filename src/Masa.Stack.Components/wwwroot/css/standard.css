@@ -52,7 +52,7 @@
 }
 
 .masa .regular2 {
-    background-color: #7671AB !important;
+    background-color: #7681AB !important;
 }
 
 .masa .fill {
@@ -402,11 +402,6 @@
     font-weight: 700 !important;
 }
 
-.masa .subtitle2 {
-    font-size: 0.75rem !important;
-    font-weight: 700 !important;
-}
-
 .masa .body {
     font-size: 1rem !important;
     font-weight: 400 !important;
@@ -424,95 +419,10 @@
 
 .masa .caption {
     font-size: 0.75rem !important;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
 }
 
-.masa .Overline {
+.masa .overline {
     font-size: 0.75rem !important;
     font-weight: 400 !important;
 }
-
-/*.masa .font-10 {
-    font-size: 10px !important;
-    font-weight: 400 !important;
-}
-
-.masa .font-12 {
-    font-size: 12px !important;
-    font-weight: 400 !important;
-}
-
-.masa .font-12-medium {
-    font-size: 12px !important;
-    font-weight: 500 !important;
-}
-
-.masa .font-12-bold {
-    font-size: 12px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-14 {
-    font-size: 14px !important;
-    font-weight: 400 !important;
-}
-
-.masa .font-14-medium {
-    font-size: 14px !important;
-    font-weight: 500 !important;
-}
-
-.masa .font-14-bold {
-    font-size: 14px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-16 {
-    font-size: 16px !important;
-    font-weight: 400 !important;
-}
-
-.masa .font-16-medium {
-    font-size: 16px !important;
-    font-weight: 500 !important;
-}
-
-.masa .font-16-bold {
-    font-size: 16px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-18 {
-    font-size: 18px !important;
-    font-weight: 400 !important;
-}
-
-.masa .font-18-medium {
-    font-size: 18px !important;
-    font-weight: 500 !important;
-}
-
-.masa .font-20-bold {
-    font-size: 20px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-24-bold {
-    font-size: 24px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-34-bold {
-    font-size: 34px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-48-bold {
-    font-size: 48px !important;
-    font-weight: 900 !important;
-}
-
-.masa .font-60-bold {
-    font-size: 60px !important;
-    font-weight: 900 !important;
-}*/
