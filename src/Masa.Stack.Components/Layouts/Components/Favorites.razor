@@ -23,7 +23,7 @@
                         if (attrs.ContainsKey(key) is false) attrs.Add(key, value);
                     }
                 }
-                <MButton Icon Class="default-text-emphasis-secondary mr-6" @attributes="@attrs">
+                <MButton Icon Class="emphasis2--text mr-6" @attributes="@attrs">
                     <MIcon Size="20">
                         mdi-star
                     </MIcon>
@@ -41,7 +41,7 @@
                             Class="rounded-2"
                             HideDetails="@("auto")"
                             Flat Dense Solo
-                            BackgroundColor="fill-lighten-1"
+                            BackgroundColor="emphasis2--text"
                             Placeholder="Search"
                             OnKeyDown="HandleOnSearchKeyDown">
                 </MTextField>
@@ -55,7 +55,7 @@
                         <MIcon Size=20 Color="default-lighten-3">@nav.Icon</MIcon>
                     </MListItemAction>
                     <MListItemContent>
-                        <span Class="text-btn">@T(nav.Name)</span>
+                        <span Class="font-14-medium">@T(nav.Name)</span>
                     </MListItemContent>
                     <MListItemIcon Class="my-1">
                         <MButton Color="dark-yellow"

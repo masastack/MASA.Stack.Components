@@ -4,12 +4,12 @@
 
 <MApp Class="masa masa-stack-components">
     <MAppBar App
-             Class="@AppBarClass"
+             Class="mx-6"
              Elevation="0"
              Height="96">
         <GlobalNavigation>
             <ActivatorContent>
-                <MButton Icon Class="white mr-6 default-text-emphasis-secondary" @attributes="@context.Attrs">
+                <MButton Icon Class="white mr-6 emphasis2--text" @attributes="@context.Attrs">
                     <MIcon>mdi-view-dashboard</MIcon>
                 </MButton>
             </ActivatorContent>
@@ -18,8 +18,9 @@
         <MSpacer />
         <Favorites FlattenedNavs="FlattenedNavs" />
         <Languages />
-        <Settings />
-        <MDivider Vertical Height="48" />
+        <div style="height: 48px">
+            <MDivider Vertical />
+        </div>
         <MSheet class="d-flex align-center justify-space-between rounded-6 pa-1 ml-6 mr-n3" Width="100">
             <Notification />
             <User />
@@ -31,18 +32,8 @@
                 MiniLogo="@MiniLogo" />
 
     <MMain>
-        @if (GlobalConfig.PageMode == PageModes.PageTabs)
-        {
-            <PageTabs Items="@PageTabItems">
-                @ChildContent
-            </PageTabs>
-        }
-        else
-        {
-            <div class="px-6 max-width">
-                <Breadcrumbs FlattenedNavs="FlattenedNavs" />
-                @ChildContent
-            </div>
-        }
+        <div class="px-6 max-width">
+            @ChildContent
+        </div>
     </MMain>
 </MApp>

@@ -1,6 +1,11 @@
 ﻿@page "/defaultPaginationExample"
 
-<Pagination Class="mt-5" @bind-Page="Page" @bind-PageSize=PageSize Total=100 />
+<MCard>
+    <MCardText>
+        <Pagination @bind-Page="Page" @bind-PageSize=PageSize Total=100 />
+    </MCardText>
+</MCard>
+
 
 @code{
     int Page { get; set; } = 1;

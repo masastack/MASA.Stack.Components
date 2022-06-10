@@ -2,7 +2,7 @@
 
 namespace Masa.Stack.Components;
 
-public partial class Layout : IDisposable
+public partial class Layout
 {
     /// <summary>
     /// @Body
@@ -18,15 +18,6 @@ public partial class Layout : IDisposable
 
     [Parameter, EditorRequired]
     public string? MiniLogo { get; set; }
-
-    string AppBarClass => GlobalConfig.PageMode == PageModes.PageTabs ? "mx-6" : "mx-6 rounded-b-4";
-
-    protected override void OnInitialized()
-    {
-        GlobalConfig.OnPageModeChanged += base.StateHasChanged;
-
-        base.OnInitialized();
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -44,7 +35,7 @@ public partial class Layout : IDisposable
 
     private List<PageTabItem> PageTabItems =>
         FlattenedNavs.Where(n => n.Url is not null)
-                     .Select(nav => new PageTabItem(nav.Name, nav.Url, nav.Icon))
+                     .Select(nav => new PageTabItem(nav.Name, nav.Url, nav.Icon ?? ""))
                      .ToList();
 
     private List<Nav> FlattenedNavs { get; set; } = new();
@@ -86,10 +77,5 @@ public partial class Layout : IDisposable
                 new Nav("uploadImageExample", "uploadImage", "/uploadImageExample", 2, "father")
             }),
         };
-    }
-
-    public void Dispose()
-    {
-        GlobalConfig.OnPageModeChanged -= base.StateHasChanged;
     }
 }

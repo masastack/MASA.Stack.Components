@@ -2,6 +2,11 @@
     color of background
 */
 
+.masa {
+    font-family: 'Roboto';
+    font-size:16px;
+}
+
 .masa .primary {
     background-color: #4318FF !important;
 }
@@ -26,28 +31,28 @@
     background-color: #ECE8FF !important;
 }
 
-.masa .default-hell {
+.masa .default {
     background-color: #000000 !important;
 }
 
-.masa .default-emphasis {
+.masa .secondary {
+    background-color: #A3AED0 !important;
+}
+
+.masa .emphasis {
     background-color: #1B2559 !important;
 }
 
-.masa .default-emphasis-secondary {
+.masa .emphasis2 {
     background-color: #323D6F !important;
 }
 
-.masa .default-regular {
+.masa .regular {
     background-color: #485585 !important;
 }
 
-.masa .default-regular-secondary {
-    background-color: #7671AB !important;
-}
-
-.masa .default-secondary {
-    background-color: #A3AED0 !important;
+.masa .regular2 {
+    background-color: #7681AB !important;
 }
 
 .masa .fill {
@@ -230,171 +235,196 @@
     color: #4318FF !important;
 }
 
-.masa .primary--text-hover {
+.masa .primary-hover--text {
     color: #6956FF !important;
 }
 
-.masa .primary--text-clicked {
+.masa .primary-clicked--text {
     color: #3613CC !important;
 }
 
-.masa .primary--text-disabled {
+.masa .primary-disabled--text {
     color: #A18BFF !important;
 }
 
-.masa .primary--text-special {
+.masa .primary-special--text {
     color: #D9D1FF !important;
 }
 
-.masa .primary--text-lighten {
+.masa .primary-lighten--text {
     color: #ECE8FF !important;
 }
 
-.masa .default-text-hell {
+.masa .default--text {
     color: #000000 !important;
 }
 
-.masa .default-text-emphasis {
+.masa .regular3--text {
+    color: #A3AED0 !important;
+}
+
+.masa .emphasis--text {
     color: #1B2559 !important;
 }
 
-.masa .default-text-emphasis-secondary {
+.masa .emphasis2--text {
     color: #323D6F !important;
 }
 
-.masa .default-text-regular {
+.masa .regular--text {
     color: #485585 !important;
 }
 
-.masa .default-text-regular-secondary {
+.masa .regular2--text {
     color: #7671AB !important;
-}
-
-.masa .default-text-secondary {
-    color: #A3AED0 !important;
 }
 
 .masa .fill--text {
     color: #FFFFFF !important;
 }
 
-.masa .fill--text-lighten {
+.masa .fill-lighten--text {
     color: #FAFBFE !important;
 }
 
-.masa .fill--text-hover {
+.masa .fill-hover--text {
     color: #F6F8FD !important;
 }
 
-.masa .fill--text-background {
+.masa .fill-background--text {
     color: #F0F3FA !important;
 }
 
-.masa .fill--text-disabled {
+.masa .fill-disabled--text {
     color: #E9EDF7 !important;
 }
 
-.masa .fill--text-line {
+.masa .fill-line--text {
     color: #E2E7F4 !important;
 }
 
-.masa .fill--text-overlay {
+.masa .fill-overlay--text {
     color: #141726 !important;
+}
+
+.masa .yellow--text {
+    color: #FFB547 !important;
+}
+
+.masa .yellow-hover--text {
+    color: #FFC46C !important;
+}
+
+.masa .yellow-clicked--text {
+    color: #CC9139 !important;
+}
+
+.masa .yellow-disabled--text {
+    color: #FFDAA3 !important;
+}
+
+.masa .yellow-special--text {
+    color: #FFF0DA !important;
+}
+
+.masa .yellow-lighten--text {
+    color: #FFF8ED !important;
 }
 
 .masa .green--text {
     color: #05CD99 !important;
 }
 
-.masa .green--text-lighten {
+.masa .green-hover--text {
+    color: #37D7AD !important;
+}
+
+.masa .green-clicked--text {
+    color: #04A47A !important;
+}
+
+.masa .green-disabled--text {
+    color: #82E6CC !important;
+}
+
+.masa .green-special--text {
+    color: #CDF5EB !important;
+}
+
+.masa .green-lighten--text {
     color: #E6FAF5 !important;
 }
 /*
     font
 */
-.masa .font-10 {
-    font-size: 10px !important;
-    font-weight: 400 !important;
+.masa .h1 {
+    font-size: 6rem !important;
+    font-weight: 300 !important;
 }
 
-.masa .font-12 {
-    font-size: 12px !important;
-    font-weight: 400 !important;
+.masa .h2 {
+    font-size: 3.75rem !important;
+    font-weight: 300 !important;
 }
 
-.masa .font-12-medium {
-    font-size: 12px !important;
-    font-weight: 500 !important;
-}
-
-.masa .font-12-bold {
-    font-size: 12px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-14 {
-    font-size: 14px !important;
-    font-weight: 400 !important;
-}
-
-.masa .font-14-medium {
-    font-size: 14px !important;
-    font-weight: 500 !important;
-}
-
-.masa .font-14-bold {
-    font-size: 14px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-16 {
-    font-size: 16px !important;
-    font-weight: 400 !important;
-}
-
-.masa .font-16-medium {
-    font-size: 16px !important;
-    font-weight: 500 !important;
-}
-
-.masa .font-16-bold {
-    font-size: 16px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-18 {
-    font-size: 18px !important;
-    font-weight: 400 !important;
-}
-
-.masa .font-18-medium {
-    font-size: 18px !important;
-    font-weight: 500 !important;
-}
-
-.masa .font-20-bold {
-    font-size: 20px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-24-bold {
-    font-size: 24px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-34-bold {
-    font-size: 34px !important;
-    font-weight: 700 !important;
-}
-
-.masa .font-48-bold {
-    font-size: 48px !important;
+.masa .h3 {
+    font-size: 3rem !important;
     font-weight: 900 !important;
 }
 
-.masa .font-60-bold {
-    font-size: 60px !important;
-    font-weight: 900 !important;
+.masa .h4 {
+    font-size: 2.125rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .h5 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .h6 {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .h7 {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .subtitle {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+}
+
+.masa .subtitle2 {
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+}
+
+.masa .body {
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+}
+
+.masa .body2 {
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+}
+
+.masa .btn {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+}
+
+.masa .caption {
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+.masa .overline {
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
 }
 
 .masa .rounded-2 {

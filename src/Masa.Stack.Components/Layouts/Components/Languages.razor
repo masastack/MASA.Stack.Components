@@ -4,7 +4,7 @@
 
 <MMenu OffsetY Bottom>
     <ActivatorContent>
-        <MButton Icon Class="default-text-emphasis-secondary mr-6" @attributes="@context.Attrs">
+        <MButton Icon Class="emphasis2--text mr-6" @attributes="@context.Attrs">
             <MIcon Size="20">
                 mdi-google-translate
             </MIcon>
@@ -18,7 +18,7 @@
                     <MListItem OnClick="() => OnLanguageChange(language)" Value="(StringNumber)language">
                         <ItemContent>
                             <MListItemContent>
-                                <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") text-btn">
+                                <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") font-14-medium">
                                     @map.GetValueOrDefault("$Text")
                                 </span>
                             </MListItemContent>

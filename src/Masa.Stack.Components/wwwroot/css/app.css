@@ -284,7 +284,7 @@ body, .masa-stack-components {
 }
 
 .masa-stack-components .m-list--nav .m-list-item, .m-list--nav .m-list-item:before {
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .masa-stack-components .masa-text-highlight-2 {
@@ -454,9 +454,32 @@ body, .masa-stack-components {
     default dataTable
 */
 
-.masa-stack-components .table-border-none td, th {
+.masa-stack-components .table-border-none td {
     border-bottom: 0px !important;
     box-shadow: none;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+.masa-stack-components .table-border-none th {
+    border-bottom: 0px !important;
+    box-shadow: none;
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+}
+
+.masa-stack-components .table-border-none tbody tr:hover {
+    background-color: #F6F8FD !important;
+}
+
+.masa-stack-components .table-border-none tr td:first-child, th:first-child {
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+}
+
+.masa-stack-components .table-border-none tr td:last-child, th:last-child {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
 }
 
 /*
