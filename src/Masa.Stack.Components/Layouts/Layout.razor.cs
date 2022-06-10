@@ -24,19 +24,26 @@ public partial class Layout
         base.OnParametersSet();
 
         NavItems ??= new List<Nav>();
-        FlattenedNavs = FlattenNavs(NavItems);
+        FlattenedNavs = FlattenNavs(NavItems, true);
     }
 
     private List<Nav> FlattenedNavs { get; set; } = new();
 
-    private List<Nav> FlattenNavs(List<Nav> tree)
+    private List<Nav> FlattenNavs(List<Nav> tree, bool excludeNavHasChildren = false)
     {
         var res = new List<Nav>();
 
         foreach (var nav in tree)
         {
-            res.Add(nav);
-            res.AddRange(FlattenNavs(nav.Children));
+            if (!(nav.HasChildren && excludeNavHasChildren))
+            {
+                res.Add(nav);
+            }
+
+            if (nav.HasChildren)
+            {
+                res.AddRange(FlattenNavs(nav.Children, excludeNavHasChildren));
+            }
         }
 
         return res;

@@ -7,8 +7,7 @@
        Bottom
        CloseOnContentClick="false"
        MinWidth="@("auto")"
-       OffsetY
-       Right>
+       OffsetY>
     <ActivatorContent>
         <MTooltip Color="primary" Bottom>
             <ActivatorContent Context="tooltipContext">
@@ -40,30 +39,33 @@
                 <MTextField @bind-Value="_searchKey"
                             Class="rounded-2"
                             HideDetails="@("auto")"
-                            Flat Dense Solo
+                            Outlined Dense
                             BackgroundColor="emphasis2--text"
-                            Placeholder="Search"
-                            OnKeyDown="HandleOnSearchKeyDown">
+                            Placeholder="@T("search")"
+                            Clearable
+                            OnKeyDown="HandleOnSearchKeyDown"
+                            OnClearClick="() => SearchNavs(null)">
                 </MTextField>
             </MListItem>
-            @foreach (var nav in SearchedMenus)
+            @foreach (var item in SearchedMenus)
             {
                 <MListItem Dense
                            Class="px-4"
-                           OnClick="() => NavigationManager.NavigateTo(nav.Url!)">
+                           OnClick="() => NavigateTo(item.Nav.Url)"
+                           IsActive="IsMenuActive(item.Nav)"
+                           ActiveClass="primary--text">
                     <MListItemAction Class="mr-3">
-                        <MIcon Size=20 Color="default-lighten-3">@nav.Icon</MIcon>
+                        <MIcon Size=20 Color="default-lighten-3">@item.Nav.Icon</MIcon>
                     </MListItemAction>
                     <MListItemContent>
-                        <span Class="font-14-medium">@T(nav.Name)</span>
+                        <span Class="font-14-medium">@T(item.Nav.Name)</span>
                     </MListItemContent>
                     <MListItemIcon Class="my-1">
-                        <MButton Color="dark-yellow"
+                        <MButton Color="@(item.Favorite ? "#FFB547" : "")"
                                  StopPropagation
-                                 Text
                                  Icon
-                                 OnClick="() => ToggleFavorite(nav.Code)">
-                            <MIcon Size=20>@(FavoriteNavCodes.Contains(nav.Code) ? "mdi-star" : "mdi-star-outline")</MIcon>
+                                 OnClick="() => ToggleFavorite(item.Nav.Code)">
+                            <MIcon Size=20>@(item.Favorite ? "mdi-star" : "mdi-star-outline")</MIcon>
                         </MButton>
                     </MListItemIcon>
                 </MListItem>
