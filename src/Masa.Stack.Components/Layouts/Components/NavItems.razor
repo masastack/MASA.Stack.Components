@@ -6,7 +6,7 @@
     @if (subNav.HasChildren)
     {
         <div class="d-flex align-star @Class" style="position: relative">
-            <img src="./_content/Masa.Stack.Components/img/nav-sub-line.png" width="18" height="48" alt="line" />
+            <img src="https://cdn.masastack.com/stack/images/component/nav-sub-before.png" width="18" height="48" alt="line" />
             <MListGroup Group="@GenGroup(subNav.Children)"
                         Class="full-width"
                         ActiveClass="primary--text"
@@ -20,7 +20,7 @@
                     @foreach (var lastNav in subNav.Children)
                     {
                         <div class="d-flex align-center">
-                            <img src="./_content/Masa.Stack.Components/img/nav-sub-sub-line.png" height="48" alt="line"
+                            <img src="https://cdn.masastack.com/stack/images/component/nav-sub-sub-before.png" height="48" alt="line"
                                  style="position: absolute;left: 0;" />
                             <DefaultListItem Medium Class="mb-0 rounded-2" ActiveClass="primary" Link Href="@lastNav.Url">
                                 <ItemContent>
@@ -42,13 +42,13 @@
         if (Data.Children.IndexOf(subNav) == 0)
         {
             <div class="d-flex align-center @Class">
-                <img src="./_content/Masa.Stack.Components/img/nav-first-sub-before.png" height="8"
+                <img src="https://cdn.masastack.com/stack/images/component/nav-before-first-sub.png" height="8"
                      alt="first-sub-before" />
             </div>
         }
 
         <div class="d-flex align-center @Class">
-            <img src="./_content/Masa.Stack.Components/img/nav-sub-line.png" width="18" height="48" alt="line" />
+            <img src="https://cdn.masastack.com/stack/images/component/nav-sub-before.png" width="18" height="48" alt="line" />
 
             <DefaultListItem Medium Class="mb-0 rounded-2" ActiveClass="primary" Link Href="@subNav.Url">
                 <ItemContent>
