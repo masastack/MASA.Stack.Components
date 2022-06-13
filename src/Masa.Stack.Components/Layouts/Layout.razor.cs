@@ -8,9 +8,6 @@ public partial class Layout
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]
-    public string? DefaultRoute { get; set; }
-
-    [Parameter, EditorRequired]
     public string? Logo { get; set; }
 
     [Parameter, EditorRequired]
@@ -18,6 +15,9 @@ public partial class Layout
 
     [Parameter, EditorRequired]
     public List<Nav>? NavItems { get; set; }
+
+    [Parameter, EditorRequired]
+    public string? UserCenterRoute { get; set; }
 
     protected override void OnParametersSet()
     {
