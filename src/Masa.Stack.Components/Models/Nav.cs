@@ -86,6 +86,28 @@ public class Nav : NavBase
         Url = url;
         Level = level;
     }
+    
+    public Nav(string code, string name, string url, int level, string parentCode)
+    {
+        Code = code;
+        Name = name;
+        Url = url;
+        Level = level;
+        ParentCode = parentCode;
+    }
+
+    public Nav(string code, string name, int level, List<Nav> children)
+    {
+        Code = code;
+        Name = name;
+        Level = level;
+        Children = children;
+    }
+
+    public Nav(string code, string name, int level, string parentCode, List<Nav> children) : this(code, name, level, children)
+    {
+        ParentCode = parentCode;
+    }
 
     public Nav(string code, string name, string icon, string? url, int level) : this(code, name, url, level)
     {

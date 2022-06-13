@@ -1,43 +1,48 @@
-﻿@inherits LayoutComponentBase
+﻿@using Masa.Stack.Components.Models
+@inherits LayoutComponentBase
 
-@* <MApp> *@
-@*     <MAppBar Flat App Color="white" Class="m-bar--underline"> *@
-@*         <span>Masa.Framework</span> *@
-@*         <MSpacer></MSpacer> *@
-@*         <MButton Text> *@
-@*             <a href="https://blazor.masastack.com/">About</a> *@
-@*         </MButton> *@
-@*     </MAppBar> *@
-@*     <MNavigationDrawer Permanent App> *@
-@*         <MList Dense Nav> *@
-@*             <MListItem Link Href="/"> *@
-@*                 <MListItemContent> *@
-@*                     <MListItemTitle>Home</MListItemTitle> *@
-@*                 </MListItemContent> *@
-@*             </MListItem> *@
-@*             <MListItem Link Href="counter"> *@
-@*                 <MListItemContent> *@
-@*                     <MListItemTitle>Counter</MListItemTitle> *@
-@*                 </MListItemContent> *@
-@*             </MListItem> *@
-@*             <MListItem Link Href="fetchdata"> *@
-@*                 <MListItemContent> *@
-@*                     <MListItemTitle>Fetch data</MListItemTitle> *@
-@*                 </MListItemContent> *@
-@*             </MListItem> *@
-@*         </MList> *@
-@*     </MNavigationDrawer> *@
-@*     <MMain> *@
-@*         <MContainer Fluid> *@
-@*             <CascadingValue Value="this"> *@
-@*                 @Body *@
-@*             </CascadingValue> *@
-@*         </MContainer> *@
-@*     </MMain> *@
-@* </MApp> *@
-
-<Layout DefaultRoute="/counter"
-        Logo="/logo-en.svg"
-        MiniLogo="/logo.svg">
+<Layout NavItems="NavList"
+        DefaultRoute="/counter"
+        Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
+        MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png">
     @Body
 </Layout>
+
+@code {
+
+    private List<Nav> NavList { get; set; } = new();
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            NavList = new List<Nav>()
+            {
+                new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/", 1),
+                new Nav("counter", "Counter", "mdi-pencil", "/counter", 1),
+                new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
+                new Nav("father", "Father", "mdi-numeric-0-box-outline", 1, new List<Nav>
+                {
+                    new Nav("children2", "ChildTwo", 2, "father", new List<Nav>()
+                    {
+                        new Nav("children", "ChildOne", "/has-children", 3, "children2"),
+                    }),
+                    new Nav("dialog", "dialog", "/dialog", 2, "father"),
+                    new Nav("tab", "tab", "/tab", 2, "father"),
+                    new Nav("mini", "mini", "/mini-components", 2, "father"),
+                    new Nav("extend", "extend", "/extend", 2, "father"),
+                    new Nav("userAutoCompleteExample", "userAutoComplete", "/userAutoCompleteExample", 2, "father"),
+                    new Nav("defaultButtonExample", "defaultButton", "/defaultButtonExample", 2, "father"),
+                    new Nav("defaultDataTableExample", "defaultDataTable", "/defaultDataTableExample", 2, "father"),
+                    new Nav("paginationExample", "pagination", "/defaultPaginationExample", 2, "father"),
+                    new Nav("uploadImageExample", "uploadImage", "/uploadImageExample", 2, "father")
+                }),
+            };
+            
+            StateHasChanged();
+        }
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+}

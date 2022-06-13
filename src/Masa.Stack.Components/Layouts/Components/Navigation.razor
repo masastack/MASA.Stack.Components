@@ -3,88 +3,111 @@
 @implements IDisposable
 @inject GlobalConfig GlobalConfig
 
-<MNavigationDrawer App
-                   Class="navigation"
-                   ExpandOnHover="GlobalConfig.ExpandOnHover"
-                   Fixed
-                   MiniVariantWidth="80"
-                   Width="300"
-                   @bind-MiniVariant="GlobalConfig.Mini">
+<MNavigationDrawer
+    App
+    Class="navigation"
+    Permanent
+    MiniVariantWidth="96"
+    Width="300"
+    MiniVariant="GlobalConfig.Mini">
 
-    <GlobalNavigation>
-        <ActivatorContent>
-            <div style="height:132px"
-                 class="@($"block-center {(GlobalConfig.Mini ? "px-4" : "px-12")}")"
-                 @attributes="@context.Attrs">
-                @if (GlobalConfig.Mini)
-                {
-                    <img height="48" width="48" class="hover-pointer" src="@MiniLogo" alt="mini_log" />
-                }
-                else
-                {
-                    <img class="hover-pointer" src="@Logo" alt="logo" />
-                }
-            </div>
-        </ActivatorContent>
-    </GlobalNavigation>
+    <div style="height:96px;margin-left:28px"
+         class="d-flex align-center">
+        @if (GlobalConfig.Mini)
+        {
+            <img height="40" width="40" src="@MiniLogo" alt="mini_log" />
+        }
+        else
+        {
+            <img width="200" src="@Logo" alt="logo" />
+        }
+    </div>
 
-    <MList Nav Linkage Dense Class="@($"pa-0 {(GlobalConfig.Mini ? "mini-navigation" : "")}")">
+    <MDivider />
+
+    <MList Nav Linkage Class="pa-6 subtitle2">
         @foreach (var nav in Items!)
         {
             if (!nav.HasChildren)
             {
-                <MBorder Value=false Offset Width=4 Class="rounded-r-1" Border="Borders.Right">
-                    <MListItem Ripple=false Class="mb-4" ActiveClass="emphasis2--text" Href="@nav.Url">
-                        <ItemContent>
-                            <MListItemIcon>
-                                <MIcon Color="@(context.Active ? "primary" : "default-lighten-2")" Size=20>@nav.Icon</MIcon>
-                            </MListItemIcon>
-                            <MListItemContent>
-                                <div class="ml-1 text-truncate white-space:nowrap @(context.Active ? "text-subtitle" : "text-body default-lighten-2--text")">
-                                    @T(nav.Name)
-                                </div>
-                            </MListItemContent>
-                        </ItemContent>
-                    </MListItem>
-                </MBorder>
+                <DefaultTooltip Disabled="!GlobalConfig.Mini">
+                    <ActivatorContent Context="tooltipContext">
+                        <DefaultListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs">
+                            <ItemContent>
+                                <MListItemIcon>
+                                    <MIcon Dense Style="margin-left:6px" Color="@(context.Active ? "white" : "regular3--text")">@nav.Icon</MIcon>
+                                </MListItemIcon>
+                                <MListItemContent>
+                                    <div class="ml-1 text-truncate @(context.Active ? "white--text" : "regular2--text")">
+                                        @T(nav.Name)
+                                    </div>
+                                </MListItemContent>
+                            </ItemContent>
+                        </DefaultListItem>
+                    </ActivatorContent>
+                    <ChildContent>
+                        @T(nav.Name)
+                    </ChildContent>
+                </DefaultTooltip>
             }
             else
             {
-                <MListGroup Group="@nav.Children.Select(n => n.Url).ToList()" Class="mb-4" PrependIcon="@nav.Icon" NoAction ActiveClass="primaryText" AppendIcon="M8.33398 10.3335L12.5007 14.5002L16.6673 10.3335H8.33398Z">
-                    <ActivatorContent>
-                        <MListItemContent>
-                            <div style="margin-left:6.5px;" class="text-truncate white-space:nowrap">@T(nav.Name)</div>
-                        </MListItemContent>
+                <MMenu Disabled="!GlobalConfig.Mini" OffsetY OpenOnHover CloseOnContentClick="false"
+                       ContentClass="white pa-2 subtitle2"
+                       MinWidth="250">
+                    <ActivatorContent Context="menuContext">
+                        <MListGroup Group="@GenGroup(nav.Children)"
+                                    NoAction
+                                    ActiveClass="primary--text"
+                                    AppendIcon="mdi-menu-down"
+                                    @attributes="@menuContext.Attrs">
+                            <ActivatorContent>
+                                <MListItemContent>
+                                    <div class="text-truncate regular2--text">@T(nav.Name)</div>
+                                </MListItemContent>
+                            </ActivatorContent>
+                            <PrependIconContent>
+                                <MIcon Dense Style="min-width: 36px">@nav.Icon</MIcon>
+                            </PrependIconContent>
+                            <ChildContent>
+                                <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
+                            </ChildContent>
+                        </MListGroup>
                     </ActivatorContent>
                     <ChildContent>
-                        @foreach (var navChild in nav.Children)
-                        {
-                            <MBorder Value=false Offset Width=4 Class="rounded-r-1" Border="Borders.Right">
-                                <MListItem Ripple=false ActiveClass="emphasis2--text" Link Href="@navChild.Url">
-                                    <ItemContent>
-                                        <MListItemContent>
-                                            <div class="text-truncate white-space:nowrap @(context.Active ? "text-subtitle2" : "font-14-medium default-lighten-2--text")">@T(navChild.Name)</div>
-                                        </MListItemContent>
-                                    </ItemContent>
-                                </MListItem>
-                            </MBorder>
-                        }
+                        <MList Nav Linkage>
+                            <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
+                        </MList>
                     </ChildContent>
-                </MListGroup>
+                </MMenu>
             }
         }
     </MList>
+
+    <DefaultTooltip>
+        <ActivatorContent>
+            <span style="position: absolute; bottom: 24px; left: 50%; transform: translate(-50%, 0)" @attributes="@context.Attrs">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 15C0 6.72 6.72 0 15 0C23.28 0 30 6.72 30 15C30 23.28 23.28 30 15 30C6.72 30 0 23.28 0 15ZM15 24C19.965 24 24 19.965 24 15C24 10.035 19.965 6 15 6C10.035 6 6 10.035 6 15C6 19.965 10.035 24 15 24Z"
+                          fill="#4318FF" />
+                </svg>
+            </span>
+        </ActivatorContent>
+        <ChildContent>
+            @Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+        </ChildContent>
+    </DefaultTooltip>
 </MNavigationDrawer>
 
-<MButton Small 
-         Fab 
-         Color="primary"
-         Style="@($"bottom:58px;z-index:7;position: fixed;{(GlobalConfig.Mini ? "left:60px;" : "left:280px;")}")"
-         OnClick="() => GlobalConfig.ExpandOnHover = !GlobalConfig.ExpandOnHover">
-    <MIcon Class="white--text">
+<DefaultButton Icon
+               Medium
+               Class="nav-trigger white"
+               Style="@($"{(GlobalConfig.Mini ? "left:76px;" : "left:280px;")}")"
+               OnClick="() => GlobalConfig.Mini = !GlobalConfig.Mini">
+    <MIcon Color="primary">
         @(GlobalConfig.Mini ? "mdi-chevron-right" : "mdi-chevron-left")
     </MIcon>
-</MButton>
+</DefaultButton>
 
 @code {
 
@@ -115,6 +138,27 @@
         base.OnParametersSet();
 
         Items ??= new List<Nav>();
+    }
+
+    private List<string> GenGroup(List<Nav> navs)
+    {
+        if (!navs.Any())
+        {
+            return new List<string>();
+        }
+
+        List<string> groups = new();
+
+        foreach (var menu in navs)
+        {
+            groups.AddRange(GenGroup(menu.Children));
+
+            if (string.IsNullOrEmpty(menu.Url)) continue;
+
+            groups.Add(menu.Url);
+        }
+
+        return groups;
     }
 
     public void Dispose()

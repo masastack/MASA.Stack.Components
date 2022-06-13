@@ -5,9 +5,12 @@
        ContentClass="@(string.IsNullOrEmpty(_search) ? "hide-shadow" : "")">
     <ActivatorContent>
         <div @attributes="@context.Attrs">
-            <MTextField @bind-Value="_search" Class="rounded-2" Style="width:340px;height:40px;"
+            <MTextField @bind-Value="_search" 
+                        Class="@($"rounded-2 font-12-medium {Class}")" 
+                        Style="width:340px;"
                         Flat Dense Solo
-                        BackgroundColor="emphasis2--text"
+                        BackgroundColor="@BackgroundColor"
+                        Height="Height"
                         HideDetails="@("auto")" Placeholder="Search">
                 <PrependInnerContent>
                     <MIcon Size=16 Class="mr-2 default-lighten-1--text">mdi-magnify</MIcon>
@@ -22,5 +25,14 @@
 @code {
 
     string _search;
+
+    [Parameter]
+    public string? BackgroundColor { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public StringNumber? Height { get; set; } = 48;
 
 }
