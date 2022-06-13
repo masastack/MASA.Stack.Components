@@ -1,7 +1,8 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 @inherits MasaComponentBase
 
-<MMenu OffsetY>
+<MMenu OffsetY OpenOnHover NudgeTop="-8"
+       ContentClass="px-4 py-2">
     <ActivatorContent>
         <MAvatar @attributes="@context.Attrs" Size=40>
             <MImage Src="/img/avatar/2.svg"></MImage>
@@ -18,27 +19,43 @@
                         <span class="regular--text body">@T("UserInfo")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </MListItem>
-            <MListItem>
+            </DefaultListItem>
+            <DefaultListItem Medium OnClick="() => _updatePasswordModal.Open()">
                 <MListItemIcon Class="mr-4">
-                    <MIcon Size=20 Color="default-lighten-4">fas fa-sign-in-alt</MIcon>
+                    <DefaultIcon Color="emphasis2">mdi-pencil</DefaultIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
-                        <span class="default-lighten-4--text">@T("UpdatePassword")</span>
+                        <span class="regular--text body">@T("UpdatePassword")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </MListItem>
-            <MListItem>
+            </DefaultListItem>
+            <MDivider></MDivider>
+            <DefaultListItem Medium OnClick="() => _logoutModal.Open()">
                 <MListItemIcon Class="mr-4">
-                    <MIcon Size=20 Color="default-lighten-4">fas fa-sign-in-alt</MIcon>
+                    <DefaultIcon Color="emphasis2">mdi-logout</DefaultIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
-                        <span class="default-lighten-4--text">@T("Logout")</span>
+                        <span class="regular--text body">@T("Logout")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </MListItem>
+            </DefaultListItem>
+
         </MList>
     </ChildContent>
 </MMenu>
+
+<LogoutModal @ref="_logoutModal"></LogoutModal>
+
+<UpdatePasswordModal @ref="_updatePasswordModal"></UpdatePasswordModal>
+
+@code {
+
+    [Parameter]
+    public string? UserCenterUrl { get; set; }
+
+    private LogoutModal _logoutModal = null!;
+    private UpdatePasswordModal _updatePasswordModal = null!;
+
+}
