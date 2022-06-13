@@ -1,6 +1,6 @@
 ﻿@namespace Masa.Stack.Components
 
-<MBottomSheet ContentClass="m-sheet-dialog full-height elevation-0 m-dialog--fullscreen" @bind-Value=Value>
+<MBottomSheet ContentClass="m-sheet-dialog full-height elevation-0 m-dialog--fullscreen" Value=Value ValueChanged="ValueChanged">
     <MHover>
         <div @attributes="context.Attrs" style="@($"padding-right:{Padding}px;padding-left:{Padding}px")" class="m-sheet-dialog-overlay d-flex flex-column full-height" @onclick="OnClose">
             @if (HeaderContent is null)
@@ -12,8 +12,8 @@
                         </MIcon>
                         <label class="white--text ml-2" style="font-style: normal;font-weight: 700;font-size: 20px;line-height: 30px;">@Title</label>
                     </div>
-                    <MIcon Color="white" OnClick="OnClose">@(context.Hover?"mdi-close-circle":"mdi-close")</MIcon>
-                </div>
+                    <MIcon Color="white" OnClick="OnClose">@(context.Hover ? "mdi-close-circle" : "mdi-close")</MIcon>
+                    </div>
             }
             else
             {
@@ -65,11 +65,11 @@
     {
         if (ValueChanged.HasDelegate)
         {
-            await ValueChanged.InvokeAsync(false); 
+            await ValueChanged.InvokeAsync(false);
         }
         else
         {
             Value = false;
-        }  
+        }
     }
 }
