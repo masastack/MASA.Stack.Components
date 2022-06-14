@@ -430,4 +430,5 @@
 .masa .overline {
     font-size: 0.75rem !important;
     font-weight: 400 !important;
+    line-height: inherit!important;
 }

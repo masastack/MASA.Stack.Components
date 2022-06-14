@@ -432,7 +432,7 @@
     pointer-events: none;
 }
 
-.font-14-medium .m-label {
+.btn .m-label {
     color: #323D6F;
     font-family: Roboto;
     font-style: normal;
