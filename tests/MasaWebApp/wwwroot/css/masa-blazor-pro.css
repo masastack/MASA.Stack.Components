@@ -329,7 +329,7 @@
     pointer-events: none;
 }
 
-.font-14-medium .m-label {
+.btn .m-label {
     color: #323D6F;
     font-family: Roboto;
     font-style: normal;
@@ -508,10 +508,6 @@ input::-webkit-input-placeholder {
 
 .theme--light.m-icon {
     color: #7681AB;
-}
-
-tr:hover {
-    background-color: #F6F8FD !important;
 }
 
 .invoice-list-avatar {

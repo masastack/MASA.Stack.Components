@@ -63,12 +63,12 @@ public partial class ExpansionAppItem
                 case 2:
                     css[1] = "neutral-text-secondary font-14";
                     css[2] = "sub-nav-item";
-                    css[3] = hover ? "font-14-medium neutral-text-emphasis fill-hover" : "";
+                    css[3] = hover ? "btn neutral-text-emphasis fill-hover" : "";
                     break;
                 default:
                     css[1] = "neutral-text-secondary font-14";
                     css[2] = "action-item";
-                    css[3] = hover ? "font-14-medium neutral-text-emphasis fill-hover" : "";
+                    css[3] = hover ? "btn neutral-text-emphasis fill-hover" : "";
                     break;
             }
 

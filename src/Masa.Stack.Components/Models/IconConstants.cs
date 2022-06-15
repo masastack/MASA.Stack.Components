@@ -11,4 +11,5 @@ public class IconConstants
     public const string Sync = "mdi-refresh";
     public const string Filter = "mdi-filter";
     public const string FilterOff = "mdi-filter-off";
+    public const string Setting = "mdi-cog-outline";
 }
