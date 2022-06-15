@@ -459,18 +459,18 @@ body, .masa-stack-components {
     font-weight: 400 !important;
 }
 
+.masa-stack-components .table-border-none thead th {
+    border-bottom: 0px !important;
+    box-shadow: none;
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+}
+
 .masa-stack-components .table-border-none td {
     border-bottom: 0px !important;
     box-shadow: none;
     padding-top: 12px !important;
     padding-bottom: 12px !important;
-}
-
-.masa-stack-components .table-border-none th {
-    border-bottom: 0px !important;
-    box-shadow: none;
-    padding-top: 24px !important;
-    padding-bottom: 24px !important;
 }
 
 .masa-stack-components .table-border-none tbody tr:hover {
