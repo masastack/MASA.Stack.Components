@@ -1,9 +1,14 @@
-﻿using Masa.Stack.Components.Models;
+﻿using System.Globalization;
+using FluentValidation;
+using Masa.Stack.Components.Models;
 
 namespace Masa.Stack.Components;
 
 public partial class Layout
 {
+    [Inject]
+    private I18n I18N { get; set; } = null!;
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

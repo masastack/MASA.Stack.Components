@@ -5,7 +5,7 @@
          ValueChanged="ValueChanged"
          Persistent="_persistent"
          Class="pa-6"
-         ContentClass="pa-6 white br-5"
+         ContentClass="pa-6 white rounded-5"
          Width="400">
     @if (!HideCloseIcon)
     {
@@ -39,8 +39,8 @@
     @if (OnOk.HasDelegate)
     {
         <div class="d-flex justify-space-around align-center my-@Size">
-            <MButton Color="primary" Large="!Dense" Outlined Rounded Width="140" OnClick="HandleOnCancel">@CancelText</MButton>
-            <MButton Color="primary" Large="!Dense" Disabled="OkDisabled" Loading="@_okLoading" Rounded Width="140" OnClick="HandleOnOk">@OkText</MButton>
+            <MButton Color="primary" Large="!Dense" Outlined Rounded Width="140" OnClick="HandleOnCancel">@ComputedCancelText</MButton>
+            <MButton Color="primary" Large="!Dense" Disabled="OkDisabled" Loading="@_okLoading" Rounded Width="140" OnClick="HandleOnOk">@ComputedOkText</MButton>
         </div>
     }
 </MDialog>
@@ -91,11 +91,11 @@
     private bool _okLoading;
     private bool _persistent;
 
+    private string ComputedCancelText => CancelText ?? T("Cancel");
+    private string ComputedOkText => OkText ?? T("Ok");
+
     protected override void OnParametersSet()
     {
-        CancelText ??= T("Cancel");
-        OkText ??= T("Ok");
-
         if (OnOk.HasDelegate)
         {
             _persistent = true;

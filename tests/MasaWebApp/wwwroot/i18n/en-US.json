@@ -14,11 +14,16 @@
   "ConfirmNewPassword": "Confirm new password",
   "PlaceholderForConfirmNewPassword": "Enter new password again",
   "FailToConfirmNewPassword": "Confirmed password does not match the new password",
+  "Account": "Account",
   "Logout": "Logout",
+  "SetPasswordBySMS": "SMS",
+  "SetPasswordByEmail": "Email",
+
   "GlobalNavigation": "Global Navigation",
   "RecentVisits": "Recent Visits",
   "Favorites": "Favorites",
-  
+  "Search": "Search",
+
   "PhoneNumber": "Phone number",
   "Email": "Email",
   "Position": "Position",
@@ -48,6 +53,7 @@
   "EmailAuth": "Email Authentication",
   "EmailAddress": "Email address",
   "TipOfEmailAddressVerification": "A verification email will be sent to the mailbox for verification",
+  "IncorrectFormat": "Incorrect format",
   "IdentityCardAuth": "Identity Card Authentication",
   "RealName": "Real name",
   "IdentityCardNumber": "Identity Card Number",
