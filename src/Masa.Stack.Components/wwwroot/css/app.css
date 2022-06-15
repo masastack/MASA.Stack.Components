@@ -453,12 +453,17 @@ body, .masa-stack-components {
 /*
     default dataTable
 */
+.masa-stack-components .table-border-none thead th {
+    color: #A3AED0 !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+}
 
 .masa-stack-components .table-border-none td {
     border-bottom: 0px !important;
     box-shadow: none;
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
 }
 
 .masa-stack-components .table-border-none th {
