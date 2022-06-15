@@ -510,10 +510,6 @@ input::-webkit-input-placeholder {
     color: #7681AB;
 }
 
-tr:hover {
-    background-color: #F6F8FD !important;
-}
-
 .invoice-list-avatar {
     width: 32px;
     height: 32px;
