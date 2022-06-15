@@ -53,9 +53,6 @@
 
     private StringNumber? _selectedKey;
 
-    private TValue? _prevValue;
-    private bool _valueUpdatedByInternal;
-
     private MButtonGroup? ButtonGroup { get; set; }
 
     private List<LabeledRadio<TValue>> Items { get; set; } = new();
@@ -70,27 +67,6 @@
 
     private string ComputedStyle => $"border-radius:{BorderRadius + 2}px; {Style}";
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (!EqualityComparer<TValue>.Default.Equals(_prevValue, Value))
-        {
-            _prevValue = Value;
-
-            if (_valueUpdatedByInternal)
-            {
-                _valueUpdatedByInternal = false;
-            }
-            else
-            {
-                var item = Items.FirstOrDefault(item => EqualityComparer<TValue>.Default.Equals(item.Value, Value));
-                if (item is not null)
-                {
-                    await UpdatePosition(item);
-                }
-            }
-        }
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender && ButtonGroup?.Ref.Context is not null)
@@ -101,9 +77,10 @@
 
     private async Task Intersection()
     {
-        await SelectedKeyChanged(_selectedKey);
+        var item = Items.FirstOrDefault(item => EqualityComparer<TValue>.Default.Equals(item.Value, Value));
+        _selectedKey = item.Instance.Value;
 
-        StateHasChanged();
+        await SelectedKeyChanged(_selectedKey);
     }
 
     private async Task SelectedKeyChanged(StringNumber? val)
@@ -114,8 +91,6 @@
         if (item is not null)
         {
             await UpdatePosition(item);
-
-            _valueUpdatedByInternal = true;
 
             if (ValueChanged.HasDelegate)
             {

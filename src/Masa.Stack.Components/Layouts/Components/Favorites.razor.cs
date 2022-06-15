@@ -9,7 +9,18 @@ public partial class Favorites
     private CookieStorage? CookieStorage { get; set; }
 
     [Parameter, EditorRequired]
-    public List<Nav> FlattenedNavs { get; set; } = new();
+    public List<Nav>? FlattenedNavs { get; set; }
+
+    private const string GlobalConfig_Favorite = "GlobalConfig_Favorite";
+
+    private bool _menuValue;
+    private string? _searchKey;
+
+    private List<string> FavoriteNavCodes { get; set; } = new();
+
+    private List<FavoriteNav> InternalNavs { get; set; } = new();
+
+    private IEnumerable<FavoriteNav> SearchedMenus { get; set; } = new List<FavoriteNav>();
 
     protected override void OnParametersSet()
     {
@@ -29,27 +40,17 @@ public partial class Favorites
             if (cookieFavorite is not null)
             {
                 FavoriteNavCodes = cookieFavorite.Split("|").ToList();
+                InternalNavs = FlattenedNavs!.Select(nav => new FavoriteNav(nav, FavoriteNavCodes.Contains(nav.Code))).ToList();
                 StateHasChanged();
             }
         }
     }
 
-    private const string GlobalConfig_Favorite = "GlobalConfig_Favorite";
-
-    private bool _menuValue;
-    private string? _searchKey;
-
-    private List<string> FavoriteNavCodes { get; set; } = new List<string>();
-
-    private List<Nav> FavoriteMenus => FlattenedNavs.Where(n => FavoriteNavCodes.Contains(n.Code)).ToList();
-
-    private IEnumerable<Nav> SearchedMenus { get; set; } = Enumerable.Empty<Nav>();
-
     private async Task HandleOnSearchKeyDown(KeyboardEventArgs args)
     {
         if (args.Code == "Enter")
         {
-            await Task.Delay(256);
+            await Task.Delay(128);
             SearchNavs(_searchKey);
         }
     }
@@ -58,22 +59,29 @@ public partial class Favorites
     {
         if (string.IsNullOrEmpty(key))
         {
-            SearchedMenus = FlattenedNavs!.ToList();
+            SearchedMenus = InternalNavs.OrderBy((item) => !item.Favorite).ToList();
             return;
         }
 
-        SearchedMenus = FlattenedNavs!.Where(n => T(n.Name).Contains(key, StringComparison.OrdinalIgnoreCase));
+        SearchedMenus = InternalNavs.Where(item => T(item.Nav.Name).Contains(key, StringComparison.OrdinalIgnoreCase))
+                                    .OrderBy(item => !item.Favorite)
+                                    .ToList();
     }
 
     private void ToggleFavorite(string code)
     {
-        if (FavoriteNavCodes.Contains(code))
+        var nav = InternalNavs.FirstOrDefault(item => item.Nav.Code == code);
+        if (nav is null) return;
+
+        nav.Favorite = !nav.Favorite;
+
+        if (nav.Favorite)
         {
-            FavoriteNavCodes.Remove(code);
+            FavoriteNavCodes.Add(code);
         }
         else
         {
-            FavoriteNavCodes.Add(code);
+            FavoriteNavCodes.Remove(code);
         }
 
         CookieStorage?.SetItemAsync(GlobalConfig_Favorite, string.Join("|", FavoriteNavCodes));
@@ -86,12 +94,31 @@ public partial class Favorites
         if (value)
         {
             _searchKey = null;
-            SearchNavs(_searchKey);
+            SearchNavs(null);
         }
+    }
+
+    private void NavigateTo(string url)
+    {
+        NavigationManager.NavigateTo(url);
+        _menuValue = false;
     }
 
     private bool IsMenuActive(Nav menu)
     {
         return (menu.IsActive(NavigationManager.ToBaseRelativePath(NavigationManager.Uri)));
+    }
+
+    public class FavoriteNav
+    {
+        public Nav Nav { get; }
+
+        public bool Favorite { get; set; }
+
+        public FavoriteNav(Nav nav, bool favorite)
+        {
+            Nav = nav;
+            Favorite = favorite;
+        }
     }
 }

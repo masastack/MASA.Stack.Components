@@ -2,10 +2,17 @@
 
 <MMenu OffsetY Bottom>
     <ActivatorContent>
-        <MIcon Size="20" Class="ml-5" Color="default-lighten-3"
-               @attributes="@context.Attrs">
-            mdi-message-processing-outline
-        </MIcon>
+        <MButton Icon
+                 Width="40"
+                 Height="40"
+                 Class="emphasis2--text"
+                 @attributes="@context.Attrs">
+            <MBadge Bordered OverLap Dot Color="red">
+                <MIcon Size="20">
+                    mdi-bell
+                </MIcon>
+            </MBadge>
+        </MButton>
     </ActivatorContent>
     <ChildContent>
     </ChildContent>

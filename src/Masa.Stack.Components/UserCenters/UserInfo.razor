@@ -17,14 +17,14 @@
                 </MAvatar>
             }
             <PBlockText Primary="@Data?.Name"
-                        PrimaryClass="font-20-bold default-text-emphasis-secondary"
+                        PrimaryClass="font-20-bold emphasis2--text"
                         Secondary="@Data?.Account"
-                        SecondaryClass="default-text-secondary font-14 full-width">
+                        SecondaryClass="regular3--text font-14 full-width">
             </PBlockText>
         </div>
         <div class="auths">
             <MDivider>
-                <span class="default-text-secondary overline">@T("Auths")</span>
+                <span class="regular3--text caption" style="line-height: 1px">@T("Auths")</span>
             </MDivider>
             <div class="d-flex" style="justify-content: space-around; flex-wrap: wrap;">
                 <AuthIcon OnClick="() => _idCardValidateModal?.Open()">mdi-card-account-details-outline</AuthIcon>
@@ -41,10 +41,10 @@
 
         <MWindow Value="_windowValue">
             <MWindowItem>
-                <div class="d-flex mb-6" style="justify-content: space-between;">
+                <div class="d-flex mb-4" style="justify-content: space-between;">
                     <PBlockText Primary="@Data?.DisplayName"
-                                PrimaryClass="font-20-bold default-text-regular"
-                                SecondaryClass="caption default-text-secondary d-flex"
+                                PrimaryClass="font-20-bold regular--text"
+                                SecondaryClass="caption regular3--text d-flex"
                                 SecondaryStyle="align-items:center;">
                         <SecondaryContent>
                             @Data?.GenderText
@@ -56,26 +56,26 @@
                         </SecondaryContent>
                     </PBlockText>
                     <MButton Icon Small OnClick="() => ChangeWindowValue(1)">
-                        <MIcon Size="15" Class="default-text-regular">mdi-pencil</MIcon>
+                        <MIcon Size="15" Class="regular--text">mdi-pencil</MIcon>
                     </MButton>
                 </div>
-                <dl class="d-flex mb-6" style="align-items: start; justify-content: space-between">
-                    <dt class="d-inline-flex font-14 default-text-regular">
-                        <MIcon Class="default-text-secondary mr-2" Size="13">mdi-phone</MIcon>
+                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                    <dt class="d-inline-flex font-14 regular--text">
+                        <MIcon Class="regular3--text mr-2" Size="13">mdi-phone</MIcon>
                         <span>@Data?.PhoneNumber</span>
                     </dt>
-                    <dd class="overline default-text-secondary">@T("PhoneNumber")</dd>
+                    <dd class="overline regular3--text">@T("PhoneNumber")</dd>
                 </dl>
-                <dl class="d-flex mb-6" style="align-items: start; justify-content: space-between">
-                    <dt class="d-inline-flex font-14 default-text-regular">
-                        <MIcon Class="default-text-secondary mr-2" Size="13">mdi-email</MIcon>
+                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                    <dt class="d-inline-flex font-14 regular--text">
+                        <MIcon Class="regular3--text mr-2" Size="13">mdi-email</MIcon>
                         <span>@Data?.Email</span>
                     </dt>
-                    <dd class="overline default-text-secondary">@T("Email")</dd>
+                    <dd class="overline regular3--text">@T("Email")</dd>
                 </dl>
             </MWindowItem>
-            <MWindowItem>
-                <div class="d-flex mb-6" style="justify-content: space-between;align-items: center;">
+            <MWindowItem Class="mb-n2">
+                <div class="d-flex mb-4" style="justify-content: space-between;align-items: center;">
                     <LabeledRadioGroup @bind-Value="@_userGender" Dense>
                         <LabeledRadio Value="0" Style="height:36px">@T("Female")</LabeledRadio>
                         <LabeledRadio Value="1" Style="height:36px">@T("Male")</LabeledRadio>
@@ -115,15 +115,15 @@
                      Sm="12"
                      Md="12"
                      NoGutters
-                     Style="overflow: auto;height: calc(100% - 216px);"
-                     ItemClass="@(_ => "mb-6")"
-                     ItemStyle="@(_ => "justify-content: space-between;")"
-                     TermClass="@(_ => "font-14 default-text-regular")"
-                     DetailClass="@(_ => "overline default-text-secondary")">
+                     Style="overflow: auto;height: calc(100% - 195px);"
+                     ItemClass="@(_ => "mb-4")"
+                     ItemStyle="@(_ => "justify-content: space-between; align-items: center;")"
+                     TermClass="@(_ => "font-14 regular--text")"
+                     DetailClass="@(_ => "overline regular3--text")">
             <TermContent>
                 @{
                     var term = (ValueTuple<string, string>)context.Value;
-                    <MIcon Size="13" Class="default-text-secondary mr-2">@term.Item1</MIcon>
+                    <MIcon Size="13" Class="regular3--text mr-2">@term.Item1</MIcon>
                     <span>@term.Item2</span>
                 }
             </TermContent>

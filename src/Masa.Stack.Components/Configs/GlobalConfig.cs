@@ -7,19 +7,15 @@ public class GlobalConfig
     private const string DarkCookieKey = "GlobalConfig_IsDark";
     private const string PageModeKey = "GlobalConfig_PageMode";
     private const string MiniCookieKey = "GlobalConfig_NavigationMini";
-    private const string ExpandOnHoverCookieKey = "GlobalConfig_ExpandOnHover";
     private const string FavoriteCookieKey = "GlobalConfig_Favorite";
 
     private readonly CookieStorage? _cookieStorage;
     private readonly I18nConfig? _i18NConfig;
     private bool _dark;
-    private string? _pageMode;
     private bool _mini;
-    private bool _expandOnHover;
     private string _favorite;
 
     public delegate void GlobalConfigChanged();
-    public event GlobalConfigChanged? OnPageModeChanged;
     public event GlobalConfigChanged? OnLanguageChanged;
 
     public GlobalConfig(CookieStorage cookieStorage, I18nConfig i18nConfig, IHttpContextAccessor httpContextAccessor)
@@ -56,17 +52,6 @@ public class GlobalConfig
         }
     }
 
-    public string PageMode
-    {
-        get => _pageMode ?? PageModes.PageTabs;
-        set
-        {
-            _pageMode = value;
-            _cookieStorage?.SetItemAsync(PageModeKey, value);
-            OnPageModeChanged?.Invoke();
-        }
-    }
-
     public bool Mini
     {
         get => _mini;
@@ -74,16 +59,6 @@ public class GlobalConfig
         {
             _mini = value;
             _cookieStorage?.SetItemAsync(MiniCookieKey, value);
-        }
-    }
-    
-    public bool ExpandOnHover
-    {
-        get => _expandOnHover;
-        set
-        {
-            _expandOnHover = value;
-            _cookieStorage?.SetItemAsync(ExpandOnHoverCookieKey, value);
         }
     }
 
@@ -100,9 +75,7 @@ public class GlobalConfig
     private void Initialization(IRequestCookieCollection cookies)
     {
         _dark = Convert.ToBoolean(cookies[DarkCookieKey]);
-        _pageMode = cookies[PageModeKey];
-        _mini = Convert.ToBoolean(cookies[MiniCookieKey]);
-        _expandOnHover = Convert.ToBoolean(cookies[ExpandOnHoverCookieKey]);
+        _mini = !cookies.ContainsKey(MiniCookieKey) || Convert.ToBoolean(cookies[MiniCookieKey]);
         _favorite = cookies[FavoriteCookieKey];
     }
 }
