@@ -1,4 +1,4 @@
-﻿using Masa.Stack.Components.Models;
+﻿using Mapster;
 
 namespace Masa.Stack.Components;
 
@@ -17,17 +17,28 @@ public partial class Layout
     public string? MiniLogo { get; set; }
 
     [Parameter, EditorRequired]
-    public List<Nav>? NavItems { get; set; }
+    public string AppId { get; set; } = string.Empty;
+
+    List<Nav> NavItems = new();
+
+    List<Nav> FlattenedNavs { get; set; } = new();
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-
-        NavItems ??= new List<Nav>();
-        FlattenedNavs = FlattenNavs(NavItems, true);
     }
 
-    private List<Nav> FlattenedNavs { get; set; } = new();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var menus = await authClient.PermissionService.GetMenusAsync(AppId);
+            NavItems = menus.Adapt<List<Nav>>();
+            FlattenedNavs = FlattenNavs(NavItems, true);
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     private List<Nav> FlattenNavs(List<Nav> tree, bool excludeNavHasChildren = false)
     {
