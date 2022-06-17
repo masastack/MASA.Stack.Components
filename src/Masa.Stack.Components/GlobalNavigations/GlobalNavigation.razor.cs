@@ -29,7 +29,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
             FavoriteNavs = GetFavoriteNavs(favorites, Categories);
 
-            RecentVisits = GetRecentVisits();
+            RecentVisits = await GetRecentVisits();
 
             StateHasChanged();
         }
@@ -94,14 +94,10 @@ public partial class GlobalNavigation : MasaComponentBase
         return result;
     }
 
-    private List<(string name, string url)> GetRecentVisits()
+    private async Task<List<(string name, string url)>> GetRecentVisits()
     {
-        // TODO: fetch recent visits
-        return new List<(string name, string url)>()
-        {
-            ("User", "/users"),
-            ("Permission", "/permissions"),
-        };
+        var visitedList = await authClient.UserService.GetUserVisitedListAsync();
+        return visitedList.Select(v => new ValueTuple<string, string>(v.Name, v.Url)).ToList();
     }
 
     private void NavigateTo(string? url)

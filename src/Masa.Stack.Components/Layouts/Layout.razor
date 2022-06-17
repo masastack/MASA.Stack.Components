@@ -1,8 +1,11 @@
-﻿@using Masa.BuildingBlocks.BasicAbility.Auth
-@using Masa.Stack.Components.Layouts
+﻿@using Masa.Stack.Components.Layouts
+@using Microsoft.Extensions.Logging
 @namespace Masa.Stack.Components
+@implements IDisposable
 @inject GlobalConfig GlobalConfig
+@inject NavigationManager NavigationManager
 @inject IAuthClient authClient
+@inject ILogger<Layout> logger
 
 <MApp Class="masa masa-stack-components">
     <MAppBar App
