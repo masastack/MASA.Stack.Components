@@ -3,31 +3,34 @@
 <CascadingValue Value="this">
     @ChildContent
     <div Class="@($"d-flex flex-column {AlignItems} {Class}")" Style="@Style">
-        <LabeledRadioGroup Dense="Dense"
-                           Class="@TabsClass"
+        <LabeledRadioGroup Class="@TabsClass"
+                           Dense="Dense"
                            Style="@($"width: fit-content {TabsStyle}")"
-                           TValue="StringNumber"
-                           Value="TabIndex"
-                           ValueChanged="TabChanged">
+                           TValue="string"
+                           Value="Tab"
+                           ValueChanged="ValueChanged">
             @for (var i = 0; i < Tabs!.Count; i++)
             {
-                var header = Tabs[i];
-                var index = i;
-                <LabeledRadio Value="@((StringNumber)i)" MinWidth="@TabMinWidth">
-                    <span class="@(TabIndex == index ? "subtitle2 emphasis2--text":"btn regular2--text")">@header</span>                
+                var tab = Tabs[i];
+                <LabeledRadio MinWidth="@TabMinWidth" Value="@(tab)">
+                    <span class="@(Tab == tab ? "subtitle2 emphasis2--text" : "btn regular2--text")">@tab</span>
                 </LabeledRadio>
             }
         </LabeledRadioGroup>
 
-        <MWindow @bind-Value="TabIndex"
-                 Class="@($"full-width mx-1 {ItemsClass}")"
-                 Style="@ItemsStyle">
-            @for (var i = 0; i < _elevationTabItems.Count; i++)
+        <MWindow Class="@($"full-width mx-1 {ItemsClass}")"
+                 Style="@ItemsStyle"
+                 Value="Tab">
+            @for (var i = 0; i < Tabs!.Count; i++)
             {
-                var item = _elevationTabItems[i];
-                <MWindowItem Value="@i" Class="full-height">
-                    @item.ChildContent
-                </MWindowItem>
+                var item = _elevationTabItems.ElementAtOrDefault(i);
+                if (item is not null)
+                {
+                    var tab = Tabs[i];
+                    <MWindowItem Class="full-height" Value="@tab">
+                        @item.ChildContent
+                    </MWindowItem>
+                }
             }
         </MWindow>
     </div>
@@ -73,10 +76,10 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public StringNumber TabIndex { get; set; } = 0;
+    public string? Tab { get; set; }
 
     [Parameter]
-    public EventCallback<StringNumber> TabIndexChanged { get; set; }
+    public EventCallback<string> TabChanged { get; set; }
 
     List<ElevationTabItem> _elevationTabItems = new();
 
@@ -101,6 +104,7 @@
     protected override void OnParametersSet()
     {
         Tabs ??= new List<string>();
+        Tab ??= Tabs!.FirstOrDefault();
     }
 
     public void AddTabItem(ElevationTabItem tabItem)
@@ -113,15 +117,15 @@
         _elevationTabItems.Remove(tabItem);
     }
 
-    private async Task TabChanged(StringNumber v)
+    private async Task ValueChanged(string v)
     {
-        if (TabIndexChanged.HasDelegate)
+        if (TabChanged.HasDelegate)
         {
-            await TabIndexChanged.InvokeAsync(v);
+            await TabChanged.InvokeAsync(v);
         }
         else
         {
-            TabIndex = v;
+            Tab = v;
         }
     }
 
