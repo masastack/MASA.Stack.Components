@@ -47,7 +47,7 @@ public partial class ExpansionApp
             {
                 var categoryAppNavs = ExpansionWrapper.Value.Where(v => v.Category == CategoryCode && v.App == App.Code).ToList();
 
-                    _categoryAppNavs = categoryAppNavs;
+                _categoryAppNavs = categoryAppNavs;
                 if (!_initValues)
                 {
                     _initValues = true;
@@ -83,7 +83,7 @@ public partial class ExpansionApp
     {
         // TODO: select the nav and select the children and actions
         // TODO: there is a bug in ItemGroup
-        
+
         _values = v.Where(u => u.Value is not null).ToList();
 
         _categoryAppNavs = _values
@@ -161,8 +161,10 @@ public partial class ExpansionApp
         var item = FavoriteNavs!.FirstOrDefault(f => f.Id == favoriteNav.Id);
         if (item is not null)
         {
-            // TODO: remove favorite
-            await Task.Delay(1000);
+            if (GlobalNavigation?.OnFavoriteRemove is not null)
+            {
+                await GlobalNavigation.OnFavoriteRemove(item.Nav.Code);
+            }
 
             FavoriteNavs!.Remove(item);
 
@@ -170,8 +172,10 @@ public partial class ExpansionApp
         }
         else
         {
-            // TODO: add favorite
-            await Task.Delay(1000);
+            if (GlobalNavigation?.OnFavoriteAdd is not null)
+            {
+                await GlobalNavigation.OnFavoriteAdd(nav.Code);
+            }
 
             FavoriteNavs!.Add(favoriteNav);
 
