@@ -2,7 +2,7 @@
 
 public abstract class MasaComponentBase : ComponentBase
 {
-    [CascadingParameter]
+    [Inject]
     public I18n LanguageProvider
     {
         get => _languageProvider ?? throw new Exception("please inject I18n!");

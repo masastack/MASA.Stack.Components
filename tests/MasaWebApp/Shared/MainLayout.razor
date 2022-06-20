@@ -1,17 +1,12 @@
 ﻿@using Masa.Stack.Components.Models
-@using Masa.Stack.Components.Configs
-@using BlazorComponent.I18n
 @inherits LayoutComponentBase
-@inject I18n I18n
 
-<CascadingValue Value="I18n">
-    <Layout NavItems="NavList"
-            UserCenterRoute="/user-center"
-            Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
-            MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png">
-        @Body
-    </Layout>
-</CascadingValue>
+<Layout NavItems="NavList"
+        UserCenterRoute="/user-center"
+        Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
+        MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png">
+    @Body
+</Layout>
 
 @code {
 

@@ -1,7 +1,7 @@
 ﻿@using System.Globalization
 @namespace Masa.Stack.Components.Layouts
 @inject GlobalConfig GlobalConfig
-@inject I18n I18N
+@inject I18n I18n
 
 <MMenu OffsetY Bottom>
     <ActivatorContent>
@@ -35,7 +35,7 @@
 
     void OnLanguageChange(string language)
     {
-        I18N.SetLang(language);
+        I18n.SetLang(language);
         GlobalConfig.Language = language;
     }
 

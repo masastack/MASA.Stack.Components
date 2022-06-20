@@ -130,15 +130,15 @@ public partial class PhoneNumberValidateForm : MasaComponentBase, IDisposable
 
     class PhoneNumberValidator : AbstractValidator<PhoneNumberValidateForm>
     {
-        public PhoneNumberValidator(I18n i18N)
+        public PhoneNumberValidator(I18n i18n)
         {
             RuleFor(c => c.PhoneNumber)
                 .NotEmpty()
-                .Must(IsValid).WithMessage(i18N.T("IncorrectFormat"))
-                .WithName(i18N.T("PhoneNumber"));
+                .Must(IsValid).WithMessage(i18n.T("IncorrectFormat"))
+                .WithName(i18n.T("PhoneNumber"));
             RuleFor(c => c.Captcha)
                 .NotEmpty()
-                .WithName(i18N.T("Captcha"));
+                .WithName(i18n.T("Captcha"));
         }
     }
 

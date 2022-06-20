@@ -7,7 +7,7 @@ namespace Masa.Stack.Components;
 public partial class Layout
 {
     [Inject]
-    private I18n I18N { get; set; } = null!;
+    private I18n I18n { get; set; } = null!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
