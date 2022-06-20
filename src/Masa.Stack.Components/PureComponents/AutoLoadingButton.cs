@@ -21,10 +21,12 @@ public class AutoLoadingButton : MButton
             OnClick = EventCallback.Factory.Create<MouseEventArgs>(this, async (args) =>
             {
                 Loading = true;
+                Disabled = true;
 
                 await originalOnClick.InvokeAsync(args);
 
                 Loading = false;
+                Disabled = false;
 
                 StateHasChanged();
             });

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Globalization;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
 
 namespace Masa.Stack.Components.Configs;
 
 public class GlobalConfig
 {
     private const string DarkCookieKey = "GlobalConfig_IsDark";
-    private const string PageModeKey = "GlobalConfig_PageMode";
     private const string MiniCookieKey = "GlobalConfig_NavigationMini";
     private const string FavoriteCookieKey = "GlobalConfig_Favorite";
 
@@ -16,12 +17,15 @@ public class GlobalConfig
     private string _favorite;
 
     public delegate void GlobalConfigChanged();
+
     public event GlobalConfigChanged? OnLanguageChanged;
 
     public GlobalConfig(CookieStorage cookieStorage, I18nConfig i18nConfig, IHttpContextAccessor httpContextAccessor)
     {
         _cookieStorage = cookieStorage;
         _i18NConfig = i18nConfig;
+
+        SetCultureInfo(i18nConfig.Language);
 
         if (httpContextAccessor.HttpContext is not null)
             Initialization(httpContextAccessor.HttpContext.Request.Cookies);
@@ -38,6 +42,8 @@ public class GlobalConfig
             }
 
             _i18NConfig.Language = value;
+            SetCultureInfo(value);
+
             OnLanguageChanged?.Invoke();
         }
     }
@@ -77,5 +83,10 @@ public class GlobalConfig
         _dark = Convert.ToBoolean(cookies[DarkCookieKey]);
         _mini = !cookies.ContainsKey(MiniCookieKey) || Convert.ToBoolean(cookies[MiniCookieKey]);
         _favorite = cookies[FavoriteCookieKey];
+    }
+
+    private void SetCultureInfo(string language)
+    {
+        ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo(language);
     }
 }
