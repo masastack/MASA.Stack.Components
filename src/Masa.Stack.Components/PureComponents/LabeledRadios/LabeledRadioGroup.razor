@@ -51,6 +51,9 @@
     [Parameter]
     public EventCallback<TValue> ValueChanged { get; set; }
 
+    private TValue _prevValue;
+    private bool _valueChangedFromInternal;
+
     private StringNumber? _selectedKey;
 
     private MButtonGroup? ButtonGroup { get; set; }
@@ -66,6 +69,21 @@
     private string LeftStyle => $"left:{CurrentItemOffsetLeft}px";
 
     private string ComputedStyle => $"border-radius:{BorderRadius + 2}px; {Style}";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (!_valueChangedFromInternal && !EqualityComparer<TValue>.Default.Equals(_prevValue, Value))
+        {
+            _prevValue = Value;
+            Intersection();
+        }
+        else
+        {
+            _valueChangedFromInternal = false;
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -86,6 +104,7 @@
     private async Task SelectedKeyChanged(StringNumber? val)
     {
         _selectedKey = val;
+        _valueChangedFromInternal = true;
 
         var item = Items.FirstOrDefault(item => item.Instance?.Value == val);
         if (item is not null)

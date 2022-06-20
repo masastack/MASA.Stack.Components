@@ -1,0 +1,28 @@
+﻿@namespace Masa.Stack.Components.Layouts
+@inherits MasaComponentBase
+
+<ADialog @bind-Value="_visible"
+         Title="@T("TipsForLogout")"
+         HeaderClass="mt-3 mb-9"
+         OnOk="HandleOnOk">
+</ADialog>
+
+@code {
+
+    private bool _visible;
+
+    internal void Open()
+    {
+        _visible = true;
+        StateHasChanged();
+    }
+
+    private async Task HandleOnOk()
+    {
+        // TODO: logic for logout
+        await Task.Delay(1000);
+
+        _visible = false;
+    }
+
+}

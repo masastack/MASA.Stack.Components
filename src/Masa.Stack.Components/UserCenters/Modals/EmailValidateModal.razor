@@ -5,7 +5,6 @@
 <ADialog @bind-Value="_visible"
          Title="@(IsUpdate ? T("ChangeEmail") : T("EmailAuth"))"
          IconOfTitle="mdi-email"
-         CancelText="@T("Cancel")"
          OkText="@T("Send")"
          OkDisabled="!_valid"
          OnCancel="() => _newEmail = null"

@@ -70,12 +70,6 @@
     height: 100%;
 }
 
-.m-input fieldset {
-    border-radius: 10px !important;
-    border: 1px solid #E9EDF7 !important;
-    box-sizing: border-box !important;
-}
-
 .m-input .m-input__icon .mdi-menu-down {
     color: #A3AED0;
 }
@@ -146,13 +140,6 @@
 
 .m-btn--is-elevated {
     box-shadow: none !important;
-}
-
-.m-menu__content {
-    border: 0.5px solid #E9EDF7;
-    box-sizing: border-box;
-    border-radius: 10px !important;
-    box-shadow: 0 18px 40px 0 rgb(112 144 176 / 12%) !important;
 }
 
 .hide-shadow {

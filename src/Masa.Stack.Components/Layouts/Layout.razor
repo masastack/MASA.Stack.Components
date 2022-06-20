@@ -1,6 +1,5 @@
 ﻿@using Masa.Stack.Components.Layouts
 @namespace Masa.Stack.Components
-@inject GlobalConfig GlobalConfig
 
 <MApp Class="masa masa-stack-components">
     <MAppBar App
@@ -18,12 +17,9 @@
         <MSpacer />
         <Favorites FlattenedNavs="FlattenedNavs" />
         <Languages />
-        <div style="height: 48px">
-            <MDivider Vertical />
-        </div>
-        <MSheet class="d-flex align-center justify-space-between rounded-6 pa-1 ml-6 mr-n3" Width="100">
+        <MSheet class="d-flex align-center justify-space-between rounded-6 pa-1 mr-n3" Width="100">
             <Notification />
-            <User />
+            <User UserCenterUrl="@UserCenterRoute" />
         </MSheet>
     </MAppBar>
 

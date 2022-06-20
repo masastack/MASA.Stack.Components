@@ -1,14 +1,16 @@
-﻿using Masa.Stack.Components.Models;
+﻿using System.Globalization;
+using FluentValidation;
+using Masa.Stack.Components.Models;
 
 namespace Masa.Stack.Components;
 
 public partial class Layout
 {
+    [Inject]
+    private I18n I18n { get; set; } = null!;
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    [Parameter, EditorRequired]
-    public string? DefaultRoute { get; set; }
 
     [Parameter, EditorRequired]
     public string? Logo { get; set; }
@@ -18,6 +20,9 @@ public partial class Layout
 
     [Parameter, EditorRequired]
     public List<Nav>? NavItems { get; set; }
+
+    [Parameter, EditorRequired]
+    public string? UserCenterRoute { get; set; }
 
     protected override void OnParametersSet()
     {
