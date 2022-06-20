@@ -410,8 +410,6 @@ body, .masa-stack-components {
     min-width: 100px !important;
     height: 40px !important;
     border-radius: 40px !important;
-    font-family: 'Roboto' !important;
-    font-style: normal !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;
@@ -421,8 +419,6 @@ body, .masa-stack-components {
     min-width: 126px !important;
     height: 40px !important;
     border-radius: 99px !important;
-    font-family: 'Roboto' !important;
-    font-style: normal !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;
@@ -432,8 +428,6 @@ body, .masa-stack-components {
     min-width: 340px !important;
     height: 48px !important;
     border-radius: 90px !important;
-    font-family: 'Roboto' !important;
-    font-style: normal !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;
