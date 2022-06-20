@@ -15,15 +15,15 @@
          class="d-flex align-center">
         @if (GlobalConfig.Mini)
         {
-            <img height="40" width="40" src="@MiniLogo" alt="mini_log" />
+            <img height="40" width="40" src="@MiniLogo" alt="mini_log"
+                 style="cursor: pointer" @onclick="NavigateToIndex" />
         }
         else
         {
-            <img width="200" src="@Logo" alt="logo" />
+            <img width="200" src="@Logo" alt="logo"
+                 style="cursor: pointer" @onclick="NavigateToIndex" />
         }
     </div>
-
-    <MDivider />
 
     <MList Nav Linkage Class="pa-6 subtitle2">
         @foreach (var nav in Items!)
@@ -159,6 +159,11 @@
         }
 
         return groups;
+    }
+
+    private void NavigateToIndex()
+    {
+        NavigationManager.NavigateTo("/");
     }
 
     public void Dispose()

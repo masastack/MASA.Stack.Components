@@ -20,9 +20,9 @@ public class DefaultModal : PModal
         base.OnParametersSet();
 
         Class ??= string.Empty;
-        if (!Class.Contains("br-5"))
+        if (!Class.Contains(" rounded-5"))
         {
-            Class += " br-5";
+            Class += " rounded-5";
         }
 
         HeaderClass ??= string.Empty;

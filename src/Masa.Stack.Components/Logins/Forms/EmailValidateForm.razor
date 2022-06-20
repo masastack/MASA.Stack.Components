@@ -1,0 +1,15 @@
+﻿@namespace Masa.Stack.Components.Forms
+@inherits MasaComponentBase
+
+<MForm Model="this" EnableValidation
+       Class="full-height d-flex flex-column justify-space-between"
+       OnValidSubmit="HandleOnValidSubmit"
+       @ref="_form">
+    <div style="margin-top: 50%; transform: translateY(-50%);">
+        <DefaultTextField @bind-Value="EmailAddress"
+                          Label="@T("EmailAddress")"
+                          HideDetails="false">
+        </DefaultTextField>
+    </div>
+    <DefaultButton Class="align-self-center" Large Type="submit">@T("Ok")</DefaultButton>
+</MForm>
