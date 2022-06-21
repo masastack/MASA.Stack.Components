@@ -1,0 +1,26 @@
+﻿@namespace Masa.Stack.Components
+@inherits MasaComponentBase
+
+<MMenu OffsetY Bottom ValueChanged="ChangeIconState" OnOutsideClick="@(() => Icon = "mdi-menu-down")">
+    <ActivatorContent>
+        <div @attributes="context.Attrs" class="page-select d-flex">
+            <div class="ma-auto">
+                <span class="body2 emphasis--text">@Value</span>
+            </div>
+            <div class="icon d-flex">
+                <MIcon Class="ma-auto" Color="regular3">@Icon</MIcon>
+            </div>
+        </div>
+    </ActivatorContent>
+    <ChildContent>
+        @foreach(var item in Items)
+        {
+           <div class="px-4 py-3 body2 emphasis--text combox" @onclick="async ()=> await SelectAsync(item)">
+                @item
+            </div>
+        }
+    </ChildContent>
+</MMenu>
+
+
+

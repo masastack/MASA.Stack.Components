@@ -1,6 +1,6 @@
 .labeled-radio-group {
     background-color: #F0F3FA !important;
-    padding: 4px;
+    padding: 2px;
 }
 
 .labeled-radio-group .theme--light.m-btn--active:hover::before, .labeled-radio-group .theme--light.m-btn--active::before {

@@ -3,18 +3,7 @@
 
 <div class="@Class d-flex">
     <div class="d-flex" style="height: 30px !important;">
-        <MSelect Value=PageSize
-                 ValueChanged=PageSizeChanged
-                 Color="primary"
-                 Style="max-width:120px;"
-                 Dense                
-                 Outlined
-                 Items="@PageSizeSelect"
-                 ItemText="p => p.ToString()"
-                 ItemValue="p => p"
-                 HideDetails="@("auto")"
-                 Class="rounded-2 small">
-        </MSelect>
+        <PaginationSelect Value=PageSize ValueChanged=PageSizeChanged Items="@PageSizeSelect" />
         <div class="ml-2 mt-1 block-center caption regular3--text">@T("Rows per page")</div>
         <div class="ml-2 mt-1 block-center caption regular3--text">
             <span>@T("Total") @Total @T("Item")</span>
