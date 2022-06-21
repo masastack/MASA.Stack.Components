@@ -3,8 +3,8 @@
 */
 
 .masa {
-    font-family: 'Roboto';
-    font-size:16px;
+    font-family: roboto,"Noto Sans SC","Microsoft YaHei" !important;
+    font-size: 16px;
 }
 
 .masa .primary {
@@ -360,77 +360,114 @@
 .masa .h1 {
     font-size: 6rem !important;
     font-weight: 300 !important;
+    line-height: 7rem !important;
+    letter-spacing: -0.0946875em !important;
 }
 
 .masa .h2 {
     font-size: 3.75rem !important;
     font-weight: 300 !important;
+    line-height: 4.75rem !important;
+    letter-spacing: -0.03125em !important;
 }
 
 .masa .h3 {
     font-size: 3rem !important;
     font-weight: 900 !important;
+    line-height: 3.5rem !important;
+    letter-spacing: 0em !important;
 }
 
 .masa .h4 {
     font-size: 2.125rem !important;
     font-weight: 700 !important;
+    line-height: 3.1875rem !important;
+    letter-spacing: 0.02em !important;
 }
 
 .masa .h5 {
     font-size: 1.5rem !important;
     font-weight: 700 !important;
+    line-height: 2.25rem !important;
+    letter-spacing: 0em !important;
 }
 
 .masa .h6 {
     font-size: 1.25rem !important;
     font-weight: 700 !important;
+    line-height: 1.875rem !important;
+    letter-spacing: 0.01em !important;
 }
 
 .masa .h7 {
     font-size: 1.125rem !important;
     font-weight: 500 !important;
+    line-height: 1.6875rem !important;
+    letter-spacing: 0.01em !important;
 }
 
 .masa .h8 {
     font-size: 1rem !important;
     font-weight: 700 !important;
+    line-height: 1.5rem !important;
+    letter-spacing: 0.03125em !important;
 }
 
 .masa .subtitle {
     font-size: 1rem !important;
     font-weight: 500 !important;
+    line-height: 1.5rem !important;
+    letter-spacing: 0em !important;
 }
 
 .masa .subtitle2 {
     font-size: 0.875rem !important;
     font-weight: 700 !important;
+    line-height: 1.3125rem !important;
+    letter-spacing: 0em !important;
+}
+
+.masa .subtitle3 {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    line-height: 1.125rem !important;
+    letter-spacing: 0em !important;
 }
 
 .masa .body {
     font-size: 1rem !important;
     font-weight: 400 !important;
+    line-height: 1.5rem !important;
+    letter-spacing: 0em !important;
 }
 
 .masa .body2 {
     font-size: 0.875rem !important;
     font-weight: 400 !important;
+    line-height: 1.3125rem !important;
+    letter-spacing: 0.015625em !important;
 }
 
 .masa .btn {
     font-size: 0.875rem !important;
     font-weight: 500 !important;
+    line-height: 1.3125rem !important;
+    letter-spacing: 0em !important;
 }
 
 .masa .caption {
     font-size: 0.75rem !important;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
+    line-height: 1.125rem !important;
+    letter-spacing: 0em !important;
 }
 
 .masa .overline {
-    font-size: 0.75rem !important;
+    font-size: 0.625rem !important;
     font-weight: 400 !important;
-    line-height: inherit!important;
+    line-height: 0.9375rem !important;
+    letter-spacing: 0 !important;
+    text-transform: none!important;
 }
 
 .masa .rounded-2 {
