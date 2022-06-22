@@ -2,6 +2,7 @@
 global using BlazorComponent.I18n;
 global using Mapster;
 global using Masa.Blazor;
+global using Masa.BuildingBlocks.Identity.IdentityModel;
 global using Masa.BuildingBlocks.SearchEngine.AutoComplete;
 global using Masa.BuildingBlocks.SearchEngine.AutoComplete.Options;
 global using Masa.Stack.Components.Configs;

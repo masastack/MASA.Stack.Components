@@ -11,11 +11,8 @@
     <PackageReference Include="Masa.Blazor" Version="0.5.0-preview.1" />
     <PackageReference Include="MASA.Blazor.Experimental.Components" Version="0.2.6" />
     <PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.4.0-preview.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\MASA.Contrib\src\BasicAbility\Masa.Contrib.BasicAbility.Auth\Masa.Contrib.BasicAbility.Auth.csproj" />
-    <ProjectReference Include="..\..\..\MASA.Contrib\src\Identity\Masa.Contrib.Identity.IdentityModel\Masa.Contrib.Identity.IdentityModel.csproj" />
+    <PackageReference Include="Masa.Contrib.BasicAbility.Auth" Version="0.5.0-preview.1" />
+    <PackageReference Include="Masa.Contrib.Identity.IdentityModel" Version="0.5.0-preview.1" />
   </ItemGroup>
 
 </Project>

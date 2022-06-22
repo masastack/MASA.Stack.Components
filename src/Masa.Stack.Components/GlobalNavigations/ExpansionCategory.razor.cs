@@ -1,5 +1,4 @@
 ﻿using Masa.Stack.Components.JsInterop;
-using Microsoft.JSInterop;
 
 namespace Masa.Stack.Components.GlobalNavigations;
 
@@ -113,7 +112,7 @@ public partial class ExpansionCategory
         }
     }
 
-    internal async Task UpdateValues(string key, List<CategoryAppNav> value)
+    internal void UpdateValues(string key, List<CategoryAppNav> value)
     {
         if (_valuesDic.TryGetValue(key, out _))
         {

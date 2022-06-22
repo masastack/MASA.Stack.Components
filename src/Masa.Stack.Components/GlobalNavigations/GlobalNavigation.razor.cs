@@ -48,7 +48,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task<List<string>> FetchFavorites()
     {
-        return (await authClient.PermissionService.GetCollectMenuListAsync())
+        return (await authClient.PermissionService.GetFavoriteMenuListAsync())
             .Select(m => m.Value.ToString()).ToList();
     }
 
