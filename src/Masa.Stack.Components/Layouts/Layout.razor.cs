@@ -38,6 +38,31 @@ public partial class Layout
         {
             var menus = await authClient.PermissionService.GetMenusAsync(AppId);
             NavItems = menus.Adapt<List<Nav>>();
+            if (!NavItems.Any())
+            {
+                NavItems = new List<Nav>()
+                {
+                    new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/", 1),
+                    new Nav("counter", "Counter", "mdi-pencil", "/counter", 1),
+                    new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
+                    new Nav("father", "Father", "mdi-numeric-0-box-outline", 1, new List<Nav>
+                    {
+                        new Nav("children2", "ChildTwo", 2, "father", new List<Nav>()
+                        {
+                            new Nav("children", "ChildOne", "/has-children", 3, "children2"),
+                        }),
+                        new Nav("dialog", "dialog", "/dialog", 2, "father"),
+                        new Nav("tab", "tab", "/tab", 2, "father"),
+                        new Nav("mini", "mini", "/mini-components", 2, "father"),
+                        new Nav("extend", "extend", "/extend", 2, "father"),
+                        new Nav("userAutoCompleteExample", "userAutoComplete", "/userAutoCompleteExample", 2, "father"),
+                        new Nav("defaultButtonExample", "defaultButton", "/defaultButtonExample", 2, "father"),
+                        new Nav("defaultDataTableExample", "defaultDataTable", "/defaultDataTableExample", 2, "father"),
+                        new Nav("paginationExample", "pagination", "/defaultPaginationExample", 2, "father"),
+                        new Nav("uploadImageExample", "uploadImage", "/uploadImageExample", 2, "father")
+                    }),
+                };
+            }
             FlattenedNavs = FlattenNavs(NavItems, true);
             StateHasChanged();
         }
