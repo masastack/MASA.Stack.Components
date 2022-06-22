@@ -37,7 +37,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task<List<Category>> FetchCategories()
     {
-        var categories = await authClient.ProjectService.GetGlobalNavigations();
+        var categories = await AuthClient.ProjectService.GetGlobalNavigations();
         var config = new TypeAdapterConfig();
         config.NewConfig<AppModel, App>()
             .Map(dest => dest.Code, src => src.Identity);
@@ -48,7 +48,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task<List<string>> FetchFavorites()
     {
-        return (await authClient.PermissionService.GetFavoriteMenuListAsync())
+        return (await AuthClient.PermissionService.GetFavoriteMenuListAsync())
             .Select(m => m.Value.ToString()).ToList();
     }
 
@@ -96,7 +96,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task<List<(string name, string url)>> GetRecentVisits()
     {
-        var visitedList = await authClient.UserService.GetUserVisitedListAsync();
+        var visitedList = await AuthClient.UserService.GetUserVisitedListAsync();
         return visitedList.Select(v => new ValueTuple<string, string>(v.Name, v.Url)).ToList();
     }
 

@@ -36,10 +36,11 @@ public partial class Layout
     {
         if (firstRender)
         {
-            var menus = await authClient.PermissionService.GetMenusAsync(AppId);
+            var menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
             NavItems = menus.Adapt<List<Nav>>();
             if (!NavItems.Any())
             {
+                //todo delete
                 NavItems = new List<Nav>()
                 {
                     new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/", 1),
@@ -97,7 +98,17 @@ public partial class Layout
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         logger.LogInformation("URL of new location: {Location}", e.Location);
-        authClient.UserService.VisitedAsync(e.Location);
+        AuthClient.UserService.VisitedAsync(e.Location);
+    }
+
+    private async Task AddFavoriteMenu(string code)
+    {
+        await AuthClient.PermissionService.AddFavoriteMenuAsync(Guid.Parse(code));
+    }
+
+    private async Task RemoveFavoriteMenu(string code)
+    {
+        await AuthClient.PermissionService.RemoveFavoriteMenuAsync(Guid.Parse(code));
     }
 
     public void Dispose()

@@ -4,7 +4,7 @@
 @implements IDisposable
 @inject GlobalConfig GlobalConfig
 @inject NavigationManager NavigationManager
-@inject IAuthClient authClient
+@inject IAuthClient AuthClient
 @inject ILogger<Layout> logger
 
 <MApp Class="masa masa-stack-components">
@@ -12,8 +12,8 @@
              Class="mx-6"
              Elevation="0"
              Height="96">
-        <GlobalNavigation OnFavoriteAdd="async (code)=>{await authClient.PermissionService.AddFavoriteMenuAsync(Guid.Parse(code));}"
-                    OnFavoriteRemove="async (code)=>{await authClient.PermissionService.RemoveFavoriteMenuAsync(Guid.Parse(code));}">
+        <GlobalNavigation OnFavoriteAdd="AddFavoriteMenu"
+                    OnFavoriteRemove="RemoveFavoriteMenu">
             <ActivatorContent>
                 <MButton Icon Class="white mr-6 emphasis2--text" @attributes="@context.Attrs">
                     <MIcon>mdi-view-dashboard</MIcon>
