@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public class DefaultButton : MButton
+public class DefaultButton : AutoLoadingButton
 {
     [Parameter]
     public bool Medium { get; set; }

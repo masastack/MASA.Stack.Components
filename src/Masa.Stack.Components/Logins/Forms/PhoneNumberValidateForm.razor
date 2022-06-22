@@ -1,0 +1,27 @@
+﻿@using FluentValidation
+@using System.Text.RegularExpressions
+@namespace Masa.Stack.Components.Forms
+@inherits MasaComponentBase
+
+<MForm Model="this" EnableValidation
+       Class="full-height d-flex flex-column justify-space-between"
+       OnValidSubmit="HandleOnValidSubmit"
+       @ref="_form">
+    <div style="margin-top: 50%; transform: translateY(-50%);">
+        <DefaultTextField @bind-Value="PhoneNumber"
+                          OnInput="ValidatePhoneNumber"
+                          TValue="string"
+                          Label="@T("PhoneNumber")"
+                          Readonly="@_isDirty"
+                          HideDetails="false"
+                          Class="mb-6">
+        </DefaultTextField>
+
+        <DefaultTextField @bind-Value="Captcha"
+                          Label="@T("Captcha")"
+                          HideDetails="false"
+                          Action="@(props => { props.Content = ActionContent; props.Disabled = ActionDisabled; props.OnClick = _ => SendCaptcha(); })">
+        </DefaultTextField>
+    </div>
+    <DefaultButton Class="align-self-center" Large Type="submit">@T("Ok")</DefaultButton>
+</MForm>
