@@ -1,5 +1,4 @@
-﻿using BlazorComponent;
-using Microsoft.JSInterop;
+﻿using Masa.BuildingBlocks.BasicAbility.Auth.Model;
 
 namespace Masa.Stack.Components;
 
@@ -7,6 +6,12 @@ public partial class GlobalNavigation : MasaComponentBase
 {
     [Parameter]
     public RenderFragment<ActivatorProps> ActivatorContent { get; set; } = null!;
+
+    [Parameter]
+    public Func<string, Task>? OnFavoriteAdd { get; set; }
+
+    [Parameter]
+    public Func<string, Task>? OnFavoriteRemove { get; set; }
 
     private bool _visible;
 
@@ -24,124 +29,27 @@ public partial class GlobalNavigation : MasaComponentBase
 
             FavoriteNavs = GetFavoriteNavs(favorites, Categories);
 
-            RecentVisits = GetRecentVisits();
+            RecentVisits = await GetRecentVisits();
 
             StateHasChanged();
         }
     }
 
-    private Task<List<Category>> FetchCategories()
+    private async Task<List<Category>> FetchCategories()
     {
-        var categories = new List<Category>()
-        {
-            new Category("basic-ability", "Basic Ability 基础能力", new List<App>()
-            {
-                new App("auth", "Auth", new List<Nav>()
-                {
-                    new Nav("user", "Users", "/users", 1, new List<Nav>()
-                    {
-                        new Nav("user-action1", "User Action 1"),
-                        new Nav("user-action2", "User Action 2"),
-                        new Nav("user-action3", "User Action 3"),
-                    }),
-                    new Nav("role-permission", "Role and Permission", "mdi-users", 1, new List<Nav>()
-                    {
-                        new Nav("role", "Roles", "/roles", 2),
-                        new Nav("permission", "Permissions", "/permissions", 2, new List<Nav>()
-                        {
-                            new Nav("action1", "Action 1"),
-                            new Nav("action2", "Action 2"),
-                        }),
-                    })
-                }),
-                new App("pm", "Project Management", new List<Nav>()
-                {
-                    new Nav("all", "All views", "/all-view", 1),
-                    new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()
-                    {
-                        new Nav("group-1", "Group Name 1", "/group/1", 2, new List<Nav>()
-                        {
-                            new Nav("group-1-action1", "Action 1"),
-                            new Nav("group-1-action2", "Action 2"),
-                        }),
-                        new Nav("group-2", "Group Name 2", "/group/2", 2),
-                        new Nav("group-3", "Group Name 3", "/group/3", 2),
-                        new Nav("group-4", "Group Name 4", "/group/4", 2),
-                        new Nav("group-5", "Group Name 5", "/group/5", 2),
-                    })
-                }),
-                new App("auth2", "Auth", new List<Nav>()
-                {
-                    new Nav("user", "Users", "/users", 1),
-                    new Nav("role-permission", "Role and Permission", "mdi-users", 1, new List<Nav>()
-                    {
-                        new Nav("role", "Roles", "/roles", 2),
-                        new Nav("permission", "Permissions", "/permissions", 2),
-                    })
-                }),
-                new App("pm2", "Project Management", new List<Nav>()
-                {
-                    new Nav("all", "All views", "/all-view", 1),
-                    new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()
-                    {
-                        new Nav("group-1", "Group Name 1", "/group/1", 2),
-                        new Nav("group-2", "Group Name 2", "/group/2", 2),
-                        new Nav("group-3", "Group Name 3", "/group/3", 2),
-                        new Nav("group-4", "Group Name 4", "/group/4", 2),
-                        new Nav("group-5", "Group Name 5", "/group/5", 2),
-                        new Nav("group-6", "Group Name 6", "/group/6", 2),
-                        new Nav("group-7", "Group Name 7", "/group/7", 2),
-                    })
-                }),
-                new App("pm3", "Project Management", new List<Nav>()
-                {
-                    new Nav("all", "All views", "/all-view", 1),
-                    new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()
-                    {
-                        new Nav("group-1", "Group Name 1", "/group/1", 2),
-                        new Nav("group-2", "Group Name 2", "/group/2", 2),
-                        new Nav("group-3", "Group Name 3", "/group/3", 2),
-                    })
-                }),
-            }),
-            new Category("basic-ability2", "Basic Ability 基础能力", new List<App>()
-            {
-                new App("auth", "Auth", new List<Nav>()
-                {
-                    new Nav("user", "Users", "/users", 1),
-                    new Nav("role-permission", "Role and Permission", "mdi-users", 1, new List<Nav>()
-                    {
-                        new Nav("role", "Roles", "/roles", 2),
-                        new Nav("permission", "Permissions", "/permissions", 2),
-                        new Nav("bing", "Bing", "https://www.bing.com", 2),
-                    })
-                }),
-                new App("pm111", "Project Management", new List<Nav>()
-                {
-                    new Nav("all", "All views", "/all-view", 1),
-                    new Nav("groups", "Groups", "mdi-users", 1, new List<Nav>()
-                    {
-                        new Nav("group-1", "Group Name 1", "/group/1", 2),
-                        new Nav("group-2", "Group Name 2", "/group/2", 2),
-                        new Nav("group-3", "Group Name 3", "/group/3", 2),
-                        new Nav("group-4", "Group Name 4", "/group/4", 2),
-                        new Nav("group-5", "Group Name 5", "/group/5", 2),
-                        new Nav("group-6", "Group Name 6", "/group/6", 2),
-                        new Nav("group-7", "Group Name 7", "/group/7", 2),
-                        new Nav("group-8", "Group Name 8", "/group/8", 2),
-                        new Nav("group-9", "Group Name 9", "/group/9", 2),
-                    })
-                }),
-            }),
-        };
-
-        return Task.FromResult(categories);
+        var categories = await AuthClient.ProjectService.GetGlobalNavigations();
+        var config = new TypeAdapterConfig();
+        config.NewConfig<AppModel, App>()
+            .Map(dest => dest.Code, src => src.Identity);
+        config.NewConfig<ProjectModel, Category>()
+            .Map(dest => dest.Code, src => src.Identity);
+        return categories.Adapt<List<Category>>(config);
     }
 
-    private Task<List<string>> FetchFavorites()
+    private async Task<List<string>> FetchFavorites()
     {
-        // TODO: fetch api or sdk
-        return Task.FromResult(new List<string>());
+        return (await AuthClient.PermissionService.GetFavoriteMenuListAsync())
+            .Select(m => m.Value.ToString()).ToList();
     }
 
     private List<FavoriteNav> GetFavoriteNavs(List<string> favorites, List<Category> categories)
@@ -186,14 +94,10 @@ public partial class GlobalNavigation : MasaComponentBase
         return result;
     }
 
-    private List<(string name, string url)> GetRecentVisits()
+    private async Task<List<(string name, string url)>> GetRecentVisits()
     {
-        // TODO: fetch recent visits
-        return new List<(string name, string url)>()
-        {
-            ("User", "/users"),
-            ("Permission", "/permissions"),
-        };
+        var visitedList = await AuthClient.UserService.GetUserVisitedListAsync();
+        return visitedList.Select(v => new ValueTuple<string, string>(v.Name, v.Url)).ToList();
     }
 
     private void NavigateTo(string? url)
@@ -212,20 +116,21 @@ public partial class GlobalNavigation : MasaComponentBase
         var item = FavoriteNavs.FirstOrDefault(f => f.Id == favoriteNav.Id);
         if (item is not null)
         {
-            // TODO: remove favorite
-            await Task.Delay(500);
+            if (OnFavoriteRemove is not null)
+            {
+                await OnFavoriteRemove.Invoke(item.Nav.Code);
+            }
 
             FavoriteNavs.Remove(item);
-
-            nav.IsFavorite = false;
         }
         else
         {
-            // TODO: add favorite
-            await Task.Delay(500);
+            if (OnFavoriteAdd is not null)
+            {
+                await OnFavoriteAdd.Invoke(nav.Code);
+            }
 
             FavoriteNavs.Add(favoriteNav);
-
             nav.IsFavorite = true;
         }
     }
