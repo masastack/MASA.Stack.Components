@@ -11,22 +11,27 @@ public partial class PaginationSelect
     [Parameter]
     public List<int> Items { get; set; } = new();
 
-    private string Icon { get; set; } = "mdi-menu-down";
+    public bool MenuState { get; set; }
+
+    private string Icon => MenuState ? "mdi-menu-up" : "mdi-menu-down";
 
     public async Task SelectAsync(int value)
-    {
-        Value = value;
+    {       
         if (ValueChanged.HasDelegate)
         {
             await ValueChanged.InvokeAsync(value);
         }
-        Icon = "mdi-menu-down";
+        else
+        {
+            Value = value;
+        }
+        //Icon = "mdi-menu-down";
     }
 
-    public void ChangeIconState(bool show)
-    {
-        if (show) Icon = "mdi-menu-up";
-        else Icon = "mdi-menu-down";
-    }
+    //public void ChangeIconState(bool show)
+    //{
+    //    if (show) Icon = "mdi-menu-up";
+    //    else Icon = "mdi-menu-down";
+    //}
 }
 

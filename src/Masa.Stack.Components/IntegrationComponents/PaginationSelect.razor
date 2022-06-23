@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<MMenu OffsetY Bottom ValueChanged="ChangeIconState" OnOutsideClick="@(() => Icon = "mdi-menu-down")">
+<MMenu OffsetY Bottom @bind-Value="MenuState">
     <ActivatorContent>
         <div @attributes="context.Attrs" class="page-select d-flex">
             <div class="ma-auto">

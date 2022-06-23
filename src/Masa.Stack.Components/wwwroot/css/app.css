@@ -452,6 +452,15 @@ body, .masa-stack-components {
     margin-top: 3px;
 }
 
+.masa-stack-components .m-messages.theme--light.error--text {
+    margin-top: 10px !important;
+    font-size: 0.625rem !important;
+    font-weight: 400 !important;
+    line-height: 0.9375rem !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
 /*
     default dataTable
 */
