@@ -5,7 +5,7 @@ using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://localhost:18102");
+builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/");
 
 // Add services to the container.
 builder.Services.AddRazorPages();

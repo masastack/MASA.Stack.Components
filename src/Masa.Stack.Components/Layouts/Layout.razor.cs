@@ -62,7 +62,7 @@ public partial class Layout
                         new Nav("paginationExample", "pagination", "/defaultPaginationExample", 2, "father"),
                         new Nav("uploadImageExample", "uploadImage", "/uploadImageExample", 2, "father"),
                         new Nav("comboxExample", "combox", "/comboxExample", 2, "father"),
-                        new Nav("paginationSelectExample", "paginationSelect", "/paginationSelectExample", 2, "father"),
+                        new Nav("paginationSelectExample", "paginationSelect", "/paginationSelectExample", 2, "father")
                     }),
                 };
             }
