@@ -5,15 +5,16 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
+		<ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <_ContentIncludedByDefault Remove="wwwroot\i18n\en-US.json" />
-	  <_ContentIncludedByDefault Remove="wwwroot\i18n\languageConfig.json" />
-	  <_ContentIncludedByDefault Remove="wwwroot\i18n\zh-CN.json" />
+		<_ContentIncludedByDefault Remove="wwwroot\i18n\en-US.json" />
+		<_ContentIncludedByDefault Remove="wwwroot\i18n\languageConfig.json" />
+		<_ContentIncludedByDefault Remove="wwwroot\i18n\zh-CN.json" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.4.0-preview.4" />
-	  <PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="0.4.0-preview.4" />
+		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.4.0-preview.4" />
+		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="0.4.0-preview.4" />
+		<PackageReference Include="Masa.Contrib.Identity.IdentityModel" Version="0.5.0-preview.1" />
 	</ItemGroup>
 </Project>
