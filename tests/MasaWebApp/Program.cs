@@ -1,3 +1,4 @@
+using Masa.BuildingBlocks.Identity.IdentityModel;
 using Masa.Contrib.SearchEngine.AutoComplete;
 using Masa.Stack.Components;
 using Masa.Utils.Data.Elasticsearch;
@@ -5,6 +6,12 @@ using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddMasaIdentityModel(IdentityType.MultiEnvironment, options =>
+{
+    options.Environment = "environment";
+    options.UserName = "name";
+    options.UserId = "sub";
+});
 builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/");
 
 // Add services to the container.

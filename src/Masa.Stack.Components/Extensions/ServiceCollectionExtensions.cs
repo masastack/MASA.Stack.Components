@@ -5,7 +5,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
         string i18nDirectoryPath, string authHost)
     {
-        services.AddMasaIdentityModel(IdentityType.MultiEnvironment);
         services.AddAuthClient(authHost);
         services.AddMasaI18nForServer(i18nDirectoryPath);
         services.AddMasaBlazor(builder =>
@@ -29,7 +28,6 @@ public static class ServiceCollectionExtensions
     public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services,
         string i18nDirectoryPath, string authHost)
     {
-        services.AddMasaIdentityModel(IdentityType.MultiEnvironment);
         services.AddAuthClient(authHost);
         await services.AddMasaI18nForWasmAsync(i18nDirectoryPath);
         services.AddMasaBlazor(builder =>
