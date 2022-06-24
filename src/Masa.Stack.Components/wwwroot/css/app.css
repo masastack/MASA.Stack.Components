@@ -452,6 +452,15 @@ body, .masa-stack-components {
     margin-top: 3px;
 }
 
+.masa-stack-components .m-messages.theme--light.error--text {
+    margin-top: 10px !important;
+    font-size: 0.625rem !important;
+    font-weight: 400 !important;
+    line-height: 0.9375rem !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
 /*
     default dataTable
 */
@@ -538,7 +547,6 @@ body, .masa-stack-components {
 .masa-stack-components .border-none {
     border: none !important;
 }
-}
 
 /*
     TabSheets
@@ -565,4 +573,23 @@ body, .masa-stack-components {
 
 .masa-stack-components .tab-sheets .tab-sheets__items > .m-window__container .m-window-item {
     height: 100%;
+}
+
+/*
+    PageSelect
+*/
+
+.masa-stack-components .page-select {
+    width: 90px;
+    height: 30px;
+    background: #FFFFFF;
+    border: 1px solid #E9EDF7;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.masa-stack-components .page-select .icon {
+    width: 30px;
+    height: 30px;
+    box-shadow: inset 0.5px 0px 0px #E2E7F4;
 }

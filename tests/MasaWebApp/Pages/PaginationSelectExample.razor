@@ -1,0 +1,17 @@
+﻿@page "/paginationSelectExample"
+
+<MCard Class="pa-6 full-height">
+    <div style="height:700px"></div>
+    <div style="width:350px">
+        <PaginationSelect @bind-Value="Value" Items=Items />
+    </div>
+</MCard>
+
+@code {
+    int Value { get; set; } = 10;
+
+    List<int> Items = new List<int>()
+    {
+        10,20,30,50,100
+    };
+}
