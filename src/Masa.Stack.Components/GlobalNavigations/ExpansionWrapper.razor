@@ -1,6 +1,6 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
 
-<div class="global-nav-content__main">
+<div class="global-nav-content__main @Class" style="@Style">
     @foreach (var category in Categories!)
     {
         category.BindValues ??= CategoryCodes.TryGetValue(category.Code, out var values)

@@ -8,6 +8,12 @@ namespace Masa.Stack.Components.GlobalNavigations
         [Inject]
         private IJSRuntime JsRuntime { get; set; } = null!;
 
+        [Parameter]
+        public string Style { get; set; } = "";
+
+        [Parameter]
+        public string Class { get; set; } = "";
+
         [Parameter, EditorRequired]
         public List<Category>? Categories { get; set; }
 
