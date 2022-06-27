@@ -14,18 +14,18 @@
     <ChildContent>
         <MList Class="py-0">
             <MListItemGroup ActiveClass="primary" Value="GlobalConfig.Language">
-                @foreach (var (language, map) in I18nCache.ToDictionary())
-                {
-                    <MListItem OnClick="() => OnLanguageChange(language)" Value="(StringNumber)language">
-                        <ItemContent>
-                            <MListItemContent>
-                                <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") btn">
-                                    @map.GetValueOrDefault("$Text")
-                                </span>
-                            </MListItemContent>
-                        </ItemContent>
-                    </MListItem>
-                }
+                @* @foreach (var culture in I18n.GetCultures()) *@
+                @* { *@
+                @*     <MListItem OnClick="() => OnLanguageChange(culture.Name)" Value="(StringNumber)culture.Name"> *@
+                @*         <ItemContent> *@
+                @*             <MListItemContent> *@
+                @*                 <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") btn"> *@
+                @*                     @culture.NativeName *@
+                @*                 </span> *@
+                @*             </MListItemContent> *@
+                @*         </ItemContent> *@
+                @*     </MListItem> *@
+                @* } *@
             </MListItemGroup>
         </MList>
     </ChildContent>
@@ -35,7 +35,7 @@
 
     void OnLanguageChange(string language)
     {
-        I18n.SetLang(language);
+        I18n.SetCulture(language);
         GlobalConfig.Language = language;
     }
 
