@@ -9,15 +9,12 @@ public static class ServiceCollectionExtensions
         services.AddMasaI18nForServer(i18nDirectoryPath);
         services.AddMasaBlazor(builder =>
         {
-            builder.UseTheme(option =>
-            {
-                option.Primary = "#4318FF";
-                option.Accent = "#4318FF";
-                option.Error = "#FF5252";
-                option.Success = "#00B42A";
-                option.Warning = "#FF7D00";
-                option.Info = "#37A7FF";
-            });
+            builder.Theme.Primary = "#4318FF";
+            builder.Theme.Accent = "#4318FF";
+            builder.Theme.Error = "#FF5252";
+            builder.Theme.Success = "#00B42A";
+            builder.Theme.Warning = "#FF7D00";
+            builder.Theme.Info = "#37A7FF";
         });
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
@@ -32,15 +29,12 @@ public static class ServiceCollectionExtensions
         await services.AddMasaI18nForWasmAsync(i18nDirectoryPath);
         services.AddMasaBlazor(builder =>
         {
-            builder.UseTheme(option =>
-            {
-                option.Primary = "#4318FF";
-                option.Accent = "#4318FF";
-                option.Error = "#FF5252";
-                option.Success = "#00B42A";
-                option.Warning = "#FF7D00";
-                option.Info = "#37A7FF";
-            });
+            builder.Theme.Primary = "#4318FF";
+            builder.Theme.Accent = "#4318FF";
+            builder.Theme.Error = "#FF5252";
+            builder.Theme.Success = "#00B42A";
+            builder.Theme.Warning = "#FF7D00";
+            builder.Theme.Info = "#37A7FF";
         });
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();

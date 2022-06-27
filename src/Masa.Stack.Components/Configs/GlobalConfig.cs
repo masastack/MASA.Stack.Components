@@ -11,7 +11,7 @@ public class GlobalConfig
     private const string FavoriteCookieKey = "GlobalConfig_Favorite";
 
     private readonly CookieStorage? _cookieStorage;
-    private readonly I18nConfig? _i18NConfig;
+    private readonly I18n? _i18N;
     private bool _dark;
     private bool _mini;
     private string _favorite;
@@ -20,12 +20,12 @@ public class GlobalConfig
 
     public event GlobalConfigChanged? OnLanguageChanged;
 
-    public GlobalConfig(CookieStorage cookieStorage, I18nConfig i18nConfig, IHttpContextAccessor httpContextAccessor)
+    public GlobalConfig(CookieStorage cookieStorage, I18n i18n, IHttpContextAccessor httpContextAccessor)
     {
         _cookieStorage = cookieStorage;
-        _i18NConfig = i18nConfig;
+        _i18N = i18n;
 
-        SetCultureInfo(i18nConfig.Language);
+        SetCultureInfo(i18n.Culture);
 
         if (httpContextAccessor.HttpContext is not null)
             Initialization(httpContextAccessor.HttpContext.Request.Cookies);
@@ -33,15 +33,15 @@ public class GlobalConfig
 
     public string? Language
     {
-        get => _i18NConfig?.Language;
+        get => _i18N?.Culture;
         set
         {
-            if (_i18NConfig is null)
+            if (_i18N is null)
             {
                 return;
             }
 
-            _i18NConfig.Language = value;
+            _i18N.SetCulture(value);
             SetCultureInfo(value);
 
             OnLanguageChanged?.Invoke();
