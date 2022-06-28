@@ -21,7 +21,7 @@ public class Nav : NavBase
         get => _children ?? new();
         set => _children = value;
     }
-    
+
     public bool IsAction { get; set; }
 
     public List<Nav> Actions => Children.Where(item => item.IsAction).ToList();
@@ -86,7 +86,7 @@ public class Nav : NavBase
         Url = url;
         Level = level;
     }
-    
+
     public Nav(string code, string name, string url, int level, string parentCode)
     {
         Code = code;

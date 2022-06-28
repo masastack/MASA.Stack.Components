@@ -55,43 +55,49 @@ public partial class GlobalNavigation : MasaComponentBase
     private List<FavoriteNav> GetFavoriteNavs(List<string> favorites, List<Category> categories)
     {
         List<FavoriteNav> result = new();
-        List<(string category, string app, string nav)> formattedFavorites = new();
+
+        var categoryAppNavs = categories.SelectMany(category =>
+            category.Apps.SelectMany(app => app.Navs.Select(nav => new
+            CategoryAppNavModel
+            {
+                CategoryCode = category.Code,
+                AppCode = app.Code,
+                Nav = nav
+            }))).ToList();
 
         foreach (var favorite in favorites)
         {
-            var res = favorite.Split("-");
-            if (res.Length != 3)
+            var favoriteItem = ConvertFavoriteNavs(categoryAppNavs, favorite);
+            if (favoriteItem != null)
             {
-                continue;
+                result.Add(new FavoriteNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav));
             }
-
-            formattedFavorites.Add((res[0], res[1], res[2]));
         }
 
-        foreach (var category in categories)
-        {
-            var favorite = formattedFavorites.FirstOrDefault(f => f.category == category.Code);
-            if (favorite.category is null)
-            {
-                continue;
-            }
-
-            var app = category.Apps.FirstOrDefault(a => a.Code == favorite.app);
-            if (app is null)
-            {
-                continue;
-            }
-
-            var nav = app.Navs.SelectMany(n => n.Children ?? new()).FirstOrDefault(n => n.Code == favorite.nav);
-            if (nav is null)
-            {
-                continue;
-            }
-
-            result.Add(new FavoriteNav(favorite.category, favorite.app, nav));
-        }
+        result.ForEach(fn => fn.Nav.IsFavorite = true);
 
         return result;
+
+        FavoriteNav ConvertFavoriteNavs(List<CategoryAppNavModel> items, string code)
+        {
+            var result = new FavoriteNav();
+            var favoriteItem = items.FirstOrDefault(f => f.Nav.Code == code);
+            if (favoriteItem != null)
+            {
+                result = new FavoriteNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav);
+            }
+            else
+            {
+                result = ConvertFavoriteNavs(items.SelectMany(n => n.Nav.Children.Select(nav => new
+                CategoryAppNavModel
+                {
+                    CategoryCode = n.CategoryCode,
+                    AppCode = n.AppCode,
+                    Nav = nav
+                })).ToList(), code);
+            }
+            return result;
+        }
     }
 
     private async Task<List<(string name, string url)>> GetRecentVisits()
