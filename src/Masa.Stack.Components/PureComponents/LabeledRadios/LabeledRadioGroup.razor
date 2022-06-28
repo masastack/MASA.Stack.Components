@@ -96,9 +96,11 @@
     private async Task Intersection()
     {
         var item = Items.FirstOrDefault(item => EqualityComparer<TValue>.Default.Equals(item.Value, Value));
-        _selectedKey = item.Instance.Value;
-
+        if (item != null)
+        {
+            _selectedKey = item.Instance.Value;
         await SelectedKeyChanged(_selectedKey);
+        }
     }
 
     private async Task SelectedKeyChanged(StringNumber? val)
