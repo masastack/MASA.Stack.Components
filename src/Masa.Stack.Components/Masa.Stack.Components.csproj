@@ -14,4 +14,8 @@
     <PackageReference Include="Masa.Contrib.BasicAbility.Auth" Version="0.5.0-preview.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\MASA.Contrib\src\BasicAbility\Masa.Contrib.BasicAbility.Mc\Masa.Contrib.BasicAbility.Mc.csproj" />
+  </ItemGroup>
+
 </Project>

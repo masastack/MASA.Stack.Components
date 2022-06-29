@@ -14,3 +14,4 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.JSInterop;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Text.Json;
+global using Masa.BuildingBlocks.BasicAbility.Mc.Model;

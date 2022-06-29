@@ -1,11 +1,15 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Stack.Components.Store;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost)
+        string i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddAuthClient(authHost);
+        services.AddMcClient(mcHost);
+        services.AddScoped<NoticeState>();
         services.AddMasaI18nForServer(i18nDirectoryPath);
         services.AddMasaBlazor(builder =>
         {
@@ -23,9 +27,11 @@ public static class ServiceCollectionExtensions
     }
 
     public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost)
+        string i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddAuthClient(authHost);
+        services.AddMcClient(mcHost);
+        services.AddScoped<NoticeState>();
         await services.AddMasaI18nForWasmAsync(i18nDirectoryPath);
         services.AddMasaBlazor(builder =>
         {

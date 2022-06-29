@@ -12,7 +12,7 @@ builder.Services.AddMasaIdentityModel(IdentityType.MultiEnvironment, options =>
     options.UserName = "name";
     options.UserId = "sub";
 });
-builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/");
+builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/", "https://mc-service-develop.masastack.com/");
 
 // Add services to the container.
 builder.Services.AddRazorPages();
