@@ -8,6 +8,8 @@
 </ADialog>
 
 @code {
+    [CascadingParameter]
+    public Layout Layout { get; set; } = null!;
 
     private bool _visible;
 
@@ -19,9 +21,10 @@
 
     private async Task HandleOnOk()
     {
-        // TODO: logic for logout
-        await Task.Delay(1000);
-
+        if (Layout.OnSignOut.HasDelegate)
+        {
+            await Layout.OnSignOut.InvokeAsync();
+        }
         _visible = false;
     }
 
