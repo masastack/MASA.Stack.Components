@@ -1,6 +1,10 @@
-﻿@using Masa.Stack.Components.UserCenters
+﻿@page "/user-center"
+
+@using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Model
+@using Masa.Stack.Components.UserCenters
 @namespace Masa.Stack.Components
 @inject GlobalConfig GlobalConfig
+@inject IAuthClient AuthClient
 @implements IDisposable
 
 <div class="mb-6" style="height: calc(100vh - 460px);">
@@ -9,9 +13,8 @@
 <UserTeams Data="Teams"></UserTeams>
 
 @code {
-
     private User? User { get; set; }
-    private List<Team>? Teams { get; set; }
+    private List<Team> Teams { get; set; } = new();
 
     protected override void OnInitialized()
     {
@@ -22,33 +25,19 @@
     {
         await base.OnAfterRenderAsync(firstRender);
 
-    // TODO: use auth sdk instead
-
-        Teams = new()
-        {
-            new Team() { Name = "MASA Stack", Logo = "https://cdn.masastack.com/stack/images/website/masa-blazor/marcus1.png", MemberCount = 23, Description = "Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!Application 阿是大坏蛋萨哈啥的阿斯法师法大四!Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!", Role = "成员" },
-            new Team() { Name = "MASA Blazor", Logo = "https://cdn.masastack.com/stack/images/website/masa-blazor/doddgu.png", MemberCount = 80, Description = "Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!Application 阿是大坏蛋萨哈啥的阿斯法师法大四!Application A是阿是大坏蛋萨哈啥的阿斯法师法大四!", Role = "成员" },
-        };
         if (firstRender)
         {
-            User = new User()
-            {
-                DisplayName = "JUDY",
-                Name = "朱迪",
-                Account = "xie1wei2zhu3di",
-                Avatar = "https://cdn.masastack.com/stack/images/website/masa-blazor/marcus1.png",
-                Gender = 1,
-                JobNumber = "1214215525",
-                Email = "1356278967@qq.com",
-                Position = "UX",
-                PhoneNumber = "1856278967",
-                Teams = new string[] { "Masa项目团队", "产品设计团队", "IOT研发团队" },
-                CompanyName = "杭州会话科技有限公司",
-                Region = "中国",
-                Address = "浙江省/杭州市/拱墅区/新加坡科技园",
-                Department = "Masa 事业群/IT研发中心/产品设计部",
-                CreatedAt = new DateTime(2021, 9, 24)
-            };
+            var teams = await AuthClient.TeamService.GetUserTeamsAsync();
+            var teamConfig = new TypeAdapterConfig();
+            teamConfig.NewConfig<TeamModel, Team>()
+                .Map(dest => dest.Logo, src => src.Avatar);
+            Teams = teams.Adapt<List<Team>>(teamConfig);
+
+            var user = await AuthClient.UserService.GetCurrentUserAsync();
+            var config = new TypeAdapterConfig();
+            config.NewConfig<UserModel, User>()
+                .Map(dest => dest.Address, src => src.Address.ToString());
+            User = user.Adapt<User>(config); 
 
             StateHasChanged();
         }

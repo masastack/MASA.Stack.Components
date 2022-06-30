@@ -2,8 +2,8 @@
 
 public class Team
 {
-    public int Id { get; set; }
-    
+    public Guid Id { get; set; }
+
     public string? Name { get; set; }
 
     public string? Description { get; set; }
@@ -11,6 +11,6 @@ public class Team
     public string? Logo { get; set; }
 
     public int MemberCount { get; set; }
-    
+
     public string Role { get; set; }
 }

@@ -1,8 +1,7 @@
 ﻿@using Masa.Stack.Components.Models
 @inherits LayoutComponentBase
 
-<Layout AppId="123"
-        UserCenterRoute="/user-center"
+<Layout AppId="123" SignOut="SignOut"
         Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
         MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png">
     @Body
@@ -20,6 +19,11 @@
         }
 
         return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void SignOut()
+    {
+        
     }
 
 }
