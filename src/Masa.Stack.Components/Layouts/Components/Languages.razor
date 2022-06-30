@@ -13,19 +13,19 @@
     </ActivatorContent>
     <ChildContent>
         <MList Class="py-0">
-            <MListItemGroup ActiveClass="primary" Value="GlobalConfig.Language">
-                @* @foreach (var culture in I18n.GetCultures()) *@
-                @* { *@
-                @*     <MListItem OnClick="() => OnLanguageChange(culture.Name)" Value="(StringNumber)culture.Name"> *@
-                @*         <ItemContent> *@
-                @*             <MListItemContent> *@
-                @*                 <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") btn"> *@
-                @*                     @culture.NativeName *@
-                @*                 </span> *@
-                @*             </MListItemContent> *@
-                @*         </ItemContent> *@
-                @*     </MListItem> *@
-                @* } *@
+            <MListItemGroup ActiveClass="primary" Value="GlobalConfig.Culture?.Name">
+                @foreach (var culture in I18n.SupportedCultures)
+                {
+                    <MListItem OnClick="() => OnLanguageChange(culture)" Value="(StringNumber)culture.Name">
+                        <ItemContent>
+                            <MListItemContent>
+                                <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") btn">
+                                    @culture.NativeName
+                                </span>
+                            </MListItemContent>
+                        </ItemContent>
+                    </MListItem>
+                }
             </MListItemGroup>
         </MList>
     </ChildContent>
@@ -33,10 +33,10 @@
 
 @code {
 
-    void OnLanguageChange(string language)
+    void OnLanguageChange(CultureInfo culture)
     {
-        I18n.SetCulture(language);
-        GlobalConfig.Language = language;
+        I18n.SetCulture(culture);
+        GlobalConfig.Culture = culture;
     }
 
 }
