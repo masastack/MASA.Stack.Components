@@ -9,7 +9,7 @@
 
 @code {
     [CascadingParameter]
-    public Layout Root { get; set; } = null!;
+    public Layout Layout { get; set; } = null!;
 
     private bool _visible;
 
@@ -21,9 +21,9 @@
 
     private async Task HandleOnOk()
     {
-        if (Root.SignOut.HasDelegate)
+        if (Layout.OnSignOut.HasDelegate)
         {
-            await Root.SignOut.InvokeAsync();
+            await Layout.OnSignOut.InvokeAsync();
         }
         _visible = false;
     }

@@ -30,7 +30,7 @@ public partial class Layout
     public string UserCenterRoute { get; set; } = "/user-center";
 
     [Parameter]
-    public EventCallback SignOut { get; set; }
+    public EventCallback OnSignOut { get; set; }
 
     List<Nav> NavItems = new();
 
