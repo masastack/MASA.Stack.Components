@@ -27,21 +27,6 @@ public partial class Notification : MasaComponentBase
             await LoadData();
         }
 
-        if (!NoticeState.IsHubConnectionBuilder)
-        {
-            NoticeState.IsHubConnectionBuilder = true;
-            //await base.HubConnectionBuilder();
-
-            //base.HubConnection?.On(SignalRMethodConsts.GET_NOTIFICATION, async () =>
-            //{
-            //    await LoadData();
-            //});
-
-            //base.HubConnection?.On(SignalRMethodConsts.CHECK_NOTIFICATION, async () =>
-            //{
-            //    await WebsiteMessageService.CheckAsync();
-            //});
-        }
         await base.OnAfterRenderAsync(firstRender);
     }
 
