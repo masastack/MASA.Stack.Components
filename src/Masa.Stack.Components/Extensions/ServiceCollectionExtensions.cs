@@ -6,7 +6,7 @@ public static class ServiceCollectionExtensions
         string i18nDirectoryPath, string authHost)
     {
         services.AddAuthClient(authHost);
-        services.AddMasaI18nForServer(i18nDirectoryPath);
+
         services.AddMasaBlazor(builder =>
         {
             builder.Theme.Primary = "#4318FF";
@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
             builder.Theme.Success = "#00B42A";
             builder.Theme.Warning = "#FF7D00";
             builder.Theme.Info = "#37A7FF";
-        });
+        }).AddI18nForServer(i18nDirectoryPath);
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
 
@@ -26,8 +26,8 @@ public static class ServiceCollectionExtensions
         string i18nDirectoryPath, string authHost)
     {
         services.AddAuthClient(authHost);
-        await services.AddMasaI18nForWasmAsync(i18nDirectoryPath);
-        services.AddMasaBlazor(builder =>
+
+        await services.AddMasaBlazor(builder =>
         {
             builder.Theme.Primary = "#4318FF";
             builder.Theme.Accent = "#4318FF";
@@ -35,7 +35,7 @@ public static class ServiceCollectionExtensions
             builder.Theme.Success = "#00B42A";
             builder.Theme.Warning = "#FF7D00";
             builder.Theme.Info = "#37A7FF";
-        });
+        }).AddI18nForWasmAsync(i18nDirectoryPath);
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
 
