@@ -7,7 +7,7 @@
               Width="Width"
               MaxHeight="MaxHeight"
               MaxWidth="MaxWidth">
-    <MItemGroup Value="_value" ValueChanged="ValueChanged" Mandatory Class="tab-sheets__tabs">
+    <MItemGroup Value="Value" ValueChanged="UpdateValueAsync" Mandatory Class="tab-sheets__tabs">
         @foreach (var tab in Tabs)
         {
             <MItem Value="tab">
@@ -23,7 +23,7 @@
         }
     </MItemGroup>
 
-    <MTabsItems Value="_value" Class="tab-sheets__items">
+    <MTabsItems Value="Value" Class="tab-sheets__items">
         @ChildContent
     </MTabsItems>
 </DefaultSheet>
@@ -60,7 +60,11 @@
     [Parameter]
     public EventCallback<string> OnChange { get; set; }
 
-    private StringNumber _value = null!;
+    [Parameter]
+    public string Value { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
 
     protected override void OnParametersSet()
     {
@@ -70,14 +74,18 @@
         Tabs ??= Enumerable.Empty<string>();
     }
 
-    private void ValueChanged(StringNumber val)
+    private async Task UpdateValueAsync(StringNumber value)
     {
-        _value = val;
-
-        if (OnChange.HasDelegate)
-        {
-            _ = OnChange.InvokeAsync(val?.ToString());
-        }
+        if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value.ToString());
+        else Value = value.ToString();
     }
+    //private void ValueChanged(StringNumber val)
+    //{
+    //    _value = val;
 
+    //    if (OnChange.HasDelegate)
+    //    {
+    //        _ = OnChange.InvokeAsync(val?.ToString());
+    //    }
+    //}
 }
