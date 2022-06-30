@@ -24,6 +24,9 @@ public partial class Layout
     [Parameter, EditorRequired]
     public string? UserCenterRoute { get; set; }
 
+    [NotNull]
+    public Func<Exception, Task> OnErrorHandle { get; set; }
+
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
@@ -95,17 +98,17 @@ public partial class Layout
 
     protected override void OnInitialized()
     {
+        OnErrorHandle ??= async exception =>
+        {
+           await PopupService.ToastErrorAsync(exception.Message);
+        };
+
         PopupService.ConfigToast(config =>
         {
             config.Position = ToastPosition.TopLeft;
         });
 
         NavigationManager.LocationChanged += HandleLocationChanged;
-    }
-
-    public async Task ErrorHandleAsync(Exception exception)
-    {
-        await PopupService.ToastErrorAsync(exception.Message);
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)

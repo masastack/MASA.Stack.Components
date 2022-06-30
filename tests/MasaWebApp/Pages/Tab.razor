@@ -18,28 +18,8 @@
             Api Permission
         </ElevationTabItem>
     </ElevationTab>
-
-    <MButton OnClick="@(async () => await Set("menu"))">
-        切换
-    </MButton>
-
-     <MButton OnClick="@(async () => await Set("api"))">
-        切换
-    </MButton>
-
-    <MButton OnClick="@(async () => await Set("action"))">
-        切换
-    </MButton>
-
-
 </div>
 
 @code {
-
-    string value ="menu";
-
-    private async Task Set(string str) {
-        value = str;
-        await Task.CompletedTask;
-    }
+    string value ="api";
 }
