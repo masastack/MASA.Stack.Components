@@ -99,7 +99,7 @@
         if (item != null)
         {
             _selectedKey = item.Instance.Value;
-        await SelectedKeyChanged(_selectedKey);
+            await SelectedKeyChanged(_selectedKey);
         }
     }
 
@@ -109,8 +109,10 @@
         _valueChangedFromInternal = true;
 
         var item = Items.FirstOrDefault(item => item.Instance?.Value == val);
+
         if (item is not null)
         {
+            var a = item.Value;
             await UpdatePosition(item);
 
             if (ValueChanged.HasDelegate)
@@ -121,6 +123,7 @@
             {
                 Value = item.Value;
             }
+            _prevValue = Value;
         }
     }
 

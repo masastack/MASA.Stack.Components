@@ -14,3 +14,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.JSInterop;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Text.Json;
+global using Masa.Blazor.Popup.Components;
+global using Masa.Blazor.Presets;
+global using Microsoft.AspNetCore.Components.Routing;
+global using Microsoft.Extensions.Logging;

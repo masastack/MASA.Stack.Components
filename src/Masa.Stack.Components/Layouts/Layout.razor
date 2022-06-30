@@ -36,7 +36,9 @@
 
     <MMain>
         <div class="px-6 pb-6 max-width full-height">
-            @ChildContent
+            <MErrorHandler OnErrorHandleAsync=ErrorHandleAsync>
+                @ChildContent
+            </MErrorHandler>          
         </div>
     </MMain>
 </MApp>

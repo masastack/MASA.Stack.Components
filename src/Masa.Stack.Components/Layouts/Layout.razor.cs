@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.Extensions.Logging;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class Layout
 {
+    [Inject]
+    [NotNull]
+    public IPopupService PopupService { get; set; }
+
     [Inject]
     private I18n I18n { get; set; } = null!;
 
@@ -94,7 +95,17 @@ public partial class Layout
 
     protected override void OnInitialized()
     {
+        PopupService.ConfigToast(config =>
+        {
+            config.Position = ToastPosition.TopLeft;
+        });
+
         NavigationManager.LocationChanged += HandleLocationChanged;
+    }
+
+    public async Task ErrorHandleAsync(Exception exception)
+    {
+        await PopupService.ToastErrorAsync(exception.Message);
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
