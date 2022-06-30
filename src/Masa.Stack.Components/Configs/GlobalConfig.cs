@@ -31,7 +31,7 @@ public class GlobalConfig
             Initialization(httpContextAccessor.HttpContext.Request.Cookies);
     }
 
-    public string? Language
+    public CultureInfo? Culture
     {
         get => _i18N?.Culture;
         set
@@ -85,8 +85,8 @@ public class GlobalConfig
         _favorite = cookies[FavoriteCookieKey];
     }
 
-    private void SetCultureInfo(string language)
+    private void SetCultureInfo(CultureInfo culture)
     {
-        ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo(language);
+        ValidatorOptions.Global.LanguageManager.Culture = culture;
     }
 }
