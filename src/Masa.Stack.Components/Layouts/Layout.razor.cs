@@ -24,8 +24,11 @@ public partial class Layout
     [Parameter, EditorRequired]
     public string? UserCenterRoute { get; set; }
 
-    [NotNull]
-    public Func<Exception, Task> OnErrorHandle { get; set; }
+    [Parameter]
+    public Func<Exception, Task>? OnErrorAsync { get; set; }
+
+    [Parameter]
+    public RenderFragment<Exception>? OnErrorContent { get; set; }
 
     List<Nav> NavItems = new();
 
@@ -98,7 +101,7 @@ public partial class Layout
 
     protected override void OnInitialized()
     {
-        OnErrorHandle ??= async exception =>
+        OnErrorAsync ??= async exception =>
         {
            await PopupService.ToastErrorAsync(exception.Message);
         };

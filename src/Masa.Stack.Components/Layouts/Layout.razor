@@ -36,7 +36,7 @@
 
     <MMain>
         <div class="px-6 pb-6 max-width full-height">
-            <MErrorHandler OnErrorHandleAsync=OnErrorHandle>
+            <MErrorHandler ErrorContent=OnErrorContent OnErrorHandleAsync=OnErrorAsync>
                 @ChildContent
             </MErrorHandler>          
         </div>
