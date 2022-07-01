@@ -4,9 +4,10 @@
     <h3>LabeledRadioGroup's value: @value</h3>
 
     <LabeledRadioGroup @bind-Value="value" Dense Class="mb-2">
-        <LabeledRadio Value="@("menu")">Menu Permission</LabeledRadio>
-        <LabeledRadio Value="@("api")">Api Permission</LabeledRadio>
-        <LabeledRadio Value="@("action")">Action Permission</LabeledRadio>
+        @foreach(var v in new[]{"menu","api","action"})
+        {
+            <LabeledRadio Value="v">@v</LabeledRadio>
+        }
     </LabeledRadioGroup>
     
     <ElevationTab TabMinWidth="200" ItemsClass="mt-4" Tabs='new List<string> { "Menu Permission", "Api Permission" }' Dense>
@@ -20,6 +21,5 @@
 </div>
 
 @code {
-
     string value ="api";
 }
