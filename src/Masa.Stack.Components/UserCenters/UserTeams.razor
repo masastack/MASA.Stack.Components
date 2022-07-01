@@ -1,44 +1,46 @@
 ﻿@inherits MasaComponentBase
 
-<div style="height: 288px">
-    <Pageable Items="Data" Circle>
-        <MCard Class="team rounded-5 pa-6" Height="230">
-            <div class="d-flex mb-1" style="align-items: center">
-                @if (string.IsNullOrWhiteSpace(context.Logo))
-                {
-                    <MAvatar Class="mr-3" Size="40" Color="primary">
-                        <span class="white--text text-h6">@context.Name?[..1]</span>
-                    </MAvatar>
-                }
-                else
-                {
-                    <MAvatar Class="mr-3" Size="40">
-                        <MImage Src="@context.Logo" alt="avatar"></MImage>
-                    </MAvatar>
-                }
-                <PBlockText Primary="@context.Name"
+<MRow>
+    @foreach (var item in Data)
+    {
+        <MCol Cols="4">
+            <MCard Class="team rounded-5 pa-6" Height="230">
+                <div class="d-flex mb-1" style="align-items: center">
+                    @if (string.IsNullOrWhiteSpace(item.Logo))
+                    {
+                        <MAvatar Class="mr-3" Size="40" Color="primary">
+                            <span class="white--text text-h6">@item.Name?[..1]</span>
+                        </MAvatar>
+                    }
+                    else
+                    {
+                        <MAvatar Class="mr-3" Size="40">
+                            <MImage Src="@item.Logo" alt="avatar"></MImage>
+                        </MAvatar>
+                    }
+                    <PBlockText Primary="@item.Name"
                             PrimaryClass="emphasis--text font-18-medium"
-                            Secondary="@($"{T("NumberOfPeople")}：{@context.MemberCount}")"
+                            Secondary="@($"{T("NumberOfPeople")}：{@item.MemberCount}")"
                             SecondaryClass="regular3--text font-14">
-                </PBlockText>
-            </div>
-            <div class="body2 regular2--text">
-                @context.Description
-            </div>
+                    </PBlockText>
+                </div>
+                <div class="body2 regular2--text">
+                    @item.Description
+                </div>
 
-            <MChip style="position:absolute; bottom:24px; right:24px;"
+                <MChip style="position:absolute; bottom:24px; right:24px;"
                    Label
                    Small
                    Class="fill-background emphasis2--text">
-                @context.Role
-            </MChip>
-        </MCard>
-    </Pageable>
-</div>
+                    @item.Role
+                </MChip>
+            </MCard>
+        </MCol>
+    }
+</MRow>
 
 @code {
-
     [Parameter]
-    public List<Team>? Data { get; set; }
+    public List<Team> Data { get; set; } = new();
 
 }

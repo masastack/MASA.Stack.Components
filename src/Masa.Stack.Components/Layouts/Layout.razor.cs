@@ -10,6 +10,12 @@ public partial class Layout
     private I18n I18n { get; set; } = null!;
 
     [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]
@@ -21,8 +27,11 @@ public partial class Layout
     [Parameter, EditorRequired]
     public string AppId { get; set; } = string.Empty;
 
-    [Parameter, EditorRequired]
-    public string? UserCenterRoute { get; set; }
+    [Parameter]
+    public string UserCenterRoute { get; set; } = "/user-center";
+
+    [Parameter]
+    public EventCallback OnSignOut { get; set; }
 
     [Parameter]
     public Func<Exception, Task>? OnErrorAsync { get; set; }
