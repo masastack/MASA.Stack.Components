@@ -28,7 +28,7 @@ public partial class Layout
     public Func<Exception, Task>? OnErrorAsync { get; set; }
 
     [Parameter]
-    public RenderFragment<Exception>? OnErrorContent { get; set; }
+    public RenderFragment<Exception>? ErrorContent { get; set; }
 
     List<Nav> NavItems = new();
 
