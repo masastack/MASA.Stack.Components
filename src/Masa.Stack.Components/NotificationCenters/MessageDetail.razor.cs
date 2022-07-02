@@ -5,6 +5,9 @@ namespace Masa.Stack.Components.NotificationCenters;
 
 public partial class MessageDetail
 {
+    [Inject]
+    private IPopupService PopupService { get; set; } = null!;
+
     [Parameter]
     public Guid MessageId { get; set; }
 
@@ -30,15 +33,13 @@ public partial class MessageDetail
 
     private async Task HandleDelAsync()
     {
-        //await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+        if (await PopupService.ConfirmAsync(T("OperationConfirmation"), T("DeletionConfirmationMessage"), AlertTypes.Warning)) await DeleteAsync();
     }
 
     private async Task DeleteAsync()
     {
-        //Loading = true;
-        //await WebsiteMessageService.DeleteAsync(MessageId);
-        //Loading = false;
-        //await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
+        await McClient.WebsiteMessageService.DeleteAsync(MessageId);
+        await PopupService.ToastSuccessAsync(T("DeletedSuccessfullyMessage"));
         await HandleOnBack();
     }
 

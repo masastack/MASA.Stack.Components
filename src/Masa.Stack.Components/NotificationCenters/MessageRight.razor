@@ -1,5 +1,4 @@
-﻿@using Masa.BuildingBlocks.BasicAbility.Mc.Enum
-@inherits MasaComponentBase
+﻿@inherits MasaComponentBase
 @inject IMcClient McClient
 
 <div class="message-right">
@@ -8,7 +7,7 @@
             <div class="d-flex full-width" style="height: 40px !important;">
                 <MListItem>
                     <MListItemAvatar Class="overflow-visible">
-                        @if (_entities.Result!=null&&_entities.Result.Any(x => !x.IsRead))
+                        @if (_entities.Result != null && _entities.Result.Any(x => !x.IsRead))
                         {
                             <MBadge Bordered Dot Color="pink" OffsetX="10" OffsetY="10">
                                 <EmptyAvatar Value="@_channel?.DisplayName" />
@@ -24,20 +23,21 @@
                     </MListItemContent>
                 </MListItem>
                 <MSpacer />
-                @*<DefaultSearch @bind-Value="_queryParam.Filter" Clearable Class="rounded-2 search" Placeholder="@T("Search")" Dense BackgroundColor="fill-background" Style="flex: none;width:300px" OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" />
+                <Search @bind-Value="_queryParam.Filter" Class="rounded-2 search" Dense Style="flex: none;width:300px" OnEnter="RefreshAsync"></Search>
+                @*<DefaultSearch @bind-Value="_queryParam.Filter" Clearable Class="rounded-2 search" Placeholder="@T("Search")" Dense BackgroundColor="fill-background" Style="flex: none;width:300px" OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" />*@
                 <MSelect Class="ml-6 rounded-2 small" @bind-Value="@_queryParam.FilterType" Style="flex: none;width:136px"
-                         Items="@(GetEnumList<WebsiteMessageFilterType>())"
-                         Label="@T("DisplayName.WebsiteMessageFilterType")"
-                         ItemText="@(item => T($"DisplayName.WebsiteMessageFilterType.{item.ToString()}"))"
-                         ItemValue="item => item"
-                         Dense
-                         Outlined
-                         HideDetails="@("auto")"
-                         TItem="WebsiteMessageFilterType"
-                         TItemValue="WebsiteMessageFilterType"
-                         TValue="WebsiteMessageFilterType?"
-                         OnSelectedItemUpdate="RefreshAsync">
-                </MSelect>*@
+                    Items="@_filterTypeItems"
+                    Label="@T("DisplayName.WebsiteMessageFilterType")"
+                    ItemText="@(item => T($"DisplayName.WebsiteMessageFilterType.{item.ToString()}"))"
+                    ItemValue="item => item"
+                    Dense
+                    Outlined
+                    HideDetails="@("auto")"
+                    TItem="WebsiteMessageFilterType"
+                    TItemValue="WebsiteMessageFilterType"
+                    TValue="WebsiteMessageFilterType?"
+                    OnSelectedItemUpdate="RefreshAsync">
+                    </MSelect>
                 <MMenu OffsetY>
                     <ActivatorContent>
                         <div class="ml-6 d-flex button rounded-circle" @attributes="@context.Attrs">
@@ -46,7 +46,6 @@
                             </MIcon>
                         </div>
                     </ActivatorContent>
-
                     <ChildContent>
                         <MList>
                             <MListItem Link OnClick="HandleMarkAllRead">
@@ -99,7 +98,7 @@
                     </MListItem>
                 }
             </MList>
-            @*<McPagination Class="mt-5" @bind-Page="_queryParam.Page" @bind-PageSize="_queryParam.PageSize" Total="_entities.Total" OnChange="HandlePaginationChange" />*@
+            <Pagination Class="mt-5" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
         </MCardText>
     </MCard>
 </div>

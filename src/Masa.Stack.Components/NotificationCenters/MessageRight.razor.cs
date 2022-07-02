@@ -1,13 +1,18 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.Ddd.Domain.Repositories;
-using Masa.Stack.Components.Store;
+using Masa.BuildingBlocks.BasicAbility.Mc.Enum;
 
 namespace Masa.Stack.Components.NotificationCenters;
 
 public partial class MessageRight : MasaComponentBase
 {
+    [Inject]
+    public NoticeState NoticeState { get; set; } = default!;
+
+    [Inject]
+    private IPopupService PopupService { get; set; } = null!;
+
     [Parameter]
     public Guid? ChannelId { get; set; }
 
@@ -17,12 +22,10 @@ public partial class MessageRight : MasaComponentBase
     [Parameter]
     public EventCallback OnAllRead { get; set; }
 
-    [Inject]
-    public NoticeState NoticeState { get; set; } = default!;
-
     private GetWebsiteMessageModel _queryParam = new();
     private PaginatedListModel<WebsiteMessageModel> _entities = new();
     private ChannelModel _channel;
+    private List<WebsiteMessageFilterType> _filterTypeItems = Enum.GetValues(typeof(WebsiteMessageFilterType)).Cast<WebsiteMessageFilterType>().ToList();
 
     protected override async void OnParametersSet()
     {
@@ -33,9 +36,7 @@ public partial class MessageRight : MasaComponentBase
 
     private async Task LoadData()
     {
-        //Loading = true;
         _entities = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
-        //Loading = false;
         StateHasChanged();
     }
 
@@ -59,25 +60,17 @@ public partial class MessageRight : MasaComponentBase
         await LoadData();
     }
 
-    private async Task SearchKeyDown(KeyboardEventArgs eventArgs)
+    private async Task HandlePageChanged(int page)
     {
-        if (eventArgs.Key == "Enter")
-        {
-            await RefreshAsync();
-        }
-    }
-
-    private async Task HandleClearAsync()
-    {
-        _queryParam = new();
+        _queryParam.Page = page;
         await LoadData();
     }
-    //private async Task HandlePaginationChange(PaginationEventArgs args)
-    //{
-    //    _queryParam.Page = args.Page;
-    //    _queryParam.PageSize = args.PageSize;
-    //    await LoadData();
-    //}
+
+    private async Task HandlePageSizeChanged(int pageSize)
+    {
+        _queryParam.PageSize = pageSize;
+        await LoadData();
+    }
 
     private async Task HandleShowAll()
     {
@@ -95,7 +88,7 @@ public partial class MessageRight : MasaComponentBase
     {
         var dto = _queryParam.Adapt<ReadAllWebsiteMessageModel>();
         await McClient.WebsiteMessageService.SetAllReadAsync(dto);
-        //await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+        await PopupService.ToastSuccessAsync(T("OperationSuccessfulMessage"));
         await LoadData();
         NoticeState.SetAllRead();
         if (OnAllRead.HasDelegate)

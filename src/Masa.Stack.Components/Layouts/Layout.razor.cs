@@ -23,6 +23,9 @@ public partial class Layout
     [Parameter, EditorRequired]
     public string? UserCenterRoute { get; set; }
 
+    [Parameter, EditorRequired]
+    public string McSignalRUrl { get; set; } = string.Empty;
+
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();

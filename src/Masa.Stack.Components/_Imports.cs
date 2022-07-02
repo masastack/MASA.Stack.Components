@@ -15,3 +15,6 @@ global using Microsoft.JSInterop;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Text.Json;
 global using Masa.BuildingBlocks.BasicAbility.Mc.Model;
+global using Masa.Stack.Components.Store;
+global using Microsoft.AspNetCore.SignalR.Client;
+global using Masa.Stack.Components.NotificationCenters.Consts;

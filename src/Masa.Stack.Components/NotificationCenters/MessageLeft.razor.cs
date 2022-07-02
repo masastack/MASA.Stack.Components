@@ -21,9 +21,7 @@ public partial class MessageLeft : MasaComponentBase
 
     public async Task LoadData()
     {
-        //Loading = true;
         _channels = (await McClient.WebsiteMessageService.GetChannelListAsync());
-        //Loading = false;
         StateHasChanged();
     }
 

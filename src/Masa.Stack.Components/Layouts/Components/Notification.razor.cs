@@ -1,13 +1,14 @@
-﻿using Masa.BuildingBlocks.BasicAbility.Mc.Model;
-using Masa.Contrib.BasicAbility.Mc.Service;
-using Masa.Stack.Components.Store;
-
-namespace Masa.Stack.Components.Layouts;
+﻿namespace Masa.Stack.Components.Layouts;
 
 public partial class Notification : MasaComponentBase
 {
     [Inject]
     public NoticeState NoticeState { get; set; } = default!;
+
+    [Parameter]
+    public string SignalRUrl { get; set; } = string.Empty;
+
+    public HubConnection? HubConnection { get; set; }
 
     private GetNoticeListModel _queryParam = new();
 
@@ -18,6 +19,8 @@ public partial class Notification : MasaComponentBase
         NoticeState.OnNoticeChanged += Changed;
 
         await McClient.WebsiteMessageService.CheckAsync();
+
+        await HubConnectionBuilder();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -28,6 +31,24 @@ public partial class Notification : MasaComponentBase
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task HubConnectionBuilder()
+    {
+        HubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri(SignalRUrl))
+            .Build();
+        await HubConnection.StartAsync();
+
+        HubConnection?.On(SignalRMethodConsts.GET_NOTIFICATION, async () =>
+        {
+            await LoadData();
+        });
+
+        HubConnection?.On(SignalRMethodConsts.CHECK_NOTIFICATION, async () =>
+        {
+            await McClient.WebsiteMessageService.CheckAsync();
+        });
     }
 
     async Task LoadData()
@@ -41,8 +62,9 @@ public partial class Notification : MasaComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
+    public async void Dispose()
     {
         NoticeState.OnNoticeChanged -= Changed;
+        await HubConnection.DisposeAsync();
     }
 }

@@ -1,5 +1,6 @@
 ﻿@inherits MasaComponentBase
 @inject IMcClient McClient
+@inject GlobalConfig GlobalConfig
 <MCard Class="mx-auto full-height">
     <MCardTitle Class="h5 emphasis2--text pa-6">
         @T("Permission.WebsiteMessageManagement")
@@ -57,7 +58,7 @@
                 </MListItemContent>
 
                 <MListItemAction Class="align-self-start">
-                    <MListItemActionText Class="overline regular2--text">@*@item.SendTime.Humanize(culture:new CultureInfo(I18n.Culture))*@</MListItemActionText>
+                    <MListItemActionText Class="overline regular2--text">@item.SendTime.Humanize(culture:new CultureInfo(GlobalConfig.Language))</MListItemActionText>
                 </MListItemAction>
             </MListItem>
         }
