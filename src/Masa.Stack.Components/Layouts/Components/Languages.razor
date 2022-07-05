@@ -16,7 +16,7 @@
             <MListItemGroup ActiveClass="primary" Value="GlobalConfig.Culture?.Name">
                 @foreach (var culture in I18n.SupportedCultures)
                 {
-                    <MListItem OnClick="() => OnLanguageChange(culture)" Value="(StringNumber)culture.Name">
+                    <MListItem OnClick="async () => await OnLanguageChangeAsync(culture)" Value="(StringNumber)culture.Name">
                         <ItemContent>
                             <MListItemContent>
                                 <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") btn">
@@ -33,10 +33,14 @@
 
 @code {
 
-    void OnLanguageChange(CultureInfo culture)
+    [Parameter]
+    public EventCallback<CultureInfo> OnChange { get; set; }
+
+    async Task OnLanguageChangeAsync(CultureInfo culture)
     {
         I18n.SetCulture(culture);
         GlobalConfig.Culture = culture;
+        if (OnChange.HasDelegate) await OnChange.InvokeAsync(culture);
     }
 
 }
