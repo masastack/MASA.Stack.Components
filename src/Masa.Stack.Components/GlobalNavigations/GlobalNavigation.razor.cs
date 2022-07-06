@@ -102,7 +102,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task<List<(string name, string url)>> GetRecentVisits()
     {
-        var visitedList = await AuthClient.UserService.GetUserVisitedListAsync();
+        var visitedList = await AuthClient.UserService.GetVisitedListAsync();
         return visitedList.Select(v => new ValueTuple<string, string>(v.Name, v.Url)).ToList();
     }
 

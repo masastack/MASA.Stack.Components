@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.BuildingBlocks.BasicAbility.Auth;
+
+namespace Masa.Stack.Components;
 
 public abstract class MasaComponentBase : ComponentBase
 {
@@ -11,7 +13,10 @@ public abstract class MasaComponentBase : ComponentBase
 
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
-    
+
+    [Inject]
+    public IAuthClient AuthClient { get; set; } = null!;
+
     private I18n? _languageProvider;
 
     protected string T(string key)

@@ -15,6 +15,5 @@
 	<ItemGroup>
 		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.5.0-preview.3" />
 		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="0.5.0-preview.4" />
-		<PackageReference Include="Masa.Contrib.Identity.IdentityModel" Version="0.5.0-preview.3" />
 	</ItemGroup>
 </Project>

@@ -1,4 +1,7 @@
-﻿namespace Masa.Stack.Components.UserCenters;
+﻿using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Enum;
+using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Model;
+
+namespace Masa.Stack.Components.UserCenters;
 
 public partial class UserInfo : MasaComponentBase
 {
@@ -54,9 +57,14 @@ public partial class UserInfo : MasaComponentBase
 
     private async Task SaveUserInfo()
     {
-        // TODO: save _userGender and _userDisplayName
-
-        // TODO: validate _userDisplayName
+        await AuthClient.UserService.UpdateBasicInfoAsync(new UpdateUserBasicInfoModel
+        {
+            DisplayName = _userDisplayName,
+            PhoneNumber = Data?.PhoneNumber,
+            Email = Data?.Email,
+            Gender = (GenderTypes)_userGender
+        });
+        ChangeWindowValue(0);
     }
 
     private Task OpenPhoneNumberValidateModal(MouseEventArgs _)
