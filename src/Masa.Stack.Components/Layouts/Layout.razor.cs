@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.Extensions.Logging;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class Layout
 {
+    [Inject]
+    [NotNull]
+    public IPopupService PopupService { get; set; }
+
     [Inject]
     private I18n I18n { get; set; } = null!;
 
@@ -31,6 +32,12 @@ public partial class Layout
 
     [Parameter]
     public EventCallback OnSignOut { get; set; }
+
+    [Parameter]
+    public Func<Exception, Task>? OnErrorAsync { get; set; }
+
+    [Parameter]
+    public RenderFragment<Exception>? ErrorContent { get; set; }
 
     List<Nav> NavItems = new();
 
@@ -103,6 +110,16 @@ public partial class Layout
 
     protected override void OnInitialized()
     {
+        OnErrorAsync ??= async exception =>
+        {
+           await PopupService.ToastErrorAsync(exception.Message);
+        };
+
+        PopupService.ConfigToast(config =>
+        {
+            config.Position = ToastPosition.TopLeft;
+        });
+
         NavigationManager.LocationChanged += HandleLocationChanged;
     }
 
