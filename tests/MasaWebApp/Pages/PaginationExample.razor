@@ -1,8 +1,12 @@
 ﻿@page "/defaultPaginationExample"
 
+<div class="pa-12 mb-12">
+    <Pagination @bind-Page="Page" @bind-PageSize=PageSize Total=100 />
+</div>
+
 <MCard>
     <MCardText>
-        <Pagination @bind-Page="Page" @bind-PageSize=PageSize Total=100 />
+         <Pagination @bind-Page="Page" @bind-PageSize=PageSize Total=100 />
     </MCardText>
 </MCard>
 
