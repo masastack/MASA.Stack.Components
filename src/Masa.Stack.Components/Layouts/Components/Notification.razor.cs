@@ -8,9 +8,6 @@ public partial class Notification : MasaComponentBase
     [Inject]
     public McServiceOptions McApiOptions { get; set; } = default!;
 
-    [Parameter]
-    public string? NotificationCenterUrl { get; set; }
-
     public HubConnection? HubConnection { get; set; }
 
     private GetNoticeListModel _queryParam = new();

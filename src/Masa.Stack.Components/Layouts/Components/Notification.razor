@@ -42,7 +42,7 @@
                 <MList ThreeLine>
                     @foreach (var item in NoticeState.Notices)
                     {
-                        <MListItem Link Href="@($"{NotificationCenterUrl}/{item.Id}")">
+                        <MListItem Link Href="@($"/notification-center/{item.Id}")">
                             <MListItemAvatar Class="mt-2">
                                 <EmptyAvatar Value="@item.Channel?.DisplayName" Size="40" />
                             </MListItemAvatar>
@@ -56,7 +56,7 @@
                     }
                 </MList>
                 <MList Dense>
-                    <MListItem Link Href="@NotificationCenterUrl" Class="pt-2" Style="box-shadow: inset 0px 1px 0px #E9EDF7">
+                    <MListItem Link Href="/notification-center" Class="pt-2" Style="box-shadow: inset 0px 1px 0px #E9EDF7">
                         <MListItemIcon Class="mr-0">
                             <MIcon Size="16" Color="regular2" Class="pr-3">mdi-keyboard-backspace</MIcon>
                         </MListItemIcon>
