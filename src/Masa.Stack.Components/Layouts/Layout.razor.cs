@@ -28,9 +28,6 @@ public partial class Layout
     public string AppId { get; set; } = string.Empty;
 
     [Parameter]
-    public string UserCenterRoute { get; set; } = "/user-center";
-
-    [Parameter]
     public EventCallback OnSignOut { get; set; }
 
     [Parameter]
@@ -42,11 +39,6 @@ public partial class Layout
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
-
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -82,9 +74,11 @@ public partial class Layout
                     }),
                 };
             }
+
             FlattenedNavs = FlattenNavs(NavItems, true);
             StateHasChanged();
         }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
