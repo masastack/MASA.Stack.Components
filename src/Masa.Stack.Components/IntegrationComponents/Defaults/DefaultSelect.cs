@@ -1,4 +1,4 @@
-﻿namespace Masa.Stack.Components.IntegrationComponents.Defaults;
+﻿namespace Masa.Stack.Components;
 
 public class DefaultSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TValue>
 {

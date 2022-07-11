@@ -34,6 +34,7 @@
   "Logout": "退出登录",
   "SetPasswordBySMS": "短信找回",
   "SetPasswordByEmail": "邮箱找回",
+  "Password": "密码",
 
   "GlobalNavigation": "全局导航",
   "RecentVisits": "最近访问",
