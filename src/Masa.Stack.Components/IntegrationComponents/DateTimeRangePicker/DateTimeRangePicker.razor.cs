@@ -20,33 +20,39 @@ public partial class DateTimeRangePicker
     [Parameter]
     public EventCallback<DateTime?> StartTimeChanged { get; set; }
 
+    private DateTime? InternalStartTime { get; set; }
+
     [Parameter]
     public DateTime? EndTime { get; set; }
 
     [Parameter]
     public EventCallback<DateTime?> EndTimeChanged { get; set; }
 
+    private DateTime? InternalEndTime { get; set; }
+
     private bool StartTimeVisible { get; set; }
 
     private bool EndTimeVisible { get; set; }
 
-    private async Task UpdateStartTimeAsync(DateTime? dateTime)
+    private async Task UpdateStartTimeAsync()
     {
-        if (dateTime > EndTime) await PopupService.AlertAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
+        StartTimeVisible = false;
+        if (InternalStartTime > EndTime) await PopupService.AlertAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
         else
-        {
-            StartTime = dateTime;
-            if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(dateTime);
-        }
+        {         
+            if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(InternalStartTime);
+            else StartTime = InternalStartTime;
+        }   
     }
 
-    private async Task UpdateEndTimeAsync(DateTime? dateTime)
+    private async Task UpdateEndTimeAsync()
     {
-        if (dateTime < StartTime) await PopupService.AlertAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
+        EndTimeVisible = false;
+        if (InternalEndTime < StartTime) await PopupService.AlertAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
         else
-        {
-            EndTime = dateTime;
-            if (StartTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(dateTime);
+        {           
+            if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(InternalEndTime);
+            else EndTime = InternalStartTime;
         }
     }
 }

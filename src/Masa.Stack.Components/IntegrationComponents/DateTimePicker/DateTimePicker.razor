@@ -54,11 +54,10 @@
             </MAutocomplete>
         </MCol>
         <MCol Cols="12" Style="display: flex">
-            <MButton Text Color="primary" OnClick="OnNowAsync">@T("Now")</MButton>
+            <MButton Text Color="primary" Disabled="GetNowClickState()" OnClick="OnNowAsync">@T("Now")</MButton>
             <MSpacer></MSpacer>
             <MButton Text OnClick="OnResetAsync">@T("Reset")</MButton>
             @ChildContent
-           @* <MButton Text Color="primary" OnClick="OnOkClickAsync">@T("Confirm")</MButton>*@
         </MCol>
     </MRow>
 </MDatePicker>

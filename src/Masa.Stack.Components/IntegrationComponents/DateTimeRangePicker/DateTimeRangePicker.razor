@@ -4,7 +4,7 @@
 <div class="d-flex px-6 py-3 fill dateRangePicker @Class" style="@Style;">
     <div class="ma-auto d-flex" style="height:24px;">
         <MIcon Size=24 Color="emphasis2">mdi-calendar-month</MIcon>        
-        <MMenu @bind-Value="StartTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
+        <MMenu @bind-Value="StartTimeVisible" CloseOnClick=false CloseOnContentClick="false" OffsetY Transition="scale-transition">
             <ActivatorContent>
                 <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
                     @(StartTime?.ToString(T("$DateTimeFormat"))??T("Please select a start time"))
@@ -12,13 +12,14 @@
             </ActivatorContent>
             <ChildContent>
                 <DateTimePicker
-                    Value=StartTime
-                    Max="EndTime"
-                    ValueChanged=UpdateStartTimeAsync />
+                    @bind-Value=InternalStartTime
+                    Max="EndTime">
+                        <MButton Text Color="primary" OnClick="async() => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
+                </DateTimePicker>
             </ChildContent>
         </MMenu>      
         <div class="ml-4" style="width: 0px;height:24px;border: 1px solid #E2E7F4;"></div>
-        <MMenu @bind-Value="EndTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
+        <MMenu @bind-Value="EndTimeVisible" CloseOnClick=false CloseOnContentClick="false" OffsetY Transition="scale-transition">
             <ActivatorContent>
                 <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
                     @(EndTime?.ToString(T("$DateTimeFormat"))??T("Please select an end time"))
@@ -26,9 +27,10 @@
             </ActivatorContent>
             <ChildContent>
                 <DateTimePicker
-                    Value=EndTime
-                    Min="StartTime"
-                    ValueChanged=UpdateEndTimeAsync />
+                    @bind-Value=InternalEndTime
+                    Min="StartTime">
+                    <MButton Text Color="primary" OnClick="async() => await UpdateEndTimeAsync()">@T("Confirm")</MButton>
+                </DateTimePicker>
             </ChildContent>
         </MMenu>
     </div>
