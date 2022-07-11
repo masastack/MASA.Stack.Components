@@ -5,6 +5,14 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
         string i18nDirectoryPath, string authHost, string mcHost)
     {
+        services.AddMasaIdentityModel(IdentityType.MultiEnvironment, options =>
+        {
+            options.Environment = "environment";
+            options.UserName = "name";
+            options.UserId = "sub";
+            options.Role = "role";
+        });
+
         services.AddAuthClient(authHost);
         var options = new McApiOptions(mcHost);
         services.AddSingleton(options);

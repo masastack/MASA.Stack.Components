@@ -15,6 +15,8 @@
   "ConfirmNewPassword": "确认密码",
   "PlaceholderForConfirmNewPassword": "再次输入新密码",
   "FailToConfirmNewPassword": "确认密码与新密码不一致",
+  "EqualOldAndNewPassword": "新密码与旧密码不能相同",
+  "PasswordFormatVerificationPrompt": "密码必须是字母和数字的组合，且长度不小于8",
   "Account": "账号",
   "Logout": "退出登录",
   "SetPasswordBySMS": "短信找回",
