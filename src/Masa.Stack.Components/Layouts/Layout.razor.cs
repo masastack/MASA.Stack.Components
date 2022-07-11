@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Model;
+
+namespace Masa.Stack.Components;
 
 public partial class Layout
 {
@@ -44,7 +46,17 @@ public partial class Layout
     {
         if (firstRender)
         {
-            var menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
+            List<MenuModel> menus = new();
+
+            try
+            {
+                menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
+            }
+            catch (Exception e)
+            {
+                await PopupService.ToastErrorAsync(e.Message);
+            }
+
             NavItems = menus.Adapt<List<Nav>>();
             if (!NavItems.Any())
             {
