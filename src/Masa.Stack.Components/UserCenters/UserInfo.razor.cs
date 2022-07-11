@@ -6,19 +6,19 @@ namespace Masa.Stack.Components.UserCenters;
 public partial class UserInfo : MasaComponentBase
 {
     [Parameter]
-    public User? Data { get; set; }
+    public User Data { get; set; } = new();
 
     private EmailValidateModal? _emailValidateModal;
     private IdCardValidateModal? _idCardValidateModal;
     private PhoneNumberValidateModal? _phoneNumberValidateModal;
 
-    private User? _prevUser = null;
+    private User _prevUser = null;
     private StringNumber _windowValue = 0;
 
     private Dictionary<string, object?>? Items { get; set; }
 
     private int _userGender;
-    private string? _userDisplayName;
+    private string _userDisplayName = string.Empty;
 
     protected override void OnParametersSet()
     {
@@ -48,8 +48,8 @@ public partial class UserInfo : MasaComponentBase
     {
         if (val == 1)
         {
-            _userGender = Data?.Gender ?? 0;
-            _userDisplayName = Data?.DisplayName;
+            _userGender = Data.Gender;
+            _userDisplayName = Data.DisplayName;
         }
 
         _windowValue = val;
@@ -57,13 +57,16 @@ public partial class UserInfo : MasaComponentBase
 
     private async Task SaveUserInfo()
     {
+
         await AuthClient.UserService.UpdateBasicInfoAsync(new UpdateUserBasicInfoModel
         {
             DisplayName = _userDisplayName,
-            PhoneNumber = Data?.PhoneNumber,
-            Email = Data?.Email,
+            PhoneNumber = Data.PhoneNumber,
+            Email = Data.Email,
             Gender = (GenderTypes)_userGender
         });
+        Data.DisplayName = _userDisplayName;
+        Data.Gender = _userGender;
         ChangeWindowValue(0);
     }
 

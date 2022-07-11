@@ -37,13 +37,19 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task<List<Category>> FetchCategories()
     {
-        var categories = await AuthClient.ProjectService.GetGlobalNavigations();
         var config = new TypeAdapterConfig();
         config.NewConfig<AppModel, App>()
             .Map(dest => dest.Code, src => src.Identity);
-        config.NewConfig<ProjectModel, Category>()
-            .Map(dest => dest.Code, src => src.Identity);
-        return categories.Adapt<List<Category>>(config);
+
+        var apps = (await AuthClient.ProjectService.GetGlobalNavigations()).SelectMany(p => p.Apps).ToList();
+        var categories = apps.GroupBy(a => a.Tag).Select(ag => new Category
+        {
+            Code = ag.Key,
+            Name = ag.Key,
+            Apps = ag.Select(a => a.Adapt<App>(config)).ToList()
+        }).ToList();
+
+        return categories;
     }
 
     private async Task<List<string>> FetchFavorites()
