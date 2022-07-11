@@ -1,0 +1,10 @@
+﻿@page "/dateTimeRangePickerExample"
+
+<div class="pa-12 mb-12">
+    <DateTimeRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
+</div>
+
+@code{
+    public DateTime? StartTime { get; set; }
+    public DateTime? EndTime { get; set; }
+}
