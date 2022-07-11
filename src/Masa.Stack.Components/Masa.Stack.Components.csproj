@@ -12,10 +12,10 @@
     <PackageReference Include="Masa.Blazor" Version="0.5.0-rc.2" />
     <PackageReference Include="MASA.Blazor.Experimental.Components" Version="0.2.6" />
     <PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.5.0-preview.5" />
+    <PackageReference Include="Masa.Contrib.BasicAbility.Mc" Version="0.5.0-preview.5" />
     <PackageReference Include="Masa.Contrib.Identity.IdentityModel" Version="0.5.0-preview.5" />
     <PackageReference Include="Masa.Contrib.BasicAbility.Auth" Version="0.5.0-preview.5" />
-	  <PackageReference Include="Masa.Contrib.BasicAbility.Mc" Version="0.5.0-preview.4" />
-	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>
