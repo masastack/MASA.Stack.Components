@@ -32,12 +32,12 @@ public partial class MessageRight : MasaComponentBase
         _queryParam.ChannelId = ChannelId;
         _channel = ChannelId.HasValue ? await McClient.ChannelService.GetAsync(ChannelId.Value) : null;
         await RefreshAsync();
+        StateHasChanged();
     }
 
     private async Task LoadData()
     {
         _entities = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
-        StateHasChanged();
     }
 
     private async Task HandleOnClick(WebsiteMessageModel item)
