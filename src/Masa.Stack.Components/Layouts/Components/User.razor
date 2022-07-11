@@ -11,7 +11,7 @@
     </ActivatorContent>
     <ChildContent>
         <MList>
-            <DefaultListItem Medium Href="@UserCenterUrl">
+            <DefaultListItem Medium Href="/user-center">
                 <MListItemIcon Class="mr-4">
                     <DefaultIcon Color="emphasis2">mdi-account-circle</DefaultIcon>
                 </MListItemIcon>
@@ -52,9 +52,6 @@
 <UpdatePasswordModal @ref="_updatePasswordModal"></UpdatePasswordModal>
 
 @code {
-    [Parameter]
-    public string? UserCenterUrl { get; set; }
-
     private LogoutModal _logoutModal = null!;
     private UpdatePasswordModal _updatePasswordModal = null!;
     private string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
