@@ -24,7 +24,6 @@
                 </MListItem>
                 <MSpacer />
                 <Search @bind-Value="_queryParam.Filter" Class="rounded-2 search" Dense Style="flex: none;width:300px" OnEnter="RefreshAsync"></Search>
-                @*<DefaultSearch @bind-Value="_queryParam.Filter" Clearable Class="rounded-2 search" Placeholder="@T("Search")" Dense BackgroundColor="fill-background" Style="flex: none;width:300px" OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" />*@
                 <MSelect Class="ml-6 rounded-2 small" @bind-Value="@_queryParam.FilterType" Style="flex: none;width:136px"
                     Items="@_filterTypeItems"
                     Label="@T("DisplayName.WebsiteMessageFilterType")"

@@ -5,8 +5,8 @@ public partial class Notification : MasaComponentBase
     [Inject]
     public NoticeState NoticeState { get; set; } = default!;
 
-    [Parameter]
-    public string SignalRUrl { get; set; } = string.Empty;
+    [Inject]
+    public McApiOptions McApiOptions { get; set; } = default!;
 
     public HubConnection? HubConnection { get; set; }
 
@@ -36,7 +36,7 @@ public partial class Notification : MasaComponentBase
     private async Task HubConnectionBuilder()
     {
         HubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri(SignalRUrl))
+            .WithUrl(NavigationManager.ToAbsoluteUri($"{McApiOptions.McServiceBaseAddress}/signalr-hubs/notifications"))
             .Build();
         await HubConnection.StartAsync();
 

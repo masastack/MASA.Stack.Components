@@ -1,6 +1,4 @@
-﻿using Masa.Stack.Components.Store;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -8,6 +6,8 @@ public static class ServiceCollectionExtensions
         string i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddAuthClient(authHost);
+        var options = new McApiOptions(mcHost);
+        services.AddSingleton(options);
         services.AddMcClient(mcHost);
         services.AddScoped<NoticeState>();
 
@@ -30,6 +30,8 @@ public static class ServiceCollectionExtensions
         string i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddAuthClient(authHost);
+        var options = new McApiOptions(mcHost);
+        services.AddSingleton(options);
         services.AddMcClient(mcHost);
         services.AddScoped<NoticeState>();
 

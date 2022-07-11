@@ -39,9 +39,6 @@ public partial class Layout
     [Parameter]
     public RenderFragment<Exception>? ErrorContent { get; set; }
 
-    [Parameter, EditorRequired]
-    public string McSignalRUrl { get; set; } = string.Empty;
-
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();

@@ -58,7 +58,7 @@
                 </MListItemContent>
 
                 <MListItemAction Class="align-self-start">
-                    <MListItemActionText Class="overline regular2--text">@item.SendTime.Humanize(culture:new CultureInfo(GlobalConfig.Language))</MListItemActionText>
+                    <MListItemActionText Class="overline regular2--text">@item.SendTime.Humanize(culture:GlobalConfig.Culture)</MListItemActionText>
                 </MListItemAction>
             </MListItem>
         }

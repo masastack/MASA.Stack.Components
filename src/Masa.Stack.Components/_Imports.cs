@@ -22,3 +22,4 @@ global using Masa.BuildingBlocks.BasicAbility.Mc.Model;
 global using Masa.Stack.Components.Store;
 global using Microsoft.AspNetCore.SignalR.Client;
 global using Masa.Stack.Components.NotificationCenters.Consts;
+global using Masa.Stack.Components.Options;
