@@ -14,14 +14,20 @@
                      Class="mx-6"
                      Elevation="0"
                      Height="96">
-                <GlobalNavigation OnFavoriteAdd="AddFavoriteMenu"
-                                  OnFavoriteRemove="RemoveFavoriteMenu">
-                    <ActivatorContent>
-                        <MButton Icon Class="white mr-6 emphasis2--text" @attributes="@context.Attrs">
-                            <MIcon>mdi-view-dashboard</MIcon>
-                        </MButton>
-                    </ActivatorContent>
-                </GlobalNavigation>
+                <MErrorHandler>
+                    <ChildContent>
+                        <GlobalNavigation OnFavoriteAdd="AddFavoriteMenu"
+                                          OnFavoriteRemove="RemoveFavoriteMenu">
+                            <ActivatorContent>
+                                <MButton Icon Class="white mr-6 emphasis2--text" @attributes="@context.Attrs">
+                                    <MIcon>mdi-view-dashboard</MIcon>
+                                </MButton>
+                            </ActivatorContent>
+                        </GlobalNavigation>
+                    </ChildContent>
+                    <ErrorContent>
+                    </ErrorContent>
+                </MErrorHandler>
                 <SearchMenu />
                 <MSpacer />
                 <Favorites FlattenedNavs="FlattenedNavs" />
