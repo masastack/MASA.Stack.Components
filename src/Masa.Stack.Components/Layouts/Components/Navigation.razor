@@ -63,11 +63,11 @@
                                     @attributes="@menuContext.Attrs">
                             <ActivatorContent>
                                 <MListItemContent>
-                                    <div class="text-truncate regular2--text">@T(nav.Name)</div>
+                                    <div class="ml-1 text-truncate regular2--text">@T(nav.Name)</div>
                                 </MListItemContent>
                             </ActivatorContent>
                             <PrependIconContent>
-                                <MIcon Dense Style="min-width: 36px">@nav.Icon</MIcon>
+                                <MIcon Dense Style="margin-left: 6px">@nav.Icon</MIcon>
                             </PrependIconContent>
                             <ChildContent>
                                 <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
