@@ -8,10 +8,23 @@
 
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.3.0" />
-    <PackageReference Include="Masa.Blazor" Version="0.5.0-preview.5" />
+    <PackageReference Include="Masa.Blazor" Version="0.5.0-rc.2" />
     <PackageReference Include="MASA.Blazor.Experimental.Components" Version="0.2.6" />
-    <PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.5.0-preview.3" />
-    <PackageReference Include="Masa.Contrib.BasicAbility.Auth" Version="0.5.0-preview.3" />
+    <PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.5.0-preview.5" />
+    <PackageReference Include="Masa.Contrib.Identity.IdentityModel" Version="0.5.0-preview.5" />
+    <PackageReference Include="Masa.Contrib.BasicAbility.Auth" Version="0.5.0-preview.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\i18n\en-US.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\i18n\supportedCultures.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\i18n\zh-CN.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

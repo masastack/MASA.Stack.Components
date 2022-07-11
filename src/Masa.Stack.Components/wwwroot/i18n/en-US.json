@@ -14,6 +14,8 @@
   "ConfirmNewPassword": "Confirm new password",
   "PlaceholderForConfirmNewPassword": "Enter new password again",
   "FailToConfirmNewPassword": "Confirmed password does not match the new password",
+  "EqualOldAndNewPassword": "The new password cannot be the same as the old password",
+  "PasswordFormatVerificationPrompt": "The password must be a combination of letters and numbers, and the length must not be less than 8",
   "Account": "Account",
   "Logout": "Logout",
   "SetPasswordBySMS": "SMS",
