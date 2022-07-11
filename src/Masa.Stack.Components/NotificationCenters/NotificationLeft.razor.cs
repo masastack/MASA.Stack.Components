@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components.NotificationCenters;
 
-public partial class MessageLeft : MasaComponentBase
+public partial class NotificationLeft : MasaComponentBase
 {
     [Parameter]
     public EventCallback<Guid?> OnItemClick { get; set; }

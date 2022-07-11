@@ -1,11 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.BasicAbility.Mc.Enum;
-
 namespace Masa.Stack.Components.NotificationCenters;
 
-public partial class MessageRight : MasaComponentBase
+public partial class NotificationRight : MasaComponentBase
 {
     [Inject]
     public NoticeState NoticeState { get; set; } = default!;

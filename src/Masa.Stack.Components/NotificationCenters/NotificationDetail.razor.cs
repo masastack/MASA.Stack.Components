@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components.NotificationCenters;
 
-public partial class MessageDetail
+public partial class NotificationDetail
 {
     [Inject]
     private IPopupService PopupService { get; set; } = null!;

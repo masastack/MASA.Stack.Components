@@ -1,18 +1,14 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Stack.Components;
-using Masa.Stack.Components.NotificationCenters;
-using Microsoft.AspNetCore.Components;
+namespace Masa.Stack.Components.NotificationCenters;
 
-namespace MasaWebApp.Pages;
-
-public partial class MessageManagement : MasaComponentBase
+public partial class NotificationCenter : MasaComponentBase
 {
     [Parameter]
     public string MessageId { get; set; }
 
-    private MessageLeft _messageLeftRef = default!;
+    private NotificationLeft _messageLeftRef = default!;
     private bool _detailShow = false;
     private Guid? _channelId;
     private Guid _messageId;

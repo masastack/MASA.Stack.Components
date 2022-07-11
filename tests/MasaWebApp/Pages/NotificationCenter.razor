@@ -1,0 +1,9 @@
+﻿@page "/notification-center/{MessageId}"
+@page "/notification-center"
+
+<Masa.Stack.Components.NotificationCenters.NotificationCenter MessageId="@MessageId" />
+
+@code{
+    [Parameter]
+    public string MessageId { get; set; }
+}
