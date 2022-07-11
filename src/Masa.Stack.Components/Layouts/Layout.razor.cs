@@ -31,6 +31,9 @@ public partial class Layout
     public string UserCenterRoute { get; set; } = "/user-center";
 
     [Parameter]
+    public string NotificationCenterUrl { get; set; } = "/websiteMessages/websiteMessageManagement";
+
+    [Parameter]
     public EventCallback OnSignOut { get; set; }
 
     [Parameter]

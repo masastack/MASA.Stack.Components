@@ -6,7 +6,7 @@ namespace Masa.Stack.Components.NotificationCenters;
 public partial class MessageLeft : MasaComponentBase
 {
     [Parameter]
-    public EventCallback<Guid?> OnClick { get; set; }
+    public EventCallback<Guid?> OnItemClick { get; set; }
 
     private List<WebsiteMessageChannelModel> _channels = new();
 
@@ -15,6 +15,7 @@ public partial class MessageLeft : MasaComponentBase
         if (firstRender)
         {
             await LoadData();
+            StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -22,14 +23,13 @@ public partial class MessageLeft : MasaComponentBase
     public async Task LoadData()
     {
         _channels = (await McClient.WebsiteMessageService.GetChannelListAsync());
-        StateHasChanged();
     }
 
     private async Task HandleOnClick(Guid? channelId)
     {
-        if (OnClick.HasDelegate)
+        if (OnItemClick.HasDelegate)
         {
-            await OnClick.InvokeAsync(channelId);
+            await OnItemClick.InvokeAsync(channelId);
         }
     }
 }

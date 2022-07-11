@@ -17,7 +17,7 @@ public partial class MessageRight : MasaComponentBase
     public Guid? ChannelId { get; set; }
 
     [Parameter]
-    public EventCallback<Guid> OnClick { get; set; }
+    public EventCallback<Guid> OnItemClick { get; set; }
 
     [Parameter]
     public EventCallback OnAllRead { get; set; }
@@ -48,9 +48,9 @@ public partial class MessageRight : MasaComponentBase
             return;
         }
 
-        if (OnClick.HasDelegate)
+        if (OnItemClick.HasDelegate)
         {
-            await OnClick.InvokeAsync(item.Id);
+            await OnItemClick.InvokeAsync(item.Id);
         }
     }
 

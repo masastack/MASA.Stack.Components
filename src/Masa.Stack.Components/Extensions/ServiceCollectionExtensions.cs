@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddAuthClient(authHost);
-        var options = new McApiOptions(mcHost);
+        var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
         services.AddScoped<NoticeState>();
@@ -38,12 +38,12 @@ public static class ServiceCollectionExtensions
         string i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddAuthClient(authHost);
-        var options = new McApiOptions(mcHost);
+        var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
         services.AddScoped<NoticeState>();
 
-        services.AddMasaBlazor(builder =>
+        await services.AddMasaBlazor(builder =>
         {
             builder.Theme.Primary = "#4318FF";
             builder.Theme.Accent = "#4318FF";

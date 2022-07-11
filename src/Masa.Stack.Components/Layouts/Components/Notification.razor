@@ -42,7 +42,7 @@
                 <MList ThreeLine>
                     @foreach (var item in NoticeState.Notices)
                     {
-                        <MListItem Link Href="@($"/websiteMessages/websiteMessageManagement/{item.Id}")">
+                        <MListItem Link Href="@($"{NotificationCenterUrl}/{item.Id}")">
                             <MListItemAvatar Class="mt-2">
                                 <EmptyAvatar Value="@item.Channel?.DisplayName" Size="40" />
                             </MListItemAvatar>
