@@ -4,12 +4,20 @@
     <h3>LabeledRadioGroup's value: @value</h3>
 
     <LabeledRadioGroup @bind-Value="value" Dense Class="mb-2">
-        <LabeledRadio Value="@("menu")">Menu Permission</LabeledRadio>
-        <LabeledRadio Value="@("api")">Api Permission</LabeledRadio>
-        <LabeledRadio Value="@("action")">Action Permission</LabeledRadio>
+        @foreach (var v in new[] { "menu", "api", "action" })
+        {
+            <LabeledRadio Value="v">@v</LabeledRadio>
+        }
     </LabeledRadioGroup>
-    
-    <ElevationTab TabMinWidth="200" ItemsClass="mt-4" Tabs='new List<string> { "Menu Permission", "Api Permission" }' Dense>
+
+    <LabeledRadioGroup TValue="string" Dense Class="mb-2">
+        @foreach (var v in new[] { "menu", "api", "action" })
+        {
+            <LabeledRadio Value="v">@v</LabeledRadio>
+        }
+    </LabeledRadioGroup>
+
+    <ElevationTab TabMinWidth="200" ItemsClass="mt-4" Tabs='new List<string> { "Menu Permission", "Api Permission" }' Dense @bind-Tab="value3">
         <ElevationTabItem>
             Menu Permission
         </ElevationTabItem>
@@ -20,6 +28,22 @@
 </div>
 
 @code {
+    string value = "api";
+    string value3 = "";
 
-    string value ="api";
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            value3 = "Api Permission";
+
+            // 遇到await时会立即render一次，但是不会支持OnParametersSet，所以render的时候拿不到最新的value2的值。
+            await Task.Delay(1000);
+
+            StateHasChanged();
+        }
+    }
+
 }

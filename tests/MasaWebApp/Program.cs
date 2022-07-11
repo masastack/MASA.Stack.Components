@@ -1,7 +1,5 @@
 using Masa.BuildingBlocks.Identity.IdentityModel;
-using Masa.Contrib.SearchEngine.AutoComplete;
 using Masa.Stack.Components;
-using Masa.Utils.Data.Elasticsearch;
 using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +10,8 @@ builder.Services.AddMasaIdentityModel(IdentityType.MultiEnvironment, options =>
     options.UserName = "name";
     options.UserId = "sub";
 });
-builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/", "https://mc-service-develop.masastack.com/");
+builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/");
+//builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
 
 // Add services to the container.
 builder.Services.AddRazorPages();

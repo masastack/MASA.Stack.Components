@@ -1,11 +1,12 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 @inherits MasaComponentBase
+@inject IAuthClient AuthClient
 
 <MMenu OffsetY OpenOnHover NudgeTop="-8"
        ContentClass="px-4 py-2">
     <ActivatorContent>
         <MAvatar @attributes="@context.Attrs" Size=40>
-            <MImage Src="/img/avatar/2.svg"></MImage>
+            <MImage Src="@avatar"></MImage>
         </MAvatar>
     </ActivatorContent>
     <ChildContent>
@@ -51,11 +52,24 @@
 <UpdatePasswordModal @ref="_updatePasswordModal"></UpdatePasswordModal>
 
 @code {
-
     [Parameter]
     public string? UserCenterUrl { get; set; }
 
     private LogoutModal _logoutModal = null!;
     private UpdatePasswordModal _updatePasswordModal = null!;
+    private string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var user = await AuthClient.UserService.GetCurrentUserAsync();
+            if (!string.IsNullOrWhiteSpace(user.Avatar))
+            {
+                avatar = user.Avatar;
+                StateHasChanged();
+            }
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 }

@@ -51,9 +51,7 @@
     [Parameter]
     public EventCallback<TValue> ValueChanged { get; set; }
 
-    private TValue _prevValue;
-    private bool _valueChangedFromInternal;
-
+    private TValue? _prevValue;
     private StringNumber? _selectedKey;
 
     private MButtonGroup? ButtonGroup { get; set; }
@@ -70,18 +68,14 @@
 
     private string ComputedStyle => $"border-radius:{BorderRadius + 2}px; {Style}";
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
-        base.OnParametersSet();
+        await base.OnParametersSetAsync();
 
-        if (!_valueChangedFromInternal && !EqualityComparer<TValue>.Default.Equals(_prevValue, Value))
+        if (!EqualityComparer<TValue>.Default.Equals(_prevValue, Value))
         {
             _prevValue = Value;
-            Intersection();
-        }
-        else
-        {
-            _valueChangedFromInternal = false;
+            await Intersection();
         }
     }
 
@@ -95,20 +89,23 @@
 
     private async Task Intersection()
     {
-        var item = Items.FirstOrDefault(item => EqualityComparer<TValue>.Default.Equals(item.Value, Value));
+        var item = Value is null
+            ? Items.FirstOrDefault()
+            : Items.FirstOrDefault(l => EqualityComparer<TValue>.Default.Equals(l.Value, Value));
+
         if (item != null)
         {
-            _selectedKey = item.Instance.Value;
-        await SelectedKeyChanged(_selectedKey);
+            _selectedKey = item.Instance?.Value;
+            await SelectedKeyChanged(_selectedKey);
         }
     }
 
     private async Task SelectedKeyChanged(StringNumber? val)
     {
         _selectedKey = val;
-        _valueChangedFromInternal = true;
 
         var item = Items.FirstOrDefault(item => item.Instance?.Value == val);
+
         if (item is not null)
         {
             await UpdatePosition(item);
@@ -136,7 +133,7 @@
         CurrentItemOffsetLeft = radio.OffsetLeft;
     }
 
-    internal async Task AddRadio(LabeledRadio<TValue> radio)
+    internal void AddRadio(LabeledRadio<TValue> radio)
     {
         if (!Items.Contains(radio))
         {

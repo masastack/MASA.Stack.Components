@@ -1,12 +1,19 @@
-﻿using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.Extensions.Logging;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class Layout
 {
     [Inject]
+    [NotNull]
+    public IPopupService PopupService { get; set; }
+
+    [Inject]
     private I18n I18n { get; set; } = null!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -20,8 +27,17 @@ public partial class Layout
     [Parameter, EditorRequired]
     public string AppId { get; set; } = string.Empty;
 
-    [Parameter, EditorRequired]
-    public string? UserCenterRoute { get; set; }
+    [Parameter]
+    public string UserCenterRoute { get; set; } = "/user-center";
+
+    [Parameter]
+    public EventCallback OnSignOut { get; set; }
+
+    [Parameter]
+    public Func<Exception, Task>? OnErrorAsync { get; set; }
+
+    [Parameter]
+    public RenderFragment<Exception>? ErrorContent { get; set; }
 
     [Parameter, EditorRequired]
     public string McSignalRUrl { get; set; } = string.Empty;
@@ -97,6 +113,16 @@ public partial class Layout
 
     protected override void OnInitialized()
     {
+        OnErrorAsync ??= async exception =>
+        {
+           await PopupService.ToastErrorAsync(exception.Message);
+        };
+
+        PopupService.ConfigToast(config =>
+        {
+            config.Position = ToastPosition.TopLeft;
+        });
+
         NavigationManager.LocationChanged += HandleLocationChanged;
     }
 

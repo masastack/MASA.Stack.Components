@@ -533,6 +533,8 @@ body, .masa-stack-components {
     pointer-events: none;
     width: 0;
     max-width: 0;
+    display:block;
+    height:0;
 }
 
 /*

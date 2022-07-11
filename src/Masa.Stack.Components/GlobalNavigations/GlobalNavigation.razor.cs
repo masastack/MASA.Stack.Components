@@ -1,4 +1,4 @@
-﻿using Masa.BuildingBlocks.BasicAbility.Auth.Model;
+﻿using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Model;
 
 namespace Masa.Stack.Components;
 

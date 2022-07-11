@@ -9,14 +9,14 @@
             <span>@T("Total") @Total @T("Item")</span>
         </div>
     </div>
-    <div class="ml-auto">
-        <span @onclick=Previous>
-            <MIcon Class="hover-pointer regular3--text" Disabled=PreviousDisabled Size=24>mdi-chevron-left</MIcon>
-        </span>
-        <span class="ma-5 regular--text overline">@Page/@TotalPage</span>
-        <span @onclick=Next>
-            <MIcon Class="hover-pointer regular3--text" Disabled=NextDisabled Size=24>mdi-chevron-right</MIcon>
-        </span>
+    <div class="ml-auto d-flex">
+        <div @onclick=Previous class="@(PreviousDisabled?"":"hover-pointer") pa-1 regular3--text" style="width: 34px;height: 34px;background: #FFFFFF;border-radius: 34px;">
+            <MIcon Disabled=PreviousDisabled Size=24>mdi-chevron-left</MIcon>
+        </div>
+        <div class="mx-4 my-auto regular--text overline">@Page/@TotalPage</div>
+        <div @onclick=Next class="@(NextDisabled?"":"hover-pointer") pa-1 regular3--text" style="width: 34px;height: 34px;background: #FFFFFF;border-radius: 34px;">
+            <MIcon Disabled=NextDisabled Size=24>mdi-chevron-right</MIcon>
+        </div>
     </div>
 </div>
 
