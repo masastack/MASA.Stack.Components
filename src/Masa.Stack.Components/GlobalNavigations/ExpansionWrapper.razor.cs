@@ -1,7 +1,4 @@
-﻿using System.Text.Json;
-using Microsoft.JSInterop;
-
-namespace Masa.Stack.Components.GlobalNavigations
+﻿namespace Masa.Stack.Components.GlobalNavigations
 {
     public partial class ExpansionWrapper : IDisposable
     {
@@ -35,7 +32,7 @@ namespace Masa.Stack.Components.GlobalNavigations
         [Parameter]
         public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
 
-        [Parameter] 
+        [Parameter]
         public string? TagIdPrefix { get; set; }
 
         private int _activeCategoryIndex;
