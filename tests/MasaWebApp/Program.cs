@@ -3,7 +3,7 @@ using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/");
+builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
 //builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
 
 // Add services to the container.

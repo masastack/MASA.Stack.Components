@@ -3,7 +3,7 @@
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost)
+        string i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddMasaIdentityModel(IdentityType.MultiEnvironment, options =>
         {
@@ -14,6 +14,10 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddAuthClient(authHost);
+        var options = new McServiceOptions(mcHost);
+        services.AddSingleton(options);
+        services.AddMcClient(mcHost);
+        services.AddScoped<NoticeState>();
 
         services.AddMasaBlazor(builder =>
         {
@@ -31,9 +35,13 @@ public static class ServiceCollectionExtensions
     }
 
     public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost)
+        string i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddAuthClient(authHost);
+        var options = new McServiceOptions(mcHost);
+        services.AddSingleton(options);
+        services.AddMcClient(mcHost);
+        services.AddScoped<NoticeState>();
 
         await services.AddMasaBlazor(builder =>
         {
