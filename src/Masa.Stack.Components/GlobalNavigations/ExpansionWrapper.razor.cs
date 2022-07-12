@@ -71,7 +71,7 @@
                     {
                         if (value.Category is not null && value.App is not null)
                         {
-                            var categoryAppNav = new CategoryAppNav(value.Category, value.App, value.Nav);
+                            var categoryAppNav = new CategoryAppNav(value.Category, value.App, value.Nav, value.Action);
 
                             var key = $"app_{value.App}";
 
@@ -118,8 +118,15 @@
             }
         }
 
-        internal async Task UpdateValues(string key, List<CategoryAppNav> value)
+        internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
         {
+            var key = type switch
+            {
+                CodeType.App => $"app_{code}",
+                CodeType.Category => $"category_{code}",
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+
             _fromCheckbox = true;
 
             if (_valuesDic.TryGetValue(key, out _))

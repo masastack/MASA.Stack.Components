@@ -1,0 +1,13 @@
+﻿@page "/dateRangePickerExample"
+
+<div class="pa-12 mb-12">
+    <DatePicker @bind-Value=StartTime Max=EndTime />
+</div>
+<div class="pa-12 mb-12">
+    <DateRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
+</div>
+
+@code{
+    public DateOnly? StartTime { get; set; }
+    public DateOnly? EndTime { get; set; }
+}

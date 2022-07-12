@@ -23,12 +23,16 @@ public class AutoLoadingButton : MButton
                 Loading = true;
                 Disabled = true;
 
-                await originalOnClick.InvokeAsync(args);
-
-                Loading = false;
-                Disabled = false;
-
-                StateHasChanged();
+                try
+                {
+                    await originalOnClick.InvokeAsync(args);
+                }
+                finally
+                {
+                    Loading = false;
+                    Disabled = false;
+                    StateHasChanged();
+                }
             });
         }
     }

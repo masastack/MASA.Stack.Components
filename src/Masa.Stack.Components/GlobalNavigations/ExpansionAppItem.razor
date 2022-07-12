@@ -21,7 +21,7 @@
                         <MListItemAction Class="ma-0">
                             @if (Checkable)
                             {
-                                <MCheckbox Dense IsActive="@item.Active"></MCheckbox>
+                                <MCheckbox Dense Value="@item.Active"></MCheckbox>
                             }
                             else if (Level < 3)
                             {
@@ -68,7 +68,7 @@
                         @if (context.Hover)
                         {
                             <MListItemAction Class="ma-0">
-                                <MCheckbox Dense IsActive="@item.Active"></MCheckbox>
+                                <MCheckbox Dense Value="@item.Active"></MCheckbox>
                             </MListItemAction>
                         }
                         else if (item.Active)

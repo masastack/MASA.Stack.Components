@@ -31,7 +31,9 @@ public static class ServiceCollectionExtensions
             builder.Theme.Success = "#00B42A";
             builder.Theme.Warning = "#FF7D00";
             builder.Theme.Info = "#37A7FF";
-        }).AddI18nForServer(i18nDirectoryPath);
+        })
+        .AddI18nForServer("wwwroot/masa.stack.components.i18n")
+        .AddI18nForServer(i18nDirectoryPath);
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
 

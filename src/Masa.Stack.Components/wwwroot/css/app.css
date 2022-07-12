@@ -595,3 +595,29 @@ body, .masa-stack-components {
     height: 30px;
     box-shadow: inset 0.5px 0px 0px #E2E7F4;
 }
+
+/*
+    DateRangePicker
+*/
+
+.masa-stack-components .dateRangePicker {
+    border: 1px solid #E2E7F4;
+    box-sizing: border-box;
+    border-radius: 8px;
+    height: 40px;
+    display: inline-block !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/*
+    RelativeTime
+*/
+
+.masa-stack-components .relativeTime {
+    display: inline-block !important;
+    background: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 8px;
+    height: 40px;
+}
