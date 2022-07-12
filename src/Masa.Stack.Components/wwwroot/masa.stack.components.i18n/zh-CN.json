@@ -82,5 +82,17 @@
   "Counter": "计数",
   "Fetch data": "拉取数据",
   "Father": "父级",
-  "ChildOne": "子级菜单1"
+  "ChildOne": "子级菜单1",
+
+  "Relative": "相对",
+  "FifteenMinutes": "15分钟",
+  "ThirtyMinutes": "30分钟",
+  "OneHour": "1小时",
+  "TwoHour": "2小时",
+  "TwelveHour": "12小时",
+  "OneDay": "1天",
+  "OneWeek": "1周",
+  "OneMonth": "1月",
+  "Ago": "前",
+  "Please select a time": "请选择时间"
 }
