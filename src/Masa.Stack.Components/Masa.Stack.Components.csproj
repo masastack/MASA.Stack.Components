@@ -15,13 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\i18n\en-US.json">
+    <Content Update="wwwroot\masa.stack.components.i18n\en-US.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\i18n\supportedCultures.json">
+    <Content Update="wwwroot\masa.stack.components.i18n\supportedCultures.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\i18n\zh-CN.json">
+    <Content Update="wwwroot\masa.stack.components.i18n\zh-CN.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

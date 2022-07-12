@@ -34,6 +34,13 @@ public partial class DateTimeRangePicker
 
     private bool EndTimeVisible { get; set; }
 
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        InternalStartTime = StartTime;
+        InternalEndTime = EndTime;
+    }
+
     private async Task UpdateStartTimeAsync()
     {
         StartTimeVisible = false;

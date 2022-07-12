@@ -5,8 +5,8 @@
              ValueChanged="DateChangedAsync"
              TValue="DateOnly?"
              NoTitle="NoTitle"
-             Max="@(Max is null ? null : DateOnly.FromDateTime(Max.Value))"
-             Min="@(Min is null ? null : DateOnly.FromDateTime(Min.Value))">
+             Max="@GetMaxDateOnly()"
+             Min="@GetMinDateOnly()">
     <MRow Dense Align="AlignTypes.Center" Style="width: min-content; padding: 0 12px;">
         <MCol Cols="4">
             <MAutocomplete Dense

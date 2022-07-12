@@ -33,24 +33,30 @@ public partial class DateTimePicker
         else
         {
             var hours = _hours;
-            if (Min is not null) hours = hours.Where(h => h >= Min.Value.Hour).ToArray();
-            else if (Max is not null) hours = hours.Where(h => h <= Max.Value.Hour).ToArray();
+            if (Min is not null && Value is not null && Min.Value.Date >= Value.Value.Date) hours = hours.Where(h => h >= Min.Value.Hour).ToArray();
+            else if (Max is not null && Value is not null && Max.Value.Date <= Value.Value.Date) hours = hours.Where(h => h <= Max.Value.Hour).ToArray();
             return hours;
         }
     }
 
     private int[] GetMinutes()
     {
-        if (Min is not null) return _minutes.Where(h => h >= Min.Value.Minute).ToArray();
-        else if (Max is not null) return _minutes.Where(h => h <= Max.Value.Minute).ToArray();
-        else return _minutes;
+        if (Min is null && Max is null) return _minutes;
+        {
+            if (Min is not null && Value is not null && Min.Value.Date >= Value.Value.Date) return _minutes.Where(h => h >= Min.Value.Minute).ToArray();
+            else if (Max is not null && Value is not null && Max.Value.Date <= Value.Value.Date) return _minutes.Where(h => h <= Max.Value.Minute).ToArray();
+            return _minutes;
+        }
     }
 
     private int[] GetSeconds()
     {
-        if (Min is not null) return _seconds.Where(h => h >= Min.Value.Second).ToArray();
-        else if (Max is not null) return _seconds.Where(h => h <= Max.Value.Second).ToArray();
-        else return _seconds;
+        if (Min is null && Max is null) return _seconds;
+        {
+            if (Min is not null && Value is not null && Min.Value.Date >= Value.Value.Date) return _seconds.Where(h => h >= Min.Value.Second).ToArray();
+            else if (Max is not null && Value is not null && Max.Value.Date <= Value.Value.Date) return _seconds.Where(h => h <= Max.Value.Second).ToArray();
+            else return _seconds;
+        }
     }
 
     private bool GetNowClickState()
@@ -58,6 +64,28 @@ public partial class DateTimePicker
         if (Min is not null) return DateTime.Now < Min;
         else if (Max is not null) return DateTime.Now > Max;
         else return false;
+    }
+
+    private DateOnly? GetMinDateOnly()
+    {
+        if (Min is not null)
+        {
+            if (Value is null) return DateOnly.FromDateTime(Min.Value);
+            else if (Min.Value.TimeOfDay < Value.Value.TimeOfDay) return DateOnly.FromDateTime(Min.Value.AddDays(1));
+            else return DateOnly.FromDateTime(Min.Value);
+        }
+        else return null;
+    }
+
+    private DateOnly? GetMaxDateOnly()
+    {
+        if (Max is not null)
+        {
+            if (Value is null) return DateOnly.FromDateTime(Max.Value);
+            else if (Max.Value.TimeOfDay < Value.Value.TimeOfDay) return DateOnly.FromDateTime(Max.Value.AddDays(-1));
+            else return DateOnly.FromDateTime(Max.Value);
+        }
+        return null;
     }
 
     private async Task DateChangedAsync(DateOnly? date)
@@ -125,5 +153,5 @@ public partial class DateTimePicker
     private async Task OnResetAsync()
     {
         await UpdateValueAsync(null);
-    }
+    }  
 }
