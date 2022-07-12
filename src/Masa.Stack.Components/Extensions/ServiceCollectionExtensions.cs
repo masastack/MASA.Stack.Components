@@ -1,10 +1,15 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Contrib.Identity.IdentityModel;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
         string i18nDirectoryPath, string authHost, string mcHost)
     {
+
         services.AddMasaIdentityModel(IdentityType.MultiEnvironment, options =>
         {
             options.Environment = "environment";
@@ -12,6 +17,9 @@ public static class ServiceCollectionExtensions
             options.UserId = "sub";
             options.Role = "role";
         });
+
+        services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+        services.AddSingleton<ICurrentPrincipalAccessor, BlazorCurrentPrincipalAccessor>();
 
         services.AddAuthClient(authHost);
         var options = new McServiceOptions(mcHost);
