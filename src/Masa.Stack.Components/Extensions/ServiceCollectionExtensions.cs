@@ -5,6 +5,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
         string i18nDirectoryPath, string authHost, string mcHost)
     {
+        services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+        services.AddSingleton<ICurrentPrincipalAccessor, BlazorCurrentPrincipalAccessor>();
 
         services.AddMasaIdentityModel(IdentityType.MultiEnvironment, options =>
         {
@@ -13,9 +15,6 @@ public static class ServiceCollectionExtensions
             options.UserId = "sub";
             options.Role = "role";
         });
-
-        services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
-        services.AddSingleton<ICurrentPrincipalAccessor, BlazorCurrentPrincipalAccessor>();
 
         services.AddAuthClient(authHost);
         var options = new McServiceOptions(mcHost);

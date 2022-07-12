@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components.Infrastructure;
 
-internal class BlazorCurrentPrincipalAccessor : ICurrentPrincipalAccessor
+public class BlazorCurrentPrincipalAccessor : ICurrentPrincipalAccessor
 {
     readonly AuthenticationStateProvider _authenticationStateProvider;
 
