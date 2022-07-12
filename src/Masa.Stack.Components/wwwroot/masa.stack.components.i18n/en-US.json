@@ -1,5 +1,7 @@
 {
   "$Text": "English",
+  "$DateTimeFormat": "MM/dd/yyyy HH:mm:ss",
+  "$DateFormat": "MM/dd/yyyy",
   "Dashboard": "Dashboard",
   "Favorite": "Favorite",
   "Settings": "Settings",
