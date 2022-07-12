@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Model;
+
+namespace Masa.Stack.Components;
 
 public partial class Layout
 {
@@ -28,9 +30,6 @@ public partial class Layout
     public string AppId { get; set; } = string.Empty;
 
     [Parameter]
-    public string UserCenterRoute { get; set; } = "/user-center";
-
-    [Parameter]
     public EventCallback OnSignOut { get; set; }
 
     [Parameter]
@@ -43,16 +42,21 @@ public partial class Layout
 
     List<Nav> FlattenedNavs { get; set; } = new();
 
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            var menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
+            List<MenuModel> menus = new();
+
+            try
+            {
+                menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
+            }
+            catch (Exception e)
+            {
+                await PopupService.ToastErrorAsync(e.Message);
+            }
+
             NavItems = menus.Adapt<List<Nav>>();
             if (!NavItems.Any())
             {
@@ -84,9 +88,11 @@ public partial class Layout
                     }),
                 };
             }
+
             FlattenedNavs = FlattenNavs(NavItems, true);
             StateHasChanged();
         }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 

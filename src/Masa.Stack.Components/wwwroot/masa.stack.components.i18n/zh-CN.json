@@ -94,5 +94,22 @@
   "OneWeek": "1周",
   "OneMonth": "1月",
   "Ago": "前",
-  "Please select a time": "请选择时间"
+  "Please select a time": "请选择时间",
+
+  //"$DateTimeFormat": "yyyy年MM月dd日 HH:mm:ss",
+  "$MonthDayFormat": "MM月dd日",
+  "DisplayName.Notice.Title": "站内消息通知",
+  "Description.Notice.MoreTips": "查看更多消息",
+  "Permission.WebsiteMessageManagement": "消息中心",
+  "DisplayName.AllWebsiteMessage": "全部消息",
+  "DisplayName.WebsiteMessageAction.MarkAllRead": "全部标记已读",
+  "DisplayName.WebsiteMessageAction.ShowAll": "显示全部",
+  "DisplayName.WebsiteMessageAction.ShowUnread": "显示未读",
+  "DisplayName.WebsiteMessageFilterType": "搜索类型",
+  "DisplayName.WebsiteMessageFilterType.Title": "消息标题",
+  "DisplayName.WebsiteMessageFilterType.Content": "消息内容",
+  "OperationConfirmation": "操作确认",
+  "DeletionConfirmationMessage": "确定删除数据?",
+  "DeletedSuccessfullyMessage": "删除成功.",
+  "OperationSuccessfulMessage": "操作成功."
 }
