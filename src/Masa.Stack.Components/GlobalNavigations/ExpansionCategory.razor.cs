@@ -82,8 +82,6 @@ public partial class ExpansionCategory
 
         CategoryChecked = v;
 
-        var key = $"category_{Category.Code}";
-
         var categoryAppNavs = new List<CategoryAppNav>();
 
         if (CategoryChecked)
@@ -91,12 +89,10 @@ public partial class ExpansionCategory
             categoryAppNavs.Add(new CategoryAppNav(Category.Code));
         }
 
-        await ExpansionWrapper!.UpdateValues(key, categoryAppNavs);
+        await ExpansionWrapper!.UpdateValues(Category.Code, categoryAppNavs, CodeType.Category);
 
         foreach (var app in Category.Apps)
         {
-            var appKey = $"{key}_app_{app.Code}";
-
             categoryAppNavs = new List<CategoryAppNav>();
 
             if (!CheckStrictly && CategoryChecked)
@@ -108,19 +104,7 @@ public partial class ExpansionCategory
                     : new CategoryAppNav(Category.Code, app.Code, nav.Code)));
             }
 
-            await ExpansionWrapper!.UpdateValues(appKey, categoryAppNavs);
-        }
-    }
-
-    internal void UpdateValues(string key, List<CategoryAppNav> value)
-    {
-        if (_valuesDic.TryGetValue(key, out _))
-        {
-            _valuesDic[key] = value;
-        }
-        else
-        {
-            _valuesDic.Add(key, value);
+            await ExpansionWrapper!.UpdateValues(app.Code, categoryAppNavs, CodeType.App);
         }
     }
 
