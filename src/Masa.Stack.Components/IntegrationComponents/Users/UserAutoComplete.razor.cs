@@ -22,6 +22,9 @@ public partial class UserAutoComplete
     [Parameter]
     public string Style { get; set; } = "";
 
+    [Parameter]
+    public bool FillBackground { get; set; } = true;
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
