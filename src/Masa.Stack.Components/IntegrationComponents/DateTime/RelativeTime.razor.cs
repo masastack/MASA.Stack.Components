@@ -6,6 +6,9 @@ namespace Masa.Stack.Components;
 public partial class RelativeTime
 {
     [Parameter]
+    public string Style { get; set; } = "";
+
+    [Parameter]
     public string Class { get; set; } = "";
 
     [Parameter]
@@ -20,11 +23,11 @@ public partial class RelativeTime
     [Parameter]
     public EventCallback<DateTime?> EndTimeChanged { get; set; }
 
-    public RelativeTimeTypes RelativeTimeType 
-    { 
-        get 
+    public RelativeTimeTypes RelativeTimeType
+    {
+        get
         {
-            if(StartTime is not null && EndTime is not null)
+            if (StartTime is not null && EndTime is not null)
             {
                 var timeSpan = EndTime.Value.AddSeconds(-EndTime.Value.Second).Subtract(StartTime.Value.AddSeconds(-StartTime.Value.Second));
                 var minutes = (int)timeSpan.TotalMinutes;
@@ -38,32 +41,19 @@ public partial class RelativeTime
                     1440 => RelativeTimeTypes.OneDay,
                     10080 => RelativeTimeTypes.OneWeek,
                     43200 => RelativeTimeTypes.OneMonth,
-                    _ => default 
+                    _ => default
                 };
             }
             return default;
-        } 
-    }
-
-    public List<(RelativeTimeTypes, string)> KeyValues { get; set; } = new();
-
-    public bool MenuState { get; set; }
-
-    private string Icon => MenuState ? "mdi-menu-up" : "mdi-menu-down";
-
-    protected override void OnInitialized()
-    {
-        KeyValues = Enum.GetValues<RelativeTimeTypes>()
-                        .Select(e => (e, e.ToString()))
-                        .ToList();
+        }
     }
 
     public async Task UpdateValueAsync(RelativeTimeTypes type)
     {
-        DateTime dateTime = default;
+        DateTime? dateTime = default;
         switch (type)
         {
-            case RelativeTimeTypes.FifteenMinutes: 
+            case RelativeTimeTypes.FifteenMinutes:
                 dateTime = DateTime.Now.AddMinutes(-15);
                 break;
             case RelativeTimeTypes.ThirtyMinutes:
@@ -93,5 +83,10 @@ public partial class RelativeTime
         else StartTime = dateTime;
         if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(DateTime.Now);
         else EndTime = DateTime.Now;
+    }
+
+    public string ConverText(RelativeTimeTypes type)
+    {
+        return T(type.ToString() + " Ago");
     }
 }

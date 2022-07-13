@@ -21,6 +21,6 @@ public abstract class MasaComponentBase : ComponentBase
 
     protected string T(string key)
     {
-        return LanguageProvider.T(key);
+        return LanguageProvider.T(key, true);
     }
 }
