@@ -150,9 +150,7 @@ public partial class ExpansionApp
     {
         _fromCheckbox = true;
 
-        var key = $"category_{CategoryCode}_app_{App.Code}";
-
-        await ExpansionWrapper!.UpdateValues(key, values);
+        await ExpansionWrapper!.UpdateValues(appCode, values, CodeType.App);
     }
 
     private async Task ToggleFavorite(string category, string app, Nav nav)

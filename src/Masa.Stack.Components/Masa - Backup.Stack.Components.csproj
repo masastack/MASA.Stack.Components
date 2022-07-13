@@ -17,8 +17,16 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
   </ItemGroup>
 
-	<ItemGroup>
-		<EmbeddedResource Include="wwwroot\I18n\*.json" />
-	</ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\masa.stack.components.i18n\en-US.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\masa.stack.components.i18n\supportedCultures.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\masa.stack.components.i18n\zh-CN.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>

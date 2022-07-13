@@ -1,0 +1,29 @@
+﻿@namespace Masa.Stack.Components
+@inherits MasaComponentBase
+
+<div class="d-flex px-6 fill dateRangePicker @Class" style="@Style;">
+    <div class="ma-auto d-flex" style="height:20px;">
+        <MIcon Size=20 Color="emphasis2">mdi-calendar-month</MIcon>        
+        <MMenu @bind-Value="StartTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
+            <ActivatorContent>
+                <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
+                    @(StartTime?.ToString(T("$DateFormat"))??T("Please select a start time"))
+                </div>
+            </ActivatorContent>
+            <ChildContent>
+                <DatePicker Value=StartTime Max=EndTime ValueChanged=UpdateStartTimeAsync TValue="DateOnly?" OnInput="()=> StartTimeVisible = false" />
+            </ChildContent>
+        </MMenu>      
+        <div class="ml-4" style="width: 0px;height:24px;border: 1px solid #E2E7F4;"></div>
+        <MMenu @bind-Value="EndTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
+            <ActivatorContent>
+                <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
+                    @(EndTime?.ToString(T("$DateFormat"))??T("Please select an end time"))
+                </div>
+            </ActivatorContent>
+            <ChildContent>
+                <DatePicker Value=EndTime Min=StartTime ValueChanged=UpdateEndTimeAsync TValue="DateOnly?" OnInput="()=> EndTimeVisible = false" />
+            </ChildContent>
+        </MMenu>
+    </div>
+</div>

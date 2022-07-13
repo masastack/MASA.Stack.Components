@@ -1,10 +1,10 @@
 ﻿@namespace Masa.Stack.Components
 
-<div class="@($"m-label--border {@Class}")" style="@Style">
-    <fieldset>
-    <legend class="@TitleClass" style="@TitleStyle">@Title</legend>
-    @ChildContent
-</fieldset>
+<div class="@($"m-label--border")">
+    <fieldset class="@($"{@Class}")" style="@Style">
+        <legend class="@TitleClass" style="@TitleStyle">@Title</legend>
+        @ChildContent
+    </fieldset>
 </div>
 
 @code {

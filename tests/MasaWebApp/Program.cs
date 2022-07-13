@@ -3,13 +3,13 @@ using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
-//builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
-
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
+//builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
 
 builder.Services.AddElasticsearchClient("auth", option => option.UseNodes("http://10.10.90.44:31920/").UseDefault())
                 .AddAutoComplete(option => option.UseIndexName("user_index"));
