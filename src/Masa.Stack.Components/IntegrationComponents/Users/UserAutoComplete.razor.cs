@@ -35,6 +35,7 @@ public partial class UserAutoComplete
 
     public async Task OnSearchChanged(string search)
     {
+        search = search.TrimStart(' ').TrimEnd(' ');
         Search = search;
         await Task.Delay(300);
         if (Search == "")

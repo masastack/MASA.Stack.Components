@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Humanizer" Version="2.14.1" />
     <PackageReference Include="Mapster" Version="7.3.0" />
-    <PackageReference Include="Masa.Blazor" Version="0.5.0-rc.3" />
+    <PackageReference Include="Masa.Blazor" Version="0.5.0-rc.5" />
     <PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.5.0-preview.6" />
     <PackageReference Include="Masa.Contrib.BasicAbility.Mc" Version="0.5.0-preview.6" />
     <PackageReference Include="Masa.Contrib.Identity.IdentityModel" Version="0.5.0-preview.6" />
@@ -17,16 +17,8 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="wwwroot\masa.stack.components.i18n\en-US.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\masa.stack.components.i18n\supportedCultures.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\masa.stack.components.i18n\zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Locales\*.json" />
+	</ItemGroup>
 
 </Project>
