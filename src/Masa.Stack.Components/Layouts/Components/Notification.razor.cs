@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components.Layouts;
+﻿using Microsoft.AspNetCore.Authentication;
+
+namespace Masa.Stack.Components.Layouts;
 
 public partial class Notification : MasaComponentBase
 {
@@ -36,7 +38,18 @@ public partial class Notification : MasaComponentBase
     private async Task HubConnectionBuilder()
     {
         HubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri($"{McApiOptions.BaseAddress}/signalr-hubs/notifications"))
+            .WithUrl(NavigationManager.ToAbsoluteUri($"{McApiOptions.BaseAddress}/signalr-hubs/notifications"), options =>
+            {
+                options.AccessTokenProvider = async () =>
+                {
+                    string? accessToken = string.Empty;
+                    if (httpContextAccessor.HttpContext != null)
+                    {
+                        accessToken = await httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+                    }
+                    return accessToken;
+                };
+            })
             .Build();
         await HubConnection.StartAsync();
 

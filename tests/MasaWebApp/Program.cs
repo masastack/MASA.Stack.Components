@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddMasaStackComponentsForServer(default, "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
 //builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
 

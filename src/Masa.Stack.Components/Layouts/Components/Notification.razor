@@ -1,6 +1,8 @@
 ﻿@namespace Masa.Stack.Components.Layouts
+@using Microsoft.AspNetCore.Http
 @inherits MasaComponentBase
 @inject IMcClient McClient
+@inject IHttpContextAccessor httpContextAccessor
 
 <div class="notice">
     <MMenu OffsetY Bottom>
