@@ -1,13 +1,25 @@
 using Masa.Stack.Components;
 using MasaWebApp.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer("Bearer", options =>
+{
+    options.Authority = "";
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters.ValidateAudience = false;
+    options.MapInboundClaims = false;
+});
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddMasaStackComponentsForServer(default, "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
 //builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
 
