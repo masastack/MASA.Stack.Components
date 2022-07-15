@@ -38,6 +38,9 @@ public partial class Layout
     [Parameter]
     public RenderFragment<Exception>? ErrorContent { get; set; }
 
+    [Parameter]
+    public EventCallback<List<Nav>> OnAfterNavItemsLoad { get; set; }
+
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
@@ -87,6 +90,11 @@ public partial class Layout
                         new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", "/dateTimeRangePickerExample", 2, "father"),
                     }),
                 };
+            }
+
+            if (OnAfterNavItemsLoad.HasDelegate)
+            {
+                await OnAfterNavItemsLoad.InvokeAsync(NavItems);
             }
 
             FlattenedNavs = FlattenNavs(NavItems, true);
