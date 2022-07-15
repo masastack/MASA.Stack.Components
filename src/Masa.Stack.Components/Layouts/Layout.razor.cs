@@ -39,7 +39,7 @@ public partial class Layout
     public RenderFragment<Exception>? ErrorContent { get; set; }
 
     [Parameter]
-    public EventCallback<List<Nav>> OnAfterNavItemsLoad { get; set; }
+    public Func<List<Nav>, Task>? OnAfterNavItemsLoadAsync { get; set; }
 
     List<Nav> NavItems = new();
 
@@ -92,9 +92,9 @@ public partial class Layout
                 };
             }
 
-            if (OnAfterNavItemsLoad.HasDelegate)
+            if (OnAfterNavItemsLoadAsync != null)
             {
-                await OnAfterNavItemsLoad.InvokeAsync(NavItems);
+                await OnAfterNavItemsLoadAsync(NavItems);
             }
 
             FlattenedNavs = FlattenNavs(NavItems, true);
