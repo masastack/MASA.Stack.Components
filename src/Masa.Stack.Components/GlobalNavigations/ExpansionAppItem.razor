@@ -2,14 +2,14 @@
 
 @if (Data is not null)
 {
-    <MHover Disabled="@Disabled">
+    <MHover Disabled="@IsDisabled">
         @if (!Data.IsAction)
         {
             <MListItem @attributes="@context.Attrs"
                        Class="@GetClass(context.Hover)"
                        Value="@Data.Code"
-                       Disabled="@Disabled"
-                       OnClick="() => NavigateTo(Data.Url)"
+                       Disabled="@IsDisabled"
+                       OnClick="async () => await NavigateTo(Data.Url)"
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
@@ -21,7 +21,7 @@
                         <MListItemAction Class="ma-0">
                             @if (Checkable)
                             {
-                                <MCheckbox Dense Value="@item.Active"></MCheckbox>
+                                <MCheckbox Dense Value="@IsChecked"></MCheckbox>
                             }
                             else if (Level < 3)
                             {
@@ -36,7 +36,7 @@
                             }
                         </MListItemAction>
                     }
-                    else if (Checkable && item.Active)
+                    else if (Checkable && IsChecked)
                     {
                         <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
                     }
@@ -55,7 +55,8 @@
         {
             <MListItem @attributes="@context.Attrs"
                        Class="@GetClass(context.Hover)"
-                       Disabled="InPreview"
+                       Disabled="IsDisabled"
+                       OnClick="async () => await NavigateTo(Data.Url)"
                        Value="@string.Format(ExpansionApp.ActionCodeFormat, NavCode, Data.Code)"
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
@@ -68,10 +69,10 @@
                         @if (context.Hover)
                         {
                             <MListItemAction Class="ma-0">
-                                <MCheckbox Dense Value="@item.Active"></MCheckbox>
+                                <MCheckbox Dense Value="@IsChecked"></MCheckbox>
                             </MListItemAction>
                         }
-                        else if (item.Active)
+                        else if (IsChecked)
                         {
                             <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
                         }

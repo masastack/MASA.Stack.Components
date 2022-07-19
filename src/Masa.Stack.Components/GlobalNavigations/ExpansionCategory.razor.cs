@@ -31,30 +31,22 @@ public partial class ExpansionCategory
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> Attributes { get; set; } = new();
 
-    private bool _initCheckbox;
-    private bool _fromCheckbox;
-    private Dictionary<string, List<CategoryAppNav>> _valuesDic = new();
+    public List<ExpansionApp> ExpansionApps { get; set; } = new();
 
-    private bool CategoryChecked { get; set; }
+    private bool CategoryChecked => ExpansionApps.All(expansionApp => expansionApp.AppChecked is true);
 
-    protected override void OnParametersSet()
+    private async Task CategoryCheckedValueChanged(bool v)
     {
-        if (Checkable)
+        var isChecked = !CategoryChecked;
+        foreach (var expansionApp in ExpansionApps)
         {
-            if (ExpansionWrapper is not null && ExpansionWrapper.Value.Any() && (!_initCheckbox || !_fromCheckbox))
-            {
-                _initCheckbox = true;
-
-                var exists = ExpansionWrapper.Value.Any(v => v.Category == Category.Code && v.App is null && v.Nav is null);
-
-                CategoryChecked = exists;
-            }
-
-            if (_fromCheckbox)
-            {
-                _fromCheckbox = false;
-            }
+            await expansionApp.CheckedAllNavs(isChecked);
         }
+    }
+ 
+    public void Register(ExpansionApp expansionApp)
+    {
+        ExpansionApps.Add(expansionApp);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -76,38 +68,6 @@ public partial class ExpansionCategory
         }
     }
 
-    private async Task CategoryCheckedValueChanged(bool v)
-    {
-        _fromCheckbox = true;
-
-        CategoryChecked = v;
-
-        var categoryAppNavs = new List<CategoryAppNav>();
-
-        if (CategoryChecked)
-        {
-            categoryAppNavs.Add(new CategoryAppNav(Category.Code));
-        }
-
-        await ExpansionWrapper!.UpdateValues(Category.Code, categoryAppNavs, CodeType.Category);
-
-        foreach (var app in Category.Apps)
-        {
-            categoryAppNavs = new List<CategoryAppNav>();
-
-            if (!CheckStrictly && CategoryChecked)
-            {
-                categoryAppNavs.Add(new CategoryAppNav(Category.Code, app.Code));
-
-                categoryAppNavs.AddRange(FlattenNavs(app.Navs, true).Select(nav => nav.IsAction
-                    ? new CategoryAppNav(Category.Code, app.Code, nav.ParentCode, nav.Code)
-                    : new CategoryAppNav(Category.Code, app.Code, nav.Code)));
-            }
-
-            await ExpansionWrapper!.UpdateValues(app.Code, categoryAppNavs, CodeType.App);
-        }
-    }
-
     private async Task ResizeNav(Category category)
     {
         var height = await JsRuntime.InvokeAsync<double>(
@@ -118,31 +78,5 @@ public partial class ExpansionCategory
         category.TagStyle = $"position:relative; height:{height}px;";
 
         StateHasChanged();
-    }
-
-    private List<Nav> FlattenNavs(List<Nav> tree, bool excludeNavHasChildren = false)
-    {
-        var res = new List<Nav>();
-
-        foreach (var nav in tree)
-        {
-            if (!(nav.HasChildren && excludeNavHasChildren))
-            {
-                res.Add(nav);
-            }
-
-            if (nav.HasChildren)
-            {
-                res.AddRange(FlattenNavs(nav.Children, excludeNavHasChildren));
-            }
-
-            if (nav.HasActions)
-            {
-                nav.Actions.ForEach(a => a.ParentCode ??= nav.Code);
-                res.AddRange(nav.Actions);
-            }
-        }
-
-        return res;
     }
 }

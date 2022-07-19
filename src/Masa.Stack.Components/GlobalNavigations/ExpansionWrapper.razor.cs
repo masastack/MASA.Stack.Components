@@ -27,7 +27,7 @@
         public List<FavoriteNav>? FavoriteNavs { get; set; }
 
         [Parameter]
-        public List<CategoryAppNav>? Value { get; set; } = new();
+        public List<CategoryAppNav> Value { get; set; } = new();
 
         [Parameter]
         public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
@@ -40,6 +40,7 @@
         private bool _fromCheckbox;
         private DotNetObjectReference<ExpansionWrapper>? _objRef;
         private Dictionary<string, List<CategoryAppNav>> _valuesDic = new();
+        private List<CategoryAppNav> _allValue = new();
 
         private Dictionary<string, List<StringNumber>> CategoryCodes
         {
@@ -60,53 +61,53 @@
             Categories ??= new();
             FavoriteNavs ??= new();
 
-            if (Checkable)
-            {
-                if (Value is not null && (!_initValuesDic || !_fromCheckbox))
-                {
-                    _initValuesDic = true;
-                    _valuesDic.Clear();
+            //if (Checkable)
+            //{
+            //    if (Value is not null && (!_initValuesDic || !_fromCheckbox))
+            //    {
+            //        _initValuesDic = true;
+            //        _valuesDic.Clear();
 
-                    foreach (var value in Value)
-                    {
-                        if (value.Category is not null && value.App is not null)
-                        {
-                            var categoryAppNav = new CategoryAppNav(value.Category, value.App, value.Nav, value.Action);
+            //        foreach (var value in Value)
+            //        {
+            //            if (value.Category is not null && value.App is not null)
+            //            {
+            //                var categoryAppNav = new CategoryAppNav(value.Category, value.App, value.Nav, value.Action);
 
-                            var key = $"app_{value.App}";
+            //                var key = $"app_{value.App}";
 
-                            if (_valuesDic.ContainsKey(key))
-                            {
-                                _valuesDic[key].Add(categoryAppNav);
-                            }
-                            else
-                            {
-                                _valuesDic.Add(key, new List<CategoryAppNav>() { categoryAppNav });
-                            }
-                        }
-                        else if (value.Category is not null)
-                        {
-                            var categoryAppNav = new CategoryAppNav(value.Category);
+            //                if (_valuesDic.ContainsKey(key))
+            //                {
+            //                    _valuesDic[key].Add(categoryAppNav);
+            //                }
+            //                else
+            //                {
+            //                    _valuesDic.Add(key, new List<CategoryAppNav>() { categoryAppNav });
+            //                }
+            //            }
+            //            else if (value.Category is not null)
+            //            {
+            //                var categoryAppNav = new CategoryAppNav(value.Category);
 
-                            var key = $"category_{value.Category}";
+            //                var key = $"category_{value.Category}";
 
-                            if (_valuesDic.ContainsKey(key))
-                            {
-                                _valuesDic[key].Add(categoryAppNav);
-                            }
-                            else
-                            {
-                                _valuesDic.Add(key, new List<CategoryAppNav>() { categoryAppNav });
-                            }
-                        }
-                    }
-                }
+            //                if (_valuesDic.ContainsKey(key))
+            //                {
+            //                    _valuesDic[key].Add(categoryAppNav);
+            //                }
+            //                else
+            //                {
+            //                    _valuesDic.Add(key, new List<CategoryAppNav>() { categoryAppNav });
+            //                }
+            //            }
+            //        }
+            //    }
 
-                if (_fromCheckbox)
-                {
-                    _fromCheckbox = false;
-                }
-            }
+            //    if (_fromCheckbox)
+            //    {
+            //        _fromCheckbox = false;
+            //    }
+            //}
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -120,30 +121,31 @@
 
         internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
         {
-            var key = type switch
-            {
-                CodeType.App => $"app_{code}",
-                CodeType.Category => $"category_{code}",
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-            };
+            //var key = type switch
+            //{
+            //    CodeType.App => $"app_{code}",
+            //    CodeType.Category => $"category_{code}",
+            //    _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            //};
 
-            _fromCheckbox = true;
+            //_fromCheckbox = true;
 
-            if (_valuesDic.TryGetValue(key, out _))
-            {
-                _valuesDic[key] = value;
-            }
-            else
-            {
-                _valuesDic.Add(key, value);
-            }
+            //if (_valuesDic.TryGetValue(key, out _))
+            //{
+            //    _valuesDic[key] = value;
+            //}
+            //else
+            //{
+            //    _valuesDic.Add(key, value);
+            //}
 
-            List<CategoryAppNav> values = new();
-            _valuesDic.ForEach(item => { values.AddRange(item.Value); });
-
-            await UpdateValue(values);
-
-            StateHasChanged();
+            //List<CategoryAppNav> values = new();
+            //_valuesDic.ForEach(item => { values.AddRange(item.Value); });
+            //await UpdateValue(values);
+            _allValue = _allValue.Where(v => v.App != code).ToList();
+            _allValue.AddRange(value);
+            //value.AddRange(_allValue.Where(v => v.App != code));
+            await UpdateValue(_allValue);
         }
 
         private async Task ScrollTo(string tagId, string insideSelector)
@@ -161,13 +163,15 @@
         private async Task UpdateValue(List<CategoryAppNav> value)
         {
             value = value.Distinct().ToList();
-
+            
             if (ValueChanged.HasDelegate)
             {
                 await ValueChanged.InvokeAsync(value);
             }
-
-            Value = value;
+            else
+            {
+                Value = value;
+            }           
         }
 
         public void Dispose()

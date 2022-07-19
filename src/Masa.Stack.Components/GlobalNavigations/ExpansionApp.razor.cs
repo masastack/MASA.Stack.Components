@@ -2,14 +2,35 @@
 
 public partial class ExpansionApp
 {
+    //public App? _app;
+
     [CascadingParameter]
     public ExpansionWrapper? ExpansionWrapper { get; set; }
 
     [CascadingParameter]
+    public ExpansionCategory ExpansionCategory { get; set; } = default!;
+
+    [CascadingParameter]
     public GlobalNavigation? GlobalNavigation { get; set; }
 
+    //[Parameter, EditorRequired]
+    //public App App
+    //{
+    //    get { return _app ?? throw new Exception("Please set App parameter"); }
+    //    set
+    //    {
+    //        if (_app is null || _app.Equals(value) is false)
+    //        {
+    //            _app = value;
+    //            _categoryAppNavs = FlattenNavs(value.Navs, true).Select(nav => nav.IsAction
+    //            ? new CategoryAppNav(CategoryCode, App.Code, nav.ParentCode, nav.Code, nav)
+    //            : new CategoryAppNav(CategoryCode, App.Code, nav.Code, default, nav)).ToList();
+    //        }
+    //    }
+    //}
+
     [Parameter, EditorRequired]
-    public App App { get; set; } = null!;
+    public App App { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public string CategoryCode { get; set; } = null!;
@@ -26,131 +47,150 @@ public partial class ExpansionApp
     [Parameter]
     public bool InPreview { get; set; }
 
-    private bool _initValues;
-    private bool _fromCheckbox;
-    private List<StringNumber> _values = new();
-    private List<CategoryAppNav> _categoryAppNavs = new();
+    public List<ExpansionAppItem> ExpansionAppItems { get; set; } = new ();
 
-    private bool AppChecked { get; set; }
+    //public List<CategoryAppNav> CheckedCategoryAppNavs => ExpansionAppItems.Where(item => item.IsChecked)
+    //                                                                       .Select(item => _categoryAppNavs.First(ca => ca.Nav==item.Data?.Code))
+    //                                                                       .ToList();
+    //private bool _initValues;
+    //private bool _fromCheckbox;
+    private List<StringNumber> _values = new();
+    //private List<CategoryAppNav> _categoryAppNavs = new();
+
+    public bool AppChecked => ExpansionAppItems.All(item => item.IsChecked);//_categoryAppNavs.Count == CheckedCategoryAppNavs.Count;
+
+    public List<CategoryAppNav> CategoryAppNavs => ExpansionAppItems.Select(item => item.CategoryAppNav).ToList();
+
+    public List<CategoryAppNav> CheckedCategoryAppNavs => ExpansionAppItems.Where(item => item.IsChecked).Select(item => item.CategoryAppNav).ToList();
 
     private bool IsCheckable => Checkable && !InPreview;
 
     internal readonly string ActionCodeFormat = "nav#{0}__action#{1}";
 
-    protected override void OnParametersSet()
+    protected override void OnInitialized()
     {
-        FavoriteNavs ??= new();
-
-        if (Checkable)
-        {
-            if (ExpansionWrapper?.Value != null && (!_initValues || !_fromCheckbox))
-            {
-                var categoryAppNavs = ExpansionWrapper.Value.Where(v => v.Category == CategoryCode && v.App == App.Code).ToList();
-
-                _categoryAppNavs = categoryAppNavs;
-                if (!_initValues)
-                {
-                    _initValues = true;
-                }
-
-                _values = categoryAppNavs.Select(c =>
-                {
-                    StringNumber val = null;
-
-                    if (c.Action is not null)
-                    {
-                        val = string.Format(ActionCodeFormat, c.Nav, c.Action);
-                    }
-                    else if (c.Nav is not null)
-                    {
-                        val = c.Nav;
-                    }
-
-                    return val;
-                }).Where(n => n is not null).ToList();
-
-                AppChecked = categoryAppNavs.Any(c => c.Nav is null);
-            }
-
-            if (_fromCheckbox)
-            {
-                _fromCheckbox = false;
-            }
-        }
+        ExpansionCategory.Register(this);
     }
 
-    private async Task ValuesChanged(List<StringNumber> v)
-    {
-        // TODO: select the nav and select the children and actions
-        // TODO: there is a bug in ItemGroup
+    //protected override void OnParametersSet()
+    //{
+    //    var values = ExpansionWrapper!.Value.Where(v => v.App == App.Code).Select(v => v.Nav);
+    //    if (values.Count() > 0)
+    //    {
+    //        foreach(var item in ExpansionAppItems)
+    //        {
+    //            if (values.Contains(item.Data!.Code)) item.IsChecked = true;
+    //            else item.IsChecked = false;
+    //        }
+    //    }
+    //}
+    //protected override void OnParametersSet()
+    //{
+    //    FavoriteNavs ??= new();
 
-        _values = v.Where(u => u.Value is not null).ToList();
+    //    if (Checkable)
+    //    {
+    //        if (ExpansionWrapper?.Value != null && (!_initValues || !_fromCheckbox))
+    //        {
+    //            var categoryAppNavs = ExpansionWrapper.Value.Where(v => v.Category == CategoryCode && v.App == App.Code).ToList();
 
-        _categoryAppNavs = _values
-                           .Select(u =>
-                           {
-                               var val = u.ToString();
+    //            _checkedCategoryAppNavs = categoryAppNavs;
+    //            if (!_initValues)
+    //            {
+    //                _initValues = true;
+    //            }
 
-                               if (val.Contains("__action#"))
-                               {
-                                   var navActions = val.Split("__action#");
-                                   var navCode = navActions[0].Replace("nav#", "");
-                                   var actionCode = navActions[1];
+    //            _values = categoryAppNavs.Select(c =>
+    //            {
+    //                StringNumber val = null;
 
-                                   return new CategoryAppNav(CategoryCode, App.Code, navCode, actionCode);
-                               }
+    //                if (c.Action is not null)
+    //                {
+    //                    val = string.Format(ActionCodeFormat, c.Nav, c.Action);
+    //                }
+    //                else if (c.Nav is not null)
+    //                {
+    //                    val = c.Nav;
+    //                }
 
-                               return new CategoryAppNav(CategoryCode, App.Code, val);
-                           })
-                           .ToList();
+    //                return val;
+    //            }).Where(n => n is not null).ToList();
+    //        }
 
-        if (AppChecked)
-        {
-            _categoryAppNavs.Add(new CategoryAppNav(CategoryCode, App.Code));
-        }
+    //        if (_fromCheckbox)
+    //        {
+    //            _fromCheckbox = false;
+    //        }
+    //    }
+    //}
 
-        await UpdateValues(App.Code, _categoryAppNavs);
-    }
+    //private async Task ValuesChanged(List<StringNumber> v)
+    //{
+    //    // TODO: select the nav and select the children and actions
+    //    // TODO: there is a bug in ItemGroup
+
+    //    _values = v.Where(u => u.Value is not null).ToList();
+
+    //    _checkedCategoryAppNavs = _values
+    //                       .Select(u =>
+    //                       {
+    //                           var val = u.ToString();
+
+    //                           if (val.Contains("__action#"))
+    //                           {
+    //                               var navActions = val.Split("__action#");
+    //                               var navCode = navActions[0].Replace("nav#", "");
+    //                               var actionCode = navActions[1];
+
+    //                               return new CategoryAppNav(CategoryCode, App.Code, navCode, actionCode);
+    //                           }
+
+    //                           return new CategoryAppNav(CategoryCode, App.Code, val);
+    //                       })
+    //                       .ToList();
+
+    //    await UpdateValues(App.Code, _checkedCategoryAppNavs);
+    //}
 
     private async Task AppCheckedChanged(bool v)
     {
-        AppChecked = v;
-
-        List<CategoryAppNav> categoryAppNavs = new();
-
         if (!CheckStrictly)
         {
-            var flattenedNavs = FlattenNavs(App.Navs, true).Select(nav => nav.IsAction
-                ? new CategoryAppNav(CategoryCode, App.Code, nav.ParentCode, nav.Code)
-                : new CategoryAppNav(CategoryCode, App.Code, nav.Code));
-            categoryAppNavs.AddRange(flattenedNavs);
+            if (AppChecked) await UpdateValues(new List<CategoryAppNav>());
+            else await UpdateValues(CategoryAppNavs);
         }
-
-        categoryAppNavs.Add(new CategoryAppNav(CategoryCode, App.Code));
-
-        foreach (var categoryAppNav in categoryAppNavs)
-        {
-            if (_categoryAppNavs.Contains(categoryAppNav))
-            {
-                if (!AppChecked)
-                {
-                    _categoryAppNavs.Remove(categoryAppNav);
-                }
-            }
-            else if (AppChecked)
-            {
-                _categoryAppNavs.Add(categoryAppNav);
-            }
-        }
-
-        await UpdateValues(App.Code, _categoryAppNavs);
     }
 
-    private async Task UpdateValues(string appCode, List<CategoryAppNav> values)
+    public async Task CheckedAllNavs(bool isChecked)
     {
-        _fromCheckbox = true;
+        if (isChecked) await UpdateValues(CategoryAppNavs);
+        else await UpdateValues(new());
+    }
 
-        await ExpansionWrapper!.UpdateValues(appCode, values, CodeType.App);
+    public async Task SwitchValue(CategoryAppNav value)
+    {
+        var values = CheckedCategoryAppNavs;
+        if (values.Contains(value))
+        {
+            values.Remove(value);
+        }
+        else
+        {
+            values.Add(value);
+            if(value.NavModel!.IsAction)
+            {
+                var parent = CategoryAppNavs.First(v => v.Nav == value.NavModel.ParentCode);
+                if(values.Contains(parent) is false) values.Add(parent);
+            }
+        }
+        await UpdateValues(values);
+    }
+
+    private async Task UpdateValues(List<CategoryAppNav> values)
+    {
+        //_fromCheckbox = true;
+
+        await ExpansionWrapper!.UpdateValues(App.Code, values, CodeType.App);
     }
 
     private async Task ToggleFavorite(string category, string app, Nav nav)
@@ -221,5 +261,10 @@ public partial class ExpansionApp
             .Select(item => (StringNumber)item.Code);
 
         return InPreview && !_values.Intersect(flattenNavs).Any();
+    }
+
+    public void Register(ExpansionAppItem expansionAppItem)
+    {
+        ExpansionAppItems.Add(expansionAppItem);
     }
 }

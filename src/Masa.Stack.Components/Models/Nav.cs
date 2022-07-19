@@ -28,6 +28,10 @@ public class Nav : NavBase
 
     public bool IsFavorite { get; set; }
 
+    public bool IsDisabled { get; set; }
+
+    public bool IsChecked { get; set; }
+
     public bool HasChildren => Children.Any() && !HasActions;
 
     public bool HasActions => Actions.Any();
@@ -126,5 +130,10 @@ public class Nav : NavBase
         Icon = icon;
         Level = level;
         Children = children;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Nav nav && nav.Code == Code;
     }
 }
