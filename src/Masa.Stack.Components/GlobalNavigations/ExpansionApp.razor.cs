@@ -29,7 +29,7 @@ public partial class ExpansionApp
     [Parameter]
     public bool InPreview { get; set; }
 
-    public List<ExpansionAppItem> ExpansionAppItems { get; set; } = new ();
+    public List<ExpansionAppItem> ExpansionAppItems { get; set; } = new();
 
     private List<StringNumber> _values = new();
 
@@ -47,7 +47,7 @@ public partial class ExpansionApp
     {
         ExpansionCategory.Register(this);
     }
-  
+
     private async Task AppCheckedChanged(bool v)
     {
         if (!CheckStrictly)
@@ -71,7 +71,7 @@ public partial class ExpansionApp
             values.Remove(value);
             if (value.NavModel!.HasActions)
             {
-                foreach(var categoryAppNav in CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code == v.Action)))
+                foreach (var categoryAppNav in CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code == v.Action)))
                 {
                     values.Remove(categoryAppNav);
                 }
@@ -80,14 +80,14 @@ public partial class ExpansionApp
         else
         {
             values.Add(value);
-            if(value.NavModel!.IsAction)
+            if (value.NavModel!.IsAction)
             {
                 var parent = CategoryAppNavs.First(v => v.Nav == value.NavModel.ParentCode);
-                if(values.Contains(parent) is false) values.Add(parent);
+                if (values.Contains(parent) is false) values.Add(parent);
             }
-            if(value.NavModel.HasActions)
+            if (value.NavModel.HasActions)
             {
-                values.AddRange(CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code==v.Action)));
+                values.AddRange(CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code == v.Action)));
             }
         }
         await UpdateValues(values);

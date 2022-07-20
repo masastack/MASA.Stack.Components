@@ -88,11 +88,11 @@ public partial class ExpansionWrapperUnique
             if (categoryAppNav.Action is not null)
             {
                 var value = Value.FirstOrDefault(value => value.Code.Contains(categoryAppNav.Action));
-                if(value is not null)
+                if (value is not null)
                 {
                     categoryAppNav.NavModel.IsDisabled = value.IsDisabled;
                     CheckedCategoryAppNavs.Add(categoryAppNav);
-                }             
+                }
             }
             else if (categoryAppNav.Nav is not null)
             {
@@ -101,8 +101,8 @@ public partial class ExpansionWrapperUnique
                 {
                     categoryAppNav.NavModel.IsDisabled = value.IsDisabled;
                     CheckedCategoryAppNavs.Add(categoryAppNav);
-                }             
-            }            
+                }
+            }
         }
     }
 
@@ -117,7 +117,7 @@ public partial class ExpansionWrapperUnique
             }
             else
             {
-                all.Add(new CategoryAppNav(categoryAppNav.CategoryCode, categoryAppNav.AppCode, categoryAppNav.Nav.Code, default,categoryAppNav.Nav));
+                all.Add(new CategoryAppNav(categoryAppNav.CategoryCode, categoryAppNav.AppCode, categoryAppNav.Nav.Code, default, categoryAppNav.Nav));
             }
 
             if (categoryAppNav.Nav.Children.Count > 0)

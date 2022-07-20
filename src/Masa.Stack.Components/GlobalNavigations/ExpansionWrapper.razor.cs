@@ -56,7 +56,7 @@
             base.OnParametersSet();
 
             Categories ??= new();
-            FavoriteNavs ??= new();           
+            FavoriteNavs ??= new();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -69,7 +69,7 @@
         }
 
         internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
-        {           
+        {
             if (_allValue is null) _allValue = Value;
             _allValue = _allValue.Where(v => v.App != code).ToList();
             _allValue.AddRange(value);
@@ -91,7 +91,7 @@
         private async Task UpdateValue(List<CategoryAppNav> value)
         {
             value = value.Distinct().ToList();
-            
+
             if (ValueChanged.HasDelegate)
             {
                 await ValueChanged.InvokeAsync(value);
@@ -99,7 +99,7 @@
             else
             {
                 Value = value;
-            }           
+            }
         }
 
         public void Dispose()

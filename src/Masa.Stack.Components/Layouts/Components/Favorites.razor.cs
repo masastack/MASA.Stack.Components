@@ -1,7 +1,4 @@
-﻿using Masa.Stack.Components.Models;
-using Microsoft.AspNetCore.Components.Web;
-
-namespace Masa.Stack.Components.Layouts;
+﻿namespace Masa.Stack.Components.Layouts;
 
 public partial class Favorites
 {

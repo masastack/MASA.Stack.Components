@@ -43,7 +43,7 @@ public partial class ExpansionCategory
             await expansionApp.CheckedAllNavs(isChecked);
         }
     }
- 
+
     public void Register(ExpansionApp expansionApp)
     {
         ExpansionApps.Add(expansionApp);

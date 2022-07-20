@@ -51,7 +51,7 @@ public partial class ExpansionAppItem
     public bool IsChecked
     {
         get
-        {           
+        {
             var value = ExpansionWrapper.Value.Contains(CategoryAppNav);
             return value;
         }
@@ -78,10 +78,10 @@ public partial class ExpansionAppItem
 
     protected override void OnInitialized()
     {
-        if(Data!.HasChildren is false)
+        if (Data!.HasChildren is false)
         {
             ExpansionApp.Register(this);
-        }        
+        }
     }
 
     private string GetClass(bool hover)
@@ -123,7 +123,7 @@ public partial class ExpansionAppItem
         {
             await ExpansionApp.SwitchValue(CategoryAppNav);
             return;
-        }      
+        }
 
         NavigationManager.NavigateTo(url, true);
     }

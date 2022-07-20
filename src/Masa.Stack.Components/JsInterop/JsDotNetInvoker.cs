@@ -1,6 +1,4 @@
-﻿using Microsoft.JSInterop;
-
-namespace Masa.Stack.Components.JsInterop;
+﻿namespace Masa.Stack.Components.JsInterop;
 
 public class JsDotNetInvoker : IDisposable
 {

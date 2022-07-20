@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Components.Web;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public class AutoLoadingButton : MButton
 {
@@ -14,7 +11,7 @@ public class AutoLoadingButton : MButton
 
     protected override void OnParametersSet()
     {
-        var originalOnClick  = OnClick;
+        var originalOnClick = OnClick;
 
         if (OnClick.HasDelegate)
         {

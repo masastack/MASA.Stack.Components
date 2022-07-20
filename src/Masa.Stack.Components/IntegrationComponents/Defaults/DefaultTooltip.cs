@@ -8,7 +8,7 @@ public class DefaultTooltip : MTooltip
         Right = true;
         ContentClass = "rounded-2";
         ContentStyle = "border: 1px solid #E2E7F4;";
-        
+
         await base.SetParametersAsync(parameters);
     }
 }
