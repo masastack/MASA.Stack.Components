@@ -32,6 +32,11 @@ public partial class App
     {
         Navs = navs;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is App app && app.Code == Code && app.Navs.Except(Navs).Count() == 0;
+    }
 }
 
 public partial class App

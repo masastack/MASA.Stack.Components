@@ -128,7 +128,7 @@ public partial class Layout
     {
         OnErrorAsync ??= async exception =>
         {
-           await PopupService.ToastErrorAsync(exception.Message);
+            await PopupService.ToastErrorAsync(exception.Message);
         };
 
         PopupService.ConfigToast(config =>

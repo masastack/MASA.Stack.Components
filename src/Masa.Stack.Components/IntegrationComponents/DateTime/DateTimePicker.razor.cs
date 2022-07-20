@@ -153,5 +153,5 @@ public partial class DateTimePicker
     private async Task OnResetAsync()
     {
         await UpdateValueAsync(null);
-    }  
+    }
 }

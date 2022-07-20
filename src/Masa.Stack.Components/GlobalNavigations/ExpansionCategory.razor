@@ -1,8 +1,10 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
 
-<div class="category" id="@Category.TagId(ExpansionWrapper?.TagIdPrefix)" @attributes="@Attributes">
+<CascadingValue Value="this" IsFixed>
+    <div class="category" id="@Category.TagId(ExpansionWrapper?.TagIdPrefix)" @attributes="@Attributes">
     <div class="category__header">
         @Category.Name
+        <MSpacer />
         @if (Checkable)
         {
             if ((CategoryChecked && InPreview) || !InPreview)
@@ -29,3 +31,4 @@
         }
     </MExpansionPanels>
 </div>
+</CascadingValue>

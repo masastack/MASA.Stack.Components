@@ -1,6 +1,4 @@
-﻿using Masa.Stack.Components.Models;
-
-namespace Masa.Stack.Components.Layouts
+﻿namespace Masa.Stack.Components.Layouts
 {
     public partial class Breadcrumbs : MasaComponentBase
     {

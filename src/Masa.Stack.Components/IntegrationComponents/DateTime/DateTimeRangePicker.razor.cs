@@ -46,10 +46,10 @@ public partial class DateTimeRangePicker
         StartTimeVisible = false;
         if (InternalStartTime > EndTime) await PopupService.AlertAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
         else
-        {         
+        {
             if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(InternalStartTime);
             else StartTime = InternalStartTime;
-        }   
+        }
     }
 
     private async Task UpdateEndTimeAsync()
@@ -57,7 +57,7 @@ public partial class DateTimeRangePicker
         EndTimeVisible = false;
         if (InternalEndTime < StartTime) await PopupService.AlertAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
         else
-        {           
+        {
             if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(InternalEndTime);
             else EndTime = InternalStartTime;
         }

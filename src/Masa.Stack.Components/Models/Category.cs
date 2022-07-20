@@ -18,6 +18,11 @@ public partial class Category
         Name = name;
         Apps = apps;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Category category && category.Code == Code;
+    }
 }
 
 public partial class Category

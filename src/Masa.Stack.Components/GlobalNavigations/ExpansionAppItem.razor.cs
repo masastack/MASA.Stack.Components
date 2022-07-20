@@ -2,14 +2,36 @@
 
 public partial class ExpansionAppItem
 {
+    private CategoryAppNav? _categoryAppNav;
+
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
+
+    [CascadingParameter]
+    public ExpansionWrapper ExpansionWrapper { get; set; } = null!;
 
     [CascadingParameter]
     public ExpansionApp ExpansionApp { get; set; } = null!;
 
     [Parameter, EditorRequired]
     public Nav? Data { get; set; }
+
+    public CategoryAppNav CategoryAppNav
+    {
+        get
+        {
+            if (_categoryAppNav is null)
+            {
+                if (Data!.IsAction)
+                {
+                    Data.ParentCode = NavCode;
+                    _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, NavCode, Data.Code, Data);
+                }
+                else _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, Data.Code, default, Data);
+            }
+            return _categoryAppNav;
+        }
+    }
 
     [Parameter]
     public bool Checkable { get; set; }
@@ -26,7 +48,16 @@ public partial class ExpansionAppItem
     [Parameter]
     public EventCallback ToggleFavorite { get; set; }
 
-    private bool Disabled => Data is { HasChildren: true } || InPreview;
+    public bool IsChecked
+    {
+        get
+        {
+            var value = ExpansionWrapper.Value.Contains(CategoryAppNav);
+            return value;
+        }
+    }
+
+    private bool IsDisabled => Data?.IsDisabled is true || Data is { HasChildren: true } || InPreview;
 
     private string ActiveClass
     {
@@ -42,6 +73,14 @@ public partial class ExpansionAppItem
                 default:
                     return string.Empty;
             }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        if (Data!.HasChildren is false)
+        {
+            ExpansionApp.Register(this);
         }
     }
 
@@ -78,10 +117,11 @@ public partial class ExpansionAppItem
         return string.Empty;
     }
 
-    private void NavigateTo(string? url)
+    private async Task NavigateTo(string? url)
     {
         if (Checkable || url is null)
         {
+            await ExpansionApp.SwitchValue(CategoryAppNav);
             return;
         }
 

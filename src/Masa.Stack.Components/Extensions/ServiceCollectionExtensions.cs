@@ -33,7 +33,7 @@ public static class ServiceCollectionExtensions
         })
         .AddI18n(GetLocales().ToArray());
 
-        if(i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
+        if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
 
@@ -72,10 +72,10 @@ public static class ServiceCollectionExtensions
                                          .Select(s => Regex.Match(s, @"^.*Locales\.(.+)\.json"))
                                          .Where(s => s.Success && s.Groups[1].Value != "supportedCultures")
                                          .ToDictionary(s => s.Groups[1].Value, s => s.Value);
-        foreach(var (cultureName, fileName) in availableResources)
+        foreach (var (cultureName, fileName) in availableResources)
         {
             using var fileStream = assembly.GetManifestResourceStream(fileName);
-            if(fileStream is not null)
+            if (fileStream is not null)
             {
                 using var streamReader = new StreamReader(fileStream);
                 var content = streamReader.ReadToEnd();

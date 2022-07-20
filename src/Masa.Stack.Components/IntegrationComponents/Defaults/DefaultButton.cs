@@ -18,7 +18,8 @@ public class DefaultButton : AutoLoadingButton
     {
         base.SetComponentClass();
 
-        CssProvider.Merge(delegate (CssBuilder cssBuilder) {
+        CssProvider.Merge(delegate (CssBuilder cssBuilder)
+        {
             cssBuilder.Add("btn");
             cssBuilder.AddFirstIf(("large-button", () => Large), ("medium-button", () => Medium), ("small-button", () => Small));
         });

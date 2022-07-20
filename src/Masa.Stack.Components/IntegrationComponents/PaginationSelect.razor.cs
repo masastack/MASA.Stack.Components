@@ -16,7 +16,7 @@ public partial class PaginationSelect
     private string Icon => MenuState ? "mdi-menu-up" : "mdi-menu-down";
 
     public async Task SelectAsync(int value)
-    {       
+    {
         if (ValueChanged.HasDelegate)
         {
             await ValueChanged.InvokeAsync(value);
