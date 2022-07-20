@@ -52,7 +52,7 @@
                                                       ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))">
                                     </ExpansionAppItem>
 
-                                    if (subNav.HasActions)@*Checkable && *@
+                                    if (subNav.HasActions)
                                     {
                                         @foreach (var action in subNav.Actions!.Where(action => Filter(action)))
                                         {
@@ -66,7 +66,7 @@
                                     }
                                 }
                             }
-                            else if (nav.HasActions)@*Checkable && *@
+                            else if (nav.HasActions)
                             {
                                 @foreach (var action in nav.Actions!.Where(action => Filter(action)))
                                 {

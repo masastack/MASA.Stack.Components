@@ -53,11 +53,6 @@ public partial class ExpansionAppItem
         get
         {           
             var value = ExpansionWrapper.Value.Contains(CategoryAppNav);
-            //if(Data!.HasActions)
-            //{
-            //    if (ExpansionApp.ExpansionAppItems.Any(item => item.Data!.ParentCode == Data.Code && item.IsChecked)) Data.IsDisabled = true;
-            //    else Data.IsDisabled = false;
-            //}
             return value;
         }
     }
