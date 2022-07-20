@@ -24,7 +24,8 @@ public partial class ExpansionAppItem
             {
                 if (Data!.IsAction)
                 {
-                    _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, Data.ParentCode, Data.Code, Data);
+                    Data.ParentCode = NavCode;
+                    _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, NavCode, Data.Code, Data);
                 }
                 else _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, Data.Code, default, Data);
             }
@@ -50,7 +51,7 @@ public partial class ExpansionAppItem
     public bool IsChecked
     {
         get
-        {            
+        {           
             var value = ExpansionWrapper.Value.Contains(CategoryAppNav);
             if(Data!.HasActions)
             {

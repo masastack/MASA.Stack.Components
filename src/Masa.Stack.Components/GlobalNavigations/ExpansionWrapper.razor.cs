@@ -40,7 +40,7 @@
         private bool _fromCheckbox;
         private DotNetObjectReference<ExpansionWrapper>? _objRef;
         private Dictionary<string, List<CategoryAppNav>> _valuesDic = new();
-        private List<CategoryAppNav> _allValue = new();
+        private List<CategoryAppNav>? _allValue;
 
         private Dictionary<string, List<StringNumber>> CategoryCodes
         {
@@ -142,9 +142,9 @@
             //List<CategoryAppNav> values = new();
             //_valuesDic.ForEach(item => { values.AddRange(item.Value); });
             //await UpdateValue(values);
+            if (_allValue is null) _allValue = Value;
             _allValue = _allValue.Where(v => v.App != code).ToList();
             _allValue.AddRange(value);
-            //value.AddRange(_allValue.Where(v => v.App != code));
             await UpdateValue(_allValue);
         }
 

@@ -6,7 +6,7 @@ public class UniqueModel
 
     public bool IsDisabled { get; set; }
 
-    public UniqueModel(string key, bool? isDisabled)
+    public UniqueModel(string key, bool? isDisabled = null)
     {
         Code = key;
         IsDisabled = isDisabled ?? false;

@@ -5,7 +5,7 @@ public partial class ExpansionApp
     //public App? _app;
 
     [CascadingParameter]
-    public ExpansionWrapper? ExpansionWrapper { get; set; }
+    public ExpansionWrapper? ExpansionWrapper { get; set; } = default!;
 
     [CascadingParameter]
     public ExpansionCategory ExpansionCategory { get; set; } = default!;
@@ -250,17 +250,19 @@ public partial class ExpansionApp
         return res;
     }
 
-    private bool IsInPreview(Nav nav)
+    private bool Filter(Nav nav)
     {
-        if (nav.IsAction)
-        {
-            return InPreview && !_values.Contains(nav.Code);
-        }
+        //if (nav.IsAction)
+        //{
+        //    return !(InPreview && !_values.Contains(nav.Code));
+        //}
 
-        var flattenNavs = FlattenNavs(new List<Nav>() { nav })
-            .Select(item => (StringNumber)item.Code);
+        //var flattenNavs = FlattenNavs(new List<Nav>() { nav })
+        //    .Select(item => (StringNumber)item.Code);
 
-        return InPreview && !_values.Intersect(flattenNavs).Any();
+        //return !(InPreview && !_values.Intersect(flattenNavs).Any());
+        if (Checkable) return true;
+        return InPreview && (ExpansionWrapper.Value.Any(value => value.NavModel == nav) || nav.Children.Any(Filter));
     }
 
     public void Register(ExpansionAppItem expansionAppItem)
