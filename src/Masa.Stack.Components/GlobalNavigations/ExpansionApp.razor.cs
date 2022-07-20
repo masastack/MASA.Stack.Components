@@ -173,6 +173,13 @@ public partial class ExpansionApp
         if (values.Contains(value))
         {
             values.Remove(value);
+            if (value.NavModel.HasActions)
+            {
+                foreach(var categoryAppNav in CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code == v.Action)))
+                {
+                    values.Remove(categoryAppNav);
+                }
+            }
         }
         else
         {
@@ -181,6 +188,10 @@ public partial class ExpansionApp
             {
                 var parent = CategoryAppNavs.First(v => v.Nav == value.NavModel.ParentCode);
                 if(values.Contains(parent) is false) values.Add(parent);
+            }
+            if(value.NavModel.HasActions)
+            {
+                values.AddRange(CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code==v.Action)));
             }
         }
         await UpdateValues(values);
