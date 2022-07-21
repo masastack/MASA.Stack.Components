@@ -2,6 +2,8 @@
 
 public class Nav : NavBase
 {
+    private List<Nav>? _children;
+
     public string? Icon { get; set; }
 
     public int Level { get; set; }
@@ -14,7 +16,19 @@ public class Nav : NavBase
 
     public string? Url { get; set; }
 
-    public List<Nav> Children { get; set; } = new();
+    public List<Nav> Children
+    {
+        get
+        {
+            if (_children is null)
+            {
+                _children = new();
+            }
+            return _children;
+        }
+        set => _children = value;
+    }
+    //public List<Nav> Children { get; set; } = new();
 
     public bool IsAction { get; set; }
 
