@@ -158,7 +158,7 @@ public partial class Layout
         return res;
     }
 
-    protected override async void OnInitialized()
+    protected override void OnInitialized()
     {
         OnErrorAsync ??= async exception =>
         {
