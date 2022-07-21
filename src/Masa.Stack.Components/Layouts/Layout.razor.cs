@@ -18,6 +18,9 @@ public partial class Layout
     public string? Style { get; set; }
 
     [Parameter]
+    public string? TeamRoute { get; set; }
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]
@@ -30,7 +33,7 @@ public partial class Layout
     public string AppId { get; set; } = string.Empty;
 
     [Parameter]
-    public EventCallback OnSignOut { get; set; }
+    public Func<bool>? OnSignOut { get; set; }
 
     [Parameter]
     public Func<Exception, Task>? OnErrorAsync { get; set; }
@@ -58,6 +61,20 @@ public partial class Layout
             }
 
             NavItems = menus.Adapt<List<Nav>>();
+
+            try
+            {
+                var teams = await AuthClient.TeamService.GetUserTeamsAsync();
+                foreach (var team in teams)
+                {
+
+                }
+            }
+            catch (Exception e)
+            {
+                await PopupService.ToastErrorAsync(e.Message);
+            }
+
             if (!NavItems.Any())
             {
                 //todo delete
@@ -120,7 +137,7 @@ public partial class Layout
     {
         OnErrorAsync ??= async exception =>
         {
-           await PopupService.ToastErrorAsync(exception.Message);
+            await PopupService.ToastErrorAsync(exception.Message);
         };
 
         PopupService.ConfigToast(config =>

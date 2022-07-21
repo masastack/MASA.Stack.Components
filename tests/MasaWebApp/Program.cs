@@ -1,5 +1,6 @@
 using Masa.Stack.Components;
 using MasaWebApp.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "OpenIdConnect";
+    options.DefaultAuthenticateScheme = "Cookies";
+}).AddCookie("Cookies", delegate (CookieAuthenticationOptions options)
+{
+    options.ExpireTimeSpan = TimeSpan.FromSeconds(3600.0);
+});
 
 builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
 //builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
@@ -30,6 +41,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
+app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
