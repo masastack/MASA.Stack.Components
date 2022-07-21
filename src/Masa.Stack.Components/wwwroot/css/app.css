@@ -386,14 +386,6 @@ body, .masa-stack-components {
     color: #7681AB;
 }
 
-.m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label {
-    top: 14px;
-}
-
-.m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label--active {
-    transform: translateY(-20px) scale(0.75);
-}
-
 /*
     default button
 */
@@ -459,6 +451,30 @@ body, .masa-stack-components {
     line-height: 0.9375rem !important;
     letter-spacing: 0 !important;
     text-transform: none !important;
+}
+
+.masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label {
+    top: 14px;
+}
+
+.masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label--active {
+    transform: translateY(-20.5px) scale(0.75);
+}
+
+.masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-40 .m-label {
+    top: 11px;
+}
+
+.masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-40 .m-label--active {
+    transform: translateY(-17px) scale(0.75);
+}
+
+.masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-56 .m-label {
+    top: 18px;
+}
+
+.masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-56 .m-label--active {
+    transform: translateY(-24.5px) scale(0.75);
 }
 
 /*

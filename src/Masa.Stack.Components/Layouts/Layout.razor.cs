@@ -110,6 +110,7 @@ public partial class Layout
                         new Nav("mini", "mini", "/mini-components", 2, "father"),
                         new Nav("extend", "extend", "/extend", 2, "father"),
                         new Nav("userAutoCompleteExample", "userAutoComplete", "/userAutoCompleteExample", 2, "father"),
+                        new Nav("defaultTextFieldExample", "defaultTextField", "/defaultTextFieldExample", 2, "father"),
                         new Nav("defaultButtonExample", "defaultButton", "/defaultButtonExample", 2, "father"),
                         new Nav("defaultDataTableExample", "defaultDataTable", "/defaultDataTableExample", 2, "father"),
                         new Nav("paginationExample", "pagination", "/defaultPaginationExample", 2, "father"),

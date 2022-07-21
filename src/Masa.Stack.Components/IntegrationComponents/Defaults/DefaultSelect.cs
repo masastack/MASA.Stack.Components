@@ -2,10 +2,18 @@
 
 public class DefaultSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TValue>
 {
+    [Parameter]
+    public bool Small { get; set; }
+
+    [Parameter]
+    public bool Medium { get; set; }
+
+    [Parameter]
+    public bool Large { get; set; }
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Dense = true;
-        Height = 48;
         HideDetails = "auto";
         Outlined = true;
 
@@ -16,12 +24,33 @@ public class DefaultSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValu
     {
         base.OnParametersSet();
 
-        if (Dense && Height == 48)
+        Class ??= "";
+        if (Large is false && Small is false) Medium = true;
+        if (Dense is true)
         {
-            Class ??= string.Empty;
-            if (!Class.Contains("m-input--dense-48"))
+            if (Large)
             {
-                Class += " m-input--dense-48";
+                Height = 56;
+                if (Class.Contains("m-input--dense-56") is false)
+                {
+                    Class += " m-input--dense-56";
+                }
+            }
+            else if (Medium)
+            {
+                Height = 48;
+                if (Class.Contains("m-input--dense-48") is false)
+                {
+                    Class += " m-input--dense-48";
+                }
+            }
+            else if (Small)
+            {
+                Height = 40;
+                if (Class.Contains("m-input--dense-40") is false)
+                {
+                    Class += " m-input--dense-40";
+                }
             }
         }
     }
