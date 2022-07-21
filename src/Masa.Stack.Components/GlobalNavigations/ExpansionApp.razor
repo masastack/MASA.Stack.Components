@@ -29,59 +29,56 @@
         }
     </MExpansionPanelHeader>
     <MExpansionPanelContent Class="mt-4">
-        @foreach (var nav in App.Navs.Where(nav => !IsInPreview(nav)))
+        @foreach (var nav in App.Navs.Where(nav => Filter(nav)))
         {
             <MCard @key="nav" Class="nav" Outlined>
                 <MList Dense Class="pa-0">
-                    <MListItemGroup Values="_values" ValuesChanged="ValuesChanged" Multiple>
-                        <ExpansionAppItem Data="nav"
+                    <MListItemGroup Values="_values" Multiple>
+                        <CascadingValue Value="this">
+                            <ExpansionAppItem Data="nav"                                          
                                           Level="1"
                                           Checkable="Checkable"
                                           InPreview="InPreview"
                                           ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)">
-                        </ExpansionAppItem>
-
-                        @if (nav.HasChildren)
-                        {
-                            foreach (var subNav in nav.Children.Where(subNav => !IsInPreview(subNav)))
+                            </ExpansionAppItem>
+                            @if (nav.HasChildren)
                             {
-                                <ExpansionAppItem Data="@subNav"
-                                                  Checkable="@Checkable"
-                                                  InPreview="InPreview"
-                                                  Level="2"
-                                                  ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))">
-                                </ExpansionAppItem>
-
-                                if (Checkable && subNav.HasActions)
+                                foreach (var subNav in nav.Children.Where(subNav => Filter(subNav)))
                                 {
-                                    <CascadingValue Value="this">
-                                        @foreach (var action in subNav.Actions!.Where(action => !IsInPreview(action)))
-                                        {
-                                            <ExpansionAppItem Data="@action"
-                                                              NavCode="@subNav.Code"
-                                                              Checkable="@Checkable"
-                                                              InPreview="InPreview"
-                                                              Level="3">
-                                            </ExpansionAppItem>
-                                        }
-                                    </CascadingValue>
-                                }
-                            }
-                        }
-                        else if (Checkable && nav.HasActions)
-                        {
-                            <CascadingValue Value="this">
-                                @foreach (var action in nav.Actions!.Where(action => !IsInPreview(action)))
-                                {
-                                    <ExpansionAppItem Data="@action"
-                                                      NavCode="@nav.Code"
+                                    <ExpansionAppItem Data="@subNav"                                                      
                                                       Checkable="@Checkable"
                                                       InPreview="InPreview"
-                                                      Level="3">
+                                                      Level="2"
+                                                      ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))">
+                                    </ExpansionAppItem>
+
+                                    if (subNav.HasActions)
+                                    {
+                                        @foreach (var action in subNav.Actions!.Where(action => Filter(action)))
+                                        {
+                                            <ExpansionAppItem Data="@action"
+                                                                NavCode="@subNav.Code"
+                                                                Checkable="@Checkable"
+                                                                InPreview="InPreview"
+                                                                Level="3">
+                                            </ExpansionAppItem>
+                                        }
+                                    }
+                                }
+                            }
+                            else if (nav.HasActions)
+                            {
+                                @foreach (var action in nav.Actions!.Where(action => Filter(action)))
+                                {
+                                    <ExpansionAppItem Data="@action"                                                       
+                                                        NavCode="@nav.Code"
+                                                        Checkable="@Checkable"
+                                                        InPreview="InPreview"
+                                                        Level="3">
                                     </ExpansionAppItem>
                                 }
-                            </CascadingValue>
-                        }
+                            }
+                        </CascadingValue>
                     </MListItemGroup>
                 </MList>
             </MCard>

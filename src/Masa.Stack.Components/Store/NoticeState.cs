@@ -1,6 +1,4 @@
-﻿using Masa.BuildingBlocks.BasicAbility.Mc.Model;
-
-namespace Masa.Stack.Components.Store;
+﻿namespace Masa.Stack.Components.Store;
 
 public class NoticeState
 {

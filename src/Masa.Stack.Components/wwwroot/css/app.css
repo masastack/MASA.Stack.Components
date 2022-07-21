@@ -542,7 +542,7 @@ body, .masa-stack-components {
 */
 
 .masa-stack-components .combox:hover {
-    background-color: #F6F8FD !important;
+    background-color: #F6F8FD;
     cursor: pointer;
 }
 
@@ -620,4 +620,12 @@ body, .masa-stack-components {
     border: 1px solid #FFFFFF;
     border-radius: 8px;
     height: 40px;
+}
+
+/*
+    Select
+*/
+
+.masa-stack-components .hoverBg {
+    background: #e1daff !important;
 }

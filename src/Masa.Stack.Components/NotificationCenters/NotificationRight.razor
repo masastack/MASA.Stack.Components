@@ -1,8 +1,8 @@
 ﻿@inherits MasaComponentBase
 @inject IMcClient McClient
 
-<div class="message-right">
-    <MCard Class="full-height">
+<div class="message-right full-height">
+    <MCard Class="d-flex full-height flex-column">
         <MCardTitle Class="pl-2 pt-6">
             <div class="d-flex full-width" style="height: 40px !important;">
                 <MListItem>
@@ -97,7 +97,9 @@
                     </MListItem>
                 }
             </MList>
-            <Pagination Class="mt-5" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
         </MCardText>
+        <MCardActions>
+            <Pagination Class="mt-5 full-width" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+        </MCardActions>
     </MCard>
 </div>

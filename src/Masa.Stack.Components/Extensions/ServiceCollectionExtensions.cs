@@ -3,7 +3,7 @@
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost, string mcHost)
+        string? i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
         services.AddSingleton<ICurrentPrincipalAccessor, BlazorCurrentPrincipalAccessor>();
@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
         services.AddMcClient(mcHost);
         services.AddScoped<NoticeState>();
 
-        services.AddMasaBlazor(builder =>
+        var builder = services.AddMasaBlazor(builder =>
         {
             builder.Theme.Primary = "#4318FF";
             builder.Theme.Accent = "#4318FF";
@@ -31,8 +31,9 @@ public static class ServiceCollectionExtensions
             builder.Theme.Warning = "#FF7D00";
             builder.Theme.Info = "#37A7FF";
         })
-        .AddI18nForServer("wwwroot/masa.stack.components.i18n")
-        .AddI18nForServer(i18nDirectoryPath);
+        .AddI18n(GetLocales().ToArray());
+
+        if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
 
@@ -61,5 +62,27 @@ public static class ServiceCollectionExtensions
         services.AddScoped<GlobalConfig>();
 
         return services;
+    }
+
+    private static IEnumerable<(string cultureName, Dictionary<string, string> map)> GetLocales()
+    {
+        var output = new List<(string cultureName, Dictionary<string, string> map)>();
+        var assembly = typeof(ServiceCollectionExtensions).Assembly;
+        var availableResources = assembly.GetManifestResourceNames()
+                                         .Select(s => Regex.Match(s, @"^.*Locales\.(.+)\.json"))
+                                         .Where(s => s.Success && s.Groups[1].Value != "supportedCultures")
+                                         .ToDictionary(s => s.Groups[1].Value, s => s.Value);
+        foreach (var (cultureName, fileName) in availableResources)
+        {
+            using var fileStream = assembly.GetManifestResourceStream(fileName);
+            if (fileStream is not null)
+            {
+                using var streamReader = new StreamReader(fileStream);
+                var content = streamReader.ReadToEnd();
+                var locale = I18nReader.Read(content);
+                output.Add((cultureName, locale));
+            }
+        }
+        return output;
     }
 }

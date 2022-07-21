@@ -4,7 +4,7 @@ namespace Masa.Stack.Components;
 
 public abstract class MasaComponentBase : ComponentBase
 {
-    [Inject]
+    [CascadingParameter]
     public I18n LanguageProvider
     {
         get => _languageProvider ?? throw new Exception("please inject I18n!");
@@ -21,6 +21,6 @@ public abstract class MasaComponentBase : ComponentBase
 
     protected string T(string key)
     {
-        return LanguageProvider.T(key);
+        return LanguageProvider.T(key, true);
     }
 }

@@ -22,6 +22,9 @@ public partial class UserAutoComplete
     [Parameter]
     public string Style { get; set; } = "";
 
+    [Parameter]
+    public bool FillBackground { get; set; } = true;
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
@@ -35,6 +38,7 @@ public partial class UserAutoComplete
 
     public async Task OnSearchChanged(string search)
     {
+        search = search.TrimStart(' ').TrimEnd(' ');
         Search = search;
         await Task.Delay(300);
         if (Search == "")

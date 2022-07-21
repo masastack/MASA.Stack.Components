@@ -1,6 +1,6 @@
-﻿using System.Globalization;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace Masa.Stack.Components.Configs;
 

@@ -4,8 +4,8 @@ public class DefaultIcon : MIcon
 {
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        Size = 20;        
-        
+        Size = 20;
+
         await base.SetParametersAsync(parameters);
     }
 }
