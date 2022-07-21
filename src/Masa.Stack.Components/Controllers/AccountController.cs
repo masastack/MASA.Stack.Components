@@ -20,7 +20,6 @@ public class AccountController : Controller
         {
             HttpContext.Response.Cookies.Delete(cookies.Key);
         }
-        HttpContext.Session.Clear();
 
         return SignOut(
             new AuthenticationProperties

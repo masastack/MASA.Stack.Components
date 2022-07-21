@@ -41,9 +41,6 @@ public partial class Layout
     [Parameter]
     public RenderFragment<Exception>? ErrorContent { get; set; }
 
-    [Parameter]
-    public Func<List<Nav>, Task>? OnAfterNavItemsLoadAsync { get; set; }
-
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
@@ -65,22 +62,38 @@ public partial class Layout
 
             NavItems = menus.Adapt<List<Nav>>();
 
-            try
+            if (!string.IsNullOrWhiteSpace(TeamRoute))
             {
-                var teams = await AuthClient.TeamService.GetUserTeamsAsync();
-                foreach (var team in teams)
+                try
                 {
-
+                    var teams = await AuthClient.TeamService.GetUserTeamsAsync();
+                    var teamNav = new Nav("stack.team", "Team", "mdi-account-group-outline", "", 0);
+                    foreach (var team in teams)
+                    {
+                        var newNavItem = new Nav()
+                        {
+                            Code = $"{team.Id}",
+                            Name = team.Name,
+                            Icon = "mdi-circle",
+                            ParentCode = teamNav.Code,
+                            Url = string.Format(TeamRoute, team.Id),
+                        };
+                        teamNav.Children.Add(newNavItem);
+                    }
+                    if (teams.Any())
+                    {
+                        NavItems.Add(teamNav);
+                    }
+                }
+                catch (Exception e)
+                {
+                    await PopupService.ToastErrorAsync(e.Message);
                 }
             }
-            catch (Exception e)
-            {
-                await PopupService.ToastErrorAsync(e.Message);
-            }
 
+#if DEBUG
             if (!NavItems.Any())
             {
-                //todo delete
                 NavItems = new List<Nav>()
                 {
                     new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/", 1),
@@ -108,11 +121,7 @@ public partial class Layout
                     }),
                 };
             }
-
-            if (OnAfterNavItemsLoadAsync != null)
-            {
-                await OnAfterNavItemsLoadAsync(NavItems);
-            }
+#endif
 
             FlattenedNavs = FlattenNavs(NavItems, true);
             StateHasChanged();

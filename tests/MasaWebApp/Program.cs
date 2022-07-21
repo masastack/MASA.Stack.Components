@@ -15,23 +15,15 @@ builder.Services.AddAuthentication(options =>
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters.ValidateAudience = false;
     options.MapInboundClaims = false;
+}).AddCookie("Cookies", delegate (CookieAuthenticationOptions options)
+{
+    options.ExpireTimeSpan = TimeSpan.FromSeconds(3600);
 });
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "OpenIdConnect";
-    options.DefaultAuthenticateScheme = "Cookies";
-}).AddCookie("Cookies", delegate (CookieAuthenticationOptions options)
-{
-    options.ExpireTimeSpan = TimeSpan.FromSeconds(3600.0);
-});
-
-builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMasaStackComponentsForServer(default, "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
 //builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
