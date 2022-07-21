@@ -18,7 +18,7 @@ public partial class Layout
     public string? Style { get; set; }
 
     [Parameter]
-    public string? TeamRoute { get; set; }
+    public string? TeamRouteFormat { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -62,7 +62,7 @@ public partial class Layout
 
             NavItems = menus.Adapt<List<Nav>>();
 
-            if (!string.IsNullOrWhiteSpace(TeamRoute))
+            if (!string.IsNullOrWhiteSpace(TeamRouteFormat))
             {
                 try
                 {
@@ -76,7 +76,7 @@ public partial class Layout
                             Name = team.Name,
                             Icon = "mdi-circle",
                             ParentCode = teamNav.Code,
-                            Url = string.Format(TeamRoute, team.Id),
+                            Url = string.Format(TeamRouteFormat, team.Id),
                         };
                         teamNav.Children.Add(newNavItem);
                     }
