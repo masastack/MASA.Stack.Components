@@ -109,6 +109,10 @@ window.MasaStackComponents.intersectionObserver = (selector, invoker) => {
     observer.observe(document.querySelector(selector))
 }
 
+window.MasaStackComponents.getTimezoneOffset = function() {
+    return new Date().getTimezoneOffset();
+}
+
 function debounce(fn, wait) {
     let timer = null;
     return function (...args) {

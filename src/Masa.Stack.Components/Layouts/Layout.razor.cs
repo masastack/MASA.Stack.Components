@@ -9,6 +9,9 @@ public partial class Layout
     public IPopupService PopupService { get; set; }
 
     [Inject]
+    private IJSRuntime Js { get; set; } = null!;
+
+    [Inject]
     private I18n I18n { get; set; } = null!;
 
     [Parameter]
@@ -41,6 +44,8 @@ public partial class Layout
     [Parameter]
     public RenderFragment<Exception>? ErrorContent { get; set; }
 
+    public TimeSpan TimezoneOffset { get; set; }
+
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
@@ -49,6 +54,9 @@ public partial class Layout
     {
         if (firstRender)
         {
+            var timezoneMinuteOffset = await Js.InvokeAsync<long>("MasaStackComponents.getTimezoneOffset");
+            TimezoneOffset = TimeSpan.FromMinutes(-timezoneMinuteOffset);
+
             List<MenuModel> menus = new();
 
             try
@@ -150,7 +158,7 @@ public partial class Layout
         return res;
     }
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
         OnErrorAsync ??= async exception =>
         {
