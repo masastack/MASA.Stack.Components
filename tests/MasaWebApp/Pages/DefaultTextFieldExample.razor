@@ -1,0 +1,25 @@
+﻿@page "/defaultTextFieldExample"
+
+<MCard Class="pa-12">
+    <DefaultTextField @bind-Value=_value Label="Small" Small />
+    <DefaultTextField @bind-Value=_value Label="Medium" Medium Class="my-12" />
+    <DefaultTextField @bind-Value=_value Label="Large" Large />
+</MCard>
+
+<MCard Class="mt-12 pa-12">
+    <DefaultSelect @bind-Value=_value Items=_items ItemText="v => v" ItemValue="v=> v" Label="Small" Small />
+    <DefaultSelect @bind-Value=_value Items=_items ItemText="v => v" ItemValue="v=> v" Label="Medium" Medium Class="my-12" />
+    <DefaultSelect @bind-Value=_value Items=_items ItemText="v => v" ItemValue="v=> v" Label="Large" Large />
+</MCard>
+
+@code{
+    string _value;
+    List<string> _items =new()
+    {
+        "optiopn 1",
+        "optiopn 2",
+        "optiopn 3",
+        "optiopn 4",
+        "optiopn 5",
+    };
+}
