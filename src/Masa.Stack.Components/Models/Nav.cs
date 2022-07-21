@@ -2,8 +2,6 @@
 
 public class Nav : NavBase
 {
-    private List<Nav>? _children;
-
     public string? Icon { get; set; }
 
     public int Level { get; set; }
