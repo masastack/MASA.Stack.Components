@@ -11,6 +11,9 @@
     [CascadingParameter]
     public Layout Layout { get; set; } = null!;
 
+    [Inject]
+    private NavigationManager Navigation { get; set; } = null!;
+
     private bool _visible;
 
     internal void Open()
@@ -19,13 +22,14 @@
         StateHasChanged();
     }
 
-    private async Task HandleOnOk()
+    private void HandleOnOk()
     {
-        if (Layout.OnSignOut.HasDelegate)
-        {
-            await Layout.OnSignOut.InvokeAsync();
-        }
         _visible = false;
+        if (Layout.OnSignOut!=null && Layout.OnSignOut.Invoke())
+        {
+            return;
+        }
+        Navigation.NavigateTo("/Account/Logout",true);
     }
 
 }

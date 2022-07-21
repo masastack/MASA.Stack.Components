@@ -18,6 +18,9 @@ public partial class Layout
     public string? Style { get; set; }
 
     [Parameter]
+    public string? TeamRouteFormat { get; set; }
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]
@@ -30,16 +33,13 @@ public partial class Layout
     public string AppId { get; set; } = string.Empty;
 
     [Parameter]
-    public EventCallback OnSignOut { get; set; }
+    public Func<bool>? OnSignOut { get; set; }
 
     [Parameter]
     public Func<Exception, Task>? OnErrorAsync { get; set; }
 
     [Parameter]
     public RenderFragment<Exception>? ErrorContent { get; set; }
-
-    [Parameter]
-    public Func<List<Nav>, Task>? OnAfterNavItemsLoadAsync { get; set; }
 
     List<Nav> NavItems = new();
 
@@ -61,9 +61,39 @@ public partial class Layout
             }
 
             NavItems = menus.Adapt<List<Nav>>();
+
+            if (!string.IsNullOrWhiteSpace(TeamRouteFormat))
+            {
+                try
+                {
+                    var teams = await AuthClient.TeamService.GetUserTeamsAsync();
+                    var teamNav = new Nav("stack.team", "Team", "mdi-account-group-outline", "", 0);
+                    foreach (var team in teams)
+                    {
+                        var newNavItem = new Nav()
+                        {
+                            Code = $"{team.Id}",
+                            Name = team.Name,
+                            Icon = "mdi-circle",
+                            ParentCode = teamNav.Code,
+                            Url = string.Format(TeamRouteFormat, team.Id),
+                        };
+                        teamNav.Children.Add(newNavItem);
+                    }
+                    if (teams.Any())
+                    {
+                        NavItems.Add(teamNav);
+                    }
+                }
+                catch (Exception e)
+                {
+                    await PopupService.ToastErrorAsync(e.Message);
+                }
+            }
+
+#if DEBUG
             if (!NavItems.Any())
             {
-                //todo delete
                 NavItems = new List<Nav>()
                 {
                     new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/", 1),
@@ -91,11 +121,7 @@ public partial class Layout
                     }),
                 };
             }
-
-            if (OnAfterNavItemsLoadAsync != null)
-            {
-                await OnAfterNavItemsLoadAsync(NavItems);
-            }
+#endif
 
             FlattenedNavs = FlattenNavs(NavItems, true);
             StateHasChanged();
