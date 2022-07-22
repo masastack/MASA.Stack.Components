@@ -157,7 +157,7 @@ public partial class ExpansionApp
 
     private bool Filter(Nav nav)
     {
-        if (Checkable) return true;
+        if (!InPreview) return true;
         return InPreview && (ExpansionWrapper.Value.Any(value => value.NavModel == nav) || nav.Children.Any(Filter));
     }
 
