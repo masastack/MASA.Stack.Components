@@ -40,6 +40,9 @@ public partial class UserAutoComplete
     [Parameter]
     public string Label { get; set; } = string.Empty;
 
+    [Parameter]
+    public string Placeholder { get; set; } = string.Empty;
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
