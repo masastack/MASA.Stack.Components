@@ -25,9 +25,34 @@ public partial class UserAutoComplete
     [Parameter]
     public bool FillBackground { get; set; } = true;
 
+    [Parameter]
+    public bool Outlined { get; set; }
+
+    [Parameter]
+    public bool Solo { get; set; } = true;
+
+    [Parameter]
+    public bool Dense { get; set; } = true;
+
+    [Parameter]
+    public bool Flat { get; set; } = true;
+
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
+
+    protected override Task OnInitializedAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Label))
+        {
+            Label = @T("Search");
+        }
+
+        return base.OnInitializedAsync();
+    }
 
     [Inject]
     public IAutoCompleteClient AutoCompleteClient
