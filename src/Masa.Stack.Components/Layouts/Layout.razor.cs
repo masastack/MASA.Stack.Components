@@ -1,6 +1,4 @@
-﻿using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Model;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class Layout
 {
@@ -49,6 +47,8 @@ public partial class Layout
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
+
+    List<string> _whiteUriList = new List<string> { "403", "404", "", "/" };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -104,7 +104,7 @@ public partial class Layout
             {
                 NavItems = new List<Nav>()
                 {
-                    new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/", 1),
+                    new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index", 1),
                     new Nav("counter", "Counter", "mdi-pencil", "/counter", 1),
                     new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
                     new Nav("father", "Father", "mdi-numeric-0-box-outline", 1, new List<Nav>
@@ -132,11 +132,67 @@ public partial class Layout
             }
 #endif
 
+            GlobalConfig.Menus = NavItems;
+
+            var uri = NavigationManager.Uri;
+            //add home index content sould remove this code
+            if (NavigationManager.Uri == NavigationManager.BaseUri)
+            {
+                NavigationManager.NavigateTo(HomeUri(NavItems));
+                return;
+            }
+
+            if (!IsMenusUri(NavItems, uri.Replace(NavigationManager.BaseUri, "")))
+            {
+                NavigationManager.NavigateTo("/403");
+                return;
+            }
+
             FlattenedNavs = FlattenNavs(NavItems, true);
             StateHasChanged();
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private string HomeUri(List<Nav> navs)
+    {
+        var firstMenu = navs.FirstOrDefault();
+        if (firstMenu != null)
+        {
+            if (string.IsNullOrEmpty(firstMenu.Url))
+            {
+                return HomeUri(firstMenu.Children);
+            }
+            return firstMenu.Url;
+        }
+        return "/";
+    }
+
+    private bool IsMenusUri(List<Nav> navs, string uri)
+    {
+        uri = uri.ToLower();
+        if (_whiteUriList.Contains(uri))
+        {
+            return true;
+        }
+
+        var allowed = navs.Any(n => (n.Url ?? "").Trim('/').ToLower().Equals(uri));
+        if (!allowed)
+        {
+            foreach (var nav in navs)
+            {
+                if (nav.HasChildren)
+                {
+                    allowed = IsMenusUri(nav.Children, uri);
+                }
+                if (allowed)
+                {
+                    break;
+                }
+            }
+        }
+        return allowed;
     }
 
     private List<Nav> FlattenNavs(List<Nav> tree, bool excludeNavHasChildren = false)
@@ -170,12 +226,17 @@ public partial class Layout
         {
             config.Position = ToastPosition.TopLeft;
         });
-
         NavigationManager.LocationChanged += HandleLocationChanged;
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        var uri = e.Location;
+        if (!IsMenusUri(NavItems, uri.Replace(NavigationManager.BaseUri, "")))
+        {
+            NavigationManager.NavigateTo("/403");
+            return;
+        }
         logger.LogInformation("URL of new location: {Location}", e.Location);
         AuthClient.UserService.VisitedAsync(e.Location);
     }

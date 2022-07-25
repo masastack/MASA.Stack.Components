@@ -8,19 +8,6 @@
 </Layout>
 
 @code {
-
-    private List<Nav> NavList { get; set; } = new();
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            StateHasChanged();
-        }
-
-        return base.OnAfterRenderAsync(firstRender);
-    }
-
     private bool SignOut()
     {
         return false;
