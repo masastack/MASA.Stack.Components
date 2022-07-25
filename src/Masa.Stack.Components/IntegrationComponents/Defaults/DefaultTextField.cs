@@ -11,6 +11,9 @@ public class DefaultTextField<TValue> : MTextField<TValue>
     [Parameter]
     public bool Large { get; set; }
 
+    [Parameter]
+    public bool Required { get; set; }
+
     [Parameter] public Action<DefaultTextfieldAction>? Action { get; set; }
 
     private DefaultTextfieldAction InternalAction { get; set; } = new();
@@ -81,6 +84,17 @@ public class DefaultTextField<TValue> : MTextField<TValue>
                     subBuilder.AddAttribute(8, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));
                     subBuilder.CloseComponent();
                 });
+                builder.CloseElement();
+            };
+        }
+
+        if (Required && PrependInnerContent == default)
+        {
+            PrependInnerContent = builder =>
+            {
+                builder.OpenElement(0, "label");
+                builder.AddAttribute(1, "class", "red--text");
+                builder.AddContent(2, "*");
                 builder.CloseElement();
             };
         }

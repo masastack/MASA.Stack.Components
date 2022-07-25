@@ -11,6 +11,9 @@ public class DefaultSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValu
     [Parameter]
     public bool Large { get; set; }
 
+    [Parameter]
+    public bool Required { get; set; }
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Dense = true;
@@ -52,6 +55,17 @@ public class DefaultSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValu
                     Class += " m-input--dense-40";
                 }
             }
+        }
+
+        if (Required && PrependInnerContent == default)
+        {
+            PrependInnerContent = builder =>
+            {
+                builder.OpenElement(0, "label");
+                builder.AddAttribute(1, "class", "red--text");
+                builder.AddContent(2, "*");
+                builder.CloseElement();
+            };
         }
     }
 }
