@@ -9,15 +9,10 @@
         <MRow NoGutters Class="mt-12 text-btn neutral-lighten-2--text">You are not authorized! 🔐</MRow>
         <MButton Class="rounded-pill mt-6"
                  Dark    
-                 Tile
-                 Color="primary"
-                 OnClick='()=>Navigation.NavigateTo("/")'>
+                 Tile 
+                 Href="/"
+                 Color="primary">
             Back to home
         </MButton>
     </MContainer>
 </MRow>
-
-@code {
-    [Inject]
-    public NavigationManager Navigation { get; set; } = default!;
-}

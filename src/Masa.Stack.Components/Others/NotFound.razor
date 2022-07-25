@@ -11,13 +11,8 @@
                  Dark
                  Tile
                  Color="primary"
-                 OnClick='()=>Navigation.NavigateTo("/")'>
+                 Href="/">
             Back to home
         </MButton>
     </MContainer>
 </MRow>
-
-@code {
-    [Inject]
-    public NavigationManager Navigation { get; set; } = default!;
-}
