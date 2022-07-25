@@ -42,8 +42,6 @@ public partial class Layout
     [Parameter]
     public RenderFragment<Exception>? ErrorContent { get; set; }
 
-    public TimeSpan TimezoneOffset { get; set; }
-
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
@@ -54,9 +52,6 @@ public partial class Layout
     {
         if (firstRender)
         {
-            var timezoneMinuteOffset = await Js.InvokeAsync<long>("MasaStackComponents.getTimezoneOffset");
-            TimezoneOffset = TimeSpan.FromMinutes(-timezoneMinuteOffset);
-
             List<MenuModel> menus = new();
 
             try
@@ -88,6 +83,7 @@ public partial class Layout
                         };
                         teamNav.Children.Add(newNavItem);
                     }
+
                     if (teams.Any())
                     {
                         NavItems.Add(teamNav);
@@ -164,8 +160,10 @@ public partial class Layout
             {
                 return HomeUri(firstMenu.Children);
             }
+
             return firstMenu.Url;
         }
+
         return "/";
     }
 
@@ -186,12 +184,14 @@ public partial class Layout
                 {
                     allowed = IsMenusUri(nav.Children, uri);
                 }
+
                 if (allowed)
                 {
                     break;
                 }
             }
         }
+
         return allowed;
     }
 
@@ -237,7 +237,8 @@ public partial class Layout
             NavigationManager.NavigateTo("/403");
             return;
         }
-        logger.LogInformation("URL of new location: {Location}", e.Location);
+
+        Logger.LogInformation("URL of new location: {Location}", e.Location);
         AuthClient.UserService.VisitedAsync(e.Location);
     }
 
