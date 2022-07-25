@@ -27,8 +27,8 @@
             </MAvatar>
             <div class="ma-auto ml-2">
                 <div class="d-flex">
-                    <span class="Body2 emphasis2--text">@data.Item.Name</span>
-                    @if (string.IsNullOrEmpty(data.Item.Name) is false && string.IsNullOrEmpty(data.Item.PhoneNumber) is false)
+                    <span class="Body2 emphasis2--text">@(data.Item.DisplayName??data.Item.Name)</span>
+                    @if (string.IsNullOrEmpty(data.Item.DisplayName??data.Item.Name) is false && string.IsNullOrEmpty(data.Item.PhoneNumber) is false)
                     {
                         <div class="my-auto mx-2" style="width: 0px;height: 8px;border: 1px solid #E2E7F4;"></div>
                     }

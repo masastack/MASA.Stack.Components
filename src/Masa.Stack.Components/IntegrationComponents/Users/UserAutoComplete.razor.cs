@@ -58,6 +58,7 @@ public partial class UserAutoComplete
 
     public string TextView(UserSelectModel user)
     {
+        if (string.IsNullOrEmpty(user.DisplayName) is false) return user.DisplayName;
         if (string.IsNullOrEmpty(user.Name) is false) return user.Name;
         if (string.IsNullOrEmpty(user.Account) is false) return user.Account;
         if (string.IsNullOrEmpty(user.PhoneNumber) is false) return user.PhoneNumber;
