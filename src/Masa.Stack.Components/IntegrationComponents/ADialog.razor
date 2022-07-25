@@ -39,8 +39,11 @@
     @if (OnOk.HasDelegate)
     {
         <div class="d-flex justify-space-around align-center my-@Size">
-            <MButton Color="primary" Large="!Dense" Outlined Rounded Width="140" OnClick="HandleOnCancel">@ComputedCancelText</MButton>
-            <MButton Color="primary" Large="!Dense" Disabled="OkDisabled" Loading="@_okLoading" Rounded Width="140" OnClick="HandleOnOk">@ComputedOkText</MButton>
+            @if (!HideCancel)
+            {
+                <MButton Color="primary" Large="!Dense" Outlined Rounded Width="140" OnClick="HandleOnCancel">@ComputedCancelText</MButton>
+            }
+            <MButton Color="@OkColor" Class="@OkClass" Large="!Dense" Disabled="OkDisabled" Loading="@_okLoading" Rounded Width="140" OnClick="HandleOnOk">@ComputedOkText</MButton>
         </div>
     }
 </MDialog>
@@ -85,6 +88,15 @@
 
     [Parameter]
     public EventCallback OnOk { get; set; }
+
+    [Parameter]
+    public string OkColor { get; set; } = "primary";
+
+    [Parameter]
+    public string OkClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool HideCancel { get; set; }
 
     private int Size => Dense ? 4 : 6;
 
