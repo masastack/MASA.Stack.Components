@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public class SDefaultPassword : MTextField<string>
+public class SPassword : MTextField<string>
 {
     [Inject]
     public I18n? I18n { get; set; }

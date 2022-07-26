@@ -1,6 +1,6 @@
 ﻿@namespace Masa.Stack.Components
 @typeparam TItem
-@inherits SDefaultTextField<string>
+@inherits STextField<string>
 
 @{
    var items = Items.Where(item => Value is null ? true : ConvertValue(item).Contains(Value)).ToList();

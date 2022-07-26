@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public class SDefaultDataTable<TItem> : MDataTable<TItem>
+public class SDataTable<TItem> : MDataTable<TItem>
 {
     public override async Task SetParametersAsync(ParameterView parameters)
     {

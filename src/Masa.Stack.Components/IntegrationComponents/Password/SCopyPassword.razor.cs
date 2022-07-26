@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public partial class SCopyPassword : SDefaultTextField<string>
+public partial class SCopyPassword : STextField<string>
 {
     private const string LETTERS = "ABCDEFGHIJKMLNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz";
 

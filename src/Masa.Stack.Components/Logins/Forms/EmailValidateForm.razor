@@ -6,10 +6,10 @@
        OnValidSubmit="HandleOnValidSubmit"
        @ref="_form">
     <div style="margin-top: 50%; transform: translateY(-50%);">
-        <SDefaultTextField @bind-Value="EmailAddress"
+        <STextField @bind-Value="EmailAddress"
                           Label="@T("EmailAddress")"
                           HideDetails="false">
-        </SDefaultTextField>
+        </STextField>
     </div>
-    <SDefaultButton Class="align-self-center" Large Type="submit">@T("Ok")</SDefaultButton>
+    <SButton Class="align-self-center" Large Type="submit">@T("Ok")</SButton>
 </MForm>

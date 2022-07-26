@@ -10,16 +10,16 @@
          OkDisabled="!CanFinish"
          OnCancel="HandleOnCancel"
          OnOk="HandleOnOk">
-    <SDefaultTextField Value="_newPhone"
+    <STextField Value="_newPhone"
                       ValueChanged="NewPhoneChanged"
                       TValue="string"
                       Class="mb-6"
                       Label="@("PhoneNumber")">
-    </SDefaultTextField>
-    <SDefaultTextField @bind-Value="_captcha"
+    </STextField>
+    <STextField @bind-Value="_captcha"
                       Label="@("Captcha")"
                       Action="@(a => { a.Content = T("GetCaptcha"); a.Disabled = !_valid; a.OnClick = _ => SendCaptcha();})">
-    </SDefaultTextField>
+    </STextField>
 </SSimpleDialog>
 
 @code {

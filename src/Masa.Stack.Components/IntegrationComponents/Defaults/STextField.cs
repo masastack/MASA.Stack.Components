@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public class SDefaultTextField<TValue> : MTextField<TValue>
+public class STextField<TValue> : MTextField<TValue>
 {
     [Parameter]
     public bool Small { get; set; }

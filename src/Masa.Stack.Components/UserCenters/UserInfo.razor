@@ -93,17 +93,17 @@
                 </div>
                 <MRow Class="mb-2">
                     <MCol Cols="12">
-                        <SDefaultTextField @bind-Value="@_userDisplayName" Label="@T("Nickname")"></SDefaultTextField>
+                        <STextField @bind-Value="@_userDisplayName" Label="@T("Nickname")"></STextField>
                     </MCol>
                     <MCol Cols="6">
-                        <SDefaultTextField Value="Data?.PhoneNumber" Label="@T("PhoneNumber")" Readonly
+                        <STextField Value="Data?.PhoneNumber" Label="@T("PhoneNumber")" Readonly
                                            Action="@(a => { a.Content = Data?.PhoneNumber is null ? @T("Add") : @T("Change"); a.Text = true; a.OnClick = OpenPhoneNumberValidateModal; })">
-                        </SDefaultTextField>
+                        </STextField>
                     </MCol>
                     <MCol Cols="6">
-                        <SDefaultTextField Value="Data?.Email" Label="@T("Email")" Readonly
+                        <STextField Value="Data?.Email" Label="@T("Email")" Readonly
                                            Action="@(a => { a.Content = Data?.Email is null ? @T("Add") : @T("Change"); a.Text = true; a.OnClick = OpenEmailValidateModal; })">
-                        </SDefaultTextField>
+                        </STextField>
                     </MCol>
                 </MRow>
             </MWindowItem>

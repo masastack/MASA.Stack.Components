@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public class SDefaultTooltip : MTooltip
+public class STooltip : MTooltip
 {
     public override async Task SetParametersAsync(ParameterView parameters)
     {

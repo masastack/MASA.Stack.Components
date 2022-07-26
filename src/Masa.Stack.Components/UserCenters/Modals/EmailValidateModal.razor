@@ -9,13 +9,13 @@
          OkDisabled="!_valid"
          OnCancel="() => _newEmail = null"
          OnOk="HandleOnOk">
-    <SDefaultTextField Value="_newEmail"
+    <STextField Value="_newEmail"
                       ValueChanged="NewEmailChanged"
                       TValue="string"
                       Label="@T("EmailAddress")"
                       Hint="@T("TipOfEmailAddressVerification")"
                       PersistentHint>
-    </SDefaultTextField>
+    </STextField>
 </SSimpleDialog>
 
 

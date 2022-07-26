@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public class SDefaultModal : PModal
+public class SModal : PModal
 {
     public override Task SetParametersAsync(ParameterView parameters)
     {

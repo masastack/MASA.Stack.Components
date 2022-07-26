@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public class SDefaultIcon : MIcon
+public class SIcon : MIcon
 {
     public override async Task SetParametersAsync(ParameterView parameters)
     {

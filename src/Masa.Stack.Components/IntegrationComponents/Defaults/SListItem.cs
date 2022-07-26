@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public class SDefaultListItem : MListItem
+public class SListItem : MListItem
 {
     [Parameter]
     public bool Medium { get; set; }

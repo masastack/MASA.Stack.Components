@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components
 {
-    public class SDefaultAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TItemValue, TValue>
+    public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TItemValue, TValue>
     {
         [Parameter]
         public bool Required { get; set; }

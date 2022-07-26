@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public partial class SCombox<TItem> : SDefaultTextField<string> where TItem : notnull
+public partial class SCombox<TItem> : STextField<string> where TItem : notnull
 {
     [Parameter]
     public ICollection<TItem> Items { get; set; } = new List<TItem>();

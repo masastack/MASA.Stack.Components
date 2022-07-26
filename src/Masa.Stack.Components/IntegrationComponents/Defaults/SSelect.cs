@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public class SDefaultSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TValue>
+public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TValue>
 {
     [Parameter]
     public bool Small { get; set; }
