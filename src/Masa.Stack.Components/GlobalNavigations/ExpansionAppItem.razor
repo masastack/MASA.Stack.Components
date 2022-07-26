@@ -25,14 +25,14 @@
                             }
                             else if (Level < 3)
                             {
-                                <AutoLoadingButton
+                                <SAutoLoadingButton
                                     Icon
                                     XSmall
                                     Color="@(Data.IsFavorite ? "#FFB547" : "")"
                                     OnClick="@ToggleFavorite"
                                     StopPropagation>
                                     <MIcon Small>mdi-star</MIcon>
-                                </AutoLoadingButton>
+                                </SAutoLoadingButton>
                             }
                         </MListItemAction>
                     }

@@ -1,15 +1,15 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 @inherits MasaComponentBase
 
-<ADialog @bind-Value="_visible"
+<SSimpleDialog @bind-Value="_visible"
          Title="@T("TipsForLogout")"
          HeaderClass="mt-3 mb-9"
          OnOk="HandleOnOk">
-</ADialog>
+</SSimpleDialog>
 
 @code {
     [CascadingParameter]
-    public Layout Layout { get; set; } = null!;
+    public SLayout Layout { get; set; } = null!;
 
     [Inject]
     private NavigationManager Navigation { get; set; } = null!;

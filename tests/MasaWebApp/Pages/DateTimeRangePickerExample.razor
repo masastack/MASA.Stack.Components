@@ -1,15 +1,15 @@
 ﻿@page "/dateTimeRangePickerExample"
 
 <div class="pa-12 mb-6">
-    <DateTimePicker Value=StartTime Max=EndTime />
+    <SDateTimePicker Value=StartTime Max=EndTime />
 </div>
 
 <div class="pa-12 mb-6">
-    <DateTimeRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
+    <SDateTimeRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
 </div>
 
 <div class="pa-12 mb-6">
-    <RelativeTime @bind-StartTime="StartTime"  @bind-EndTime="EndTime" />
+    <SRelativeTime @bind-StartTime="StartTime"  @bind-EndTime="EndTime" />
 </div>
 
 @code{

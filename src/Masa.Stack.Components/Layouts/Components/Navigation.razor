@@ -30,9 +30,9 @@
         {
             if (!nav.HasChildren)
             {
-                <DefaultTooltip Disabled="!GlobalConfig.Mini">
+                <SDefaultTooltip Disabled="!GlobalConfig.Mini">
                     <ActivatorContent Context="tooltipContext">
-                        <DefaultListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs">
+                        <SDefaultListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs">
                             <ItemContent>
                                 <MListItemIcon>
                                     <MIcon Dense Style="margin-left:6px" Color="@(context.Active ? "white" : "regular3--text")">@nav.Icon</MIcon>
@@ -43,12 +43,12 @@
                                     </div>
                                 </MListItemContent>
                             </ItemContent>
-                        </DefaultListItem>
+                        </SDefaultListItem>
                     </ActivatorContent>
                     <ChildContent>
                         @T(nav.Name)
                     </ChildContent>
-                </DefaultTooltip>
+                </SDefaultTooltip>
             }
             else
             {
@@ -84,7 +84,7 @@
         }
     </MList>
 
-    <DefaultTooltip>
+    <SDefaultTooltip>
         <ActivatorContent>
             <span style="position: absolute; bottom: 24px; left: 50%; transform: translate(-50%, 0)" @attributes="@context.Attrs">
                 <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -96,10 +96,10 @@
         <ChildContent>
             @Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
         </ChildContent>
-    </DefaultTooltip>
+    </SDefaultTooltip>
 </MNavigationDrawer>
 
-<DefaultButton Icon
+<SDefaultButton Icon
                Medium
                Class="nav-trigger white"
                Style="@($"{(GlobalConfig.Mini ? "left:76px;" : "left:280px;")}")"
@@ -107,7 +107,7 @@
     <MIcon Color="primary">
         @(GlobalConfig.Mini ? "mdi-chevron-right" : "mdi-chevron-left")
     </MIcon>
-</DefaultButton>
+</SDefaultButton>
 
 @code {
 

@@ -11,37 +11,37 @@
     </ActivatorContent>
     <ChildContent>
         <MList>
-            <DefaultListItem Medium Href="/user-center">
+            <SDefaultListItem Medium Href="/user-center">
                 <MListItemIcon Class="mr-4">
-                    <DefaultIcon Color="emphasis2">mdi-account-circle</DefaultIcon>
+                    <SDefaultIcon Color="emphasis2">mdi-account-circle</SDefaultIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
                         <span class="regular--text body">@T("UserInfo")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </DefaultListItem>
-            <DefaultListItem Medium OnClick="() => _updatePasswordModal.Open()">
+            </SDefaultListItem>
+            <SDefaultListItem Medium OnClick="() => _updatePasswordModal.Open()">
                 <MListItemIcon Class="mr-4">
-                    <DefaultIcon Color="emphasis2">mdi-pencil</DefaultIcon>
+                    <SDefaultIcon Color="emphasis2">mdi-pencil</SDefaultIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
                         <span class="regular--text body">@T("UpdatePassword")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </DefaultListItem>
+            </SDefaultListItem>
             <MDivider></MDivider>
-            <DefaultListItem Medium OnClick="() => _logoutModal.Open()">
+            <SDefaultListItem Medium OnClick="() => _logoutModal.Open()">
                 <MListItemIcon Class="mr-4">
-                    <DefaultIcon Color="emphasis2">mdi-logout</DefaultIcon>
+                    <SDefaultIcon Color="emphasis2">mdi-logout</SDefaultIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
                         <span class="regular--text body">@T("Logout")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </DefaultListItem>
+            </SDefaultListItem>
 
         </MList>
     </ChildContent>
