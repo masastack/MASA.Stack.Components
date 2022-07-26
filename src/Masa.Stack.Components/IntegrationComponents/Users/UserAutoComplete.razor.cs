@@ -43,6 +43,9 @@ public partial class UserAutoComplete
     [Parameter]
     public string Placeholder { get; set; } = string.Empty;
 
+    [Parameter]
+    public bool PersistentPlaceholder { get; set; }
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
