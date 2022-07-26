@@ -10,12 +10,12 @@
                         @if (_entities.Result != null && _entities.Result.Any(x => !x.IsRead))
                         {
                             <MBadge Bordered Dot Color="pink" OffsetX="10" OffsetY="10">
-                                <EmptyAvatar Value="@_channel?.DisplayName" />
+                                <SEmptyAvatar Value="@_channel?.DisplayName" />
                             </MBadge>
                         }
                         else
                         {
-                            <EmptyAvatar Value="@_channel?.DisplayName" />
+                            <SEmptyAvatar Value="@_channel?.DisplayName" />
                         }
                     </MListItemAvatar>
                     <MListItemContent>
@@ -23,7 +23,7 @@
                     </MListItemContent>
                 </MListItem>
                 <MSpacer />
-                <Search @bind-Value="_queryParam.Filter" Class="rounded-2 search" Dense Style="flex: none;width:300px" OnEnter="RefreshAsync"></Search>
+                <SSearch @bind-Value="_queryParam.Filter" Class="rounded-2 search" Dense Style="flex: none;width:300px" OnEnter="RefreshAsync"></SSearch>
                 <MSelect Class="ml-6 rounded-2 small" @bind-Value="@_queryParam.FilterType" Style="flex: none;width:136px"
                     Items="@_filterTypeItems"
                     Label="@T("DisplayName.WebsiteMessageFilterType")"
@@ -39,11 +39,11 @@
                     </MSelect>
                 <MMenu OffsetY>
                     <ActivatorContent>
-                        <DefaultButton Outlined Fab Small Icon Color="fill-line" Class="ml-6" @attributes="@context.Attrs">
+                        <SButton Outlined Fab Small Icon Color="fill-line" Class="ml-6" @attributes="@context.Attrs">
                             <MIcon Class="ma-auto" Color="emphasis2" Size=20>
                                 mdi-dots-horizontal
                             </MIcon>
-                        </DefaultButton>
+                        </SButton>
                     </ActivatorContent>
                     <ChildContent>
                         <MList>
@@ -99,7 +99,7 @@
             </MList>
         </MCardText>
         <MCardActions>
-            <Pagination Class="mt-5 full-width" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+            <SPagination Class="mt-5 full-width" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
         </MCardActions>
     </MCard>
 </div>
