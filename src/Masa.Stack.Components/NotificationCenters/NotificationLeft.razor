@@ -41,12 +41,12 @@
                 <MListItemAvatar Class="overflow-visible">
                     @if (item.NoReading == 0)
                     {
-                        <EmptyAvatar Value="@item.Channel?.DisplayName" />
+                        <SEmptyAvatar Value="@item.Channel?.DisplayName" />
                     }
                     else
                     {
                         <MBadge Bordered Color="pink" OffsetX="item.NoReading>99?10:16" OffsetY="item.NoReading>99?10:16" Dot="item.NoReading>99" Content="item.NoReading">
-                            <EmptyAvatar Value="@item.Channel?.DisplayName" />
+                            <SEmptyAvatar Value="@item.Channel?.DisplayName" />
                         </MBadge>
                     }
                 </MListItemAvatar>
