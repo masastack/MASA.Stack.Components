@@ -1,5 +1,6 @@
 ﻿@inherits MasaComponentBase
 @inject IMcClient McClient
+@using static Masa.Stack.Components.JsInitVariables;
 
 <div class="message-right full-height">
     <MCard Class="d-flex full-height flex-column">
@@ -92,7 +93,7 @@
                             </MListItemSubtitle>
                         </MListItemContent>
                         <MListItemAction Class="align-self-start">
-                            <MListItemActionText Class="caption regular2--text">@item.SendTime.ToLocalTime().ToString(T("$DateTimeFormat"))</MListItemActionText>
+                            <MListItemActionText Class="caption regular2--text">@item.SendTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</MListItemActionText>
                         </MListItemAction>
                     </MListItem>
                 }
