@@ -1,0 +1,80 @@
+﻿@namespace Masa.Stack.Components
+@inherits MasaComponentBase
+<div class="mc-modal">
+    <SModal Value="Value"
+             ValueChanged="ValueChanged"
+             ContentClass="@($"rounded-5 {Class}")"
+             MaxWidth="@MaxWidth"
+             Persistent
+             Transition="dialog-transition"
+             Width="@Width">
+        <ChildContent>
+           @ChildContent
+        </ChildContent>
+    </SModal>
+</div>
+
+@code {
+    [Parameter]
+    public bool Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public StringNumber Width { get; set; } = 770;
+
+    [Parameter]
+    public StringNumber MaxWidth { get; set; }
+
+    [Parameter]
+    public StringNumber Height { get; set; }
+
+    [Parameter]
+    public string? ContentStyle { get; set; }
+
+    [Parameter]
+    public EventCallback<ModalActionEventArgs> OnCancel { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment ActionContent { get; set; }
+
+    [Parameter]
+    public string ActionsClass { get; set; }
+
+    [Parameter]
+    public string ActionsStyle { get; set; }
+
+    private MCardText _cardTextRef = default!;
+
+    protected virtual async Task HandleOnCancel()
+    {
+        if (OnCancel.HasDelegate)
+        {
+            await OnCancel.InvokeAsync();
+        }
+        else
+        {
+            await InternalValueChanged(false);
+        }
+    }
+
+    private async Task InternalValueChanged(bool value)
+    {
+        Value = value;
+
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(value);
+        }
+    }
+}
