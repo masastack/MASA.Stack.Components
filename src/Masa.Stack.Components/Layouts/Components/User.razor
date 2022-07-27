@@ -11,37 +11,37 @@
     </ActivatorContent>
     <ChildContent>
         <MList>
-            <DefaultListItem Medium Href="/user-center">
+            <SListItem Medium Href="/user-center">
                 <MListItemIcon Class="mr-4">
-                    <DefaultIcon Color="emphasis2">mdi-account-circle</DefaultIcon>
+                    <SIcon Color="emphasis2">mdi-account-circle</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
                         <span class="regular--text body">@T("UserInfo")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </DefaultListItem>
-            <DefaultListItem Medium OnClick="() => _updatePasswordModal.Open()">
+            </SListItem>
+            <SListItem Medium OnClick="() => _updatePasswordModal.Open()">
                 <MListItemIcon Class="mr-4">
-                    <DefaultIcon Color="emphasis2">mdi-pencil</DefaultIcon>
+                    <SIcon Color="emphasis2">mdi-pencil</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
                         <span class="regular--text body">@T("UpdatePassword")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </DefaultListItem>
+            </SListItem>
             <MDivider></MDivider>
-            <DefaultListItem Medium OnClick="() => _logoutModal.Open()">
+            <SListItem Medium OnClick="() => _logoutModal.Open()">
                 <MListItemIcon Class="mr-4">
-                    <DefaultIcon Color="emphasis2">mdi-logout</DefaultIcon>
+                    <SIcon Color="emphasis2">mdi-logout</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
                         <span class="regular--text body">@T("Logout")</span>
                     </MListItemTitle>
                 </MListItemContent>
-            </DefaultListItem>
+            </SListItem>
 
         </MList>
     </ChildContent>

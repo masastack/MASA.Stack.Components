@@ -1,28 +1,17 @@
 ﻿@using Masa.Stack.Components.Models
 @inherits LayoutComponentBase
 
-<Layout AppId="123" OnSignOut="SignOut"
-        Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
-        MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png">
+<SLayout AppId="123" OnSignOut="SignOut"
+         Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
+         MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png">
     @Body
-</Layout>
+</SLayout>
 
 @code {
-
-    private List<Nav> NavList { get; set; } = new();
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            StateHasChanged();
-        }
-
-        return base.OnAfterRenderAsync(firstRender);
-    }
 
     private bool SignOut()
     {
         return false;
     }
+
 }

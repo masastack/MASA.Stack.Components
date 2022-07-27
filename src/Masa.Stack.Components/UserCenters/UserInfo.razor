@@ -76,50 +76,50 @@
             </MWindowItem>
             <MWindowItem Class="mb-n2">
                 <div class="d-flex mb-4" style="justify-content: space-between;align-items: center;">
-                    <LabeledRadioGroup @bind-Value="@_userGender" Dense>
-                        <LabeledRadio Value="0" Style="height:36px">@T("Female")</LabeledRadio>
-                        <LabeledRadio Value="1" Style="height:36px">@T("Male")</LabeledRadio>
-                    </LabeledRadioGroup>
+                    <SLabeledRadioGroup @bind-Value="@_userGender" Dense>
+                        <SLabeledRadio Value="0" Style="height:36px">@T("Female")</SLabeledRadio>
+                        <SLabeledRadio Value="1" Style="height:36px">@T("Male")</SLabeledRadio>
+                    </SLabeledRadioGroup>
                     <span>
                         <MButton Rounded Plain Height="40" Width="100" OnClick="() => ChangeWindowValue(0)">@T("Cancel")</MButton>
-                        <AutoLoadingButton Rounded
-                                           Disabled="@(string.IsNullOrWhiteSpace(_userDisplayName))"
-                                           Height="40"
-                                           Width="100"
-                                           OnClick="SaveUserInfo">
+                        <SAutoLoadingButton Rounded
+                                            Disabled="@(string.IsNullOrWhiteSpace(_userDisplayName))"
+                                            Height="40"
+                                            Width="100"
+                                            OnClick="SaveUserInfo">
                             @T("Save")
-                        </AutoLoadingButton>
+                        </SAutoLoadingButton>
                     </span>
                 </div>
                 <MRow Class="mb-2">
                     <MCol Cols="12">
-                        <DefaultTextField @bind-Value="@_userDisplayName" Label="@T("Nickname")"></DefaultTextField>
+                        <STextField @bind-Value="@_userDisplayName" Label="@T("Nickname")"></STextField>
                     </MCol>
                     <MCol Cols="6">
-                        <DefaultTextField Value="Data?.PhoneNumber" Label="@T("PhoneNumber")" Readonly
-                                          Action="@(a => { a.Content = Data?.PhoneNumber is null ? @T("Add") : @T("Change"); a.Text = true; a.OnClick = OpenPhoneNumberValidateModal; })">
-                        </DefaultTextField>
+                        <STextField Value="Data?.PhoneNumber" Label="@T("PhoneNumber")" Readonly
+                                           Action="@(a => { a.Content = Data?.PhoneNumber is null ? @T("Add") : @T("Change"); a.Text = true; a.OnClick = OpenPhoneNumberValidateModal; })">
+                        </STextField>
                     </MCol>
                     <MCol Cols="6">
-                        <DefaultTextField Value="Data?.Email" Label="@T("Email")" Readonly
-                                          Action="@(a => { a.Content = Data?.Email is null ? @T("Add") : @T("Change"); a.Text = true; a.OnClick = OpenEmailValidateModal; })">
-                        </DefaultTextField>
+                        <STextField Value="Data?.Email" Label="@T("Email")" Readonly
+                                           Action="@(a => { a.Content = Data?.Email is null ? @T("Add") : @T("Change"); a.Text = true; a.OnClick = OpenEmailValidateModal; })">
+                        </STextField>
                     </MCol>
                 </MRow>
             </MWindowItem>
         </MWindow>
 
-        <Definitions Items="@Items"
-                     Colon=""
-                     Cols="12"
-                     Sm="12"
-                     Md="12"
-                     NoGutters
-                     Style="overflow: auto;height: calc(100% - 195px);"
-                     ItemClass="@(_ => "mb-4")"
-                     ItemStyle="@(_ => "justify-content: space-between; align-items: center;")"
-                     TermClass="@(_ => "font-14 regular--text")"
-                     DetailClass="@(_ => "overline regular3--text")">
+        <SDefinitions Items="@Items"
+                      Colon=""
+                      Cols="12"
+                      Sm="12"
+                      Md="12"
+                      NoGutters
+                      Style="overflow: auto;height: calc(100% - 195px);"
+                      ItemClass="@(_ => "mb-4")"
+                      ItemStyle="@(_ => "justify-content: space-between; align-items: center;")"
+                      TermClass="@(_ => "font-14 regular--text")"
+                      DetailClass="@(_ => "overline regular3--text")">
             <TermContent>
                 @{
                     var term = (ValueTuple<string, string>)context.Value;
@@ -128,7 +128,7 @@
                 }
             </TermContent>
             <DetailContent>@context.Key</DetailContent>
-        </Definitions>
+        </SDefinitions>
 
     </div>
 </MCard>

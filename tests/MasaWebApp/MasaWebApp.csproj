@@ -5,13 +5,13 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
-	</ItemGroup>
-	<ItemGroup>
 		
 		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.5.0-rc.3" />
 		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="0.5.0-rc.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.7" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
 	</ItemGroup>
 </Project>

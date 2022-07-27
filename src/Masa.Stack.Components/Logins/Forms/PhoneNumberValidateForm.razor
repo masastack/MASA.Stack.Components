@@ -8,20 +8,20 @@
        OnValidSubmit="HandleOnValidSubmit"
        @ref="_form">
     <div style="margin-top: 50%; transform: translateY(-50%);">
-        <DefaultTextField @bind-Value="PhoneNumber"
+        <STextField @bind-Value="PhoneNumber"
                           OnInput="ValidatePhoneNumber"
                           TValue="string"
                           Label="@T("PhoneNumber")"
                           Readonly="@_isDirty"
                           HideDetails="false"
                           Class="mb-6">
-        </DefaultTextField>
+        </STextField>
 
-        <DefaultTextField @bind-Value="Captcha"
+        <STextField @bind-Value="Captcha"
                           Label="@T("Captcha")"
                           HideDetails="false"
                           Action="@(props => { props.Content = ActionContent; props.Disabled = ActionDisabled; props.OnClick = _ => SendCaptcha(); })">
-        </DefaultTextField>
+        </STextField>
     </div>
-    <DefaultButton Class="align-self-center" Large Type="submit">@T("Ok")</DefaultButton>
+    <SButton Class="align-self-center" Large Type="submit">@T("Ok")</SButton>
 </MForm>

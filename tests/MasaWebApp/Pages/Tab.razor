@@ -1,30 +1,30 @@
 ﻿@page "/tab"
 
 <div class="white pa-5">
-    <h3>LabeledRadioGroup's value: @value</h3>
+    <h3>SLabeledRadioGroup's value: @value</h3>
 
-    <LabeledRadioGroup @bind-Value="value" Dense Class="mb-2">
+    <SLabeledRadioGroup @bind-Value="value" Dense Class="mb-2">
         @foreach (var v in new[] { "menu", "api", "action" })
         {
-            <LabeledRadio Value="v">@v</LabeledRadio>
+            <SLabeledRadio Value="v">@v</SLabeledRadio>
         }
-    </LabeledRadioGroup>
+    </SLabeledRadioGroup>
 
-    <LabeledRadioGroup TValue="string" Dense Class="mb-2">
+    <SLabeledRadioGroup TValue="string" Dense Class="mb-2">
         @foreach (var v in new[] { "menu", "api", "action" })
         {
-            <LabeledRadio Value="v">@v</LabeledRadio>
+            <SLabeledRadio Value="v">@v</SLabeledRadio>
         }
-    </LabeledRadioGroup>
+    </SLabeledRadioGroup>
 
-    <ElevationTab TabMinWidth="200" ItemsClass="mt-4" Tabs='new List<string> { "Menu Permission", "Api Permission" }' Dense @bind-Tab="value3">
-        <ElevationTabItem>
+    <SElevationTab TabMinWidth="200" ItemsClass="mt-4" Tabs='new List<string> { "Menu Permission", "Api Permission" }' Dense @bind-Tab="value3">
+        <SElevationTabItem>
             Menu Permission
-        </ElevationTabItem>
-        <ElevationTabItem>
+        </SElevationTabItem>
+        <SElevationTabItem>
             Api Permission
-        </ElevationTabItem>
-    </ElevationTab>
+        </SElevationTabItem>
+    </SElevationTab>
 </div>
 
 @code {

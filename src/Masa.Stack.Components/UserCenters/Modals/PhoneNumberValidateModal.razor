@@ -2,7 +2,7 @@
 @namespace Masa.Stack.Components.UserCenters
 @inherits MasaComponentBase
 
-<ADialog @bind-Value="_visible"
+<SSimpleDialog @bind-Value="_visible"
          Title="@(IsUpdate ? T("ChangePhoneNumber") : T("PhoneNumberAuth"))"
          IconOfTitle="mdi-phone"
          CancelText="@T("Cancel")"
@@ -10,17 +10,17 @@
          OkDisabled="!CanFinish"
          OnCancel="HandleOnCancel"
          OnOk="HandleOnOk">
-    <DefaultTextField Value="_newPhone"
+    <STextField Value="_newPhone"
                       ValueChanged="NewPhoneChanged"
                       TValue="string"
                       Class="mb-6"
                       Label="@("PhoneNumber")">
-    </DefaultTextField>
-    <DefaultTextField @bind-Value="_captcha"
+    </STextField>
+    <STextField @bind-Value="_captcha"
                       Label="@("Captcha")"
                       Action="@(a => { a.Content = T("GetCaptcha"); a.Disabled = !_valid; a.OnClick = _ => SendCaptcha();})">
-    </DefaultTextField>
-</ADialog>
+    </STextField>
+</SSimpleDialog>
 
 @code {
 

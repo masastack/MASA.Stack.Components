@@ -2,21 +2,21 @@
 @namespace Masa.Stack.Components.UserCenters
 @inherits MasaComponentBase
 
-<ADialog @bind-Value="_visible"
+<SSimpleDialog @bind-Value="_visible"
          Title="@(IsUpdate ? T("ChangeEmail") : T("EmailAuth"))"
          IconOfTitle="mdi-email"
          OkText="@T("Send")"
          OkDisabled="!_valid"
          OnCancel="() => _newEmail = null"
          OnOk="HandleOnOk">
-    <DefaultTextField Value="_newEmail"
+    <STextField Value="_newEmail"
                       ValueChanged="NewEmailChanged"
                       TValue="string"
                       Label="@T("EmailAddress")"
                       Hint="@T("TipOfEmailAddressVerification")"
                       PersistentHint>
-    </DefaultTextField>
-</ADialog>
+    </STextField>
+</SSimpleDialog>
 
 
 @code {
