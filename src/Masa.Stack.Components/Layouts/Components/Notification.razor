@@ -3,6 +3,7 @@
 @inherits MasaComponentBase
 @inject IMcClient McClient
 @inject IHttpContextAccessor httpContextAccessor
+@using static Masa.Stack.Components.JsInitVariables;
 
 <div class="notice">
     <MMenu OffsetY Bottom>
@@ -52,7 +53,7 @@
                             <MListItemContent>
                                 <MListItemTitle Class="btn emphasis--text">@item.Title</MListItemTitle>
                                 <MListItemSubtitle Class="caption regular2--text mt-1">@item.Abstract</MListItemSubtitle>
-                                <MListItemSubtitle Class="overline regular3--text mt-1">@item.SendTime.ToLocalTime().ToString(T("$MonthDayFormat"))</MListItemSubtitle>
+                                <MListItemSubtitle Class="overline regular3--text mt-1">@item.SendTime.ToOffset(TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemSubtitle>
                             </MListItemContent>
                         </MListItem>
                     }
