@@ -1,30 +1,39 @@
 ﻿@page "/simpleModalExample"
 @using Masa.Stack.Components.IntegrationComponents
 @using Masa.Stack.Components.Models
-<SSimpleModal Value="@_visible" Title="标题" >
+<SSimpleModal Value="@_visible" Title="标题" SaveText="保存" OnDelete="()=>Console.WriteLine(1)" OnSave="()=>Console.WriteLine(1)" BodyStyle="height: 597px;">
     <ChildContent>
-            <MForm Model="_model" EnableValidation Class="full-height">
-                <MRow>
-                    <MCol Class="pt-0 mt-2">
-                        <STextField @bind-Value="_model.DisplayName"
-                                          Label="DisplayName">
-                        </STextField>
-                    </MCol>
-                </MRow>
-                <MRow Class="mt-6">
-                    <MCol>
-                        <STextField @bind-Value="_model.Name"
-                                          Label="Name">
-                        </STextField>
-                    </MCol>
-                </MRow>
-            </MForm>
-        </ChildContent>
-        @*<ActionContent>
-            <MIcon Size="24" Color="error" Class="align-self-center" >mdi-delete</MIcon>
-            <MSpacer></MSpacer>
-            <MButton Color="primary" Class="btn-form" >Save</MButton>
-        </ActionContent>*@
+        <MForm Model="_model" EnableValidation Class="full-height">
+            <MRow>
+                <MCol Class="pt-0 mt-2">
+                    <STextField @bind-Value="_model.DisplayName"
+                                Label="DisplayName">
+                    </STextField>
+                </MCol>
+            </MRow>
+            <MRow Class="mt-6">
+                <MCol>
+                    <STextField @bind-Value="_model.Name"
+                                Label="Name">
+                    </STextField>
+                </MCol>
+            </MRow>
+            <MRow Class="mt-6">
+                <MCol>
+                    <STextField @bind-Value="_model.Email"
+                                Label="Email">
+                    </STextField>
+                </MCol>
+            </MRow>
+            <MRow Class="mt-6">
+                <MCol>
+                    <STextField @bind-Value="_model.PhoneNumber"
+                                Label="PhoneNumber">
+                    </STextField>
+                </MCol>
+            </MRow>
+        </MForm>
+    </ChildContent>
 </SSimpleModal>
 @code {
 

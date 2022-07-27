@@ -1,0 +1,203 @@
+﻿@namespace Masa.Stack.Components
+@inherits MasaComponentBase
+<div class="mc-modal">
+    <PModal Value="Value"
+            ValueChanged="ValueChanged"
+            MaxWidth="@MaxWidth"
+            HideActionsDivider
+            HideTitleDivider
+            HideCancelAction
+            Persistent
+            Transition="dialog-transition"
+            Width="@Width"
+            Class="@Class"
+            HeaderClass="@HeaderClass"
+            HeaderStyle="@HeaderStyle"
+            ContentClass="@ContentClass"
+            ContentStyle="@ContentStyle"
+            BodyClass="@BodyClass"
+            BodyStyle="@BodyStyle"
+            ActionsClass="@ActionsClass"
+            ActionsStyle="@ActionsStyle"
+            ChildContent="@ChildContent"
+            OnDelete="@OnDelete"
+            OnSave="@OnSave">
+        <TitleContent>
+            <MIcon Size=16 Color="primary" Class="pr-2">
+                mdi-circle
+            </MIcon>
+            <span>@Title</span>
+        </TitleContent>
+        <CloseContent>
+            <MButton Fab
+                     Small
+                     Outlined
+                     Color="emphasis"
+                     Style="border-color: #E2E7F4;width:32px;height:32px"
+                     OnClick="HandleOnCancel">
+                <MIcon Size=24>
+                    mdi-close
+                </MIcon>
+            </MButton>
+        </CloseContent>
+        <DeleteContent>
+            @if (OnDelete.HasDelegate)
+            {
+                <MIcon Size="24" Color="error" Class="align-self-center" OnClick="HandleOnDelete">mdi-delete</MIcon>
+            }
+        </DeleteContent>
+        <SaveContent>
+            @if (ActionContent != null)
+            {
+                @ActionContent
+            }
+            else{
+                <MButton Color="primary" Class="rounded-3" Style="min-width: 140px !important;height: 56px !important;" OnClick="HandleOnSave">@SaveText</MButton>
+            }
+        </SaveContent>
+    </PModal>
+</div>
+
+@code {
+    [Parameter]
+    public bool Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string SaveText { get; set; }
+
+    [Parameter]
+    public StringNumber Width { get; set; } = 770;
+
+    [Parameter]
+    public StringNumber MaxWidth { get; set; }
+
+    [Parameter]
+    public StringNumber Height { get; set; }
+
+    [Parameter]
+    public EventCallback<ModalActionEventArgs> OnCancel { get; set; }
+
+    [Parameter]
+    public EventCallback<ModalActionEventArgs> OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<ModalActionEventArgs> OnSave { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment ActionContent { get; set; }
+
+    [Parameter]
+    public string HeaderClass { get; set; }
+
+    [Parameter]
+    public string HeaderStyle { get; set; }
+
+    [Parameter]
+    public string ContentClass { get; set; }
+
+    [Parameter]
+    public string ContentStyle { get; set; }
+
+    [Parameter]
+    public string BodyClass { get; set; }
+
+    [Parameter]
+    public string BodyStyle { get; set; }
+
+    [Parameter]
+    public string ActionsClass { get; set; }
+
+    [Parameter]
+    public string ActionsStyle { get; set; }
+
+    private MCardText _cardTextRef = default!;
+
+    protected virtual async Task HandleOnCancel()
+    {
+        if (OnCancel.HasDelegate)
+        {
+            await OnCancel.InvokeAsync();
+        }
+        else
+        {
+            await InternalValueChanged(false);
+        }
+    }
+
+    private async Task InternalValueChanged(bool value)
+    {
+        Value = value;
+
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(value);
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        Class ??= string.Empty;
+        if (!Class.Contains(" rounded-5"))
+        {
+            Class += " rounded-5";
+        }
+
+        HeaderClass ??= string.Empty;
+        if (!HeaderClass.Contains(" h6 emphasis--text pa-0"))
+        {
+            HeaderClass += " h6 emphasis--text pa-0";
+        }
+
+        ContentStyle ??= string.Empty;
+        if (!ContentStyle.Contains(" padding:36px 17px 36px 42px;"))
+        {
+            ContentStyle += " padding:36px 17px 36px 42px;";
+        }
+
+        BodyClass ??= string.Empty;
+        if (!BodyClass.Contains(" pa-0 overflow-y-auto pr-4 pt-3 mt-6"))
+        {
+            BodyClass += " pa-0 overflow-y-auto pr-4 pt-3 mt-6";
+        }
+
+        ActionsClass ??= string.Empty;
+        if (!ActionsClass.Contains(" pl-0 pb-0 pt-9"))
+        {
+            ActionsClass += " pl-0 pb-0 pt-9";
+        }
+    }
+
+    protected virtual async Task HandleOnDelete(MouseEventArgs _)
+    {
+        if (OnDelete.HasDelegate)
+        {
+            var args = new ModalActionEventArgs();
+
+            await OnDelete.InvokeAsync(args);
+        }
+    }
+
+    protected virtual async Task HandleOnSave(MouseEventArgs _)
+    {
+        if (OnSave.HasDelegate)
+        {
+            var args = new ModalActionEventArgs();
+
+            await OnSave.InvokeAsync(args);
+        }
+    }
+}
