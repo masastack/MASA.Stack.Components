@@ -46,9 +46,6 @@ public partial class SUserAutoComplete
     [Parameter]
     public bool PersistentPlaceholder { get; set; }
 
-    [Parameter]
-    public string? Lable { get; set; }
-
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
@@ -62,9 +59,9 @@ public partial class SUserAutoComplete
 
     protected override void OnParametersSet()
     {
-        if(string.IsNullOrEmpty(Lable))
+        if(string.IsNullOrEmpty(Label))
         {
-            Lable = T("Search");
+            Label = T("Search");
         }
     }
 
