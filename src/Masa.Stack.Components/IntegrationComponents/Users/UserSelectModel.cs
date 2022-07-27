@@ -8,6 +8,8 @@ public class UserSelectModel : AutoCompleteDocument<Guid>
 
     public string? Name { get; set; }
 
+    public string DefaultName => DisplayName ?? Name ?? "";
+
     public string Account { get; set; } = "";
 
     public string PhoneNumber { get; set; } = "";
