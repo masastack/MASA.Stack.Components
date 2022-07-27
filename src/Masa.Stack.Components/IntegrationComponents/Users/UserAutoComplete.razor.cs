@@ -25,6 +25,9 @@ public partial class UserAutoComplete
     [Parameter]
     public bool FillBackground { get; set; } = true;
 
+    [Parameter]
+    public string? Lable { get; set; }
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
@@ -34,6 +37,14 @@ public partial class UserAutoComplete
     {
         get => _autocompleteClient ?? throw new Exception("Please inject IAutoCompleteClient");
         set => _autocompleteClient = value;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if(string.IsNullOrEmpty(Lable))
+        {
+            Lable = T("Search");
+        }
     }
 
     public async Task OnSearchChanged(string search)
