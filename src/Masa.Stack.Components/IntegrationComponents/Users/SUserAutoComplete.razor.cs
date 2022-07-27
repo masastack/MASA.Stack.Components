@@ -50,21 +50,19 @@ public partial class SUserAutoComplete
 
     public string Search { get; set; } = "";
 
-    protected override Task OnInitializedAsync()
-    {
-        if (string.IsNullOrWhiteSpace(Label))
-        {
-            Label = @T("Search");
-        }
-
-        return base.OnInitializedAsync();
-    }
-
     [Inject]
     public IAutoCompleteClient AutoCompleteClient
     {
         get => _autocompleteClient ?? throw new Exception("Please inject IAutoCompleteClient");
         set => _autocompleteClient = value;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if(string.IsNullOrEmpty(Label))
+        {
+            Label = T("Search");
+        }
     }
 
     public async Task OnSearchChanged(string search)
@@ -89,6 +87,7 @@ public partial class SUserAutoComplete
 
     public string TextView(UserSelectModel user)
     {
+        if (string.IsNullOrEmpty(user.DisplayName) is false) return user.DisplayName;
         if (string.IsNullOrEmpty(user.Name) is false) return user.Name;
         if (string.IsNullOrEmpty(user.Account) is false) return user.Account;
         if (string.IsNullOrEmpty(user.PhoneNumber) is false) return user.PhoneNumber;
