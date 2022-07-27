@@ -46,7 +46,7 @@ public partial class SLayout
 
     List<Nav> FlattenedNavs { get; set; } = new();
 
-    List<string> _whiteUriList = new List<string> { "403", "404", "", "/" };
+    List<string> _whiteUriList = new List<string> { "403", "404", "", "/", "user-center" };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
