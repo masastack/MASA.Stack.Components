@@ -41,9 +41,9 @@
         <div class="d-flex justify-space-around align-center my-@Size">
             @if (!HideCancel)
             {
-                <MButton Color="primary" Large="!Dense" Outlined Rounded Width="140" OnClick="HandleOnCancel">@ComputedCancelText</MButton>
+                <SAutoLoadingButton Color="primary" Large="!Dense" Rounded Outlined Width="140" OnClick="HandleOnCancel">@ComputedCancelText</SAutoLoadingButton>
             }
-            <MButton Color="@OkColor" Class="@OkClass" Large="!Dense" Disabled="OkDisabled" Loading="@_okLoading" Rounded Width="140" OnClick="HandleOnOk">@ComputedOkText</MButton>
+            <SAutoLoadingButton Color="@OkColor" Class="@OkClass" Rounded Large="!Dense" Disabled="OkDisabled" Width="140" OnClick="HandleOnOk">@ComputedOkText</SAutoLoadingButton>
         </div>
     }
 </MDialog>
@@ -128,11 +128,7 @@
     {
         if (OnOk.HasDelegate)
         {
-            _okLoading = true;
-
             await OnOk.InvokeAsync();
-
-            _okLoading = false;
         }
     }
 

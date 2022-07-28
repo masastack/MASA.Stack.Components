@@ -10,6 +10,7 @@
 <CascadingValue Value="this" IsFixed>
     <CascadingValue Value="I18n">
         <MApp Class="masa masa-stack-components">
+            <MErrorHandler ErrorContent=ErrorContent OnErrorHandleAsync=OnErrorAsync>
             <MAppBar App
                      Class="mx-6"
                      Elevation="0"
@@ -43,12 +44,11 @@
                         MiniLogo="@MiniLogo" />
 
             <MMain>
-                <div class="@($"px-6 pb-6 max-width full-height {@Class}")" style="@Style">
-                    <MErrorHandler ErrorContent=ErrorContent OnErrorHandleAsync=OnErrorAsync>
-                        @ChildContent
-                    </MErrorHandler>
+                <div class="@($"px-6 pb-6 max-width full-height {@Class}")" style="@Style">                   
+                    @ChildContent                    
                 </div>
             </MMain>
+            </MErrorHandler>
         </MApp>
     </CascadingValue>
 </CascadingValue>

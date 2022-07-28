@@ -58,6 +58,9 @@ public partial class ExpansionWrapperUnique
         }
     }
 
+    [Parameter]
+    public string? TagIdPrefix { get; set; }
+
     public List<CategoryAppNav> CategoryAppNavs { get; set; } = new();
 
     private List<CategoryAppNav> CheckedCategoryAppNavs { get; set; } = new();
