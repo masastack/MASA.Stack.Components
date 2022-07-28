@@ -9,11 +9,13 @@
 	<ItemGroup>
 		<PackageReference Include="Humanizer" Version="2.14.1" />
 		<PackageReference Include="Mapster" Version="7.3.0" />
-		<PackageReference Include="Masa.Blazor" Version="0.5.0-rc.6" />
-		<PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.5.0-rc.3" />
-		<PackageReference Include="Masa.Contrib.BasicAbility.Mc" Version="0.5.0-rc.3" />
-		<PackageReference Include="Masa.Contrib.Identity.IdentityModel" Version="0.5.0-rc.3" />
-		<PackageReference Include="Masa.Contrib.BasicAbility.Auth" Version="0.5.0-rc.3" />
+		<PackageReference Include="Masa.Blazor" Version="0.5.0-rc.7" />
+		<PackageReference Include="Masa.BuildingBlocks.SearchEngine.AutoComplete" Version="0.5.0" />
+		<PackageReference Include="Masa.Contrib.BasicAbility.Mc" Version="0.5.0" />
+		<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="0.5.0" />
+		<PackageReference Include="Masa.Contrib.Identity.IdentityModel" Version="0.5.0" />
+		<PackageReference Include="Masa.Contrib.BasicAbility.Auth" Version="0.5.0" />
+		<PackageReference Include="Masa.Contrib.Storage.ObjectStorage.Aliyun" Version="0.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
 	</ItemGroup>

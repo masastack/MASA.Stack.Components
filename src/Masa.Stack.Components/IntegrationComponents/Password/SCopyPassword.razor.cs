@@ -6,27 +6,8 @@ namespace Masa.Stack.Components;
 public partial class SCopyPassword : STextField<string>
 {
     private const string LETTERS = "ABCDEFGHIJKMLNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz";
-
-    private const string NUMBERS = "0123456789";
-
-    public static string GenerateSpecifiedString(int length, bool includeNumbers = false)
-    {
-        var sb = new StringBuilder();
-        for (var i = 0; i < length; i++)
-        {
-            var index = Random.Shared.Next(LETTERS.Length);
-
-            sb.Append(LETTERS[index]);
-
-            if (includeNumbers)
-            {
-                index = Random.Shared.Next(NUMBERS.Length);
-                sb.Append(NUMBERS[index]);
-            }
-        }
-        return sb.ToString();
-    }
-
+    private const string LETTERNUMBERS = "ABCDEFGHIJKMLNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz0123456789";
+   
     [Inject]
     public I18n I18n { get; set; } = default!;
 
@@ -59,5 +40,24 @@ public partial class SCopyPassword : STextField<string>
         if (ValueChanged.HasDelegate)
             await ValueChanged.InvokeAsync(value);
         else Value = value;
+    }
+
+    private static string GenerateSpecifiedString(int length, bool includeNumbers = false)
+    {
+        var sb = new StringBuilder(length);
+        for (var i = 0; i < length; i++)
+        {
+            if (includeNumbers)
+            {
+                var index = Random.Shared.Next(LETTERNUMBERS.Length);
+                sb.Append(LETTERNUMBERS[index]);
+            }
+            else
+            {
+                var index = Random.Shared.Next(LETTERS.Length);
+                sb.Append(LETTERS[index]);
+            }
+        }
+        return sb.ToString();
     }
 }

@@ -4,30 +4,18 @@
 <MCard Class="user-info rounded-5">
     <div class="user-info__left">
         <div class="avatar">
-            @if (string.IsNullOrWhiteSpace(Data?.Avatar))
-            {
-                <MAvatar Size="140" Class="mb-6" Color="primary">
-                    <span class="white--text text-h2">@((Data?.Account)?[..1])</span>
-                </MAvatar>
-            }
-            else
-            {
-                <MAvatar Size="140" Class="mb-6">
-                    <MImage Src="@Data?.Avatar" alt="avatar" />
-                </MAvatar>
-            }
-            <PBlockText Primary="@Data?.Name"
+            <UploadAvatar Size="140" Class="mb-6" @bind-Value="UserDetail.Avatar" WhenFileChangeUpload />
+            <PBlockText Primary="@UserDetail.DisplayName"
                         PrimaryClass="font-20-bold emphasis2--text"
-                        Secondary="@Data?.Account"
-                        SecondaryClass="regular3--text font-14 full-width">
-            </PBlockText>
+                        Secondary="@UserDetail.Account"
+                        SecondaryClass="regular3--text font-14 full-width" />
         </div>
         <div class="auths">
             <MDivider>
                 <span class="regular3--text caption" style="line-height: 1px">@T("Auths")</span>
             </MDivider>
             <div class="d-flex" style="justify-content: space-around; flex-wrap: wrap;">
-                <AuthIcon OnClick="() => _idCardValidateModal?.Open()">mdi-card-account-details-outline</AuthIcon>
+                <AuthIcon>mdi-card-account-details-outline</AuthIcon>
                 <AuthIcon>mdi-cellphone</AuthIcon>
                 <AuthIcon>mdi-wechat</AuthIcon>
                 <AuthIcon>mdi-email</AuthIcon>
@@ -38,21 +26,20 @@
     <MDivider Vertical Class="mx-6"></MDivider>
 
     <div class="user-info__right">
-
         <MWindow Value="_windowValue">
             <MWindowItem>
                 <div class="d-flex mb-4" style="justify-content: space-between;">
-                    <PBlockText Primary="@Data?.DisplayName"
+                    <PBlockText Primary="@UserDetail.DisplayName"
                                 PrimaryClass="font-20-bold regular--text"
                                 SecondaryClass="caption regular3--text d-flex"
                                 SecondaryStyle="align-items:center;">
                         <SecondaryContent>
-                            @Data?.GenderText
+                            @T(UserDetail.Gender.ToString())
                             @if (!string.IsNullOrWhiteSpace(Data?.GenderText) && !string.IsNullOrWhiteSpace(Data?.JobNumber))
                             {
                                 <MDivider Vertical Class="mx-1" Height="10"></MDivider>
                             }
-                            @Data?.JobNumber
+                            @UserDetail.JobNumber
                         </SecondaryContent>
                     </PBlockText>
                     <MButton Icon Small OnClick="() => ChangeWindowValue(1)">
@@ -133,8 +120,8 @@
     </div>
 </MCard>
 
-<IdCardValidateModal @ref="_idCardValidateModal" />
+<IdCardValidateModal @ref="_idCardValidateModalRef" />
 
-<EmailValidateModal @ref="_emailValidateModal" IsUpdate="true" />
+<EmailValidateModal @ref="_emailValidateModalRef" IsUpdate="true" />
 
-<PhoneNumberValidateModal @ref="_phoneNumberValidateModal" IsUpdate="true" />
+<PhoneNumberValidateModal @ref="_phoneNumberValidateModalRef" IsUpdate="true" />

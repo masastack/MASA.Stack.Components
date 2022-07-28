@@ -8,12 +8,12 @@
 @implements IDisposable
 
 <div class="mb-6" style="height: calc(100vh - 460px);">
-    <UserInfo Data="User"></UserInfo>
+    <UserInfo User="User" Teams="Teams"></UserInfo>
 </div>
 <UserTeams Data="Teams"></UserTeams>
 
 @code {
-    private User? User { get; set; }
+    private UserModel User { get; set; } = new();
     private List<Team> Teams { get; set; } = new();
 
     protected override void OnInitialized()
@@ -33,11 +33,11 @@
                 .Map(dest => dest.Logo, src => src.Avatar);
             Teams = teams.Adapt<List<Team>>(teamConfig);
 
-            var user = await AuthClient.UserService.GetCurrentUserAsync();
-            var config = new TypeAdapterConfig();
-            config.NewConfig<UserModel, User>()
-                .Map(dest => dest.Address, src => src.Address.ToString());
-            User = user.Adapt<User>(config); 
+            //var user = await AuthClient.UserService.GetCurrentUserAsync();
+            //var config = new TypeAdapterConfig();
+            //config.NewConfig<UserModel, User>()
+            //    .Map(dest => dest.Address, src => src.Address.ToString());
+            //User = user.Adapt<User>(config); 
 
             StateHasChanged();
         }
