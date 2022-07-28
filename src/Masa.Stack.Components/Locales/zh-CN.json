@@ -78,6 +78,7 @@
   "RealName": "真实姓名",
   "IdentityCardNumber": "身份证号码",
   "TipsForLogout": "您确定退出当前登录账号？",
+  "Update password success": "修改秘密成功",
 
   "Counter": "计数",
   "Fetch data": "拉取数据",
