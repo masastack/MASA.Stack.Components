@@ -123,6 +123,7 @@ public partial class SLayout
                         new Nav("paginationSelectExample", "paginationSelect", "/paginationSelectExample", 2, "father"),
                         new Nav("dateRangePickerExample", "dateRangePicker", "/dateRangePickerExample", 2, "father"),
                         new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", "/dateTimeRangePickerExample", 2, "father"),
+                        new Nav("simpleModalExample", "simpleModal", "/simpleModalExample", 2, "father"),
                     }),
                 };
             }
