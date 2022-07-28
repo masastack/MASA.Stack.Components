@@ -46,7 +46,8 @@ public partial class SLayout
 
     List<Nav> FlattenedNavs { get; set; } = new();
 
-    List<string> _whiteUriList = new List<string> { "403", "404", "", "/", "user-center" };
+    List<string> _whiteUriList = new List<string> { "403", "404", "", "/", "user-center",
+        "notification-center", "notification-center/*" };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -166,11 +167,11 @@ public partial class SLayout
 
         return "/";
     }
-
     private bool IsMenusUri(List<Nav> navs, string uri)
     {
         uri = uri.ToLower();
-        if (_whiteUriList.Contains(uri))
+        if (_whiteUriList.Any(item => Regex.IsMatch(uri.ToLower(),
+                Regex.Escape(item.ToLower()).Replace(@"\*", ".*"))))
         {
             return true;
         }

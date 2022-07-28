@@ -453,6 +453,10 @@ body, .masa-stack-components {
     text-transform: none !important;
 }
 
+.masa-stack-components .m-input-number-handler-wrap .m-input__icon, .m-number-input-icon button {
+    height: 24px !important;
+}
+
 .masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-48 .m-label {
     top: 14px;
 }
