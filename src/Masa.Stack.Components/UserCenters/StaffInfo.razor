@@ -5,9 +5,9 @@
     <div class="user-info__left">
         <div class="avatar">
             <UploadAvatar Size="140" Class="mb-6" @bind-Value="UpdateUser.Avatar" WhenFileChangeUpload />
-            <PBlockText Primary="@UserDetail.DisplayName"
+            <PBlockText Primary="@StaffDetail.DisplayName"
                         PrimaryClass="font-20-bold emphasis2--text"
-                        Secondary="@UserDetail.Account"
+                        Secondary="@StaffDetail.Account"
                         SecondaryClass="regular3--text font-14 full-width" />
         </div>
         <div class="auths">
@@ -29,12 +29,12 @@
         <MWindow Value="_windowValue">
             <MWindowItem>
                 <div class="d-flex mb-4" style="justify-content: space-between;">
-                    <PBlockText Primary="@UserDetail.DisplayName"
+                    <PBlockText Primary="@StaffDetail.DisplayName"
                                 PrimaryClass="font-20-bold regular--text"
                                 SecondaryClass="caption regular3--text d-flex"
                                 SecondaryStyle="align-items:center;">
                         <SecondaryContent>
-                            @T(UserDetail.Gender.ToString())
+                            @T(StaffDetail.Gender.ToString())
                         </SecondaryContent>
                     </PBlockText>
                     <MButton Icon Small OnClick="() => _windowValue=1">
@@ -44,21 +44,21 @@
                 <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
                     <dt class="d-inline-flex font-14 regular--text">
                         <MIcon Class="regular3--text mr-2" Size="13">mdi-phone</MIcon>
-                        <span>@UserDetail.PhoneNumber</span>
+                        <span>@StaffDetail.PhoneNumber</span>
                     </dt>
                     <dd class="overline regular3--text">@T("PhoneNumber")</dd>
                 </dl>
                 <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
                     <dt class="d-inline-flex font-14 regular--text">
                         <MIcon Class="regular3--text mr-2" Size="13">mdi-email</MIcon>
-                        <span>@UserDetail.Email</span>
+                        <span>@StaffDetail.Email</span>
                     </dt>
                     <dd class="overline regular3--text">@T("Email")</dd>
                 </dl>
             </MWindowItem>
             <MWindowItem Class="mb-n2">
                 <div class="d-flex mb-4" style="justify-content: space-between;align-items: center;">
-                    <SLabeledRadioGroup @bind-Value="@UserDetail.Gender" Dense>
+                    <SLabeledRadioGroup @bind-Value="@StaffDetail.Gender" Dense>
                         <SLabeledRadio Value="GenderTypes.Female" Style="height:36px">@T(GenderTypes.Female.ToString())</SLabeledRadio>
                         <SLabeledRadio Value="GenderTypes.Male" Style="height:36px">@T(GenderTypes.Male.ToString())</SLabeledRadio>
                     </SLabeledRadioGroup>

@@ -1,13 +1,13 @@
 ﻿namespace Masa.Stack.Components.UserCenters;
 
-public partial class UserInfo : MasaComponentBase
+public partial class StaffInfo : MasaComponentBase
 {
     private EmailValidateModal? _emailValidateModalRef;
     private IdCardValidateModal? _idCardValidateModalRef;
     private PhoneNumberValidateModal? _phoneNumberValidateModalRef;
     private int _windowValue = 0;
 
-    public UserModel UserDetail { get; set; } = new();
+    public UserModel StaffDetail { get; set; } = new();
 
     public UpdateUserBasicInfoModel UpdateUser { get; set; } = new();
 
@@ -19,10 +19,10 @@ public partial class UserInfo : MasaComponentBase
         {
             Items = new Dictionary<string, object?>()
             {
-                ["Position"] = ("mdi-briefcase", UserDetail.Position),
-                ["Company"] = ("mdi-office-building", UserDetail.CompanyName),
-                ["Address"] = ("mdi-map-marker", UserDetail.Address),
-                ["Department"] = ("mdi-file-tree", UserDetail.Department),
+                ["Position"] = ("mdi-briefcase", StaffDetail.Position),
+                ["Company"] = ("mdi-office-building", StaffDetail.CompanyName),
+                ["Address"] = ("mdi-map-marker", StaffDetail.Address),
+                ["Department"] = ("mdi-file-tree", StaffDetail.Department),
                 //["CreationTime"] = ("mdi-clock-outline", User.CreatedAt.ToString("yyyy-MM-dd")),
             };
             await GetCurrentUserAsync();        
@@ -32,8 +32,8 @@ public partial class UserInfo : MasaComponentBase
 
     private async Task GetCurrentUserAsync()
     {
-        UserDetail = await AuthClient.UserService.GetCurrentUserAsync();
-        UpdateUser = UserDetail.Adapt<UpdateUserBasicInfoModel>();
+        StaffDetail = await AuthClient.UserService.GetCurrentUserAsync();
+        UpdateUser = StaffDetail.Adapt<UpdateUserBasicInfoModel>();
     }
 
     private async Task UpdateBasicInfoAsync()
@@ -45,7 +45,7 @@ public partial class UserInfo : MasaComponentBase
 
     private void Cancel()
     {
-        UpdateUser = UserDetail.Adapt<UpdateUserBasicInfoModel>();
+        UpdateUser = StaffDetail.Adapt<UpdateUserBasicInfoModel>();
         _windowValue = default;
     }
 
