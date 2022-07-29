@@ -14,7 +14,8 @@ public class STextField<TValue> : MTextField<TValue>
     [Parameter]
     public bool Required { get; set; }
 
-    [Parameter] public Action<DefaultTextfieldAction>? Action { get; set; }
+    [Parameter]
+    public Action<DefaultTextfieldAction>? Action { get; set; }
 
     private DefaultTextfieldAction InternalAction { get; set; } = new();
 

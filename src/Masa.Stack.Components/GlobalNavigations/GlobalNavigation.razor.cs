@@ -83,26 +83,27 @@ public partial class GlobalNavigation : MasaComponentBase
         result.ForEach(fn => fn.Nav.IsFavorite = true);
 
         return result;
-
-        FavoriteNav ConvertFavoriteNavs(List<CategoryAppNavModel> items, string code)
+        FavoriteNav? ConvertFavoriteNavs(List<CategoryAppNavModel> items, string code)
         {
-            var result = new FavoriteNav();
             var favoriteItem = items.FirstOrDefault(f => f.Nav.Code == code);
             if (favoriteItem != null)
             {
-                result = new FavoriteNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav);
+                return new FavoriteNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav);
             }
             else
             {
-                result = ConvertFavoriteNavs(items.SelectMany(n => n.Nav.Children.Select(nav => new
-                CategoryAppNavModel
+                var children = items.SelectMany(n => n.Nav.Children.Select(nav => new CategoryAppNavModel
                 {
                     CategoryCode = n.CategoryCode,
                     AppCode = n.AppCode,
                     Nav = nav
-                })).ToList(), code);
+                })).ToList();
+                if (children.Any())
+                {
+                    return ConvertFavoriteNavs(children, code);
+                }
             }
-            return result;
+            return null;
         }
     }
 

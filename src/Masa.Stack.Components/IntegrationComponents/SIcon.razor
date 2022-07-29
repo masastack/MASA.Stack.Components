@@ -1,0 +1,20 @@
+﻿@namespace Masa.Stack.Components
+@inherits MIcon
+
+@if (Tooltip is not null)
+{
+    <MTooltip Bottom>
+        <ActivatorContent>
+            <span @attributes="context.Attrs">
+                @base.BuildRenderTree
+            </span>
+        </ActivatorContent>
+        <ChildContent>
+            <span>@Tooltip</span>
+        </ChildContent>
+    </MTooltip>
+}
+else
+{
+    @base.BuildRenderTree
+}
