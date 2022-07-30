@@ -34,6 +34,9 @@ public partial class SLayout
     public string AppId { get; set; } = string.Empty;
 
     [Parameter]
+    public bool ShowBreadcrumbs { get; set; }
+
+    [Parameter]
     public Func<bool>? OnSignOut { get; set; }
 
     [Parameter]
@@ -45,6 +48,8 @@ public partial class SLayout
     List<Nav> NavItems = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
+
+    List<Nav> FlattenedAllNavs { get; set; } = new();
 
     List<string> _whiteUriList = new List<string> { "403", "404", "", "/", "user-center",
         "notification-center", "notification-center/*" };
@@ -147,6 +152,9 @@ public partial class SLayout
             }
 
             FlattenedNavs = FlattenNavs(NavItems, true);
+
+            FlattenedAllNavs = FlattenNavs(NavItems, false);
+
             StateHasChanged();
         }
 
@@ -210,6 +218,10 @@ public partial class SLayout
 
             if (nav.HasChildren)
             {
+                foreach (var child in nav.Children)
+                {
+                    child.ParentCode = nav.Code;
+                }
                 res.AddRange(FlattenNavs(nav.Children, excludeNavHasChildren));
             }
         }
