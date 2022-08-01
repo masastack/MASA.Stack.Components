@@ -34,6 +34,9 @@ public partial class SLayout
     public string AppId { get; set; } = string.Empty;
 
     [Parameter]
+    public bool ShowBreadcrumbs { get; set; }
+
+    [Parameter]
     public Func<bool>? OnSignOut { get; set; }
 
     [Parameter]
@@ -46,7 +49,10 @@ public partial class SLayout
 
     List<Nav> FlattenedNavs { get; set; } = new();
 
-    List<string> _whiteUriList = new List<string> { "403", "404", "", "/", "user-center" };
+    List<Nav> FlattenedAllNavs { get; set; } = new();
+
+    List<string> _whiteUriList = new List<string> { "403", "404", "", "/", "user-center",
+        "notification-center", "notification-center/*" };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -146,6 +152,9 @@ public partial class SLayout
             }
 
             FlattenedNavs = FlattenNavs(NavItems, true);
+
+            FlattenedAllNavs = FlattenNavs(NavItems, false);
+
             StateHasChanged();
         }
 
@@ -167,11 +176,11 @@ public partial class SLayout
 
         return "/";
     }
-
     private bool IsMenusUri(List<Nav> navs, string uri)
     {
         uri = uri.ToLower();
-        if (_whiteUriList.Contains(uri))
+        if (_whiteUriList.Any(item => Regex.IsMatch(uri.ToLower(),
+                Regex.Escape(item.ToLower()).Replace(@"\*", ".*"))))
         {
             return true;
         }
@@ -209,6 +218,10 @@ public partial class SLayout
 
             if (nav.HasChildren)
             {
+                foreach (var child in nav.Children)
+                {
+                    child.ParentCode = nav.Code;
+                }
                 res.AddRange(FlattenNavs(nav.Children, excludeNavHasChildren));
             }
         }

@@ -10,7 +10,7 @@
             </MCard>
         </div>
         <MCard Style="@CardStyle" class="m-click-extend-item">
-            <MTextField Autofocus @bind-Value="Value" OnBlur="OnBlurHandler" Outlined Dense Placeholder="search"
+            <MTextField Autofocus Value="Value" ValueChanged="ValueChanged" OnBlur="OnBlurHandler" Outlined Dense Placeholder="search"
                     HideDetails=true PrependInnerIcon="mdi-magnify" OnKeyDown="OnKeyDownHandler">
             </MTextField>
         </MCard>
@@ -28,7 +28,7 @@ else
             </div>
         </div>
         <div Style="@CardStyle" class="m-click-extend-item">
-            <MTextField Autofocus @bind-Value="Value" OnBlur="OnBlurHandler" Outlined Dense Placeholder="search"
+            <MTextField Autofocus Value="Value" ValueChanged="ValueChanged" OnBlur="OnBlurHandler" Outlined Dense Placeholder="search"
                     HideDetails=true PrependInnerIcon="mdi-magnify" OnKeyDown="OnKeyDownHandler">
             </MTextField>
         </div>
