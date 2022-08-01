@@ -571,3 +571,8 @@ input::-webkit-input-placeholder {
 .m-dialog--drawer .m-card {
     border-radius: 0;
 }
+
+.row-box .col {
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
