@@ -2,6 +2,7 @@
 
 public class SAutoLoadingButton : MButton
 {
+    [Parameter]
     public string BorderRadiusClass { get; set; } = "rounded-pill";
 
     public override async Task SetParametersAsync(ParameterView parameters)
