@@ -1,13 +1,45 @@
 ﻿@page "/dateRangePickerExample"
 
-<div class="pa-12 mb-12">
-    <SDatePicker @bind-Value=StartTime Max=EndTime />
-</div>
-<div class="pa-12 mb-12">
-    <SDateRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
-</div>
+<h2>DatePicker</h2>
+<h2>PDateTimePicker</h2>
+
+<MRow>
+    <MCol Cols="12">
+        The type of Value supports
+        <code>DateTime</code> and <code>DateTime?</code>.
+    </MCol>
+    <MCol Cols="12" Sm="6">
+        <SDateTimePicker @bind-Value="dateTime1" Label="test"></SDateTimePicker>
+        <SDateTimePicker @bind-Value="dateTime2" Label="test 2"></SDateTimePicker>
+    </MCol>
+</MRow>
+
+<h2>DateRangePicker</h2>
+
+<MRow>
+    <MCol Cols="12" Md="4">
+        <SDateRangePicker @bind-StartTime=StartDate @bind-EndTime=EndDate />
+    </MCol>
+</MRow>
+
+<h2>DateTimeRangePicker</h2>
+
+<MRow>
+    <MCol Cols="12" Md="4">
+        <SDateTimeRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
+    </MCol>
+    <MCol Cols="12" Md="4">
+        <SRelativeTime @bind-StartTime="StartTime" @bind-EndTime="EndTime" />
+    </MCol>
+</MRow>
 
 @code{
-    public DateOnly? StartTime { get; set; }
-    public DateOnly? EndTime { get; set; }
+    private DateTime dateTime1 { get; set; }
+    private DateTime? dateTime2 { get; set; }
+
+    private DateOnly? StartDate { get; set; }
+    private DateOnly? EndDate { get; set; }
+
+    private DateTime? StartTime { get; set; }
+    private DateTime? EndTime { get; set; }
 }

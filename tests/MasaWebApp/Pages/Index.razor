@@ -1,7 +1,29 @@
-﻿@page "/index"
+﻿@using Masa.Stack.Components.IntegrationComponents.DateTimes
+@page "/index"
 
 <PageTitle>Index</PageTitle>
 
 <h1>Index @TimezoneOffset</h1>
 
-<SForgetPasswordSheet></SForgetPasswordSheet>
+<MMenu CloseOnContentClick="false">
+    <ActivatorContent>
+        <MButton @attributes="@context.Attrs">CLICK ME</MButton>
+    </ActivatorContent>
+    <ChildContent>
+        <MAutocomplete Items="@(new string[]{"Foo", "Bar", "Fizz", "Buzz"})" TItem="string" TItemValue="string" TValue="string" ItemValue="s => s" ItemText="s => s">
+                        
+        </MAutocomplete>
+    </ChildContent>
+</MMenu>
+
+@_dateTime
+
+<DateTimePicker @bind-Value="_dateTime">
+    
+</DateTimePicker>
+
+@code {
+
+    private DateTime? _dateTime;
+
+}

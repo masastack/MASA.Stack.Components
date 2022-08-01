@@ -1,6 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components.IntegrationComponents.DateTimes;
 
-public partial class SDateTimePicker
+public partial class DateTimePicker
 {
     private static readonly int[] _hours = Enumerable.Range(0, 24).ToArray();
     private static readonly int[] _minutes = Enumerable.Range(0, 60).ToArray();
@@ -128,7 +128,7 @@ public partial class SDateTimePicker
         DateTime? dateTime = default;
         if (Date is null)
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             if (Min is not null)
             {
                 if (Min < now) dateTime = DateOnly.FromDateTime(now).ToDateTime(time);
@@ -147,7 +147,7 @@ public partial class SDateTimePicker
 
     private async Task OnNowAsync()
     {
-        await UpdateValueAsync(DateTime.Now);
+        await UpdateValueAsync(DateTime.UtcNow);
     }
 
     private async Task OnResetAsync()

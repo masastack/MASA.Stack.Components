@@ -1,4 +1,5 @@
-﻿@namespace Masa.Stack.Components
+﻿@using Masa.Stack.Components.IntegrationComponents.DateTimes
+@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
 <div class="d-flex px-6 fill dateRangePicker @Class" style="@Style;">
@@ -11,11 +12,11 @@
                 </div>
             </ActivatorContent>
             <ChildContent>
-                <SDateTimePicker
+                <DateTimePicker
                     @bind-Value=InternalStartTime
                     Max="EndTime">
                         <MButton Text Color="primary" OnClick="async() => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
-                </SDateTimePicker>
+                </DateTimePicker>
             </ChildContent>
         </MMenu>      
         <div class="ml-4" style="width: 0px;height:24px;border: 1px solid #E2E7F4;"></div>
@@ -26,11 +27,11 @@
                 </div>
             </ActivatorContent>
             <ChildContent>
-                <SDateTimePicker
+                <DateTimePicker
                     @bind-Value=InternalEndTime
                     Min="StartTime">
                     <MButton Text Color="primary" OnClick="async() => await UpdateEndTimeAsync()">@T("Confirm")</MButton>
-                </SDateTimePicker>
+                </DateTimePicker>
             </ChildContent>
         </MMenu>
     </div>

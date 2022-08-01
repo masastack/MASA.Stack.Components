@@ -1,4 +1,5 @@
-﻿@namespace Masa.Stack.Components
+﻿@using Masa.Stack.Components.IntegrationComponents.DateTimes
+@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
 <div class="d-flex px-6 fill dateRangePicker @Class" style="@Style;">
@@ -11,7 +12,7 @@
                 </div>
             </ActivatorContent>
             <ChildContent>
-                <SDatePicker Value=StartTime Max=EndTime ValueChanged=UpdateStartTimeAsync TValue="DateOnly?" OnInput="()=> StartTimeVisible = false" />
+                <DatePicker Value=StartTime Max=EndTime ValueChanged=UpdateStartTimeAsync TValue="DateOnly?" OnInput="()=> StartTimeVisible = false" />
             </ChildContent>
         </MMenu>      
         <div class="ml-4" style="width: 0px;height:24px;border: 1px solid #E2E7F4;"></div>
@@ -22,7 +23,7 @@
                 </div>
             </ActivatorContent>
             <ChildContent>
-                <SDatePicker Value=EndTime Min=StartTime ValueChanged=UpdateEndTimeAsync TValue="DateOnly?" OnInput="()=> EndTimeVisible = false" />
+                <DatePicker Value=EndTime Min=StartTime ValueChanged=UpdateEndTimeAsync TValue="DateOnly?" OnInput="()=> EndTimeVisible = false" />
             </ChildContent>
         </MMenu>
     </div>

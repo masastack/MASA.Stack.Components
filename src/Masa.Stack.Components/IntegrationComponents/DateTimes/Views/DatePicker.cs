@@ -1,5 +1,6 @@
-﻿namespace Masa.Stack.Components;
-public partial class SDatePicker : MDatePicker<DateOnly?>
+﻿namespace Masa.Stack.Components.IntegrationComponents.DateTimes;
+
+public partial class DatePicker : MDatePicker<DateOnly?>
 {
     [CascadingParameter]
     public new I18n I18n { get; set; } = default!;
