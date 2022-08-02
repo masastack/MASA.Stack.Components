@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public partial class UrlTextField
+public partial class SUrlTextField : IDisposable
 {
     public string? _protocol;
 
@@ -13,25 +13,28 @@ public partial class UrlTextField
         set => _protocol = value;
     }
 
+    [CascadingParameter]
+    public EditContext? EditContext { get; set; }
+
     [Parameter]
     public string Value
     {
         get => $"{Protocol}://{TextValue}";
-        set 
+        set
         {
-            if(value is not null)
+            if (value is not null)
             {
                 if (value.StartsWith("Https://"))
                 {
                     _protocol = "Https";
                     TextValue = value.TrimStart("Https://".ToCharArray());
                 }
-                else if(value.StartsWith("Http://"))
+                else if (value.StartsWith("Http://"))
                 {
                     _protocol = "Http";
                     TextValue = value.TrimStart("Http://".ToCharArray());
                 }
-            }         
+            }
         }
     }
 
@@ -39,9 +42,14 @@ public partial class UrlTextField
     public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
+    public Expression<Func<string>>? ValueExpression { get; set; }
+
+    [Parameter]
     public string Label { get; set; } = "";
 
     public string TextValue { get; set; } = "";
+
+    protected FieldIdentifier ValueIdentifier { get; set; }
 
     public async Task ValueTextUpdateAsync(string value)
     {
@@ -58,4 +66,29 @@ public partial class UrlTextField
     }
 
     public List<string> Items { get; set; } = new() { "Http", "Https" };
+
+    public List<string> ErrorMessage { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        if (EditContext is not null && ValueExpression is not null)
+        {
+            ValueIdentifier = FieldIdentifier.Create(ValueExpression);
+            EditContext.OnValidationStateChanged += HandleOnValidationStateChanged;
+        }
+    }
+
+    protected virtual void HandleOnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        ErrorMessage = EditContext!.GetValidationMessages(ValueIdentifier).ToList();
+        base.InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        if (EditContext != null)
+        {
+            EditContext.OnValidationStateChanged -= HandleOnValidationStateChanged;
+        }
+    }
 }
