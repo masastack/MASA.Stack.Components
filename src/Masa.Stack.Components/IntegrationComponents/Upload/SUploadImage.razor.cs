@@ -30,7 +30,6 @@ public partial class SUploadImage : SUpload
     {
         Accept = "image/*";
         OnInputFileChanged = "GetPreviewImageUrls";
-        Class = "mr-4";
         await base.SetParametersAsync(parameters);
     }
 

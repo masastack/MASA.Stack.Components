@@ -11,6 +11,12 @@
         [Parameter]
         public string Class { get; set; } = "";
 
+        [Parameter]
+        public string SideStyle { get; set; } = "";
+
+        [Parameter]
+        public string SideClass { get; set; } = "";
+
         [Parameter, EditorRequired]
         public List<Category>? Categories { get; set; }
 

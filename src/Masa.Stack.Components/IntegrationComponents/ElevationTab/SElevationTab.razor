@@ -37,6 +37,7 @@
 </CascadingValue>
 
 @code {
+    private List<string> _tabs = new();
 
     [Parameter]
     public string? Class { get; set; }
@@ -64,7 +65,21 @@
 
     [EditorRequired]
     [Parameter]
-    public List<string>? Tabs { get; set; }
+    public List<string> Tabs
+    {
+        get => _tabs;
+        set
+        {
+            if(value.Count != _tabs.Count || value.Except(_tabs).Count()>0)
+            {
+                _tabs = value;
+                if(_tabs.Contains(Tab) is false)
+                {
+                    Tab = _tabs.First();
+                }
+            }
+        }
+    }
 
     [Parameter]
     public bool Dense { get; set; }
@@ -76,7 +91,7 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public string? Tab { get; set; }
+    public string Tab { get; set; } = "";
 
     [Parameter]
     public EventCallback<string> TabChanged { get; set; }
@@ -99,12 +114,6 @@
 
             return "align-center";
         }
-    }
-
-    protected override void OnParametersSet()
-    {
-        Tabs ??= new List<string>();
-        Tab ??= Tabs!.FirstOrDefault();
     }
 
     public void AddTabItem(SElevationTabItem tabItem)
