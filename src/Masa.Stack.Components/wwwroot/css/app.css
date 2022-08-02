@@ -487,9 +487,9 @@ body, .masa-stack-components {
 
 .masa-stack-components .table-border-none thead th {
     border-bottom: 0px !important;
-    box-shadow: none;
-    padding-top: 24px !important;
-    padding-bottom: 24px !important;
+    box-shadow: none !important;
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
     color: #A3AED0 !important;
     font-size: 0.875rem !important;
     font-weight: 400 !important;
@@ -500,8 +500,8 @@ body, .masa-stack-components {
 .masa-stack-components .table-border-none td {
     border-bottom: 0px !important;
     box-shadow: none;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
 }
 
 .masa-stack-components .table-border-none tbody tr:hover {
@@ -539,7 +539,6 @@ body, .masa-stack-components {
     border-top-right-radius: 8px !important;
     border-bottom-right-radius: 8px !important;
 }
-
 /*
     uploadImage
 */

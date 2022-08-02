@@ -38,7 +38,9 @@ public partial class SUserAutoComplete
     public bool Flat { get; set; } = true;
 
     [Parameter]
-    public string Label { get; set; } = string.Empty;
+    public string? Label { get; set; }
+
+    public string I18nLabel => Label is null ? T("Search") : Label;
 
     [Parameter]
     public string Placeholder { get; set; } = string.Empty;
@@ -55,14 +57,6 @@ public partial class SUserAutoComplete
     {
         get => _autocompleteClient ?? throw new Exception("Please inject IAutoCompleteClient");
         set => _autocompleteClient = value;
-    }
-
-    protected override void OnParametersSet()
-    {
-        if(string.IsNullOrEmpty(Label))
-        {
-            Label = T("Search");
-        }
     }
 
     public async Task OnSearchChanged(string search)
