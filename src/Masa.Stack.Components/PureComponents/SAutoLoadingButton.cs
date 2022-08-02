@@ -2,10 +2,12 @@
 
 public class SAutoLoadingButton : MButton
 {
+    [Parameter]
+    public string BorderRadiusClass { get; set; } = "rounded-pill";
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Color = "primary";
-
         await base.SetParametersAsync(parameters);
     }
 
@@ -32,5 +34,18 @@ public class SAutoLoadingButton : MButton
                 }
             });
         }
+    }
+
+    protected override void SetComponentClass()
+    {
+        base.SetComponentClass();
+
+        CssProvider.Merge(delegate (CssBuilder cssBuilder)
+        {
+            cssBuilder.AddIf(BorderRadiusClass, () =>
+            {
+                return !(Class?.Split(' ').Contains(BorderRadiusClass) ?? false);
+            });
+        });
     }
 }

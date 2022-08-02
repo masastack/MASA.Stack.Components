@@ -393,7 +393,6 @@ body, .masa-stack-components {
 .masa-stack-components .small-button {
     min-width: 100px !important;
     height: 40px !important;
-    border-radius: 40px !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;
@@ -402,7 +401,6 @@ body, .masa-stack-components {
 .masa-stack-components .medium-button {
     min-width: 126px !important;
     height: 40px !important;
-    border-radius: 99px !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;
@@ -411,7 +409,6 @@ body, .masa-stack-components {
 .masa-stack-components .large-button {
     min-width: 340px !important;
     height: 48px !important;
-    border-radius: 90px !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;

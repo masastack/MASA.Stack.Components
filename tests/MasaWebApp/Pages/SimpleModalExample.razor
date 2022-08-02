@@ -4,29 +4,23 @@
 <SSimpleModal Value="@_visible" Title="标题" SaveText="保存" OnDelete="()=>Console.WriteLine(1)" OnSave="()=>Console.WriteLine(1)" BodyStyle="height: 597px;">
     <ChildContent>
         <MForm Model="_model" EnableValidation Class="full-height">
-            <MRow>
-                <MCol Class="pt-0 mt-2">
+            <MRow Class="row-box">
+                <MCol Cols="12">
                     <STextField @bind-Value="_model.DisplayName"
                                 Label="DisplayName">
                     </STextField>
                 </MCol>
-            </MRow>
-            <MRow Class="mt-6">
-                <MCol>
+                <MCol Cols="12">
                     <STextField @bind-Value="_model.Name"
                                 Label="Name">
                     </STextField>
                 </MCol>
-            </MRow>
-            <MRow Class="mt-6">
-                <MCol>
+                <MCol Cols="12">
                     <STextField @bind-Value="_model.Email"
                                 Label="Email">
                     </STextField>
                 </MCol>
-            </MRow>
-            <MRow Class="mt-6">
-                <MCol>
+                <MCol Cols="12">
                     <STextField @bind-Value="_model.PhoneNumber"
                                 Label="PhoneNumber">
                     </STextField>

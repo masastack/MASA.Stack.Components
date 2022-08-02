@@ -29,7 +29,14 @@
                     <ErrorContent>
                     </ErrorContent>
                 </MErrorHandler>
-                <SearchMenu />
+                @if (ShowBreadcrumbs)
+                {
+                    <Breadcrumbs FlattenedNavs="FlattenedAllNavs" Style="padding-bottom: 0px !importance;"></Breadcrumbs>
+                }
+                else
+                {
+                    <SearchMenu />  
+                }
                 <MSpacer />
                 <Favorites FlattenedNavs="FlattenedNavs" />
                 <Languages OnChange="() => { }" />
@@ -45,10 +52,6 @@
 
             <MMain>
                 <div class="@($"px-6 pb-6 max-width full-height {@Class}")" style="@Style">
-                    @if (ShowBreadcrumbs)
-                    {
-                        <Breadcrumbs FlattenedNavs="FlattenedAllNavs"></Breadcrumbs>
-                    }
                     @ChildContent
                 </div>
             </MMain>

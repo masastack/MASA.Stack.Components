@@ -37,9 +37,9 @@ public class SSimpleModal : PModal
         }
 
         BodyClass ??= string.Empty;
-        if (!BodyClass.Contains(" pa-0 overflow-y-auto pr-4 pt-3 mt-6"))
+        if (!BodyClass.Contains(" pa-0 overflow-y-auto pr-4 mt-6"))
         {
-            BodyClass += " pa-0 overflow-y-auto pr-4 pt-3 mt-6";
+            BodyClass += " pa-0 overflow-y-auto pr-4 mt-6";
         }
 
         ActionsClass ??= string.Empty;
