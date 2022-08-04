@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components.Layouts
+@using Masa.Stack.Components.Extensions
 @inherits MasaComponentBase
 @implements IDisposable
 @inject GlobalConfig GlobalConfig
@@ -163,7 +164,7 @@
 
     private void NavigateToIndex()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo(Items!.GetDefaultRoute());
     }
 
     public void Dispose()

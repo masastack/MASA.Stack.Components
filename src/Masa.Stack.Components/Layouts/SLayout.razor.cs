@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Stack.Components.Extensions;
+
+namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
@@ -141,7 +143,7 @@ public partial class SLayout
             //add home index content sould remove this code
             if (NavigationManager.Uri == NavigationManager.BaseUri)
             {
-                NavigationManager.NavigateTo(HomeUri(NavItems));
+                NavigationManager.NavigateTo(NavItems.GetDefaultRoute());
                 return;
             }
 
@@ -161,21 +163,6 @@ public partial class SLayout
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private string HomeUri(List<Nav> navs)
-    {
-        var firstMenu = navs.FirstOrDefault();
-        if (firstMenu != null)
-        {
-            if (string.IsNullOrEmpty(firstMenu.Url))
-            {
-                return HomeUri(firstMenu.Children);
-            }
-
-            return firstMenu.Url;
-        }
-
-        return "/";
-    }
     private bool IsMenusUri(List<Nav> navs, string uri)
     {
         uri = uri.ToLower();
