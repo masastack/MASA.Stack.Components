@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace Masa.Stack.Components.Forms;
+﻿namespace Masa.Stack.Components.Forms;
 
 public partial class EmailValidateForm : MasaComponentBase
 {

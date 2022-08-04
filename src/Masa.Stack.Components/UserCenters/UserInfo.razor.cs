@@ -1,5 +1,4 @@
 ﻿using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Enum;
-using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Model;
 
 namespace Masa.Stack.Components.UserCenters;
 

@@ -29,7 +29,7 @@ public partial class ExpansionWrapperUnique
         get => _values;
         set
         {
-            if (_values.Count != value.Count || _values.Except(value).Count() > 0)
+            if (_values.Count != value.Count || _values.Any(v => value.Any(v2 => v2.Code == v.Code && v2.IsChecked == v.IsChecked) is false))
             {
                 _values = value;
                 SetCheckedCategoryAppNavs();
@@ -88,22 +88,18 @@ public partial class ExpansionWrapperUnique
         foreach (var categoryAppNav in CategoryAppNavs)
         {
             categoryAppNav.NavModel!.IsDisabled = false;
-            if (categoryAppNav.Action is not null)
+            var code = categoryAppNav.Action ?? categoryAppNav.Nav;
+            if (code is not null)
             {
-                var value = Value.FirstOrDefault(value => value.Code.Contains(categoryAppNav.Action));
+                var value = Value.FirstOrDefault(value => value.Code.Contains(code));
                 if (value is not null)
                 {
                     categoryAppNav.NavModel.IsDisabled = value.IsDisabled;
-                    CheckedCategoryAppNavs.Add(categoryAppNav);
-                }
-            }
-            else if (categoryAppNav.Nav is not null)
-            {
-                var value = Value.FirstOrDefault(value => value.Code.Contains(categoryAppNav.Nav));
-                if (value is not null)
-                {
-                    categoryAppNav.NavModel.IsDisabled = value.IsDisabled;
-                    CheckedCategoryAppNavs.Add(categoryAppNav);
+                    categoryAppNav.NavModel.IsClose = value.IsClose;
+                    if (value.IsChecked)
+                    {
+                        CheckedCategoryAppNavs.Add(categoryAppNav);
+                    }
                 }
             }
         }

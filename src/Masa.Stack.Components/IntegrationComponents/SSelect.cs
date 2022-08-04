@@ -19,7 +19,7 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
         Dense = true;
         HideDetails = "auto";
         Outlined = true;
-        MenuProps = props => 
+        MenuProps = props =>
         {
             props.OffsetY = true;
         };
