@@ -102,24 +102,6 @@ public partial class ExpansionWrapperUnique
                     }
                 }
             }
-            //if (categoryAppNav.Action is not null)
-            //{
-            //    var value = Value.FirstOrDefault(value => value.Code.Contains(categoryAppNav.Action));
-            //    if (value is not null)
-            //    {
-            //        categoryAppNav.NavModel.IsDisabled = value.IsDisabled;
-            //        CheckedCategoryAppNavs.Add(categoryAppNav);
-            //    }
-            //}
-            //else if (categoryAppNav.Nav is not null)
-            //{
-            //    var value = Value.FirstOrDefault(value => value.Code.Contains(categoryAppNav.Nav));
-            //    if (value is not null)
-            //    {
-            //        categoryAppNav.NavModel.IsDisabled = value.IsDisabled;
-            //        CheckedCategoryAppNavs.Add(categoryAppNav);
-            //    }
-            //}
         }
     }
 
