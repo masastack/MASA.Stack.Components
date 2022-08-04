@@ -36,9 +36,16 @@
                             }
                         </MListItemAction>
                     }
-                    else if (Checkable && IsChecked)
-                    {
-                        <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                    else if (Checkable && Data.HasChildren is false)
+                    {                                              
+                        if(IsChecked)
+                        {
+                            <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                        }
+                        else if(Data.IsClose)
+                        {
+                            <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
+                        }
                     }
                     else if (Data.IsFavorite)
                     {
@@ -72,9 +79,13 @@
                                 <MCheckbox Dense Value="@IsChecked"></MCheckbox>
                             </MListItemAction>
                         }
-                        else if (IsChecked)
+                        else if(IsChecked)
                         {
                             <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                        }
+                        else if(Data.IsClose)
+                        {
+                            <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
                         }
                     }
                 </ItemContent>

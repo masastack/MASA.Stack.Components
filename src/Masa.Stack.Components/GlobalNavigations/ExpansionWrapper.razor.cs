@@ -2,6 +2,8 @@
 {
     public partial class ExpansionWrapper : IDisposable
     {
+        private List<CategoryAppNav> _value = new();
+
         [Inject]
         private IJSRuntime JsRuntime { get; set; } = null!;
 
@@ -33,7 +35,15 @@
         public List<FavoriteNav>? FavoriteNavs { get; set; }
 
         [Parameter]
-        public List<CategoryAppNav> Value { get; set; } = new();
+        public List<CategoryAppNav> Value
+        {
+            get => _value;
+            set
+            {
+                _allValue = value;
+                _value = value;
+            }
+        }
 
         [Parameter]
         public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
@@ -76,7 +86,6 @@
 
         internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
         {
-            if (_allValue is null) _allValue = Value;
             _allValue = _allValue.Where(v => v.App != code).ToList();
             _allValue.AddRange(value);
             await UpdateValue(_allValue);

@@ -1,6 +1,4 @@
-﻿using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Model;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class GlobalNavigation : MasaComponentBase
 {
