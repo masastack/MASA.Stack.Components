@@ -39,6 +39,8 @@ public class Nav : NavBase
 
     public bool IsChecked { get; set; }
 
+    public bool IsClose { get; set; }
+
     public bool HasChildren => Children.Any() && !HasActions;
 
     public bool HasActions => Actions.Any();
