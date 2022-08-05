@@ -8,6 +8,7 @@ public class SDataTable<TItem> : MDataTable<TItem>
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         HideDefaultFooter = true;
+        FixedHeader = true;
         await base.SetParametersAsync(parameters);
     }
 
@@ -17,6 +18,8 @@ public class SDataTable<TItem> : MDataTable<TItem>
         Class ??= "";
         if (Class.Contains("table-border-none") is false)
             Class += " table-border-none";
+        if(Dense && Class.Contains("dense") is false)
+            Class += " dense";
     }
 }
 
