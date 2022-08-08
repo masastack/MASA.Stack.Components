@@ -6,19 +6,31 @@ namespace Masa.Stack.Components.NotificationCenters;
 public partial class NotificationDetail
 {
     [Inject]
+    public NoticeState NoticeState { get; set; } = default!;
+
+    [Inject]
     private IPopupService PopupService { get; set; } = null!;
 
     [Parameter]
     public Guid MessageId { get; set; }
 
     [Parameter]
+    public bool Visible { get; set; }
+
+    [Parameter]
     public EventCallback OnBack { get; set; }
+
+    [Parameter]
+    public EventCallback<Guid?> OnChannelClick { get; set; }
 
     private WebsiteMessageModel _entity = new();
 
     protected override async void OnParametersSet()
     {
-        await GetFormDataAsync(MessageId);
+        if (Visible)
+        {
+            await GetFormDataAsync(MessageId);
+        }
     }
 
     private async Task GetFormDataAsync(Guid id)
@@ -40,7 +52,17 @@ public partial class NotificationDetail
     {
         await McClient.WebsiteMessageService.DeleteAsync(MessageId);
         await PopupService.ToastSuccessAsync(T("DeletedSuccessfullyMessage"));
+
+        await LoadNotices();
+
         await HandleOnBack();
+    }
+
+    private async Task LoadNotices()
+    {
+        GetNoticeListModel _queryParam = new();
+        var dtos = await McClient.WebsiteMessageService.GetNoticeListAsync(_queryParam);
+        NoticeState.SetNotices(dtos);
     }
 
     private async Task HandleOnBack()
@@ -55,5 +77,13 @@ public partial class NotificationDetail
     {
         if (id == default) return;
         await GetFormDataAsync(id);
+    }
+
+    private async Task HandleOnChannelClick()
+    {
+        if (OnChannelClick.HasDelegate)
+        {
+            await OnChannelClick.InvokeAsync(_entity?.ChannelId);
+        }
     }
 }

@@ -2,7 +2,7 @@
 @inject IMcClient McClient
 @using static Masa.Stack.Components.JsInitVariables;
 
-<MCard Class="full-height">
+<MCard Class="@($"full-height rounded-5 {(Visible?"":"d-none")}")">
     <MCardTitle>
         <div class="d-flex full-width align-center" style="height: 40px !important;">
             <SButton Outlined Fab Small Icon Color="fill-line" @onclick="HandleOnBack">
@@ -11,7 +11,7 @@
                 </MIcon>
             </SButton>
             <div class="ml-4" style="width: 0px;height:24px;border: 1px solid #E2E7F4;"></div>
-            <MListItem>
+            <MListItem OnClick="HandleOnChannelClick">
                 <MListItemAvatar Class="overflow-visible">
                     <SEmptyAvatar Value="@_entity.Channel?.DisplayName" />
                 </MListItemAvatar>
@@ -31,7 +31,7 @@
         <div class="detail-box pt-4">
             <span class="h7 emphasis2--text">@_entity.Title</span>
             <div class="body2 regular2--text pt-2">
-                <span>@_entity.SendTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</span>
+                <span>@_entity.SendTime.ToOffset(TimezoneOffset).ToString(T("$MonthDayFormat"))</span>
             </div>
             <div class="content body regular2--text">
                 @((MarkupString)_entity.Content)

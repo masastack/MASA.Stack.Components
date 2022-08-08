@@ -16,14 +16,14 @@
                 @if (!NoticeState.IsRead)
                 {
                     <MBadge Bordered OverLap Dot Color="red">
-                        <MIcon Size="20">
+                        <MIcon>
                             mdi-bell
                         </MIcon>
                     </MBadge>
                 }
                 else
                 {
-                    <MIcon Size="20">
+                    <MIcon>
                         mdi-bell
                     </MIcon>
                 }
@@ -33,13 +33,11 @@
             <MCard Width="400">
                 <MToolbar Color="primary"
                           Dark Style="box-shadow: none;">
-                    <MToolbarTitle Class="h7 fill--text">@T("DisplayName.Notice.Title")</MToolbarTitle>
-
-                    <MSpacer></MSpacer>
-
-                    <MButton Icon>
+                    <MButton Icon Class="ml-0" Small>
                         <MIcon>mdi-bell-outline</MIcon>
                     </MButton>
+                    <MToolbarTitle Class="h7 fill--text pl-2">@T("DisplayName.Notice.Title")</MToolbarTitle>
+                    <MSpacer></MSpacer>
                 </MToolbar>
 
                 <MList ThreeLine>
@@ -51,8 +49,8 @@
                             </MListItemAvatar>
 
                             <MListItemContent>
-                                <MListItemTitle Class="btn emphasis--text">@item.Title</MListItemTitle>
-                                <MListItemSubtitle Class="caption regular2--text mt-1">@item.Abstract</MListItemSubtitle>
+                                <MListItemTitle Class="btn emphasis--text">@item.Channel?.DisplayName</MListItemTitle>
+                                <MListItemSubtitle Class="caption regular2--text mt-1">@item.Title</MListItemSubtitle>
                                 <MListItemSubtitle Class="overline regular3--text mt-1">@item.SendTime.ToOffset(TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemSubtitle>
                             </MListItemContent>
                         </MListItem>

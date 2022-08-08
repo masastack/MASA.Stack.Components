@@ -9,6 +9,7 @@ public partial class NotificationCenter : MasaComponentBase
     public string MessageId { get; set; }
 
     private NotificationLeft _messageLeftRef = default!;
+    private NotificationRight _messageRightRef = default!;
     private bool _detailShow = false;
     private Guid? _channelId;
     private Guid _messageId;
@@ -38,10 +39,11 @@ public partial class NotificationCenter : MasaComponentBase
         _detailShow = false;
     }
 
-    private void HandleChannelClick(Guid? channelId)
+    private async void HandleChannelClick(Guid? channelId)
     {
         _channelId = channelId;
         _detailShow = false;
+        await _messageRightRef.RefreshAsync();
     }
 
     private async Task HandleAllRead()

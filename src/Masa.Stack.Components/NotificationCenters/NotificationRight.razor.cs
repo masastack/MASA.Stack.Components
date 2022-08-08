@@ -15,6 +15,9 @@ public partial class NotificationRight : MasaComponentBase
     public Guid? ChannelId { get; set; }
 
     [Parameter]
+    public bool Visible { get; set; }
+
+    [Parameter]
     public EventCallback<Guid> OnItemClick { get; set; }
 
     [Parameter]
@@ -29,7 +32,7 @@ public partial class NotificationRight : MasaComponentBase
     {
         _queryParam.ChannelId = ChannelId;
         _channel = ChannelId.HasValue ? await McClient.ChannelService.GetAsync(ChannelId.Value) : null;
-        await RefreshAsync();
+        await LoadData();
         StateHasChanged();
     }
 
@@ -52,7 +55,7 @@ public partial class NotificationRight : MasaComponentBase
         }
     }
 
-    private async Task RefreshAsync()
+    public async Task RefreshAsync()
     {
         _queryParam.Page = 1;
         await LoadData();

@@ -1,66 +1,51 @@
 ﻿@inherits MasaComponentBase
 @inject IMcClient McClient
 @inject GlobalConfig GlobalConfig
-<MCard Class="mx-auto full-height">
+<MCard Class="mx-auto d-flex full-height flex-column rounded-5">
     <MCardTitle Class="h5 emphasis2--text pa-6">
         @T("Permission.WebsiteMessageManagement")
     </MCardTitle>
-
-    <MList Subheader
-           TwoLine>
-        <MListItem Link OnClick="()=>HandleOnClick(null)" Class="pl-8">
-            <MListItemAvatar Class="overflow-visible">
-                @if (_channels.Any(x => !x.IsRead))
-                {
-                    <MBadge Bordered Dot Color="pink" OffsetX="10" OffsetY="10">
-                        <MAvatar Color="primary">
-                        </MAvatar>
-                    </MBadge>
-                }
-                else
-                {
-                    <MAvatar Color="primary">
-                    </MAvatar>
-                }
-            </MListItemAvatar>
-
-            <MListItemContent>
-                <MListItemTitle Class="subtitle emphasis--text">@T("DisplayName.AllWebsiteMessage")</MListItemTitle>
-            </MListItemContent>
-            <MListItemIcon>
-                <MIcon>
-                    mdi-menu-right
-                </MIcon>
-            </MListItemIcon>
-        </MListItem>
-
-
-        @foreach (var item in _channels)
-        {
-            <MListItem Link OnClick="()=>HandleOnClick(item.ChannelId)" Class="pl-8">
+    <MCardText Class="pa-0 overflow-y-auto">
+        <MList Subheader
+               TwoLine Height=0>
+            <MListItem Link OnClick="()=>HandleOnClick(null)" Class="pl-8">
                 <MListItemAvatar Class="overflow-visible">
-                    @if (item.NoReading == 0)
-                    {
-                        <SEmptyAvatar Value="@item.Channel?.DisplayName" />
-                    }
-                    else
-                    {
-                        <MBadge Bordered Color="pink" OffsetX="item.NoReading>99?10:16" OffsetY="item.NoReading>99?10:16" Dot="item.NoReading>99" Content="item.NoReading">
-                            <SEmptyAvatar Value="@item.Channel?.DisplayName" />
-                        </MBadge>
-                    }
+                    <NotificationAvatar Dot="_channels.Any(x => !x.IsRead)" />
                 </MListItemAvatar>
 
-                <MListItemContent Class="pt-0">
-                    <MListItemTitle Class="py-2 subtitle emphasis--text">@item.Channel?.DisplayName</MListItemTitle>
-
-                    <MListItemSubtitle Class="caption regular2--text">@item.Title</MListItemSubtitle>
+                <MListItemContent>
+                    <MListItemTitle Class="subtitle emphasis--text">@T("DisplayName.AllWebsiteMessage")</MListItemTitle>
                 </MListItemContent>
-
-                <MListItemAction Class="align-self-start">
-                    <MListItemActionText Class="overline regular2--text">@item.SendTime.Humanize(culture:GlobalConfig.Culture)</MListItemActionText>
-                </MListItemAction>
             </MListItem>
-        }
-    </MList>
+
+
+            @foreach (var item in _channels)
+            {
+                <MListItem Link OnClick="()=>HandleOnClick(item.ChannelId)" Class="pl-8">
+                    <MListItemAvatar Class="overflow-visible">
+                        @if (item.NoReading == 0)
+                        {
+                            <SEmptyAvatar Value="@item.Channel?.DisplayName" />
+                        }
+                        else
+                        {
+                            <MBadge Bordered Color="pink" Dot OffsetX="10" OffsetY="10">
+                                <SEmptyAvatar Value="@item.Channel?.DisplayName" />
+                            </MBadge>
+                        }
+                    </MListItemAvatar>
+
+                    <MListItemContent Class="pt-0">
+                        <MListItemTitle Class="py-2 subtitle emphasis--text">@item.Channel?.DisplayName</MListItemTitle>
+
+                        <MListItemSubtitle Class="caption regular2--text">@item.Title</MListItemSubtitle>
+                    </MListItemContent>
+
+                    <MListItemAction Class="align-self-start">
+                        <MListItemActionText Class="overline regular2--text">@item.SendTime.Humanize(culture:GlobalConfig.Culture)</MListItemActionText>
+                    </MListItemAction>
+                </MListItem>
+            }
+        </MList>
+    </MCardText>
 </MCard>
