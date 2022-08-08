@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore 
 
     - name: build
-      run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
+      run: dotnet build --configuration Release --no-restore /p:ContinuousIntegrationBuild=true
 
     - name: pack
       run: dotnet pack --include-symbols  -p:PackageVersion=0.0.$GITHUB_RUN_NUMBER

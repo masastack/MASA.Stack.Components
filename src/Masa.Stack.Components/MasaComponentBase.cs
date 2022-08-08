@@ -1,5 +1,4 @@
-﻿using Masa.BuildingBlocks.BasicAbility.Auth;
-
+﻿
 namespace Masa.Stack.Components;
 
 public abstract class MasaComponentBase : ComponentBase

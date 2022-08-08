@@ -45,7 +45,7 @@
                         <div class="d-flex">
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
                             <MSpacer />
-                            <Search Dense Style="max-width:341px" Class="mr-6" />
+                            <SSearch Dense Style="max-width:341px" Class="mr-6" />
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>
                             </MButton>
@@ -54,7 +54,7 @@
                             <span class="masa-text-3-1">@T("RecentVisits")</span>
                             @foreach (var (name, url) in RecentVisits)
                             {
-                                <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" Href="@url">@name</MChip>
+                                <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@name</MChip>
                             }
                         </div>
                     </div>

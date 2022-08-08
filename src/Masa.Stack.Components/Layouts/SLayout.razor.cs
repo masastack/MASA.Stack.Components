@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Stack.Components.Extensions;
+
+namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
@@ -141,7 +143,7 @@ public partial class SLayout
             //add home index content sould remove this code
             if (NavigationManager.Uri == NavigationManager.BaseUri)
             {
-                NavigationManager.NavigateTo(HomeUri(NavItems));
+                NavigationManager.NavigateTo(NavItems.GetDefaultRoute());
                 return;
             }
 
@@ -161,21 +163,6 @@ public partial class SLayout
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private string HomeUri(List<Nav> navs)
-    {
-        var firstMenu = navs.FirstOrDefault();
-        if (firstMenu != null)
-        {
-            if (string.IsNullOrEmpty(firstMenu.Url))
-            {
-                return HomeUri(firstMenu.Children);
-            }
-
-            return firstMenu.Url;
-        }
-
-        return "/";
-    }
     private bool IsMenusUri(List<Nav> navs, string uri)
     {
         uri = uri.ToLower();
@@ -246,14 +233,15 @@ public partial class SLayout
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         var uri = e.Location;
-        if (!IsMenusUri(NavItems, uri.Replace(NavigationManager.BaseUri, "")))
+        var relativeUri = uri.Replace(NavigationManager.BaseUri, "");
+        if (!IsMenusUri(NavItems, relativeUri))
         {
             NavigationManager.NavigateTo("/403");
             return;
         }
 
         Logger.LogInformation("URL of new location: {Location}", e.Location);
-        AuthClient.UserService.VisitedAsync(e.Location);
+        AuthClient.UserService.VisitedAsync(AppId, relativeUri);
     }
 
     private async Task AddFavoriteMenu(string code)
