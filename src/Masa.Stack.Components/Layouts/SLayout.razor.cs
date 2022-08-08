@@ -233,14 +233,15 @@ public partial class SLayout
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         var uri = e.Location;
-        if (!IsMenusUri(NavItems, uri.Replace(NavigationManager.BaseUri, "")))
+        var relativeUri = uri.Replace(NavigationManager.BaseUri, "");
+        if (!IsMenusUri(NavItems, relativeUri))
         {
             NavigationManager.NavigateTo("/403");
             return;
         }
 
         Logger.LogInformation("URL of new location: {Location}", e.Location);
-        AuthClient.UserService.VisitedAsync(e.Location);
+        AuthClient.UserService.VisitedAsync(AppId, relativeUri);
     }
 
     private async Task AddFavoriteMenu(string code)

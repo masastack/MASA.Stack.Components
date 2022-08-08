@@ -1,6 +1,4 @@
-﻿using Masa.BuildingBlocks.BasicAbility.Auth.Contracts.Enum;
-
-namespace Masa.Stack.Components.UserCenters;
+﻿namespace Masa.Stack.Components.UserCenters;
 
 public partial class UserInfo : MasaComponentBase
 {
