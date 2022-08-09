@@ -5,6 +5,7 @@ namespace Masa.Stack.Components.NotificationCenters;
 
 public partial class NotificationDetail
 {
+
     [Inject]
     private IPopupService PopupService { get; set; } = null!;
 
@@ -12,22 +13,41 @@ public partial class NotificationDetail
     public Guid MessageId { get; set; }
 
     [Parameter]
+    public bool Visible { get; set; }
+
+    [Parameter]
+    public ChannelModel? Channel { get; set; }
+
+    [Parameter]
     public EventCallback OnBack { get; set; }
+
+    [Parameter]
+    public EventCallback<ChannelModel?> OnChannelClick { get; set; }
+
+    [Parameter]
+    public EventCallback OnOk { get; set; }
 
     private WebsiteMessageModel _entity = new();
 
     protected override async void OnParametersSet()
     {
-        await GetFormDataAsync(MessageId);
+        if (Visible)
+        {
+            await GetFormDataAsync(MessageId);
+        }
     }
 
     private async Task GetFormDataAsync(Guid id)
     {
         _entity = await McClient.WebsiteMessageService.GetAsync(id) ?? new();
+
         if (!_entity.IsRead)
         {
             await McClient.WebsiteMessageService.ReadAsync(new ReadWebsiteMessageModel { Id = id });
         }
+
+        await HandleOnOk();
+
         StateHasChanged();
     }
 
@@ -40,7 +60,9 @@ public partial class NotificationDetail
     {
         await McClient.WebsiteMessageService.DeleteAsync(MessageId);
         await PopupService.ToastSuccessAsync(T("DeletedSuccessfullyMessage"));
+
         await HandleOnBack();
+        await HandleOnOk();
     }
 
     private async Task HandleOnBack()
@@ -55,5 +77,21 @@ public partial class NotificationDetail
     {
         if (id == default) return;
         await GetFormDataAsync(id);
+    }
+
+    private async Task HandleOnChannelClick()
+    {
+        if (OnChannelClick.HasDelegate)
+        {
+            await OnChannelClick.InvokeAsync(Channel);
+        }
+    }
+
+    private async Task HandleOnOk()
+    {
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
     }
 }

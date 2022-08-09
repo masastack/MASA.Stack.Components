@@ -2,42 +2,46 @@
 @inject IMcClient McClient
 @using static Masa.Stack.Components.JsInitVariables;
 
-<div class="message-right full-height">
-    <MCard Class="d-flex full-height flex-column">
+<div class="message-right full-height @(Visible?"":"d-none")">
+    <MCard Class="d-flex full-height flex-column rounded-5">
         <MCardTitle Class="pl-2 pt-6">
             <div class="d-flex full-width" style="height: 40px !important;">
                 <MListItem>
                     <MListItemAvatar Class="overflow-visible">
-                        @if (_entities.Result != null && _entities.Result.Any(x => !x.IsRead))
+                        @if (Channel == null)
+                        {
+                            <NotificationAvatar Dot="_entities.Result != null && _entities.Result.Any(x => !x.IsRead)" />
+                        }
+                        else if (_entities.Result != null && _entities.Result.Any(x => !x.IsRead))
                         {
                             <MBadge Bordered Dot Color="pink" OffsetX="10" OffsetY="10">
-                                <SEmptyAvatar Value="@_channel?.DisplayName" />
+                                <SEmptyAvatar Value="@Channel?.DisplayName" />
                             </MBadge>
                         }
                         else
                         {
-                            <SEmptyAvatar Value="@_channel?.DisplayName" />
+                            <SEmptyAvatar Value="@Channel?.DisplayName" />
                         }
                     </MListItemAvatar>
                     <MListItemContent>
-                        <MListItemTitle Class="h7 emphasis--text">@(_channel!=null?_channel.DisplayName:T("DisplayName.AllWebsiteMessage"))</MListItemTitle>
+                        <MListItemTitle Class="h7 emphasis--text">@(Channel!=null?Channel.DisplayName:T("DisplayName.AllWebsiteMessage"))</MListItemTitle>
                     </MListItemContent>
                 </MListItem>
                 <MSpacer />
                 <SSearch @bind-Value="_queryParam.Filter" Class="rounded-2 search" Dense Style="flex: none;width:300px" OnEnter="RefreshAsync"></SSearch>
                 <MSelect Class="ml-6 rounded-2 small" @bind-Value="@_queryParam.FilterType" Style="flex: none;width:136px"
-                    Items="@_filterTypeItems"
-                    Label="@T("DisplayName.WebsiteMessageFilterType")"
-                    ItemText="@(item => T($"DisplayName.WebsiteMessageFilterType.{item.ToString()}"))"
-                    ItemValue="item => item"
-                    Dense
-                    Outlined
-                    HideDetails="@("auto")"
-                    TItem="WebsiteMessageFilterType"
-                    TItemValue="WebsiteMessageFilterType"
-                    TValue="WebsiteMessageFilterType?"
-                    OnSelectedItemUpdate="RefreshAsync">
-                    </MSelect>
+                         Items="@_filterTypeItems"
+                         Label="@T("DisplayName.WebsiteMessageFilterType")"
+                         ItemText="@(item => T($"DisplayName.WebsiteMessageFilterType.{item.ToString()}"))"
+                         ItemValue="item => item"
+                         Dense
+                         Outlined
+                         HideDetails="@("auto")"
+                         TItem="WebsiteMessageFilterType"
+                         TItemValue="WebsiteMessageFilterType"
+                         TValue="WebsiteMessageFilterType?"
+                         OnSelectedItemUpdate="RefreshAsync">
+                </MSelect>
                 <MMenu OffsetY>
                     <ActivatorContent>
                         <SButton Outlined Fab Small Icon Color="fill-line" Class="ml-6" @attributes="@context.Attrs">
@@ -74,8 +78,8 @@
                 </MMenu>
             </div>
         </MCardTitle>
-        <MCardText Class="mt-6">
-            <MList Subheader
+        <MCardText Class="mt-6 overflow-y-auto">
+            <MList Subheader Height=0
                    TwoLine>
                 @foreach (var item in _entities.Result)
                 {
@@ -93,7 +97,7 @@
                             </MListItemSubtitle>
                         </MListItemContent>
                         <MListItemAction Class="align-self-start">
-                            <MListItemActionText Class="caption regular2--text">@item.SendTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</MListItemActionText>
+                            <MListItemActionText Class="caption regular2--text">@item.SendTime.ToOffset(TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemActionText>
                         </MListItemAction>
                     </MListItem>
                 }
