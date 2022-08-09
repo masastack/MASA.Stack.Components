@@ -1,4 +1,5 @@
 ﻿using Masa.Stack.Components.Extensions;
+using System.Diagnostics;
 
 namespace Masa.Stack.Components;
 
@@ -53,7 +54,7 @@ public partial class SLayout
 
     List<Nav> FlattenedAllNavs { get; set; } = new();
 
-    List<string> _whiteUriList = new List<string> { "403", "404", "", "/", "user-center",
+    List<string> _whiteUriList = new List<string> { "403", "404", "user-center",
         "notification-center", "notification-center/*" };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -104,7 +105,7 @@ public partial class SLayout
             }
 
 #if DEBUG
-            if (!NavItems.Any())
+            if (Debugger.IsAttached && !NavItems.Any())
             {
                 NavItems = new List<Nav>()
                 {
