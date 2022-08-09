@@ -26,7 +26,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore /p:ContinuousIntegrationBuild=true
 
     - name: pack
-      run: dotnet pack --include-symbols  -p:PackageVersion=0.0.$GITHUB_RUN_NUMBER
+      run: dotnet pack --configuration Release --include-symbols  -p:PackageVersion=0.0.$GITHUB_RUN_NUMBER
     
     - name: package push
       run: dotnet nuget push "**/*.symbols.nupkg" -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json
