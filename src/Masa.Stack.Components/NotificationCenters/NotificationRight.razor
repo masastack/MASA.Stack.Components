@@ -29,7 +29,7 @@
                 </MListItem>
                 <MSpacer />
                 <SSearch @bind-Value="_queryParam.Filter" Class="rounded-2 search" Dense Style="flex: none;width:300px" OnEnter="RefreshAsync"></SSearch>
-                <MSelect Class="ml-6 rounded-2 small" @bind-Value="@_queryParam.FilterType" Style="flex: none;width:136px"
+                <SSelect Small Class="ml-6" @bind-Value="@_queryParam.FilterType" Style="flex: none;width:136px"
                          Items="@_filterTypeItems"
                          Label="@T("DisplayName.WebsiteMessageFilterType")"
                          ItemText="@(item => T($"DisplayName.WebsiteMessageFilterType.{item.ToString()}"))"
@@ -41,7 +41,7 @@
                          TItemValue="WebsiteMessageFilterType"
                          TValue="WebsiteMessageFilterType?"
                          OnSelectedItemUpdate="RefreshAsync">
-                </MSelect>
+                </SSelect>
                 <MMenu OffsetY>
                     <ActivatorContent>
                         <SButton Outlined Fab Small Icon Color="fill-line" Class="ml-6" @attributes="@context.Attrs">

@@ -44,9 +44,8 @@ public partial class NotificationDetail
         if (!_entity.IsRead)
         {
             await McClient.WebsiteMessageService.ReadAsync(new ReadWebsiteMessageModel { Id = id });
+            await HandleOnOk();
         }
-
-        await HandleOnOk();
 
         StateHasChanged();
     }
