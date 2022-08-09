@@ -12,7 +12,7 @@ public partial class NotificationRight : MasaComponentBase
     private IPopupService PopupService { get; set; } = null!;
 
     [Parameter]
-    public Guid? ChannelId { get; set; }
+    public ChannelModel? Channel { get; set; }
 
     [Parameter]
     public bool Visible { get; set; }
@@ -25,18 +25,16 @@ public partial class NotificationRight : MasaComponentBase
 
     private GetWebsiteMessageModel _queryParam = new();
     private PaginatedListModel<WebsiteMessageModel> _entities = new();
-    private ChannelModel _channel;
     private List<WebsiteMessageFilterType> _filterTypeItems = Enum.GetValues(typeof(WebsiteMessageFilterType)).Cast<WebsiteMessageFilterType>().ToList();
 
     protected override async void OnParametersSet()
     {
-        _queryParam.ChannelId = ChannelId;
-        _channel = ChannelId.HasValue ? await McClient.ChannelService.GetAsync(ChannelId.Value) : null;
+        _queryParam.ChannelId = Channel?.Id;
         await LoadData();
         StateHasChanged();
     }
 
-    private async Task LoadData()
+    public async Task LoadData()
     {
         _entities = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
     }

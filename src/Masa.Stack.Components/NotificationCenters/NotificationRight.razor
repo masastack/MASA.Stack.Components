@@ -8,23 +8,23 @@
             <div class="d-flex full-width" style="height: 40px !important;">
                 <MListItem>
                     <MListItemAvatar Class="overflow-visible">
-                        @if (_channel == null)
+                        @if (Channel == null)
                         {
                             <NotificationAvatar Dot="_entities.Result != null && _entities.Result.Any(x => !x.IsRead)" />
                         }
                         else if (_entities.Result != null && _entities.Result.Any(x => !x.IsRead))
                         {
                             <MBadge Bordered Dot Color="pink" OffsetX="10" OffsetY="10">
-                                <SEmptyAvatar Value="@_channel?.DisplayName" />
+                                <SEmptyAvatar Value="@Channel?.DisplayName" />
                             </MBadge>
                         }
                         else
                         {
-                            <SEmptyAvatar Value="@_channel?.DisplayName" />
+                            <SEmptyAvatar Value="@Channel?.DisplayName" />
                         }
                     </MListItemAvatar>
                     <MListItemContent>
-                        <MListItemTitle Class="h7 emphasis--text">@(_channel!=null?_channel.DisplayName:T("DisplayName.AllWebsiteMessage"))</MListItemTitle>
+                        <MListItemTitle Class="h7 emphasis--text">@(Channel!=null?Channel.DisplayName:T("DisplayName.AllWebsiteMessage"))</MListItemTitle>
                     </MListItemContent>
                 </MListItem>
                 <MSpacer />

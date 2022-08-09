@@ -5,14 +5,17 @@ namespace Masa.Stack.Components.NotificationCenters;
 
 public partial class NotificationCenter : MasaComponentBase
 {
+    [Inject]
+    public NoticeState NoticeState { get; set; } = default!;
+
     [Parameter]
     public string MessageId { get; set; }
 
     private NotificationLeft _messageLeftRef = default!;
     private NotificationRight _messageRightRef = default!;
     private bool _detailShow = false;
-    private Guid? _channelId;
     private Guid _messageId;
+    private ChannelModel? _channel;
 
     protected override void OnParametersSet()
     {
@@ -39,9 +42,9 @@ public partial class NotificationCenter : MasaComponentBase
         _detailShow = false;
     }
 
-    private async void HandleChannelClick(Guid? channelId)
+    private async void HandleChannelClick(ChannelModel? channel)
     {
-        _channelId = channelId;
+        _channel = channel;
         _detailShow = false;
         await _messageRightRef.RefreshAsync();
     }
@@ -49,5 +52,19 @@ public partial class NotificationCenter : MasaComponentBase
     private async Task HandleAllRead()
     {
         await _messageLeftRef.LoadData();
+    }
+
+    private async Task HandleOnOk()
+    {
+        await _messageLeftRef.LoadData();
+        await _messageRightRef.LoadData();
+        await LoadNotices();
+    }
+
+    private async Task LoadNotices()
+    {
+        GetNoticeListModel _queryParam = new();
+        var dtos = await McClient.WebsiteMessageService.GetNoticeListAsync(_queryParam);
+        NoticeState.SetNotices(dtos);
     }
 }

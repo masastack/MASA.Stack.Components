@@ -5,8 +5,6 @@ namespace Masa.Stack.Components.NotificationCenters;
 
 public partial class NotificationDetail
 {
-    [Inject]
-    public NoticeState NoticeState { get; set; } = default!;
 
     [Inject]
     private IPopupService PopupService { get; set; } = null!;
@@ -18,10 +16,16 @@ public partial class NotificationDetail
     public bool Visible { get; set; }
 
     [Parameter]
+    public ChannelModel? Channel { get; set; }
+
+    [Parameter]
     public EventCallback OnBack { get; set; }
 
     [Parameter]
-    public EventCallback<Guid?> OnChannelClick { get; set; }
+    public EventCallback<ChannelModel?> OnChannelClick { get; set; }
+
+    [Parameter]
+    public EventCallback OnOk { get; set; }
 
     private WebsiteMessageModel _entity = new();
 
@@ -36,10 +40,14 @@ public partial class NotificationDetail
     private async Task GetFormDataAsync(Guid id)
     {
         _entity = await McClient.WebsiteMessageService.GetAsync(id) ?? new();
+
         if (!_entity.IsRead)
         {
             await McClient.WebsiteMessageService.ReadAsync(new ReadWebsiteMessageModel { Id = id });
         }
+
+        await HandleOnOk();
+
         StateHasChanged();
     }
 
@@ -53,16 +61,8 @@ public partial class NotificationDetail
         await McClient.WebsiteMessageService.DeleteAsync(MessageId);
         await PopupService.ToastSuccessAsync(T("DeletedSuccessfullyMessage"));
 
-        await LoadNotices();
-
         await HandleOnBack();
-    }
-
-    private async Task LoadNotices()
-    {
-        GetNoticeListModel _queryParam = new();
-        var dtos = await McClient.WebsiteMessageService.GetNoticeListAsync(_queryParam);
-        NoticeState.SetNotices(dtos);
+        await HandleOnOk();
     }
 
     private async Task HandleOnBack()
@@ -83,7 +83,15 @@ public partial class NotificationDetail
     {
         if (OnChannelClick.HasDelegate)
         {
-            await OnChannelClick.InvokeAsync(_entity?.ChannelId);
+            await OnChannelClick.InvokeAsync(Channel);
+        }
+    }
+
+    private async Task HandleOnOk()
+    {
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
         }
     }
 }

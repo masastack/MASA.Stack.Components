@@ -3,6 +3,7 @@
 
 @using Masa.Stack.Components.NotificationCenters
 @inherits MasaComponentBase
+@inject IMcClient McClient
 
 <PageTitle>
     @T("Permission.WebsiteMessageManagement")
@@ -15,8 +16,8 @@
     <MCol Md="8" Class="pl-6">
         @if (_messageId != default)
         {
-            <NotificationDetail Visible="_detailShow" MessageId="_messageId" OnBack="HandleDetailBack" OnChannelClick="HandleChannelClick" />
+            <NotificationDetail Visible="_detailShow" MessageId="_messageId" Channel="_channel" OnBack="HandleDetailBack" OnChannelClick="HandleChannelClick" OnOk="HandleOnOk" />
         }
-        <NotificationRight @ref="_messageRightRef" Visible="!_detailShow" ChannelId="_channelId" OnItemClick="HandleListItemClick" OnAllRead="HandleAllRead" />
+        <NotificationRight @ref="_messageRightRef" Visible="!_detailShow" Channel="_channel" OnItemClick="HandleListItemClick" OnAllRead="HandleAllRead" />
     </MCol>
 </MRow>

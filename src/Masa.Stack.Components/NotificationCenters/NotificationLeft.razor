@@ -21,7 +21,7 @@
 
             @foreach (var item in _channels)
             {
-                <MListItem Link OnClick="()=>HandleOnClick(item.ChannelId)" Class="pl-8">
+                <MListItem Link OnClick="()=>HandleOnClick(item)" Class="pl-8">
                     <MListItemAvatar Class="overflow-visible">
                         @if (item.NoReading == 0)
                         {
