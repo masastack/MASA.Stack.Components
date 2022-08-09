@@ -6,13 +6,14 @@
 @using static Masa.Stack.Components.JsInitVariables;
 
 <div class="notice">
-    <MMenu OffsetY Bottom>
+    <MMenu OffsetY Bottom @bind-Value="_showMenu">
         <ActivatorContent>
             <MButton Icon
                      Width="40"
                      Height="40"
                      Class="emphasis2--text"
-                     @attributes="@context.Attrs">
+                     OnClick="HandleOpenOnClick"
+                     @attributes="@(_showMenu?context.Attrs:null)">
                 @if (!NoticeState.IsRead)
                 {
                     <MBadge Bordered OverLap Dot Color="red">

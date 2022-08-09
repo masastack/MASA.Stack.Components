@@ -13,6 +13,7 @@ public partial class Notification : MasaComponentBase
     public HubConnection? HubConnection { get; set; }
 
     private GetNoticeListModel _queryParam = new();
+    private bool _showMenu;
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,6 +63,19 @@ public partial class Notification : MasaComponentBase
         {
             await McClient.WebsiteMessageService.CheckAsync();
         });
+    }
+
+    private void HandleOpenOnClick()
+    {
+        if (NoticeState.Notices.Any())
+        {
+            _showMenu = true;
+        }
+        else
+        {
+            _showMenu = false;
+            NavigationManager.NavigateTo("/notification-center", true);
+        }
     }
 
     async Task LoadData()
