@@ -48,14 +48,25 @@ public partial class SLayout
     [Parameter]
     public RenderFragment<Exception>? ErrorContent { get; set; }
 
+    [Parameter]
+    public List<string> WhiteUris { get; set; } = new List<string>();
+
     List<Nav> NavItems = new();
-
+    List<string> _preWhiteUris = new();
     List<Nav> FlattenedNavs { get; set; } = new();
-
     List<Nav> FlattenedAllNavs { get; set; } = new();
-
     List<string> _whiteUriList = new List<string> { "403", "404", "user-center",
         "notification-center", "notification-center/*" };
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (WhiteUris.Any() && !WhiteUris.SequenceEqual(_preWhiteUris))
+        {
+            _preWhiteUris = WhiteUris;
+            _whiteUriList.AddRange(WhiteUris);
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
