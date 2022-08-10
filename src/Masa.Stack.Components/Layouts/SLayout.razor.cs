@@ -235,6 +235,8 @@ public partial class SLayout
             await PopupService.ToastErrorAsync(exception.Message);
         };
 
+        ErrorContent ??= Exception => builder => { };
+
         PopupService.ConfigToast(config =>
         {
             config.Position = ToastPosition.TopLeft;
