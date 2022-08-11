@@ -1,7 +1,6 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 @using Masa.Stack.Components.Extensions
 @inherits MasaComponentBase
-@implements IDisposable
 @inject GlobalConfig GlobalConfig
 
 <MNavigationDrawer
@@ -100,11 +99,12 @@
     </STooltip>
 </MNavigationDrawer>
 
-<SButton Icon
-               Medium
-               Class="nav-trigger white"
-               Style="@($"{(GlobalConfig.Mini ? "left:76px;" : "left:280px;")}")"
-               OnClick="() => GlobalConfig.Mini = !GlobalConfig.Mini">
+<SButton 
+    Icon
+    Medium
+    Class="nav-trigger white"
+    Style="@($"{(GlobalConfig.Mini ? "left:76px;" : "left:280px;")}")"
+    OnClick="() => GlobalConfig.Mini = !GlobalConfig.Mini">
     <MIcon Color="primary">
         @(GlobalConfig.Mini ? "mdi-chevron-right" : "mdi-chevron-left")
     </MIcon>
@@ -126,13 +126,6 @@
     [EditorRequired]
     [Parameter]
     public string? MiniLogo { get; set; }
-
-    protected override void OnInitialized()
-    {
-        GlobalConfig.OnLanguageChanged += StateHasChanged;
-
-        base.OnInitialized();
-    }
 
     protected override void OnParametersSet()
     {
@@ -166,10 +159,4 @@
     {
         NavigationManager.NavigateTo(Items!.GetDefaultRoute());
     }
-
-    public void Dispose()
-    {
-        GlobalConfig.OnLanguageChanged -= StateHasChanged;
-    }
-
 }

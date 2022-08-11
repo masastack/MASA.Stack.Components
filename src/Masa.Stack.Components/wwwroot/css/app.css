@@ -462,6 +462,10 @@ body, .masa-stack-components {
     transform: translateY(-20.5px) scale(0.75);
 }
 
+.masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-48 .m-input__append-inner {
+    margin-top:12px;
+}
+
 .masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-40 .m-label {
     top: 11px;
 }

@@ -1,38 +1,32 @@
 ﻿@namespace Masa.Stack.Components.Layouts
+@inherits MasaComponentBase
+@inject GlobalConfig GlobalConfig
 
-<MMenu OffsetY Bottom Right CloseOnContentClick="false"
-       MinWidth=340
-       ContentClass="@(string.IsNullOrEmpty(_search) ? "hide-shadow" : "")">
-    <ActivatorContent>
-        <div @attributes="@context.Attrs">
-            <MTextField @bind-Value="_search" 
-                        Class="@($"rounded-2 font-12-medium {Class}")" 
-                        Style="width:340px;"
-                        Flat Dense Solo
-                        BackgroundColor="@BackgroundColor"
-                        Height="Height"
-                        HideDetails="@("auto")" Placeholder="Search">
-                <PrependInnerContent>
-                    <MIcon Size=16 Class="mr-2 emphasis2--text">mdi-magnify</MIcon>
-                </PrependInnerContent>
-            </MTextField>
+<div style="min-width:340px;">
+    <SAutoComplete
+        @bind-Value="Url"
+        Items="Menus"
+        TItem="Menu"
+        TItemValue="string"
+        TValue="string"
+        ItemText="menu => FullTitleI18n(menu.FullTitle)"
+        ItemValue="menu => menu.Url"
+        BackgroundColor="white"
+        Clearable
+        Style="width:340px;border-radius: 8px;"
+        Placeholder="@T("Menu search")">
+    <PrependInnerContent>
+        <MIcon Size=16 Class="mr-2 my-2 emphasis2--text">mdi-magnify</MIcon>
+    </PrependInnerContent>
+    <ItemContent Context="data">
+        <div class="d-flex py-2" style="height:64px;width:100%;">
+            @if(string.IsNullOrEmpty(data.Item.InheritedIcon) is false)
+            {
+                <MIcon>@data.Item.InheritedIcon</MIcon>
+            }          
+            <div class="Body2 emphasis2--text my-auto ml-4">@FullTitleI18n(data.Item.FullTitle)</div>
+            <MSpacer />
         </div>
-    </ActivatorContent>
-    <ChildContent>
-    </ChildContent>
-</MMenu>
-
-@code {
-
-    string _search;
-
-    [Parameter]
-    public string? BackgroundColor { get; set; }
-
-    [Parameter]
-    public string? Class { get; set; }
-
-    [Parameter]
-    public StringNumber? Height { get; set; } = 48;
-
-}
+    </ItemContent>
+</SAutoComplete>
+</div>
