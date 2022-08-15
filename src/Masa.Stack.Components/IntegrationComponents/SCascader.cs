@@ -1,4 +1,4 @@
-﻿namespace Masa.Stack.Components.IntegrationComponents;
+﻿namespace Masa.Stack.Components;
 
 public class SCascader<TItem, TValue> : MCascader<TItem, TValue>
 {
