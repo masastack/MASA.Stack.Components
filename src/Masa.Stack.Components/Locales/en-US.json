@@ -2,6 +2,8 @@
   "$Text": "English",
   "$DateTimeFormat": "MM/dd/yyyy HH:mm:ss",
   "$DateFormat": "MM/dd/yyyy",
+  "Yes": "Yes",
+  "No": "No",
   "Dashboard": "Dashboard",
   "Favorite": "Favorite",
   "Settings": "Settings",

@@ -9,6 +9,19 @@ public class SDataTable<TItem> : MDataTable<TItem>
     {
         HideDefaultFooter = true;
         FixedHeader = true;
+
+        ItemColContent = item =>
+        {
+            void Content(RenderTreeBuilder builder)
+            {
+                builder.OpenComponent(0, typeof(SItemCol));
+                builder.AddAttribute(1, nameof(SItemCol.Value), item.Value);
+                builder.CloseComponent();
+            }
+
+            return Content;
+        };
+
         await base.SetParametersAsync(parameters);
     }
 
@@ -18,8 +31,7 @@ public class SDataTable<TItem> : MDataTable<TItem>
         Class ??= "";
         if (Class.Contains("table-border-none") is false)
             Class += " table-border-none";
-        if(Dense && Class.Contains("dense") is false)
+        if (Dense && Class.Contains("dense") is false)
             Class += " dense";
     }
 }
-
