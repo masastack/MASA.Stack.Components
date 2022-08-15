@@ -13,7 +13,8 @@
             {
                 Date = startDate.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)],
+                Level = (Level)Random.Shared.Next(0, 3)
             }).ToArray());
         }
     }
