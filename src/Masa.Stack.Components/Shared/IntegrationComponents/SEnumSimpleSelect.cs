@@ -25,6 +25,6 @@ public class EnumSimpleSelect<TValue> : SSimpleSelect<TValue> where TValue : str
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         await base.SetParametersAsync(parameters);
-        ConvertText ??= Value => T(Value.ToString());
+        ConvertText ??= value => T(value.ToString());
     }
 }
