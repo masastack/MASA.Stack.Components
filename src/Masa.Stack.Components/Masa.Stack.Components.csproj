@@ -14,6 +14,7 @@
 		<PackageReference Include="Masa.Contrib.StackSdks.Mc" Version="0.6.0-preview.3" />
 		<PackageReference Include="Masa.Contrib.Authentication.Identity" Version="0.6.0-preview.3" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Auth" Version="0.6.0-preview.3" />
+		<PackageReference Include="Masa.Utils.Extensions.Enums" Version="0.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
 	</ItemGroup>
