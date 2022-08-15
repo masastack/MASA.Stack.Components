@@ -70,7 +70,7 @@
         get => _tabs;
         set
         {
-            if(value.Count != _tabs.Count || value.Except(_tabs).Count()>0)
+            if(value.Count != _tabs.Count || value.Except(_tabs).Any())
             {
                 _tabs = value;
                 if(_tabs.Contains(Tab) is false)

@@ -22,7 +22,7 @@
                         <div class="d-flex align-center">
                             <img src="https://cdn.masastack.com/stack/images/component/nav-sub-sub-before.png" height="48" alt="line"
                                  style="position: absolute;left: 0;" />
-                            <SListItem Medium Class="mb-0 rounded-2" ActiveClass="primary" Link Href="@lastNav.Url">
+                            <SListItem Medium Class="mb-0 rounded-2" ActiveClass="primary" Href="@lastNav.Url" Link Exact>
                                 <ItemContent>
                                     <MListItemContent>
                                         <div class="text-truncate ml-3 @(context.Active ? "white--text" : "text-btn regular2--text")">
@@ -50,7 +50,7 @@
         <div class="d-flex align-center @Class">
             <img src="https://cdn.masastack.com/stack/images/component/nav-sub-before.png" width="18" height="48" alt="line" />
 
-            <SListItem Medium Class="mb-0 rounded-2" ActiveClass="primary" Link Href="@subNav.Url">
+            <SListItem Medium Class="mb-0 rounded-2" ActiveClass="primary" Href="@subNav.Url" Link Exact>
                 <ItemContent>
                     <MListItemContent>
                         <div class="text-truncate ml-3 @(context.Active ? "white--text" : "text-btn regular2--text")">
