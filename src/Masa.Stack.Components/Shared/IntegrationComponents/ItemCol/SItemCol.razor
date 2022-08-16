@@ -1,0 +1,48 @@
+﻿@namespace Masa.Stack.Components
+@using static Masa.Stack.Components.JsInitVariables
+@inherits MasaComponentBase
+
+@if (InternalValue is Enum @enum)
+{
+    var desc = @enum.GetDescription().Description;
+
+    if (ChippedEnum && !string.IsNullOrEmpty(desc))
+    {
+        <SColorChip Color="@GetColor(@enum)" Small="SmallChip">@desc</SColorChip>
+    }
+    else
+    {
+        @desc
+    }
+}
+else if (InternalValue is DateTime dateTime)
+{
+    if (dateTime.Kind == DateTimeKind.Utc)
+    {
+        dateTime = dateTime.Add(TimezoneOffset);
+    }
+
+    if (DateTimeValidator!.Invoke(dateTime))
+    {
+        @("")
+    }
+    else
+    {
+        var major = @DateOnly.FromDateTime(dateTime).ToString(DateFormat);
+        string? minor = null;
+        if (!IgnoreTime)
+        {
+            minor = @TimeOnly.FromDateTime(dateTime).ToString(TimeFormat);
+        }
+
+        <PBlockText Primary="@major" Secondary="@minor"></PBlockText>
+    }
+}
+else if (InternalValue is bool b)
+{
+    @BoolFormatter!.Invoke(b)
+}
+else
+{
+    @InternalValue
+}

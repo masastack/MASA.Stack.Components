@@ -1,0 +1,54 @@
+﻿@using Masa.Stack.Components.Layouts
+@using Microsoft.Extensions.Logging
+@namespace Masa.Stack.Components
+@implements IDisposable
+@inject GlobalConfig GlobalConfig
+@inject NavigationManager NavigationManager
+@inject IAuthClient AuthClient
+@inject ILogger<SLayout> Logger
+
+<CascadingValue Value="this" IsFixed>
+    <CascadingValue Value="I18n">
+        <MApp Class="masa masa-stack-components">
+            <MErrorHandler ErrorContent=ErrorContent OnErrorHandleAsync=OnErrorAsync>
+            <MAppBar App
+                     Class="mx-6"
+                     Elevation="0"
+                     Height="96">
+                    <GlobalNavigation OnFavoriteAdd="AddFavoriteMenu"
+                                        OnFavoriteRemove="RemoveFavoriteMenu">
+                        <ActivatorContent>
+                            <MButton Icon Class="white mr-6 emphasis2--text" @attributes="@context.Attrs">
+                                <MIcon>mdi-view-dashboard</MIcon>
+                            </MButton>
+                        </ActivatorContent>
+                    </GlobalNavigation>
+                @if (ShowBreadcrumbs)
+                {
+                    <Breadcrumbs FlattenedNavs="FlattenedAllNavs" Style="padding-bottom: 0px !importance;"></Breadcrumbs>
+                }
+                else
+                {
+                    <SearchMenu />  
+                }
+                <MSpacer />
+                <Languages OnChange="() => { }" />
+                <MSheet class="d-flex align-center justify-space-between rounded-6 pa-1 mr-n3" Width="100">
+                    <Notification />
+                    <User />
+                </MSheet>
+            </MAppBar>
+
+            <Navigation Items="NavItems"
+                        Logo="@Logo"
+                        MiniLogo="@MiniLogo" />
+
+            <MMain>
+                <div class="@($"px-6 pb-6 max-width full-height {@Class}")" style="@Style">
+                    @ChildContent
+                </div>
+            </MMain>
+            </MErrorHandler>
+        </MApp>
+    </CascadingValue>
+</CascadingValue>

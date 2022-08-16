@@ -24,8 +24,6 @@ public class GlobalConfig
         _i18N = i18n;
         _menus = new();
 
-        SetCultureInfo(i18n.Culture);
-
         if (httpContextAccessor.HttpContext is not null)
             Initialization(httpContextAccessor.HttpContext.Request.Cookies);
     }
@@ -41,7 +39,6 @@ public class GlobalConfig
             }
 
             _i18N.SetCulture(value);
-            SetCultureInfo(value);
 
             OnLanguageChanged?.Invoke();
         }
@@ -96,10 +93,5 @@ public class GlobalConfig
         {
             _menus = JsonSerializer.Deserialize<List<Nav>>(value) ?? new();
         }
-    }
-
-    private void SetCultureInfo(CultureInfo culture)
-    {
-        ValidatorOptions.Global.LanguageManager.Culture = culture;
     }
 }

@@ -91,16 +91,17 @@ window.MasaStackComponents.listenScroll = (selector, childSelectors, dotNet) => 
 
 window.MasaStackComponents.resizeObserver = (selector, invoker) => {
     const resizeObserver = new ResizeObserver((entries => {
-        console.log("ResizeObserver entries:", entries)
         invoker.invokeMethodAsync('Invoke');
     }));
-    resizeObserver.observe(document.querySelector(selector));
+    var target = document.querySelector(selector);
+    if (target)
+    {
+        resizeObserver.observe(target);
+    }  
 }
 
 window.MasaStackComponents.intersectionObserver = (selector, invoker) => {
     const observer = new IntersectionObserver((entries) => {
-        console.log("IntersectionObserver entries:", entries)
-
         if (entries.some(e => e.isIntersecting)) {
             invoker.invokeMethodAsync('Invoke')
         }

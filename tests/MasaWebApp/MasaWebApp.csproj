@@ -6,8 +6,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		
-		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.5.0-rc.3" />
-		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="0.5.0-rc.1" />
+		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.6.0-preview.2" />
+		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="0.6.0-preview.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.7" />
 	</ItemGroup>

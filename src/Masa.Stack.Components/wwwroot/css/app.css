@@ -393,7 +393,6 @@ body, .masa-stack-components {
 .masa-stack-components .small-button {
     min-width: 100px !important;
     height: 40px !important;
-    border-radius: 40px !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;
@@ -402,7 +401,6 @@ body, .masa-stack-components {
 .masa-stack-components .medium-button {
     min-width: 126px !important;
     height: 40px !important;
-    border-radius: 99px !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;
@@ -411,7 +409,6 @@ body, .masa-stack-components {
 .masa-stack-components .large-button {
     min-width: 340px !important;
     height: 48px !important;
-    border-radius: 90px !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
     line-height: 1.3125rem !important;
@@ -465,6 +462,10 @@ body, .masa-stack-components {
     transform: translateY(-20.5px) scale(0.75);
 }
 
+.masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-48 .m-input__append-inner {
+    margin-top:12px;
+}
+
 .masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-40 .m-label {
     top: 11px;
 }
@@ -487,9 +488,9 @@ body, .masa-stack-components {
 
 .masa-stack-components .table-border-none thead th {
     border-bottom: 0px !important;
-    box-shadow: none;
-    padding-top: 24px !important;
-    padding-bottom: 24px !important;
+    box-shadow: none !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
     color: #A3AED0 !important;
     font-size: 0.875rem !important;
     font-weight: 400 !important;
@@ -500,8 +501,18 @@ body, .masa-stack-components {
 .masa-stack-components .table-border-none td {
     border-bottom: 0px !important;
     box-shadow: none;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    padding-top: 9.5px !important;
+    padding-bottom: 9.5px !important;
+}
+
+masa-stack-components .table-border-none.dense thead th {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+}
+
+.masa-stack-components .table-border-none.dense td {
+    padding-top: 6.6px !important;
+    padding-bottom: 6.6px !important;
 }
 
 .masa-stack-components .table-border-none tbody tr:hover {
@@ -539,7 +550,6 @@ body, .masa-stack-components {
     border-top-right-radius: 8px !important;
     border-bottom-right-radius: 8px !important;
 }
-
 /*
     uploadImage
 */

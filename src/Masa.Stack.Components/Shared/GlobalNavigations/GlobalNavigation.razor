@@ -1,0 +1,73 @@
+﻿@namespace Masa.Stack.Components
+@inherits MasaComponentBase
+
+<MDialog @bind-Value="_visible"
+         Fullscreen
+         Transition="dialog-top-transition">
+    <ActivatorContent>
+        @ActivatorContent?.Invoke(context)
+    </ActivatorContent>
+    <ChildContent>
+        <MCard>
+            <div class="global-nav">
+                <div class="global-nav-left">
+                    <div class="global-nav-left__content">
+                        <div class="global-nav-left__title">
+                            @T("Favorites")
+                        </div>
+                        <MListItemGroup Value="@("/users")" Class="full-width mt-3">
+                            @foreach (var item in FavoriteNavs)
+                            {
+                                <MListItem Dense Value="item.Nav.Url"
+                                           Class="mb-4 full-width rounded-2"
+                                           ActiveClass="primary white--text"
+                                           OnClick="() => NavigateTo(item.Nav.Url)">
+                                    <ItemContent>
+                                        <div class="global-nav-left__favorite-item full-width masa-text-2-2 @(context.ActiveClass)">
+                                            <MListItemContent>
+                                                <MListItemTitle>@item.Nav.Name</MListItemTitle>
+                                            </MListItemContent>
+                                            <MListItemAction Class="ma-0">
+                                                <SAutoLoadingButton Icon XSmall Color="@(item.Nav.IsFavorite ? "#FFB547" : "")"
+                                                                   OnClick="() => ToggleFavorite(item.CategoryCode, item.AppCode, item.Nav)" StopPropagation>
+                                                    <MIcon Small>mdi-star</MIcon>
+                                                </SAutoLoadingButton>
+                                            </MListItemAction>
+                                        </div>
+                                    </ItemContent>
+                                </MListItem>
+                            }
+                        </MListItemGroup>
+                    </div>
+                </div>
+                <div class="global-nav-right">
+                    <div class="global-nav-header">
+                        <div class="d-flex">
+                            <span class="global-nav-header__title">@T("GlobalNavigation")</span>
+                            <MSpacer />
+                            <SSearch Dense Style="max-width:341px" Class="mr-6" />
+                            <MButton Icon OnClick="() => _visible = false">
+                                <MIcon>mdi-close</MIcon>
+                            </MButton>
+                        </div>
+                        <div class="mt-4">
+                            <span class="masa-text-3-1">@T("RecentVisits")</span>
+                            @foreach (var (name, url) in RecentVisits)
+                            {
+                                <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@name</MChip>
+                            }
+                        </div>
+                    </div>
+                    <div class="global-nav-content">
+                        <CascadingValue Value="this">
+                            <ExpansionWrapper
+                                Categories="@Categories"
+                                FavoriteNavs="@FavoriteNavs"
+                                TagIdPrefix="Favorite" />
+                        </CascadingValue>
+                    </div>
+                </div>
+            </div>
+        </MCard>
+    </ChildContent>
+</MDialog>
