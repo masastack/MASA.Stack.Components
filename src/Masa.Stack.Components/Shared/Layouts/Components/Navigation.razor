@@ -32,7 +32,7 @@
             {
                 <STooltip Disabled="!GlobalConfig.Mini">
                     <ActivatorContent Context="tooltipContext">
-                        <SListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs">
+                        <SListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs" Exact>
                             <ItemContent>
                                 <MListItemIcon>
                                     <MIcon Dense Style="margin-left:6px" Color="@(context.Active ? "white" : "regular3--text")">@nav.Icon</MIcon>
@@ -59,7 +59,7 @@
                         <MListGroup Group="@GenGroup(nav.Children)"
                                     NoAction
                                     ActiveClass="primary--text"
-                                    AppendIcon="mdi-menu-down"
+                                    AppendIcon="mdi-menu-down"                                    
                                     @attributes="@menuContext.Attrs">
                             <ActivatorContent>
                                 <MListItemContent>
