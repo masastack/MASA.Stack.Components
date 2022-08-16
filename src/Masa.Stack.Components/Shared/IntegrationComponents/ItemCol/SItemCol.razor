@@ -17,7 +17,7 @@
 }
 else if (InternalValue is DateTime dateTime)
 {
-    if (dateTime.Kind == DateTimeKind.Utc)
+    if (dateTime.Kind != DateTimeKind.Local)
     {
         dateTime = dateTime.Add(TimezoneOffset);
     }
