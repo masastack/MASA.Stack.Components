@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
         services.AddSingleton<ICurrentPrincipalAccessor, BlazorCurrentPrincipalAccessor>();
 
-        services.AddMasaIdentityModel(IdentityType.MultiEnvironment, options =>
+        services.AddMasaIdentityModel(options =>
         {
             options.Environment = "environment";
             options.UserName = "name";
