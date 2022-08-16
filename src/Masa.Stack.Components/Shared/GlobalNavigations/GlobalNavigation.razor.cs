@@ -55,7 +55,7 @@ public partial class GlobalNavigation : MasaComponentBase
         {
 
         }
-        
+
         return new();
     }
 
