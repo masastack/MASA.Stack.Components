@@ -2,7 +2,7 @@
 
 public class UserSelectModel : AutoCompleteDocument<Guid>
 {
-    public new Guid Id { get; set; }
+    public Guid UserId { get; set; }
 
     public string? DisplayName { get; set; }
 
@@ -18,15 +18,15 @@ public class UserSelectModel : AutoCompleteDocument<Guid>
 
     public string Avatar { get; set; } = "";
 
-    public UserSelectModel(Guid id, string name, string account, string phoneNumber, string email, string avatar)
+    public UserSelectModel(Guid userId, string name, string account, string phoneNumber, string email, string avatar)
     {
-        Id = id;
+        Id = userId.ToString();
         Name = name;
         Account = account;
         PhoneNumber = phoneNumber;
         Email = email;
         Avatar = avatar;
-        Value = Id;
+        Value = userId;
         Text = $"{Name},{Account},{PhoneNumber},{Email}";
     }
 }
