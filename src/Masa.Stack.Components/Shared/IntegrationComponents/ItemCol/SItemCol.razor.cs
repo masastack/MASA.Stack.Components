@@ -6,6 +6,9 @@ public partial class SItemCol : MasaComponentBase
     public Func<bool, string>? BoolFormatter { get; set; }
 
     [Parameter]
+    public string? BoolClass { get; set; }
+
+    [Parameter]
     public bool ChippedEnum { get; set; }
 
     [Parameter]
@@ -13,6 +16,9 @@ public partial class SItemCol : MasaComponentBase
 
     [Parameter]
     public Func<Enum, string>? EnumColorFormatter { get; set; }
+
+    [Parameter]
+    public string? EnumClass { get; set; }
 
     [Parameter]
     public Func<DateTime, bool>? DateTimeValidator { get; set; }
@@ -26,21 +32,21 @@ public partial class SItemCol : MasaComponentBase
     [Parameter]
     public string? TimeFormat { get; set; }
 
+    [Parameter]
+    public string? DateTimeClass { get; set; }
+
     [Parameter, EditorRequired]
     public object? Value { get; set; }
 
-    protected object InternalValue { get; set; } = null!;
+    [Parameter]
+    public string? DefaultClass { get; set; }
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        ArgumentNullException.ThrowIfNull(Value);
-
         BoolFormatter ??= b => b ? T("Yes") : T("No");
         DateTimeValidator ??= dateTime => dateTime == default;
-
-        InternalValue = Value;
     }
 
     public string GetColor(Enum @enum)
