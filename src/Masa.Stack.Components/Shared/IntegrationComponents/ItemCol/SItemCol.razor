@@ -2,29 +2,33 @@
 @using static Masa.Stack.Components.JsInitVariables
 @inherits MasaComponentBase
 
-@if (InternalValue is Enum @enum)
+@if (Value is Enum @enum)
 {
     var desc = @enum.GetDescription().Description;
 
-    if (ChippedEnum && !string.IsNullOrEmpty(desc))
-    {
-        <SColorChip Color="@GetColor(@enum)" Small="SmallChip">@desc</SColorChip>
-    }
-    else
-    {
-        @desc
-    }
+    <span class="@EnumClass">
+        @if (ChippedEnum && !string.IsNullOrEmpty(desc))
+        {
+            <SColorChip Color="@GetColor(@enum)" Small="SmallChip">@desc</SColorChip>
+        }
+        else
+        {
+            @desc
+        }
+    </span>
 }
-else if (InternalValue is DateTime dateTime)
+else if (Value is DateTime dateTime)
 {
-    if (dateTime.Kind == DateTimeKind.Utc)
+    if (dateTime.Kind != DateTimeKind.Local)
     {
         dateTime = dateTime.Add(TimezoneOffset);
     }
 
-    if (DateTimeValidator!.Invoke(dateTime))
+    @if (DateTimeValidator!.Invoke(dateTime))
     {
-        @("")
+        <span class="@DateTimeClass">
+            @("")
+        </span>
     }
     else
     {
@@ -35,14 +39,18 @@ else if (InternalValue is DateTime dateTime)
             minor = @TimeOnly.FromDateTime(dateTime).ToString(TimeFormat);
         }
 
-        <PBlockText Primary="@major" Secondary="@minor"></PBlockText>
+        <PBlockText Class="@DateTimeClass" Primary="@major" Secondary="@minor"></PBlockText>
     }
 }
-else if (InternalValue is bool b)
+else if (Value is bool b)
 {
-    @BoolFormatter!.Invoke(b)
+    <span class="@BoolClass">
+        @BoolFormatter!.Invoke(b)
+    </span>
 }
 else
 {
-    @InternalValue
+    <span class="@DefaultClass">
+        @Value
+    </span>
 }
