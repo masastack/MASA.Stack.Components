@@ -19,19 +19,13 @@
 }
 else if (Value is DateTime dateTime)
 {
-    if (dateTime.Kind != DateTimeKind.Local)
+    @if (DateTimeRule!.Invoke(dateTime))
     {
-        dateTime = dateTime.Add(TimezoneOffset);
-    }
+        if (dateTime.Kind != DateTimeKind.Local)
+        {
+            dateTime = dateTime.Add(TimezoneOffset);
+        }
 
-    @if (DateTimeValidator!.Invoke(dateTime))
-    {
-        <span class="@DateTimeClass">
-            @("")
-        </span>
-    }
-    else
-    {
         var major = @DateOnly.FromDateTime(dateTime).ToString(DateFormat);
         string? minor = null;
         if (!IgnoreTime)
