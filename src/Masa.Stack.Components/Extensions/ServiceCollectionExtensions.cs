@@ -15,7 +15,6 @@ public static class ServiceCollectionExtensions
             options.UserId = "sub";
             options.Role = "role";
         });
-
         services.AddAuthClient(authHost);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);

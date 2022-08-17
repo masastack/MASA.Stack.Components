@@ -38,7 +38,7 @@ public partial class SPasswordConfirmation
         var confirm = ConfirmText == WriteText;
         if (confirm is false)
         {
-            ErrorMessages = new() { "Please enter as prompted." };
+            ErrorMessages = new() { T("Please enter as prompted.") };
         }
         else if (confirm is true && OnOk.HasDelegate)
         {

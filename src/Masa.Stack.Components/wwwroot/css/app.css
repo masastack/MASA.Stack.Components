@@ -659,3 +659,12 @@ masa-stack-components .table-border-none.dense thead th {
 .masa-stack-components .hoverBg {
     background: #e1daff !important;
 }
+
+/*
+    SConfirm
+*/
+
+.masa-stack-components .confirm {
+    border-radius: 20px !important;
+    max-width: 400px !important;
+}

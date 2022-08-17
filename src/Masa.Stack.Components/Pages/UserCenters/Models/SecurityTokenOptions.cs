@@ -6,24 +6,15 @@ public class SecurityTokenOptions: ConfigurationApiMasaConfigurationOptions
     public override string AppId => "public-$Config";
 
     [JsonIgnore]
-    public override string? ObjectName { get; } = "SSO";
+    public override string? ObjectName { get; } = "$public.OSS";
 
-    public string Region { get; set; }
+    public string Region { get; set; } = "";
 
-    public string AccessKeyId { get; set; }
+    public string AccessKeyId { get; set; } = "";
 
-    public string AccessKeySecret { get; set; }
+    public string AccessKeySecret { get; set; } = "";
 
-    public string StsToken { get; set; }
+    public string StsToken { get; set; } = "";
 
-    public string Bucket { get; set; }
-
-    public SecurityTokenOptions(string region, string accessKeyId, string accessKeySecret, string stsToken, string bucket)
-    {
-        Region = region;
-        AccessKeyId = accessKeyId;
-        AccessKeySecret = accessKeySecret;
-        StsToken = stsToken;
-        Bucket = bucket;
-    }
+    public string Bucket { get; set; } = "";
 }
