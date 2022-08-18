@@ -21,7 +21,7 @@ public partial class SItemCol : MasaComponentBase
     public string? EnumClass { get; set; }
 
     [Parameter]
-    public Func<DateTime, bool>? DateTimeValidator { get; set; }
+    public Func<DateTime, bool>? DateTimeRule { get; set; }
 
     [Parameter]
     public bool IgnoreTime { get; set; }
@@ -46,7 +46,7 @@ public partial class SItemCol : MasaComponentBase
         base.OnParametersSet();
 
         BoolFormatter ??= b => b ? T("Yes") : T("No");
-        DateTimeValidator ??= dateTime => dateTime == default;
+        DateTimeRule ??= dateTime => dateTime != default;
     }
 
     public string GetColor(Enum @enum)
