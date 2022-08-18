@@ -29,12 +29,14 @@
                     @item.Description
                 </div>
 
-                <MChip style="position:absolute; bottom:24px; right:24px;"
-                   Label
-                   Small
+                @if (!string.IsNullOrEmpty(item.Role)) //for admin
+                {
+                    <MChip style="position:absolute; bottom:24px; right:24px;"
+                   Label Small
                    Class="fill-background emphasis2--text">
-                    @item.Role
-                </MChip>
+                        @item.Role
+                    </MChip>
+                }
             </MCard>
         </MCol>
     }
