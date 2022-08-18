@@ -659,3 +659,15 @@ masa-stack-components .table-border-none.dense thead th {
 .masa-stack-components .hoverBg {
     background: #e1daff !important;
 }
+
+/*
+    GlobalNavigation
+*/
+
+.nav-item.fill-hover:first-child {
+    border-radius: 20px;
+}
+
+.nav-item.fill-hover:last-child {
+    border-radius: 20px;
+}
