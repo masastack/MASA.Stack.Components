@@ -33,18 +33,18 @@ else if (Value is DateTime dateTime)
             minor = @TimeOnly.FromDateTime(dateTime).ToString(TimeFormat);
         }
 
-        <PBlockText Class="@DateTimeClass" Primary="@major" Secondary="@minor" @key="dateTime" />
+        <PBlockText Class="@DateTimeClass" Primary="@major" Secondary="@minor" />
     }
 }
 else if (Value is bool b)
 {
-    <span class="@BoolClass" @key="b">
+    <span class="@BoolClass">
         @BoolFormatter!.Invoke(b)
     </span>
 }
 else
 {
-    <span class="@DefaultClass" @key="Value">
+    <span class="@DefaultClass">
         @Value
     </span>
 }
