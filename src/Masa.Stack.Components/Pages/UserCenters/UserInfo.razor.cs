@@ -58,8 +58,6 @@ public partial class UserInfo : MasaComponentBase
         await AuthClient.UserService.UpdateBasicInfoAsync(new UpdateUserBasicInfoModel
         {
             DisplayName = _userDisplayName,
-            PhoneNumber = Data.PhoneNumber ?? "",
-            Email = Data.Email ?? "",
             Gender = (GenderTypes)_userGender
         });
         Data.DisplayName = _userDisplayName;
