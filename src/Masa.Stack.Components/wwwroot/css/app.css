@@ -664,10 +664,11 @@ masa-stack-components .table-border-none.dense thead th {
     GlobalNavigation
 */
 
-.nav-item.fill-hover:first-child {
+.m-list-item-group .fill-hover:first-child {
     border-radius: 20px;
 }
 
-.nav-item.fill-hover:last-child {
-    border-radius: 20px;
+.m-list-item-group .fill-hover:last-child {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
