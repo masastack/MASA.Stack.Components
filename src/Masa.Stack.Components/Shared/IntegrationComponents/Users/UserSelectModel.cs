@@ -1,8 +1,8 @@
 ﻿namespace Masa.Stack.Components;
 
-public class UserSelectModel : AutoCompleteDocument<Guid>
+public class UserSelectModel : AutoCompleteDocument
 {
-    public Guid UserId { get; set; }
+    public Guid Id { get; set; }
 
     public string? DisplayName { get; set; }
 
@@ -18,15 +18,14 @@ public class UserSelectModel : AutoCompleteDocument<Guid>
 
     public string Avatar { get; set; } = "";
 
-    public UserSelectModel(Guid userId, string name, string account, string phoneNumber, string email, string avatar)
+    public UserSelectModel(Guid id, string name, string account, string phoneNumber, string email, string avatar)
     {
-        Id = userId.ToString();
+        Id = id;
         Name = name;
         Account = account;
         PhoneNumber = phoneNumber;
         Email = email;
         Avatar = avatar;
-        Value = userId;
         Text = $"{Name},{Account},{PhoneNumber},{Email}";
     }
 }
