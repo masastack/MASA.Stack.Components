@@ -9,7 +9,7 @@ public partial class UserInfo : MasaComponentBase
     private IdCardValidateModal? _idCardValidateModal;
     private PhoneNumberValidateModal? _phoneNumberValidateModal;
 
-    private User _prevUser = null;
+    private User? _prevUser = null;
     private StringNumber _windowValue = 0;
 
     private Dictionary<string, object?>? Items { get; set; }
@@ -32,12 +32,12 @@ public partial class UserInfo : MasaComponentBase
         Items = new Dictionary<string, object?>()
         {
             [T("Position")] = ("mdi-briefcase", Data?.Position),
-            [T("Teams")] = ("mdi-account-supervisor", string.Join(" ", Data?.Teams ?? Enumerable.Empty<string>())),
+            [T("Teams")] = ("mdi-account-supervisor", Data?.Teams?.FirstOrDefault()), //todo show user current team
             [T("Company")] = ("mdi-office-building", Data?.CompanyName),
             [T("CountryOrRegion")] = ("mdi-earth", Data?.Region),
             [T("Address")] = ("mdi-map-marker", Data?.Address),
             [T("Department")] = ("mdi-file-tree", Data?.Department),
-            [T("CreationTime")] = ("mdi-clock-outline", Data?.CreatedAt?.ToString("yyyy-MM-dd")),
+            [T("CreationTime")] = ("mdi-clock-outline", Data?.CreatedAt?.Add(JsInitVariables.TimezoneOffset).ToString("yyyy-MM-dd HH:mm")),
         };
     }
 
@@ -58,8 +58,8 @@ public partial class UserInfo : MasaComponentBase
         await AuthClient.UserService.UpdateBasicInfoAsync(new UpdateUserBasicInfoModel
         {
             DisplayName = _userDisplayName,
-            PhoneNumber = Data.PhoneNumber,
-            Email = Data.Email,
+            PhoneNumber = Data.PhoneNumber ?? "",
+            Email = Data.Email ?? "",
             Gender = (GenderTypes)_userGender
         });
         Data.DisplayName = _userDisplayName;
