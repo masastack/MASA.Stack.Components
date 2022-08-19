@@ -13,6 +13,7 @@
             <ChildContent>
                 <SDateTimePicker
                     @bind-Value=InternalStartTime
+                    OutputKind="OutputKind"
                     Max="EndTime">
                         <MButton Text Color="primary" OnClick="async() => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
                 </SDateTimePicker>
@@ -28,6 +29,7 @@
             <ChildContent>
                 <SDateTimePicker
                     @bind-Value=InternalEndTime
+                    OutputKind="OutputKind"
                     Min="StartTime">
                     <MButton Text Color="primary" OnClick="async() => await UpdateEndTimeAsync()">@T("Confirm")</MButton>
                 </SDateTimePicker>
