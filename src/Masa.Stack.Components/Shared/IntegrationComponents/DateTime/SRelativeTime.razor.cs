@@ -24,7 +24,7 @@ public partial class SRelativeTime
     public EventCallback<DateTime?> EndTimeChanged { get; set; }
 
     [Parameter]
-    public TimeSpan OutputTimezoneOffset { get; set; } = TimeSpan.Zero;
+    public TimeSpan ValueTimezoneOffset { get; set; } = TimeSpan.Zero;
 
     public RelativeTimeTypes RelativeTimeType
     {
@@ -82,8 +82,8 @@ public partial class SRelativeTime
                 break;
             default: break;
         }
-        var startDateTime = dateTime?.Add(OutputTimezoneOffset);
-        var endDateTime = DateTime.UtcNow.Add(OutputTimezoneOffset);
+        var startDateTime = dateTime?.Add(ValueTimezoneOffset);
+        var endDateTime = DateTime.UtcNow.Add(ValueTimezoneOffset);
                     
         if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(startDateTime);
         else StartTime = startDateTime;

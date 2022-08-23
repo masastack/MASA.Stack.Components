@@ -26,10 +26,10 @@ public partial class SDateTimeRangePicker
     public EventCallback<DateTime?> EndTimeChanged { get; set; }
 
     [Parameter]
-    public TimeSpan OutputTimezoneOffset { get; set; } = TimeSpan.Zero;
+    public TimeSpan ValueTimezoneOffset { get; set; } = TimeSpan.Zero;
 
     [Parameter]
-    public TimeSpan ShowTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
+    public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
 
     private DateTime? InternalEndTime { get; set; }
 

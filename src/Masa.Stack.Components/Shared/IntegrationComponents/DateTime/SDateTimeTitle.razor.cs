@@ -17,7 +17,7 @@ public partial class SDateTimeTitle
     public bool Time { get; set; }
 
     [Parameter]
-    public TimeSpan ShowTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
+    public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
 
     [Parameter]
     public DateTime? Value
@@ -25,7 +25,7 @@ public partial class SDateTimeTitle
         get => _value;
         set
         {
-            _value = value?.Add(ShowTimezoneOffset);       
+            _value = value?.Add(DisplayTimezoneOffset);       
         }
     }
 

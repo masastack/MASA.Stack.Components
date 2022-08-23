@@ -7,14 +7,14 @@
         <MMenu @bind-Value="StartTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
             <ActivatorContent>
                 <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
-                    @(StartTime is null ? T("Please select a start time") : StartTime?.Add(ShowTimezoneOffset).ToString(T("$DateTimeFormat")))
+                    @(StartTime is null ? T("Please select a start time") : StartTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
                 </div>
             </ActivatorContent>
             <ChildContent>
                 <SDateTimePicker
                     @bind-Value=InternalStartTime
-                    OutputTimezoneOffset ="OutputTimezoneOffset"
-                    ShowTimezoneOffset="ShowTimezoneOffset"
+                    OutputTimezoneOffset ="ValueTimezoneOffset"
+                    ShowTimezoneOffset="DisplayTimezoneOffset"
                     Max="EndTime">
                         <MButton Text Color="primary" OnClick="async() => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
                 </SDateTimePicker>
@@ -24,14 +24,14 @@
         <MMenu @bind-Value="EndTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
             <ActivatorContent>
                 <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
-                    @(EndTime is null ? T("Please select an end time") : EndTime?.Add(ShowTimezoneOffset).ToString(T("$DateTimeFormat")))
+                    @(EndTime is null ? T("Please select an end time") : EndTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
                 </div>
             </ActivatorContent>
             <ChildContent>
                 <SDateTimePicker
                     @bind-Value=InternalEndTime
-                    OutputTimezoneOffset ="OutputTimezoneOffset"
-                    ShowTimezoneOffset="ShowTimezoneOffset"
+                    OutputTimezoneOffset ="ValueTimezoneOffset"
+                    ShowTimezoneOffset="DisplayTimezoneOffset"
                     Min="StartTime">
                     <MButton Text Color="primary" OnClick="async() => await UpdateEndTimeAsync()">@T("Confirm")</MButton>
                 </SDateTimePicker>

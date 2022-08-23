@@ -28,14 +28,14 @@ public partial class SDateTimePicker
     public TimeSpan OutputTimezoneOffset { get; set; } = TimeSpan.FromMinutes(0);
 
     [Parameter]
-    public TimeSpan ShowTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
+    public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
 
     private DateOnly? Date
     {
         get
         {
             if (Value is null) return null;
-            return DateOnly.FromDateTime(Value.Value.Add(ShowTimezoneOffset));
+            return DateOnly.FromDateTime(Value.Value.Add(DisplayTimezoneOffset));
         }
     }
 
@@ -44,7 +44,7 @@ public partial class SDateTimePicker
         get
         {
             if (Value is null) return new(GetHours()[0], GetMinutes()[0], GetSeconds()[0]);
-            return TimeOnly.FromDateTime(Value.Value.Add(ShowTimezoneOffset));
+            return TimeOnly.FromDateTime(Value.Value.Add(DisplayTimezoneOffset));
         }
     }
 
@@ -144,7 +144,7 @@ public partial class SDateTimePicker
 
     private async Task UpdateValueAsync(DateTime? dateTime)
     {
-        dateTime = dateTime?.Add(-ShowTimezoneOffset).Add(OutputTimezoneOffset);
+        dateTime = dateTime?.Add(-DisplayTimezoneOffset).Add(OutputTimezoneOffset);
         if (ValueChanged.HasDelegate)
         {
             await ValueChanged.InvokeAsync(dateTime);
