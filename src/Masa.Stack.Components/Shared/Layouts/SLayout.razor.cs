@@ -7,10 +7,10 @@ public partial class SLayout
 {
     [Inject]
     [NotNull]
-    public IPopupService PopupService { get; set; }
+    public IPopupService PopupService { get; set; } = null!;
 
     [Inject]
-    private IJSRuntime Js { get; set; } = null!;
+    public NavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
     private I18n I18n { get; set; } = null!;
