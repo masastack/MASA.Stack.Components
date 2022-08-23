@@ -5,9 +5,6 @@ namespace Masa.Stack.Components;
 
 public partial class SDateTimeRangePicker
 {
-    [Inject]
-    public IPopupService PopupService { get; set; } = default!;
-
     [Parameter]
     public string Class { get; set; } = "";
 
@@ -28,6 +25,12 @@ public partial class SDateTimeRangePicker
     [Parameter]
     public EventCallback<DateTime?> EndTimeChanged { get; set; }
 
+    [Parameter]
+    public TimeSpan ValueTimezoneOffset { get; set; } = TimeSpan.Zero;
+
+    [Parameter]
+    public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
+
     private DateTime? InternalEndTime { get; set; }
 
     private bool StartTimeVisible { get; set; }
@@ -43,7 +46,7 @@ public partial class SDateTimeRangePicker
 
     private async Task UpdateStartTimeAsync()
     {
-        StartTimeVisible = false;
+        StartTimeVisible = false;        
         if (InternalStartTime > EndTime) await PopupService.AlertAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
         else
         {
@@ -54,12 +57,12 @@ public partial class SDateTimeRangePicker
 
     private async Task UpdateEndTimeAsync()
     {
-        EndTimeVisible = false;
+        EndTimeVisible = false;    
         if (InternalEndTime < StartTime) await PopupService.AlertAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
         else
         {
             if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(InternalEndTime);
-            else EndTime = InternalStartTime;
+            else EndTime = InternalEndTime;
         }
     }
 }
