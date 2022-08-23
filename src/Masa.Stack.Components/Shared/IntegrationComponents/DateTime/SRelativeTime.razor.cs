@@ -23,6 +23,9 @@ public partial class SRelativeTime
     [Parameter]
     public EventCallback<DateTime?> EndTimeChanged { get; set; }
 
+    [Parameter]
+    public TimeSpan ValueTimezoneOffset { get; set; } = TimeSpan.Zero;
+
     public RelativeTimeTypes RelativeTimeType
     {
         get
@@ -54,35 +57,38 @@ public partial class SRelativeTime
         switch (type)
         {
             case RelativeTimeTypes.FifteenMinutes:
-                dateTime = DateTime.Now.AddMinutes(-15);
+                dateTime = DateTime.UtcNow.AddMinutes(-15);
                 break;
             case RelativeTimeTypes.ThirtyMinutes:
-                dateTime = DateTime.Now.AddMinutes(-30);
+                dateTime = DateTime.UtcNow.AddMinutes(-30);
                 break;
             case RelativeTimeTypes.OneHour:
-                dateTime = DateTime.Now.AddHours(-1);
+                dateTime = DateTime.UtcNow.AddHours(-1);
                 break;
             case RelativeTimeTypes.TwoHour:
-                dateTime = DateTime.Now.AddHours(-2);
+                dateTime = DateTime.UtcNow.AddHours(-2);
                 break;
             case RelativeTimeTypes.TwelveHour:
-                dateTime = DateTime.Now.AddHours(-12);
+                dateTime = DateTime.UtcNow.AddHours(-12);
                 break;
             case RelativeTimeTypes.OneDay:
-                dateTime = DateTime.Now.AddDays(-1);
+                dateTime = DateTime.UtcNow.AddDays(-1);
                 break;
             case RelativeTimeTypes.OneWeek:
-                dateTime = DateTime.Now.AddDays(-7);
+                dateTime = DateTime.UtcNow.AddDays(-7);
                 break;
             case RelativeTimeTypes.OneMonth:
-                dateTime = DateTime.Now.AddMonths(-1);
+                dateTime = DateTime.UtcNow.AddMonths(-1);
                 break;
             default: break;
         }
-        if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(dateTime);
-        else StartTime = dateTime;
-        if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(DateTime.Now);
-        else EndTime = DateTime.Now;
+        var startDateTime = dateTime?.Add(ValueTimezoneOffset);
+        var endDateTime = DateTime.UtcNow.Add(ValueTimezoneOffset);
+                    
+        if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(startDateTime);
+        else StartTime = startDateTime;
+        if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(endDateTime);
+        else EndTime = endDateTime;
     }
 
     public string ConverText(RelativeTimeTypes type)
