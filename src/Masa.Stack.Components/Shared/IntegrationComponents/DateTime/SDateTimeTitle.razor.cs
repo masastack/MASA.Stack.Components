@@ -17,7 +17,7 @@ public partial class SDateTimeTitle
     public bool Time { get; set; }
 
     [Parameter]
-    public DateTimeKind Kind { get; set; } = DateTimeKind.Local;
+    public TimeSpan ShowTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
 
     [Parameter]
     public DateTime? Value
@@ -25,27 +25,7 @@ public partial class SDateTimeTitle
         get => _value;
         set
         {
-            if(value is not null)
-            {
-                var dateTime = value.Value;
-                if (Kind is DateTimeKind.Utc)
-                {
-                    _value = dateTime.ToUniversalTime();
-                }                    
-                else if(Kind is DateTimeKind.Local)
-                {
-                    if (dateTime.Kind is not DateTimeKind.Local)
-                        _value = dateTime.Add(JsInitVariables.TimezoneOffset);
-                    else
-                    {
-                        _value = dateTime.ToUniversalTime().Add(JsInitVariables.TimezoneOffset);
-                    }
-                }
-                else
-                    _value = dateTime;
-            }
-            else
-                _value = value;        
+            _value = value?.Add(ShowTimezoneOffset);       
         }
     }
 

@@ -25,22 +25,17 @@ public partial class SDateTimePicker
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public DateTimeKind OutputKind { get; set; } = DateTimeKind.Utc;
+    public TimeSpan OutputTimezoneOffset { get; set; } = TimeSpan.FromMinutes(0);
+
+    [Parameter]
+    public TimeSpan ShowTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
 
     private DateOnly? Date
     {
         get
         {
             if (Value is null) return null;
-            else
-            {
-                if (Value.Value.Kind is DateTimeKind.Local)
-                    return DateOnly.FromDateTime(Value.Value);
-                else if (Value.Value.Kind is DateTimeKind.Utc)
-                    return DateOnly.FromDateTime(Value.Value.Add(JsInitVariables.TimezoneOffset));
-                else
-                    return DateOnly.FromDateTime(Value.Value);
-            }
+            return DateOnly.FromDateTime(Value.Value.Add(ShowTimezoneOffset));
         }
     }
 
@@ -49,14 +44,7 @@ public partial class SDateTimePicker
         get
         {
             if (Value is null) return new(GetHours()[0], GetMinutes()[0], GetSeconds()[0]);
-            {
-                if (Value.Value.Kind is DateTimeKind.Local)
-                    return TimeOnly.FromDateTime(Value.Value);
-                else if (Value.Value.Kind is DateTimeKind.Utc)
-                    return TimeOnly.FromDateTime(Value.Value.Add(JsInitVariables.TimezoneOffset));
-                else
-                    return TimeOnly.FromDateTime(Value.Value);
-            }
+            return TimeOnly.FromDateTime(Value.Value.Add(ShowTimezoneOffset));
         }
     }
 
@@ -156,27 +144,7 @@ public partial class SDateTimePicker
 
     private async Task UpdateValueAsync(DateTime? dateTime)
     {
-        if (dateTime is not null)
-        {
-            if (OutputKind is DateTimeKind.Local)
-            {
-                if (dateTime.Value.Kind is not DateTimeKind.Local)
-                {
-                    dateTime = dateTime.Value.ToLocalTime().Add(JsInitVariables.TimezoneOffset);
-                }
-                else
-                {
-                    dateTime = dateTime.Value.ToUniversalTime().Add(JsInitVariables.TimezoneOffset);
-                }
-            }
-            else if (OutputKind is DateTimeKind.Utc)
-            {
-                if (dateTime.Value.Kind is not DateTimeKind.Utc)
-                {
-                    dateTime = dateTime.Value.ToUniversalTime();
-                }
-            }
-        }
+        dateTime = dateTime?.Add(-ShowTimezoneOffset).Add(OutputTimezoneOffset);
         if (ValueChanged.HasDelegate)
         {
             await ValueChanged.InvokeAsync(dateTime);

@@ -26,7 +26,10 @@ public partial class SDateTimeRangePicker
     public EventCallback<DateTime?> EndTimeChanged { get; set; }
 
     [Parameter]
-    public DateTimeKind OutputKind { get; set; } = DateTimeKind.Utc;
+    public TimeSpan OutputTimezoneOffset { get; set; } = TimeSpan.Zero;
+
+    [Parameter]
+    public TimeSpan ShowTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
 
     private DateTime? InternalEndTime { get; set; }
 
@@ -39,18 +42,12 @@ public partial class SDateTimeRangePicker
         await base.SetParametersAsync(parameters);
         InternalStartTime = StartTime;
         InternalEndTime = EndTime;
-        if (StartTime?.Kind is DateTimeKind.Utc)
-            StartTime = StartTime.Value.Add(JsInitVariables.TimezoneOffset);
-        if (EndTime?.Kind is DateTimeKind.Utc)
-            EndTime = EndTime.Value.Add(JsInitVariables.TimezoneOffset);
     }
 
     private async Task UpdateStartTimeAsync()
     {
-        StartTimeVisible = false;
-        var startTime = InternalStartTime;
-        if (startTime?.Kind is DateTimeKind.Utc) startTime = startTime.Value.Add(JsInitVariables.TimezoneOffset);
-        if (startTime > EndTime) await PopupService.AlertAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
+        StartTimeVisible = false;        
+        if (InternalStartTime > EndTime) await PopupService.AlertAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
         else
         {
             if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(InternalStartTime);
@@ -60,10 +57,8 @@ public partial class SDateTimeRangePicker
 
     private async Task UpdateEndTimeAsync()
     {
-        EndTimeVisible = false;
-        var endTime = InternalEndTime;
-        if (endTime?.Kind is DateTimeKind.Utc) endTime = endTime.Value.Add(JsInitVariables.TimezoneOffset);
-        if (endTime < StartTime) await PopupService.AlertAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
+        EndTimeVisible = false;    
+        if (InternalEndTime < StartTime) await PopupService.AlertAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
         else
         {
             if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(InternalEndTime);
