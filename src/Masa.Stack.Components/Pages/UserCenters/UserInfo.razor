@@ -4,7 +4,12 @@
 <MCard Class="user-info rounded-5">
     <div class="user-info__left">
         <div class="avatar">
-            <UploadAvatar Size="140" Class="mb-6" @bind-Value="UpdateUser.Avatar" WhenFileChangeUpload />
+            <UploadAvatar 
+                Size="140" 
+                Class="mb-6"
+                Value="@UpdateUserAvatar.Avatar"
+                ValueChanged="UpdateAvatarAsync"
+                WhenFileChangeUpload />
             <PBlockText Primary="@UserDetail.DisplayName"
                         PrimaryClass="font-20-bold emphasis2--text"
                         Secondary="@UserDetail.Account"
@@ -75,13 +80,21 @@
                 </div>
                 <MRow Class="mb-2">
                     <MCol Cols="12">
-                        <STextField @bind-Value="@UpdateUser.DisplayName" Label="@T("Nickname")"></STextField>
+                        <STextField @bind-Value="@UpdateUser.DisplayName" Label="@T("Nickname")" />
                     </MCol>
                     <MCol Cols="6">
-                        <STextField @bind-Value="UpdateUser.PhoneNumber" Label="@T("PhoneNumber")" />
+                        <STextField 
+                            Value="UpdateUserPhoneNumber.PhoneNumber"
+                            Label="@T("PhoneNumber")"
+                            Readonly
+                            Action=PhoneNumberValidateAction />
                     </MCol>
                     <MCol Cols="6">
-                        <STextField @bind-Value="UpdateUser.Email" Label="@T("Email")" />
+                        <STextField
+                            Value="@UserDetail.Email"
+                            Label="@T("Email")"
+                            Readonly
+                            Action=EmailValidateAction />
                     </MCol>
                 </MRow>
             </MWindowItem>
@@ -100,19 +113,19 @@
                       DetailClass="@(_ => "overline regular3--text")">
             <TermContent>
                 @{
-                    var term = (ValueTuple<string, string>)context.Value;
-                    <MIcon Size="13" Class="regular3--text mr-2">@term.Item1</MIcon>
-                    <span>@T(term.Item2)</span>
+                    var (icon,value) = (ValueTuple<string, string>)context.Value;
+                    <MIcon Size="13" Class="regular3--text mr-2">@icon</MIcon>
+                    <span>@value</span>
                 }
             </TermContent>
-            <DetailContent>@context.Key</DetailContent>
+            <DetailContent>@T(context.Key)</DetailContent>
         </SDefinitions>
 
     </div>
 </MCard>
 
-@*<IdCardValidateModal @ref="_idCardValidateModalRef" />
+@*<IdCardValidateModal @ref="_idCardValidateModalRef" />*@
 
 <EmailValidateModal @ref="_emailValidateModalRef" IsUpdate="true" />
 
-<PhoneNumberValidateModal @ref="_phoneNumberValidateModalRef" IsUpdate="true" />*@
+<PhoneNumberValidateModal @ref="_phoneNumberValidateModalRef" IsUpdate="true" />

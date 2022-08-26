@@ -661,16 +661,6 @@ masa-stack-components .table-border-none.dense thead th {
 }
 
 /*
-    SConfirm
-*/
-
-.masa-stack-components .confirm {
-    border-radius: 20px !important;
-    max-width: 400px !important;
-}
-}
-
-/*
     GlobalNavigation
 */
 

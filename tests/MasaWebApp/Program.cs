@@ -1,32 +1,23 @@
+using Masa.BuildingBlocks.Configuration;
+using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 using Masa.Stack.Components;
+using Masa.Utils.Security.Authentication.OpenIdConnect;
 using MasaWebApp.Data;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddAuthentication(options =>
+builder.AddMasaConfiguration(configurationBuilder =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer("Bearer", options =>
-{
-    options.Authority = "";
-    options.RequireHttpsMetadata = false;
-    options.TokenValidationParameters.ValidateAudience = false;
-    options.MapInboundClaims = false;
-}).AddCookie("Cookies", delegate (CookieAuthenticationOptions options)
-{
-    options.ExpireTimeSpan = TimeSpan.FromSeconds(3600);
+    configurationBuilder.UseDcc();
 });
+var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
+builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC:PmClient").Get<MasaOpenIdConnectOptions>());
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddMasaStackComponentsForServer(default, "https://auth-service-develop.masastack.com/", builder.Configuration["McServiceBaseAddress"]);
-//builder.Services.AddMasaStackComponentsForServer("wwwroot/i18n", "http://localhost:18002/");
+builder.Services.AddMasaStackComponentsForServer(default, "https://auth-service-develop.masastack.com/", builder.GetMasaConfiguration().Local["McServiceBaseAddress"]);
 
 builder.Services.AddElasticsearchClient("auth", option => option.UseNodes("http://10.10.90.44:31920/").UseDefault())
                 .AddAutoComplete(option => option.UseIndexName("user_index"));
@@ -48,6 +39,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 app.MapBlazorHub();

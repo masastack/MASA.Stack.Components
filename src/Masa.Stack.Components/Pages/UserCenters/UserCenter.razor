@@ -1,11 +1,6 @@
 ﻿@page "/user-center"
-
-@using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Model
-@using Masa.Stack.Components.UserCenters
 @namespace Masa.Stack.Components
-@inject GlobalConfig GlobalConfig
 @inject IAuthClient AuthClient
-@implements IDisposable
 
 <div class="mb-6" style="height: calc(100vh - 460px);">
     <UserInfo/>
@@ -13,13 +8,8 @@
 <UserTeams Data="Teams"></UserTeams>
 
 @code {
-    private UserModel User { get; set; } = new();
+    //private UserModel User { get; set; } = new();
     private List<Team> Teams { get; set; } = new();
-
-    protected override void OnInitialized()
-    {
-        GlobalConfig.OnLanguageChanged += base.StateHasChanged;
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -44,10 +34,4 @@
             StateHasChanged();
         }
     }
-
-    public void Dispose()
-    {
-        GlobalConfig.OnLanguageChanged -= base.StateHasChanged;
-    }
-
 }

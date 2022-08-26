@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Stack.Components.UserCenters;
+namespace Masa.Stack.Components;
 
 public class UploadAvatar : SUploadImage
 {
@@ -9,7 +9,7 @@ public class UploadAvatar : SUploadImage
     public IClient Client { get; set; } = default!;
 
     [Inject]
-    public IOptions<SecurityTokenOptions> SecurityTokenOptions { get; set; } = default!;
+    public IOptions<OssOptions> OssOptions { get; set; } = default!;
 
     public override Task SetParametersAsync(ParameterView parameters)
     {
@@ -20,12 +20,14 @@ public class UploadAvatar : SUploadImage
 
     public override async Task UploadAsync()
     {
-        var option = SecurityTokenOptions.Value;
         var response = Client.GetSecurityToken();
         var stsToken = response.SessionToken;
         var accessId = response.AccessKeyId;
         var accessSecret = response.AccessKeySecret;
-        var paramter = new SecurityTokenModel(option.Region, accessId, accessSecret, stsToken, option.Bucket);
+        var region = "oss-cn-hangzhou";
+        var bucket = OssOptions.Value.Bucket;
+
+        var paramter = new SecurityTokenModel(region, accessId, accessSecret, stsToken, bucket);
         OnInputFileUpload = FileUploadCallBack.CreateCallback("UploadImage", paramter);
         await base.UploadAsync();
     }

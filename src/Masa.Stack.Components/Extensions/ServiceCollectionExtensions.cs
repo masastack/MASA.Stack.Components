@@ -1,4 +1,8 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.BuildingBlocks.Configuration;
+using Masa.Contrib.Storage.ObjectStorage.Aliyun.Options;
+using Microsoft.Extensions.Configuration;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -35,6 +39,20 @@ public static class ServiceCollectionExtensions
         if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
+
+        var ossOptions = services.BuildServiceProvider()
+                                 .GetRequiredService<IMasaConfiguration>()
+                                 .ConfigurationApi
+                                 .GetPublic()
+                                 .GetSection("$public.OSS")
+                                 .Get<OssOptions>();
+        builder.Services.AddAliyunStorage(new AliyunStorageOptions(ossOptions.AccessId, ossOptions.AccessSecret, ossOptions.Endpoint, ossOptions.RoleArn, ossOptions.RoleSessionName)
+        {
+            Sts = new AliyunStsOptions()
+            {
+                RegionId = ossOptions.RegionId
+            }
+        });
 
         return services;
     }
