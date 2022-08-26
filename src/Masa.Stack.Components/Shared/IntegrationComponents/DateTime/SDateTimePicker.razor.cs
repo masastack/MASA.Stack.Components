@@ -6,16 +6,47 @@ public partial class SDateTimePicker
     private static readonly int[] _minutes = Enumerable.Range(0, 60).ToArray();
     private static readonly int[] _seconds = Enumerable.Range(0, 60).ToArray();
 
-    [Inject] public IPopupService PopupService { get; set; }
-    [Parameter] public DateTime? Max { get; set; }
-    [Parameter] public DateTime? Min { get; set; }
-    [Parameter] public bool NoTitle { get; set; }
-    [Parameter] public DateTime? Value { get; set; }
-    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public DateTime? Max { get; set; }
 
-    private DateOnly? Date => Value is null ? null : DateOnly.FromDateTime(Value.Value);
-    private TimeOnly Time => Value is null ? new(GetHours()[0], GetMinutes()[0], GetSeconds()[0]) : TimeOnly.FromDateTime(Value.Value);
+    [Parameter]
+    public DateTime? Min { get; set; }
+
+    [Parameter]
+    public bool NoTitle { get; set; }
+
+    [Parameter]
+    public DateTime? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTime?> ValueChanged { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public TimeSpan OutputTimezoneOffset { get; set; } = TimeSpan.FromMinutes(0);
+
+    [Parameter]
+    public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
+
+    private DateOnly? Date
+    {
+        get
+        {
+            if (Value is null) return null;
+            return DateOnly.FromDateTime(Value.Value.Add(DisplayTimezoneOffset));
+        }
+    }
+
+    private TimeOnly Time
+    {
+        get
+        {
+            if (Value is null) return new(GetHours()[0], GetMinutes()[0], GetSeconds()[0]);
+            return TimeOnly.FromDateTime(Value.Value.Add(DisplayTimezoneOffset));
+        }
+    }
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
@@ -113,6 +144,7 @@ public partial class SDateTimePicker
 
     private async Task UpdateValueAsync(DateTime? dateTime)
     {
+        dateTime = dateTime?.Add(-DisplayTimezoneOffset).Add(OutputTimezoneOffset);
         if (ValueChanged.HasDelegate)
         {
             await ValueChanged.InvokeAsync(dateTime);
@@ -147,7 +179,7 @@ public partial class SDateTimePicker
 
     private async Task OnNowAsync()
     {
-        await UpdateValueAsync(DateTime.Now);
+        await UpdateValueAsync(DateTime.UtcNow);
     }
 
     private async Task OnResetAsync()

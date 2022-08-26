@@ -52,7 +52,7 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
                 builder2.CloseComponent();
             });
             builder.CloseComponent();
-        };
+        };       
     }
 
     private async Task ToDayAsync(MouseEventArgs args)

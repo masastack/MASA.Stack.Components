@@ -668,3 +668,17 @@ masa-stack-components .table-border-none.dense thead th {
     border-radius: 20px !important;
     max-width: 400px !important;
 }
+}
+
+/*
+    GlobalNavigation
+*/
+
+.m-list-item-group .fill-hover:first-child {
+    border-radius: 20px;
+}
+
+.m-list-item-group .fill-hover:last-child {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}

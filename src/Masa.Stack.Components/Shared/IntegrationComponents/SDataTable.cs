@@ -5,6 +5,9 @@ namespace Masa.Stack.Components;
 
 public class SDataTable<TItem> : MDataTable<TItem>
 {
+    [Parameter]
+    public bool DisableChippedEnum { get; set; }
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         HideDefaultFooter = true;
@@ -16,6 +19,8 @@ public class SDataTable<TItem> : MDataTable<TItem>
             {
                 builder.OpenComponent(0, typeof(SItemCol));
                 builder.AddAttribute(1, nameof(SItemCol.Value), item.Value);
+                builder.AddAttribute(2, nameof(SItemCol.ChippedEnum), !DisableChippedEnum);
+                builder.AddAttribute(3, nameof(SItemCol.SmallChip), Dense);
                 builder.CloseComponent();
             }
 

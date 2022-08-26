@@ -36,9 +36,11 @@
             //var user = await AuthClient.UserService.GetCurrentUserAsync();
             //var config = new TypeAdapterConfig();
             //config.NewConfig<UserModel, User>()
-            //    .Map(dest => dest.Address, src => src.Address.ToString());
-            //User = user.Adapt<User>(config); 
-
+            //    .Map(dest => dest.Address, src => src.Address.ToString())
+            //    .Map(dest => dest.Region, src => "") //todo src.Address convert to region
+            //    .Map(dest => dest.CreatedAt,src=>src.CreationTime);
+            //User = user.Adapt<User>(config);
+            //User.Teams = teams.Select(t => t.Name);
             StateHasChanged();
         }
     }
