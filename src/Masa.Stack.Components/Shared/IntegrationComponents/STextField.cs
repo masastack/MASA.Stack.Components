@@ -15,6 +15,9 @@ public class STextField<TValue> : MTextField<TValue>
     public bool Required { get; set; }
 
     [Parameter]
+    public string? Tooltip { get; set; }
+
+    [Parameter]
     public Action<DefaultTextfieldAction>? Action { get; set; }
 
     private DefaultTextfieldAction InternalAction { get; set; } = new();
@@ -86,6 +89,18 @@ public class STextField<TValue> : MTextField<TValue>
                     subBuilder.CloseComponent();
                 });
                 builder.CloseElement();
+            };
+        }
+
+        if (!string.IsNullOrWhiteSpace(Tooltip) && PrependContent == default)
+        {
+            PrependContent = builder =>
+            {
+                builder.OpenComponent<SIcon>(0);
+                builder.AddAttribute(1, "Tooltip", Tooltip);
+                builder.AddAttribute(2, "ChildContent", (RenderFragment)(cb => cb.AddContent(3, "mdi-help-circle-outline")));
+                builder.AddAttribute(4, "Style", "margin-top: 6px;");
+                builder.CloseComponent();
             };
         }
 
