@@ -27,34 +27,35 @@ public partial class SColorGroup
     [Parameter]
     public RenderFragment<string>? ItemAppendContent { get; set; }
 
+    [Parameter]
+    public int Elevation { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            if (Colors is null)
-            {
-                Colors = new();
-            }
-            if (Colors.Any())
+            if (Colors.Any() && Value == string.Empty)
             {
                 await ValueChanged.InvokeAsync(Colors.First());
             }
+            else
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+
+            StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
-    }
-
-    protected override void OnParametersSet()
-    {
-        if (Colors is null)
-        {
-            Colors = new();
-        }
-        base.OnParametersSet();
     }
 
     private async Task OnClickHandler(ItemContext context, string color)
     {
         await context.Toggle();
         await ValueChanged.InvokeAsync(color);
+    }
+
+    private async Task HandleValueChanged(StringNumber color)
+    {
+        await ValueChanged.InvokeAsync(color.AsT0);
     }
 }
