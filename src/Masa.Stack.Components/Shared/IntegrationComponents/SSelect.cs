@@ -65,9 +65,9 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(Tooltip) && PrependContent == default)
+        if (!string.IsNullOrWhiteSpace(Tooltip) && AppendOuterContent == default)
         {
-            PrependContent = builder =>
+            AppendOuterContent = builder =>
             {
                 builder.OpenComponent<SIcon>(0);
                 builder.AddAttribute(1, "Tooltip", Tooltip);
