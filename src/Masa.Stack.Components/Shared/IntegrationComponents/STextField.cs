@@ -92,9 +92,9 @@ public class STextField<TValue> : MTextField<TValue>
             };
         }
 
-        if (!string.IsNullOrWhiteSpace(Tooltip) && AppendContent == default)
+        if (!string.IsNullOrWhiteSpace(Tooltip) && AppendOuterContent == default)
         {
-            AppendContent = builder =>
+            AppendOuterContent = builder =>
             {
                 builder.OpenComponent<SIcon>(0);
                 builder.AddAttribute(1, "Tooltip", Tooltip);
