@@ -65,6 +65,8 @@
   "Verify the phone number successfully": "校验手机号码成功",
   "Verify the phone number failed": "校验手机号码失败",
   "Email": "邮箱",
+  "Update Email": "修改邮箱",
+  "Verify Email": "校验邮箱",
   "Position": "职位",
   "Teams": "团队",
   "Company": "公司",

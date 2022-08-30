@@ -11,11 +11,9 @@
     <MForm EnableI18n EnableValidation Model="UpdateUserPhoneNumber" @ref="FormRef">
         <STextField @bind-Value="UpdateUserPhoneNumber.PhoneNumber"
                     Class="mb-6"
-                    Label="@T("PhoneNumber")">
-        </STextField>
+                    Label="@T("PhoneNumber")" />
         <STextField @bind-Value="UpdateUserPhoneNumber.VerificationCode"
                     Label="@T("Captcha")"
-                    Action="CaptchaValidateAction">
-        </STextField>
+                    Action="CaptchaValidateAction" />
     </MForm>
 </SSimpleDialog>

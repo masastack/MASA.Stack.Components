@@ -2,15 +2,17 @@
 @inherits MasaComponentBase
 
 <SSimpleDialog @bind-Value="Visible"
-               Title="@T("Verify PhoneNumber")"
+               Title="@T("Update Email")"
                IconOfTitle="mdi-phone"
                CancelText="@T("Cancel")"
                OkText="@T("Ok")"
                OnCancel="HandleOnCancel"
-               HideCancel
                OnOk="HandleOnOk">
-    <MForm EnableI18n EnableValidation Model="VerifyMsgCode" @ref="FormRef">
-        <STextField @bind-Value="VerifyMsgCode.Code"
+    <MForm EnableI18n EnableValidation Model="UpdateUserEmail" @ref="FormRef">
+        <STextField @bind-Value="UpdateUserEmail.Email"
+                    Class="mb-6"
+                    Label="@T("EmailAddress")" />
+        <STextField TValue="string"
                     Label="@T("Captcha")"
                     Action="CaptchaValidateAction" />
     </MForm>

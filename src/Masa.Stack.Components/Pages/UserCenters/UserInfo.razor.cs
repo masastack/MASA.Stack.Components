@@ -2,15 +2,11 @@
 
 public partial class UserInfo : MasaComponentBase
 {
-    private EmailValidateModal? _emailValidateModalRef;
-    private IdCardValidateModal? _idCardValidateModalRef;
     private int _windowValue = 0;
 
     public UserModel UserDetail { get; set; } = new();
 
     public UpdateUserBasicInfoModel UpdateUser { get; set; } = new();
-
-    public UpdateUserPhoneNumberModel UpdateUserPhoneNumber { get; set; } = new();
 
     public UpdateUserAvatarModel UpdateUserAvatar { get; set; } = new();
 
@@ -21,6 +17,10 @@ public partial class UserInfo : MasaComponentBase
     private bool UpdateUserPhoneNumberDialogVisible { get; set; }
 
     private bool VerifyUserPhoneNumberDialogVisible { get; set; }
+
+    private bool UpdateUserEmailDialogVisible { get; set; }
+
+    private bool VerifyUserEmailDialogVisible { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -36,8 +36,7 @@ public partial class UserInfo : MasaComponentBase
     {
         UserDetail = await AuthClient.UserService.GetCurrentUserAsync();
         UpdateUser = UserDetail.Adapt<UpdateUserBasicInfoModel>();
-        UpdateUserPhoneNumber = new (default, UserDetail.PhoneNumber, "");
-        UpdateUserAvatar = new (default, UserDetail.Avatar);
+        UpdateUserAvatar = new(default, UserDetail.Avatar);
 
         Items = new Dictionary<string, object?>()
         {
@@ -76,16 +75,16 @@ public partial class UserInfo : MasaComponentBase
 
     private void PhoneNumberValidateAction(DefaultTextfieldAction action)
     {
-        action.Content = UpdateUserPhoneNumber.PhoneNumber is null ? @T("Add") : @T("Change");
+        action.Content = string.IsNullOrEmpty(UserDetail.PhoneNumber) ? @T("Add") : @T("Change");
         action.Text = true;
-        action.OnClick = OpenVerifyPhoneNumberModal;
+        action.OnClick = string.IsNullOrEmpty(UserDetail.PhoneNumber) ? OpenUpdatePhoneNumberModal : OpenVerifyPhoneNumberModal;
     }
 
     private void EmailValidateAction(DefaultTextfieldAction action)
     {
-        action.Content = UserDetail.Email is null ? @T("Add") : @T("Change");
+        action.Content = string.IsNullOrEmpty(UserDetail.Email) ? @T("Add") : @T("Change");
         action.Text = true;
-        action.OnClick = OpenEmailValidateModal;
+        action.OnClick = string.IsNullOrEmpty(UserDetail.Email) ? OpenUpdateEmailModal : OpenVerifyEmailModal;
     }
 
     private Task OpenVerifyPhoneNumberModal(MouseEventArgs _)
@@ -94,9 +93,21 @@ public partial class UserInfo : MasaComponentBase
         return Task.CompletedTask;
     }
 
-    private Task OpenEmailValidateModal(MouseEventArgs _)
+    private Task OpenUpdatePhoneNumberModal(MouseEventArgs _)
     {
-        _emailValidateModalRef?.Open();
+        UpdateUserPhoneNumberDialogVisible = true;
+        return Task.CompletedTask;
+    }
+
+    private Task OpenVerifyEmailModal(MouseEventArgs _)
+    {
+        VerifyUserEmailDialogVisible = true;
+        return Task.CompletedTask;
+    }
+
+    private Task OpenUpdateEmailModal(MouseEventArgs _)
+    {
+        UpdateUserEmailDialogVisible = true;
         return Task.CompletedTask;
     }
 
@@ -106,6 +117,16 @@ public partial class UserInfo : MasaComponentBase
     }
 
     private async Task OnUpdatePhoneNumberSuccess(string phoneNumber)
+    {
+        await GetCurrentUserAsync();
+    }
+
+    private void OnVerifyEmailSuccess()
+    {
+        UpdateUserEmailDialogVisible = true;
+    }
+
+    private async Task OnUpdateEmailSuccess(string email)
     {
         await GetCurrentUserAsync();
     }

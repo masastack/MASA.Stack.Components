@@ -92,7 +92,7 @@
                     </MCol>
                     <MCol Cols="6">
                         <STextField 
-                            Value="UpdateUserPhoneNumber.PhoneNumber"
+                            Value="UserDetail.PhoneNumber"
                             Label="@T("PhoneNumber")"
                             Readonly
                             Action=PhoneNumberValidateAction />
@@ -132,10 +132,7 @@
     </div>
 </MCard>
 
-@*<IdCardValidateModal @ref="_idCardValidateModalRef" />*@
-
-<EmailValidateModal @ref="_emailValidateModalRef" IsUpdate="true" />
-
 <VerifyPhoneNumberModal OnSuccess=OnVerifyPhoneNumberSuccess @bind-Visible="VerifyUserPhoneNumberDialogVisible" />
 <UpdatePhoneNumberModal OnSuccess=OnUpdatePhoneNumberSuccess @bind-Visible="UpdateUserPhoneNumberDialogVisible" />
-
+<VerifyEmailModal OnSuccess=OnVerifyEmailSuccess @bind-Visible="VerifyUserEmailDialogVisible" />
+<UpdateEmailModal OnSuccess=OnVerifyEmailSuccess @bind-Visible="UpdateUserEmailDialogVisible" />
