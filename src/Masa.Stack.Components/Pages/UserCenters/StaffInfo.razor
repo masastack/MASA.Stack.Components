@@ -1,14 +1,20 @@
 ﻿@namespace Masa.Stack.Components.UserCenters
 @inherits MasaComponentBase
 
-@*<MCard Class="user-info rounded-5">
+<MCard Class="user-info rounded-5">
     <div class="user-info__left">
         <div class="avatar">
-            <UploadAvatar Size="140" Class="mb-6" @bind-Value="UpdateUser.Avatar" WhenFileChangeUpload />
+            <UploadAvatar 
+                Size="140" 
+                Class="mb-6"
+                Value="@UpdateStaffAvatar.Avatar"
+                ValueChanged="UpdateAvatarAsync"
+                WhenFileChangeUpload />
             <PBlockText Primary="@StaffDetail.DisplayName"
                         PrimaryClass="font-20-bold emphasis2--text"
                         Secondary="@StaffDetail.Account"
                         SecondaryClass="regular3--text font-14 full-width" />
+            <SButton Text OnClick="NavigateToUser" Class="mt-6">@T("Switch to user")</SButton>
         </div>
         <div class="auths">
             <MDivider>
@@ -65,7 +71,7 @@
                     <span>
                         <MButton Rounded Plain Height="40" Width="100" OnClick="() => Cancel()">@T("Cancel")</MButton>
                         <SAutoLoadingButton Rounded
-                                            Disabled="@(string.IsNullOrWhiteSpace(UpdateUser.DisplayName))"
+                                            Disabled="@(string.IsNullOrWhiteSpace(UpdateStaff.DisplayName))"
                                             Height="40"
                                             Width="100"
                                             OnClick="UpdateBasicInfoAsync">
@@ -75,13 +81,13 @@
                 </div>
                 <MRow Class="mb-2">
                     <MCol Cols="12">
-                        <STextField @bind-Value="@UpdateUser.DisplayName" Label="@T("Nickname")"></STextField>
+                        <STextField @bind-Value="@UpdateStaff.DisplayName" Label="@T("Nickname")" />
                     </MCol>
                     <MCol Cols="6">
-                        <STextField @bind-Value="UpdateUser.PhoneNumber" Label="@T("PhoneNumber")" />
+                        <STextField @bind-Value="UpdateStaff.PhoneNumber" Label="@T("PhoneNumber")" />
                     </MCol>
                     <MCol Cols="6">
-                        <STextField @bind-Value="UpdateUser.Email" Label="@T("Email")" />
+                        <STextField @bind-Value="UpdateStaff.Email" Label="@T("Email")" />
                     </MCol>
                 </MRow>
             </MWindowItem>
@@ -100,19 +106,13 @@
                       DetailClass="@(_ => "overline regular3--text")">
             <TermContent>
                 @{
-                    var term = (ValueTuple<string, string>)context.Value;
-                    <MIcon Size="13" Class="regular3--text mr-2">@term.Item1</MIcon>
-                    <span>@T(term.Item2)</span>
+                    var (icon,value) = (ValueTuple<string, string>)context.Value;
+                    <MIcon Size="13" Class="regular3--text mr-2">@icon</MIcon>
+                    <span>@T(value)</span>
                 }
             </TermContent>
-            <DetailContent>@context.Key</DetailContent>
+            <DetailContent>@T(context.Key)</DetailContent>
         </SDefinitions>
 
     </div>
 </MCard>
-*@
-@*<IdCardValidateModal @ref="_idCardValidateModalRef" />
-
-<EmailValidateModal @ref="_emailValidateModalRef" IsUpdate="true" />
-
-<PhoneNumberValidateModal @ref="_phoneNumberValidateModalRef" IsUpdate="true" />*@

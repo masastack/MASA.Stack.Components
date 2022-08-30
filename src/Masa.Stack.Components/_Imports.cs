@@ -46,3 +46,7 @@ global using System.Text.Json.Serialization;
 global using Masa.Stack.Components.UserCenters.Models;
 global using Microsoft.Extensions.Options;
 global using Masa.Stack.Components.Extensions;
+global using Masa.Utils.Data.Elasticsearch;
+global using Masa.BuildingBlocks.Configuration;
+global using Masa.Contrib.Storage.ObjectStorage.Aliyun.Options;
+global using Microsoft.Extensions.Configuration;

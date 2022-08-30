@@ -10,17 +10,18 @@ builder.AddMasaConfiguration(configurationBuilder =>
     configurationBuilder.UseDcc();
 });
 var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
-builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC:PmClient").Get<MasaOpenIdConnectOptions>());
+builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC:PMClient").Get<MasaOpenIdConnectOptions>());
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddMasaStackComponentsForServer(default, "https://auth-service-develop.masastack.com/", builder.GetMasaConfiguration().Local["McServiceBaseAddress"]);
-
-builder.Services.AddElasticsearchClient("auth", option => option.UseNodes("http://10.10.90.44:31920/").UseDefault())
-                .AddAutoComplete(option => option.UseIndexName("user_index"));
+builder.Services.AddMasaStackComponentsForServer(
+        default, 
+        publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
+        publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url")
+    );
 
 var app = builder.Build();
 

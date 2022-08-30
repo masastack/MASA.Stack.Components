@@ -2,14 +2,13 @@
 
 public partial class StaffInfo : MasaComponentBase
 {
-    private EmailValidateModal? _emailValidateModalRef;
-    private IdCardValidateModal? _idCardValidateModalRef;
-    private PhoneNumberValidateModal? _phoneNumberValidateModalRef;
     private int _windowValue = 0;
 
-    public UserModel StaffDetail { get; set; } = new();
+    public StaffDetailModel StaffDetail { get; set; } = new();
 
-    public UpdateUserBasicInfoModel UpdateUser { get; set; } = new();
+    public UpdateStaffBasicInfoModel UpdateStaff { get; set; } = new();
+
+    public UpdateStaffAvatarModel UpdateStaffAvatar { get; set; } = new();
 
     private Dictionary<string, object?>? Items { get; set; }
 
@@ -17,47 +16,50 @@ public partial class StaffInfo : MasaComponentBase
     {
         if (firstRender)
         {
-            Items = new Dictionary<string, object?>()
-            {
-                ["Position"] = ("mdi-briefcase", StaffDetail.Position),
-                ["Company"] = ("mdi-office-building", StaffDetail.CompanyName),
-                ["Address"] = ("mdi-map-marker", StaffDetail.Address),
-                ["Department"] = ("mdi-file-tree", StaffDetail.Department),
-                //["CreationTime"] = ("mdi-clock-outline", User.CreatedAt.ToString("yyyy-MM-dd")),
-            };
-            await GetCurrentUserAsync();        
+            await GetCurrentStaffAsync();
             StateHasChanged();
         }
     }
 
-    private async Task GetCurrentUserAsync()
+    private async Task GetCurrentStaffAsync()
     {
-        StaffDetail = await AuthClient.UserService.GetCurrentUserAsync();
-        UpdateUser = StaffDetail.Adapt<UpdateUserBasicInfoModel>();
+        StaffDetail = await AuthClient.UserService.GetCurrentStaffAsync() ?? throw new UserFriendlyException("This staff does not exist");
+        UpdateStaff = StaffDetail.Adapt<UpdateStaffBasicInfoModel>();
+        UpdateStaffAvatar = new(default, StaffDetail.Avatar);
+        Items = new Dictionary<string, object?>()
+        {
+            ["Position"] = ("mdi-briefcase", StaffDetail.Position),
+            ["JobNumber"] = ("mdi-office-building", StaffDetail.JobNumber),
+            ["StaffType"] = ("mdi-office-building", StaffDetail.StaffType.ToString()),
+            ["Address"] = ("mdi-map-marker", StaffDetail.Address.Address),
+            ["Department"] = ("mdi-file-tree", StaffDetail.Department),
+            ["CreationTime"] = ("mdi-clock-outline", StaffDetail.CreationTime.ToString("yyyy-MM-dd")),
+        };
     }
 
     private async Task UpdateBasicInfoAsync()
     {
-        await AuthClient.UserService.UpdateBasicInfoAsync(UpdateUser);
-        await GetCurrentUserAsync();
+        await AuthClient.UserService.UpdateStaffBasicInfoAsync(UpdateStaff);
+        await GetCurrentStaffAsync();
+        _windowValue = default;
+    }
+
+    private async Task UpdateAvatarAsync(string avatar)
+    {
+        UpdateStaffAvatar.Avatar = avatar;
+        await AuthClient.UserService.UpdateStaffAvatarAsync(UpdateStaffAvatar);
+        await GetCurrentStaffAsync();
         _windowValue = default;
     }
 
     private void Cancel()
     {
-        UpdateUser = StaffDetail.Adapt<UpdateUserBasicInfoModel>();
+        UpdateStaff = StaffDetail.Adapt<UpdateStaffBasicInfoModel>();
         _windowValue = default;
     }
 
-    private Task OpenPhoneNumberValidateModal(MouseEventArgs _)
+    private void NavigateToUser()
     {
-        _phoneNumberValidateModalRef?.Open();
-        return Task.CompletedTask;
-    }
-
-    private Task OpenEmailValidateModal(MouseEventArgs _)
-    {
-        _emailValidateModalRef?.Open();
-        return Task.CompletedTask;
+        NavigationManager.NavigateTo("/user-center");
     }
 }

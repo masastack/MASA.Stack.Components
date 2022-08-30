@@ -4,24 +4,30 @@ public partial class UserInfo : MasaComponentBase
 {
     private EmailValidateModal? _emailValidateModalRef;
     private IdCardValidateModal? _idCardValidateModalRef;
-    private PhoneNumberValidateModal? _phoneNumberValidateModalRef;
     private int _windowValue = 0;
 
     public UserModel UserDetail { get; set; } = new();
 
     public UpdateUserBasicInfoModel UpdateUser { get; set; } = new();
 
-    public UpdateUserPhoneNumberModel UpdateUserPhoneNumber { get; set; } = new(default, default, default);
+    public UpdateUserPhoneNumberModel UpdateUserPhoneNumber { get; set; } = new();
 
-    public UpdateUserAvatarModel UpdateUserAvatar { get; set; } = new(default, default);
+    public UpdateUserAvatarModel UpdateUserAvatar { get; set; } = new();
 
     private Dictionary<string, object?>? Items { get; set; }
+
+    private bool IsStaff { get; set; }
+
+    private bool UpdateUserPhoneNumberDialogVisible { get; set; }
+
+    private bool VerifyUserPhoneNumberDialogVisible { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             await GetCurrentUserAsync();
+            IsStaff = (await AuthClient.UserService.GetCurrentStaffAsync()) is not null;
             StateHasChanged();
         }
     }
@@ -41,13 +47,13 @@ public partial class UserInfo : MasaComponentBase
             ["Department"] = ("mdi-file-tree", UserDetail.Department),
             ["CreationTime"] = ("mdi-clock-outline", UserDetail.CreationTime.ToString("yyyy-MM-dd")),
         };
+        _windowValue = default;
     }
 
     private async Task UpdateBasicInfoAsync()
     {
         await AuthClient.UserService.UpdateBasicInfoAsync(UpdateUser);
         await GetCurrentUserAsync();
-        _windowValue = default;
     }
 
     private async Task UpdateAvatarAsync(string avatar)
@@ -55,7 +61,6 @@ public partial class UserInfo : MasaComponentBase
         UpdateUserAvatar.Avatar = avatar;
         await AuthClient.UserService.UpdateUserAvatarAsync(UpdateUserAvatar);
         await GetCurrentUserAsync();
-        _windowValue = default;
     }
 
     private void Cancel()
@@ -64,11 +69,16 @@ public partial class UserInfo : MasaComponentBase
         _windowValue = default;
     }
 
+    private void NavigateToStaff()
+    {
+        NavigationManager.NavigateTo("/user-center/staff");
+    }
+
     private void PhoneNumberValidateAction(DefaultTextfieldAction action)
     {
         action.Content = UpdateUserPhoneNumber.PhoneNumber is null ? @T("Add") : @T("Change");
         action.Text = true;
-        action.OnClick = OpenPhoneNumberValidateModal;
+        action.OnClick = OpenVerifyPhoneNumberModal;
     }
 
     private void EmailValidateAction(DefaultTextfieldAction action)
@@ -78,9 +88,9 @@ public partial class UserInfo : MasaComponentBase
         action.OnClick = OpenEmailValidateModal;
     }
 
-    private Task OpenPhoneNumberValidateModal(MouseEventArgs _)
+    private Task OpenVerifyPhoneNumberModal(MouseEventArgs _)
     {
-        _phoneNumberValidateModalRef?.Open();
+        VerifyUserPhoneNumberDialogVisible = true;
         return Task.CompletedTask;
     }
 
@@ -88,5 +98,15 @@ public partial class UserInfo : MasaComponentBase
     {
         _emailValidateModalRef?.Open();
         return Task.CompletedTask;
+    }
+
+    private void OnVerifyPhoneNumberSuccess()
+    {
+        UpdateUserPhoneNumberDialogVisible = true;
+    }
+
+    private async Task OnUpdatePhoneNumberSuccess(string phoneNumber)
+    {
+        await GetCurrentUserAsync();
     }
 }

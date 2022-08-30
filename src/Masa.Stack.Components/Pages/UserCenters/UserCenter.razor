@@ -1,37 +1,19 @@
-﻿@page "/user-center"
+﻿@page "/user-center/{mode?}"
 @namespace Masa.Stack.Components
-@inject IAuthClient AuthClient
 
 <div class="mb-6" style="height: calc(100vh - 460px);">
-    <UserInfo/>
+    @if(Mode == "staff")
+    {
+        <StaffInfo />
+    }
+    else
+    {
+        <UserInfo />
+    }   
 </div>
-<UserTeams Data="Teams"></UserTeams>
+<UserTeams />
 
 @code {
-    //private UserModel User { get; set; } = new();
-    private List<Team> Teams { get; set; } = new();
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            var teams = await AuthClient.TeamService.GetUserTeamsAsync();
-            var teamConfig = new TypeAdapterConfig();
-            teamConfig.NewConfig<TeamModel, Team>()
-                .Map(dest => dest.Logo, src => src.Avatar);
-            Teams = teams.Adapt<List<Team>>(teamConfig);
-
-            //var user = await AuthClient.UserService.GetCurrentUserAsync();
-            //var config = new TypeAdapterConfig();
-            //config.NewConfig<UserModel, User>()
-            //    .Map(dest => dest.Address, src => src.Address.ToString())
-            //    .Map(dest => dest.Region, src => "") //todo src.Address convert to region
-            //    .Map(dest => dest.CreatedAt,src=>src.CreationTime);
-            //User = user.Adapt<User>(config);
-            //User.Teams = teams.Select(t => t.Name);
-            StateHasChanged();
-        }
-    }
+    [Parameter]
+    public string? Mode { get; set; }
 }
