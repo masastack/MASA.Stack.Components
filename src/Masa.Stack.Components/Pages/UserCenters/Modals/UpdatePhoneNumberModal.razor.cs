@@ -28,7 +28,6 @@ public partial class UpdatePhoneNumberModal : MasaComponentBase
     {
         action.Content = CaptchaText;
         action.Text = true;
-        //action.Disabled = CaptchaText!=T("Captcha");
         action.DisableLoding = true;
         action.OnClick = SendCaptcha;
     }

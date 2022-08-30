@@ -28,7 +28,6 @@ public partial class UpdateEmailModal : MasaComponentBase
     {
         action.Content = CaptchaText;
         action.Text = true;
-        //action.Disabled = CaptchaText!=T("Captcha");
         action.DisableLoding = true;
         action.OnClick = SendCaptcha;
     }
@@ -68,21 +67,5 @@ public partial class UpdateEmailModal : MasaComponentBase
 
     private async Task HandleOnOk()
     {
-        //if (await FormRef.ValidateAsync())
-        //{
-        //    var success = await AuthClient.UserService.UpdatePhoneNumberAsync(UpdateUserEmail);
-        //    if (success)
-        //    {
-        //        if (OnSuccess.HasDelegate)
-        //            await OnSuccess.InvokeAsync(UpdateUserEmail.PhoneNumber);
-
-        //        await PopupService.AlertAsync(T("Modify the phone number successfully"), AlertTypes.Success);
-        //        await HandleOnCancel();
-        //    }
-        //    else
-        //    {
-        //        await PopupService.AlertAsync(T("Modify the phone number failed"), AlertTypes.Error);
-        //    }
-        //}
     }
 }
