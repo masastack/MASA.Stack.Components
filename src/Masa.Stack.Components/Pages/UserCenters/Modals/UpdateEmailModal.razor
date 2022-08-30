@@ -1,0 +1,19 @@
+﻿@namespace Masa.Stack.Components.UserCenters
+@inherits MasaComponentBase
+
+<SSimpleDialog @bind-Value="Visible"
+               Title="@T("Update Email")"
+               IconOfTitle="mdi-email"
+               CancelText="@T("Cancel")"
+               OkText="@T("Ok")"
+               OnCancel="HandleOnCancel"
+               OnOk="HandleOnOk">
+    <MForm EnableI18n EnableValidation Model="UpdateUserEmail" @ref="FormRef">
+        <STextField @bind-Value="UpdateUserEmail.Email"
+                    Class="mb-6"
+                    Label="@T("EmailAddress")" />
+        <STextField TValue="string"
+                    Label="@T("Captcha")"
+                    Action="CaptchaValidateAction" />
+    </MForm>
+</SSimpleDialog>

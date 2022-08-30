@@ -5,6 +5,9 @@ public class SAutoLoadingButton : MButton
     [Parameter]
     public string BorderRadiusClass { get; set; } = "rounded-pill";
 
+    [Parameter]
+    public bool DisableLoading { get; set; }
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Color = "primary";
@@ -19,7 +22,7 @@ public class SAutoLoadingButton : MButton
         {
             OnClick = EventCallback.Factory.Create<MouseEventArgs>(this, async (args) =>
             {
-                Loading = true;
+                Loading = DisableLoading is false;
                 Disabled = true;
 
                 try

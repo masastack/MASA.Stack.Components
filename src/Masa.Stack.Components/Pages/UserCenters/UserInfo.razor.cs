@@ -2,78 +2,132 @@
 
 public partial class UserInfo : MasaComponentBase
 {
-    [Parameter]
-    public User Data { get; set; } = new();
+    private int _windowValue = 0;
 
-    private EmailValidateModal? _emailValidateModal;
-    private IdCardValidateModal? _idCardValidateModal;
-    private PhoneNumberValidateModal? _phoneNumberValidateModal;
+    public UserModel UserDetail { get; set; } = new();
 
-    private User? _prevUser = null;
-    private StringNumber _windowValue = 0;
+    public UpdateUserBasicInfoModel UpdateUser { get; set; } = new();
+
+    public UpdateUserAvatarModel UpdateUserAvatar { get; set; } = new();
 
     private Dictionary<string, object?>? Items { get; set; }
 
-    private int _userGender;
-    private string _userDisplayName = string.Empty;
+    private bool IsStaff { get; set; }
 
-    protected override void OnParametersSet()
+    private bool UpdateUserPhoneNumberDialogVisible { get; set; }
+
+    private bool VerifyUserPhoneNumberDialogVisible { get; set; }
+
+    private bool UpdateUserEmailDialogVisible { get; set; }
+
+    private bool VerifyUserEmailDialogVisible { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_prevUser != Data)
+        if (firstRender)
         {
-            _prevUser = Data;
-            UpdateDefinitionsItems();
+            await GetCurrentUserAsync();
+            IsStaff = (await AuthClient.UserService.GetCurrentStaffAsync()) is not null;
+            StateHasChanged();
         }
     }
 
-    private void UpdateDefinitionsItems()
+    private async Task GetCurrentUserAsync()
     {
-        // TODO: no change after i18n changed 
+        UserDetail = await AuthClient.UserService.GetCurrentUserAsync();
+        UpdateUser = UserDetail.Adapt<UpdateUserBasicInfoModel>();
+        UpdateUserAvatar = new(default, UserDetail.Avatar);
+
         Items = new Dictionary<string, object?>()
         {
-            [T("Position")] = ("mdi-briefcase", Data?.Position),
-            [T("Teams")] = ("mdi-account-supervisor", Data?.Teams?.FirstOrDefault()), //todo show user current team
-            [T("Company")] = ("mdi-office-building", Data?.CompanyName),
-            [T("CountryOrRegion")] = ("mdi-earth", Data?.Region),
-            [T("Address")] = ("mdi-map-marker", Data?.Address),
-            [T("Department")] = ("mdi-file-tree", Data?.Department),
-            [T("CreationTime")] = ("mdi-clock-outline", Data?.CreatedAt?.Add(JsInitVariables.TimezoneOffset).ToString("yyyy-MM-dd HH:mm")),
+            ["Position"] = ("mdi-briefcase", UserDetail.Position),
+            ["Company"] = ("mdi-office-building", UserDetail.CompanyName),
+            ["Address"] = ("mdi-map-marker", UserDetail.Address.Address),
+            ["Department"] = ("mdi-file-tree", UserDetail.Department),
+            ["CreationTime"] = ("mdi-clock-outline", UserDetail.CreationTime.ToString("yyyy-MM-dd")),
         };
+        _windowValue = default;
     }
 
-    private void ChangeWindowValue(int val)
+    private async Task UpdateBasicInfoAsync()
     {
-        if (val == 1)
-        {
-            _userGender = Data.Gender;
-            _userDisplayName = Data.DisplayName;
-        }
-
-        _windowValue = val;
+        await AuthClient.UserService.UpdateBasicInfoAsync(UpdateUser);
+        await GetCurrentUserAsync();
     }
 
-    private async Task SaveUserInfo()
+    private async Task UpdateAvatarAsync(string avatar)
     {
-
-        await AuthClient.UserService.UpdateBasicInfoAsync(new UpdateUserBasicInfoModel
-        {
-            DisplayName = _userDisplayName,
-            Gender = (GenderTypes)_userGender
-        });
-        Data.DisplayName = _userDisplayName;
-        Data.Gender = _userGender;
-        ChangeWindowValue(0);
+        UpdateUserAvatar.Avatar = avatar;
+        await AuthClient.UserService.UpdateUserAvatarAsync(UpdateUserAvatar);
+        await GetCurrentUserAsync();
     }
 
-    private Task OpenPhoneNumberValidateModal(MouseEventArgs _)
+    private void Cancel()
     {
-        _phoneNumberValidateModal?.Open();
+        UpdateUser = UserDetail.Adapt<UpdateUserBasicInfoModel>();
+        _windowValue = default;
+    }
+
+    private void NavigateToStaff()
+    {
+        NavigationManager.NavigateTo("/user-center/staff");
+    }
+
+    private void PhoneNumberValidateAction(DefaultTextfieldAction action)
+    {
+        action.Content = string.IsNullOrEmpty(UserDetail.PhoneNumber) ? @T("Add") : @T("Change");
+        action.Text = true;
+        action.OnClick = string.IsNullOrEmpty(UserDetail.PhoneNumber) ? OpenUpdatePhoneNumberModal : OpenVerifyPhoneNumberModal;
+    }
+
+    private void EmailValidateAction(DefaultTextfieldAction action)
+    {
+        action.Content = string.IsNullOrEmpty(UserDetail.Email) ? @T("Add") : @T("Change");
+        action.Text = true;
+        action.OnClick = string.IsNullOrEmpty(UserDetail.Email) ? OpenUpdateEmailModal : OpenVerifyEmailModal;
+    }
+
+    private Task OpenVerifyPhoneNumberModal(MouseEventArgs _)
+    {
+        VerifyUserPhoneNumberDialogVisible = true;
         return Task.CompletedTask;
     }
 
-    private Task OpenEmailValidateModal(MouseEventArgs _)
+    private Task OpenUpdatePhoneNumberModal(MouseEventArgs _)
     {
-        _emailValidateModal?.Open();
+        UpdateUserPhoneNumberDialogVisible = true;
         return Task.CompletedTask;
+    }
+
+    private Task OpenVerifyEmailModal(MouseEventArgs _)
+    {
+        VerifyUserEmailDialogVisible = true;
+        return Task.CompletedTask;
+    }
+
+    private Task OpenUpdateEmailModal(MouseEventArgs _)
+    {
+        UpdateUserEmailDialogVisible = true;
+        return Task.CompletedTask;
+    }
+
+    private void OnVerifyPhoneNumberSuccess()
+    {
+        UpdateUserPhoneNumberDialogVisible = true;
+    }
+
+    private async Task OnUpdatePhoneNumberSuccess(string phoneNumber)
+    {
+        await GetCurrentUserAsync();
+    }
+
+    private void OnVerifyEmailSuccess()
+    {
+        UpdateUserEmailDialogVisible = true;
+    }
+
+    private async Task OnUpdateEmailSuccess(string email)
+    {
+        await GetCurrentUserAsync();
     }
 }

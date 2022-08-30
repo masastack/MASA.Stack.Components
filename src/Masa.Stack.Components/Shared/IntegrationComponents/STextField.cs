@@ -72,7 +72,7 @@ public class STextField<TValue> : MTextField<TValue>
             {
                 builder.OpenElement(0, "div");
                 builder.AddAttribute(1, "class", "d-flex");
-                builder.AddAttribute(2, "style", $"margin-right:-12px;height:{Height}px;");
+                builder.AddAttribute(2, "style", $"margin-right:-12px;height:{Height}px;margin-top: -12px;");
                 builder.AddContent(3, subBuilder =>
                 {
                     subBuilder.OpenComponent<MDivider>(0);
@@ -84,8 +84,9 @@ public class STextField<TValue> : MTextField<TValue>
                     subBuilder.AddAttribute(4, "Disabled", InternalAction.Disabled);
                     subBuilder.AddAttribute(5, "Color", InternalAction.Color);
                     subBuilder.AddAttribute(6, "Style", "border:none;border-radius: 0 8px 8px 0 !important;height:100%;");
-                    subBuilder.AddAttribute(7, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, InternalAction.OnClick));
-                    subBuilder.AddAttribute(8, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));
+                    subBuilder.AddAttribute(7, "DisableLoading", InternalAction.DisableLoding);
+                    subBuilder.AddAttribute(8, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, InternalAction.OnClick));
+                    subBuilder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));                   
                     subBuilder.CloseComponent();
                 });
                 builder.CloseElement();
@@ -125,6 +126,8 @@ public class DefaultTextfieldAction
     public string Color { get; set; } = "primary";
 
     public bool Disabled { get; set; }
+
+    public bool DisableLoding { get; set; }
 
     public bool Text { get; set; }
 

@@ -70,7 +70,7 @@ public partial class SUserAutoComplete
         }
         else if (Search == search)
         {
-            var response = await AutoCompleteClient.GetAsync<UserSelectModel, Guid>(search, new AutoCompleteOptions
+            var response = await AutoCompleteClient.GetBySpecifyDocumentAsync<UserSelectModel>(search, new AutoCompleteOptions
             {
                 Page = Page,
                 PageSize = PageSize,

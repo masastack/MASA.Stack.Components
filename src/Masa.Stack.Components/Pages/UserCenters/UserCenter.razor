@@ -1,53 +1,19 @@
-﻿@page "/user-center"
-
-@using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Model
-@using Masa.Stack.Components.UserCenters
+﻿@page "/user-center/{mode?}"
 @namespace Masa.Stack.Components
-@inject GlobalConfig GlobalConfig
-@inject IAuthClient AuthClient
-@implements IDisposable
 
 <div class="mb-6" style="height: calc(100vh - 460px);">
-    <UserInfo Data="User"></UserInfo>
+    @if(Mode == "staff")
+    {
+        <StaffInfo />
+    }
+    else
+    {
+        <UserInfo />
+    }   
 </div>
-<UserTeams Data="Teams"></UserTeams>
+<UserTeams />
 
 @code {
-    private User? User { get; set; }
-    private List<Team> Teams { get; set; } = new();
-
-    protected override void OnInitialized()
-    {
-        GlobalConfig.OnLanguageChanged += base.StateHasChanged;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            var teams = await AuthClient.TeamService.GetUserTeamsAsync();
-            var teamConfig = new TypeAdapterConfig();
-            teamConfig.NewConfig<TeamModel, Team>()
-                .Map(dest => dest.Logo, src => src.Avatar);
-            Teams = teams.Adapt<List<Team>>(teamConfig);
-
-            var user = await AuthClient.UserService.GetCurrentUserAsync();
-            var config = new TypeAdapterConfig();
-            config.NewConfig<UserModel, User>()
-                .Map(dest => dest.Address, src => src.Address.ToString())
-                .Map(dest => dest.Region, src => "") //todo src.Address convert to region
-                .Map(dest => dest.CreatedAt,src=>src.CreationTime);
-            User = user.Adapt<User>(config);
-            User.Teams = teams.Select(t => t.Name);
-            StateHasChanged();
-        }
-    }
-
-    public void Dispose()
-    {
-        GlobalConfig.OnLanguageChanged -= base.StateHasChanged;
-    }
-
+    [Parameter]
+    public string? Mode { get; set; }
 }

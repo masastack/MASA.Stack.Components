@@ -15,7 +15,6 @@ public static class ServiceCollectionExtensions
             options.UserId = "sub";
             options.Role = "role";
         });
-
         services.AddAuthClient(authHost);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
@@ -36,6 +35,8 @@ public static class ServiceCollectionExtensions
         if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
         services.AddScoped<JsInterop.JsDotNetInvoker>();
         services.AddScoped<GlobalConfig>();
+        services.AddOss();
+        services.AddElasticsearchAutoComplete();
 
         return services;
     }

@@ -14,7 +14,7 @@
                 <SDateTimePicker
                     @bind-Value=InternalStartTime
                     OutputTimezoneOffset ="ValueTimezoneOffset"
-                    ShowTimezoneOffset="DisplayTimezoneOffset"
+                    DisplayTimezoneOffset="DisplayTimezoneOffset"
                     Max="EndTime">
                         <MButton Text Color="primary" OnClick="async() => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
                 </SDateTimePicker>
@@ -31,7 +31,7 @@
                 <SDateTimePicker
                     @bind-Value=InternalEndTime
                     OutputTimezoneOffset ="ValueTimezoneOffset"
-                    ShowTimezoneOffset="DisplayTimezoneOffset"
+                    DisplayTimezoneOffset="DisplayTimezoneOffset"
                     Min="StartTime">
                     <MButton Text Color="primary" OnClick="async() => await UpdateEndTimeAsync()">@T("Confirm")</MButton>
                 </SDateTimePicker>
