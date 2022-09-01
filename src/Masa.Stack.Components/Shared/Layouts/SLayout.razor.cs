@@ -1,5 +1,4 @@
-﻿using Masa.Stack.Components.Extensions;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Masa.Stack.Components;
 
