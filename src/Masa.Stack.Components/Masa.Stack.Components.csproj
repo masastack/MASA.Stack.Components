@@ -13,7 +13,8 @@
 		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.6.0-preview.8" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Mc" Version="0.6.0-preview.8" />
 		<PackageReference Include="Masa.Contrib.Authentication.Identity" Version="0.6.0-preview.8" />
-		<PackageReference Include="Masa.Contrib.StackSdks.Auth" Version="0.6.0-preview.8" />
+		<PackageReference Include="Masa.Utils.Extensions.DependencyInjection" Version="0.6.0-preview.8" />
+		<!--<PackageReference Include="Masa.Contrib.StackSdks.Auth" Version="0.6.0-preview.8" />-->
 		<PackageReference Include="Masa.Utils.Extensions.Enums" Version="0.6.0-preview.8" />
 		<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="0.6.0-preview.8" />
 		<PackageReference Include="Masa.Contrib.Storage.ObjectStorage.Aliyun" Version="0.6.0-preview.8" />
@@ -23,6 +24,16 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Locales\*.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\MASA.Framework\src\Contrib\StackSdks\Masa.Contrib.StackSdks.Auth\Masa.Contrib.StackSdks.Auth.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Masa.Utils.Extensions.DependencyInjection">
+	    <HintPath>..\..\..\MASA.Framework\src\Utils\Extensions\Masa.Utils.Extensions.DependencyInjection\obj\Debug\net6.0\ref\Masa.Utils.Extensions.DependencyInjection.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 </Project>

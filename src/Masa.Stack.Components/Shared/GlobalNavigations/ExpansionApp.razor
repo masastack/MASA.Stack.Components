@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
+@inject DynamicTranslateProvider TranslateProvider
 
 <MExpansionPanel Class="app"
                  Id="@App.TagId(CategoryCode, ExpansionWrapper?.TagIdPrefix)"
@@ -21,7 +22,7 @@
             }
         }
         <span style="flex:none">
-            @App.Name
+            @TranslateProvider.DT(App.Name)
         </span>
         @if (!context && App.RoutableNavsCount > 0)
         {

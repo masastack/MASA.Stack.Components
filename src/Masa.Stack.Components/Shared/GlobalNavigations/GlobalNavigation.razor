@@ -25,7 +25,7 @@
                                     <ItemContent>
                                         <div class="global-nav-left__favorite-item full-width masa-text-2-2 @(context.ActiveClass)">
                                             <MListItemContent>
-                                                <MListItemTitle>@item.Nav.Name</MListItemTitle>
+                                                <MListItemTitle>@DT(item.Nav.Name)</MListItemTitle>
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
                                                 <SAutoLoadingButton Icon XSmall Color="@(item.Nav.IsFavorite ? "#FFB547" : "")"
@@ -54,7 +54,7 @@
                             <span class="masa-text-3-1">@T("RecentVisits")</span>
                             @foreach (var (name, url) in RecentVisits)
                             {
-                                <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@name</MChip>
+                                <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@DT(name)</MChip>
                             }
                         </div>
                     </div>

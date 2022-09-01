@@ -19,10 +19,19 @@ public abstract class MasaComponentBase : ComponentBase
     [Inject]
     public IPopupService PopupService { get; set; } = default!;
 
+    [Inject]
+    public DynamicTranslateProvider TranslateProvider { get; set; } = default!;
+
+
     private I18n? _languageProvider;
 
     protected string T(string key)
     {
         return LanguageProvider.T(key, true);
+    }
+
+    protected string DT(string key)
+    {
+        return TranslateProvider.DT(key);
     }
 }

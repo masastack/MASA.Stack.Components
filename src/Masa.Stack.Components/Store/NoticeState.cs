@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components.Store;
 
-public class NoticeState
+public class NoticeState : IScopedDependency
 {
     public bool IsRead => !Notices.Any(x => !x.IsRead);
 

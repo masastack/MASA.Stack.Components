@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
+@inject DynamicTranslateProvider TranslateProvider
 
 @if (Data is not null)
 {
@@ -13,7 +14,7 @@
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="font-weight: inherit">@Data.Name</MListItemTitle>
+                        <MListItemTitle Style="font-weight: inherit">@TranslateProvider.DT(Data.Name)</MListItemTitle>
                     </MListItemContent>
 
                     @if (context.Hover)

@@ -1,9 +1,10 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
+@inject DynamicTranslateProvider TranslateProvider
 
 <CascadingValue Value="this" IsFixed>
     <div class="category" id="@Category.TagId(ExpansionWrapper?.TagIdPrefix)" @attributes="@Attributes">
     <div class="category__header">
-        @Category.Name
+            @TranslateProvider.DT(Category.Name)
         <MSpacer />
         @if (Checkable)
         {

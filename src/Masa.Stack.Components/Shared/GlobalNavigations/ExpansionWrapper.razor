@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
+@inject DynamicTranslateProvider TranslateProvider
 
 <div class="global-nav-content__main @Class" style="@Style">
     @foreach (var category in Categories!)
@@ -38,7 +39,7 @@
                         <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>
                     }
                     <span>
-                        @category.Name
+                        @TranslateProvider.DT(category.Name)
                     </span>
                 </li>
             }
