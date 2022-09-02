@@ -5,6 +5,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
         string? i18nDirectoryPath, string authHost, string mcHost)
     {
+        services.AddAutoInject();
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
         services.AddSingleton<ICurrentPrincipalAccessor, BlazorCurrentPrincipalAccessor>();
 
@@ -19,7 +20,6 @@ public static class ServiceCollectionExtensions
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
-        services.AddScoped<NoticeState>();
 
         var builder = services.AddMasaBlazor(builder =>
         {
@@ -33,8 +33,6 @@ public static class ServiceCollectionExtensions
         .AddI18n(GetLocales().ToArray());
 
         if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
-        services.AddScoped<JsInterop.JsDotNetInvoker>();
-        services.AddScoped<GlobalConfig>();
         services.AddOss();
         services.AddElasticsearchAutoComplete();
 
@@ -48,7 +46,6 @@ public static class ServiceCollectionExtensions
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
-        services.AddScoped<NoticeState>();
 
         await services.AddMasaBlazor(builder =>
         {
@@ -59,8 +56,6 @@ public static class ServiceCollectionExtensions
             builder.Theme.Warning = "#FF7D00";
             builder.Theme.Info = "#37A7FF";
         }).AddI18nForWasmAsync(i18nDirectoryPath);
-        services.AddScoped<JsInterop.JsDotNetInvoker>();
-        services.AddScoped<GlobalConfig>();
 
         return services;
     }

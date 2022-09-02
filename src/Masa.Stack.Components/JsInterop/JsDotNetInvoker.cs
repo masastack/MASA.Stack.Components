@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components.JsInterop;
 
-public class JsDotNetInvoker : IDisposable
+public class JsDotNetInvoker : IDisposable, IScopedDependency
 {
     private readonly IJSRuntime _jsRuntime;
     private readonly List<DotNetObjectReference<Invoker>> _references = new();

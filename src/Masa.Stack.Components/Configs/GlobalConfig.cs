@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components.Configs;
 
-public class GlobalConfig
+public class GlobalConfig : IScopedDependency
 {
     private const string DarkCookieKey = "GlobalConfig_IsDark";
     private const string MiniCookieKey = "GlobalConfig_NavigationMini";

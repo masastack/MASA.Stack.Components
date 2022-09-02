@@ -1,4 +1,5 @@
 using Masa.BuildingBlocks.Configuration;
+using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Provider;
 using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 using Masa.Stack.Components;
 using Masa.Utils.Security.Authentication.OpenIdConnect;
@@ -17,8 +18,9 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddMasaStackComponentsForServer(
-        default, 
+        default,
         publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
         publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url")
     );
