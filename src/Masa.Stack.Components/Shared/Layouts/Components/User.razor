@@ -32,6 +32,17 @@
                 </MListItemContent>
             </SListItem>
             <MDivider></MDivider>
+                <MMenu OpenOnHover>
+                    <ActivatorContent>
+            <SListItem @attributes="@context.Attrs">
+                test
+            </SListItem>
+                    </ActivatorContent>
+                    <ChildContent>
+                        test
+                    </ChildContent>
+                </MMenu>
+            <MDivider></MDivider>
             <SListItem Medium OnClick="HandleSignOut">
                 <MListItemIcon Class="mr-4">
                     <SIcon Color="emphasis2">mdi-logout</SIcon>
@@ -56,6 +67,16 @@
 
     private UpdatePasswordModal _updatePasswordModal = null!;
     private string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
+
+    string _value;
+    List<string> _items = new()
+    {
+        "optiopn 1",
+        "optiopn 2",
+        "optiopn 3",
+        "optiopn 4",
+        "optiopn 5",
+    };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
