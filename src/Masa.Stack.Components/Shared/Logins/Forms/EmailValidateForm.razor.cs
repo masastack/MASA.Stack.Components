@@ -8,11 +8,11 @@ public partial class EmailValidateForm : MasaComponentBase
 
     public string? EmailAddress { get; set; }
 
-    internal Task ResetFields()
+    internal void ResetFields()
     {
         _valid = false;
 
-        return _form.ResetAsync();
+        _form.Reset();
     }
 
     private async Task HandleOnValidSubmit()

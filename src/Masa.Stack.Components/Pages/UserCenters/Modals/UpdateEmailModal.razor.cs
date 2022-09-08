@@ -59,7 +59,7 @@ public partial class UpdateEmailModal : MasaComponentBase
 
     private async Task HandleOnCancel()
     {
-        await FormRef.ResetAsync();
+        FormRef.Reset();
         if (VisibleChanged.HasDelegate)
             await VisibleChanged.InvokeAsync(false);
         else Visible = false;
