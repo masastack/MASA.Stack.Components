@@ -27,14 +27,14 @@ public partial class PhoneNumberValidateForm : MasaComponentBase, IDisposable
 
     private string? TargetCaptcha { get; set; }
 
-    internal Task ResetFields()
+    internal void ResetFields()
     {
         _counter = 0;
         _isDirty = false;
         _valid = false;
         TargetCaptcha = null;
 
-        return _form.ResetAsync();
+        _form.Reset();
     }
 
     private async Task HandleOnValidSubmit()

@@ -59,7 +59,7 @@ public partial class UpdatePhoneNumberModal : MasaComponentBase
 
     private async Task HandleOnCancel()
     {
-        await FormRef.ResetAsync();
+        FormRef.Reset();
         if (VisibleChanged.HasDelegate)
             await VisibleChanged.InvokeAsync(false);
         else Visible = false;       
@@ -67,7 +67,7 @@ public partial class UpdatePhoneNumberModal : MasaComponentBase
 
     private async Task HandleOnOk()
     {
-        if (await FormRef.ValidateAsync())
+        if (FormRef.Validate())
         {
             var success = await AuthClient.UserService.UpdatePhoneNumberAsync(UpdateUserPhoneNumber);
             if (success)

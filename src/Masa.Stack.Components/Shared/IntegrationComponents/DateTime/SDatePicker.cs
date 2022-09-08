@@ -46,7 +46,7 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
                     {
                         builder5.AddContent(1, I18n.T("Reset"));
                     });
-                    builder3.AddAttribute(9, "OnClick", EventCallback.Factory.Create(this, ResetAsync));
+                    builder3.AddAttribute(9, "OnClick", EventCallback.Factory.Create(this, Reset));
                     builder3.CloseComponent();
                 });
                 builder2.CloseComponent();
@@ -62,7 +62,7 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
         if (OnInput.HasDelegate) await OnInput.InvokeAsync();
     }
 
-    private async Task ResetAsync(MouseEventArgs args)
+    private async Task Reset(MouseEventArgs args)
     {
         if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(null);
         else Value = null;
