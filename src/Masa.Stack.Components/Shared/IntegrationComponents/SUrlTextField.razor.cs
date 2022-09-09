@@ -22,18 +22,28 @@ public partial class SUrlTextField : IDisposable
         get => $"{Protocol}://{TextValue}";
         set
         {
-            if (value is not null)
+            if (string.IsNullOrEmpty(Value) is false)
             {
-                if (value.StartsWith("Https://"))
+                if (value.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                 {
-                    _protocol = "Https";
-                    TextValue = value.TrimStart("Https://".ToCharArray());
+                    _protocol = "https";
+                    TextValue = value.TrimStart("https://".ToCharArray());
                 }
-                else if (value.StartsWith("Http://"))
+                else if (value.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
                 {
-                    _protocol = "Http";
-                    TextValue = value.TrimStart("Http://".ToCharArray());
+                    _protocol = "http";
+                    TextValue = value.TrimStart("http://".ToCharArray());
                 }
+                else
+                {
+                    _protocol = "https";
+                    TextValue = "";
+                }
+            }
+            else
+            {
+                _protocol = "https";
+                TextValue = "";
             }
         }
     }
@@ -53,7 +63,7 @@ public partial class SUrlTextField : IDisposable
 
     public async Task ValueTextUpdateAsync(string value)
     {
-        value = $"{Protocol}://{value}";
+        value = $"{Protocol}://{value.TrimStart("https://".ToArray()).TrimStart("http://".ToArray())}";
         if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value);
         else Value = value;
     }
@@ -65,7 +75,7 @@ public partial class SUrlTextField : IDisposable
         else Value = value;
     }
 
-    public List<string> Items { get; set; } = new() { "Http", "Https" };
+    public List<string> Items { get; set; } = new() { "http", "https" };
 
     public List<string> ErrorMessage { get; set; } = new();
 

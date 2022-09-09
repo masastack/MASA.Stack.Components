@@ -2,8 +2,27 @@
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
+        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null)
+    {
+        builder.AddMasaConfiguration(configurationBuilder =>
+        {
+            configurationBuilder.UseDcc();
+        });
+        var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
+        builder.Services.AddMasaStackComponentsForServer(
+                i18nDirectoryPath,
+                authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
+                mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"),
+                publicConfiguration.GetSection("$public.OSS").Get<OssOptions>(),
+                publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>()
+            );
+
+        return builder.Services;
+    }
+
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-        string? i18nDirectoryPath, string authHost, string mcHost)
+       string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions, UserAutoCompleteOptions userAutoCompleteOptions)
     {
         services.AddAutoInject();
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
@@ -33,8 +52,8 @@ public static class ServiceCollectionExtensions
         .AddI18n(GetLocales().ToArray());
 
         if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
-        services.AddOss();
-        services.AddElasticsearchAutoComplete();
+        builder.Services.AddOss(ossOptions);
+        builder.Services.AddElasticsearchAutoComplete(userAutoCompleteOptions);
 
         return services;
     }
