@@ -1,9 +1,30 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
+        string? i18nDirectoryPath, string? authHost = null, string? mcHost = null)
+    {
+        builder.AddMasaConfiguration(configurationBuilder =>
+        {
+            configurationBuilder.UseDcc();
+        });
+        var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
+        builder.Services.AddMasaStackComponentsForServer(
+                i18nDirectoryPath,
+                authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
+                mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url")
+            );
+        builder.Services.AddOss();
+        builder.Services.AddElasticsearchAutoComplete();
+
+        return builder.Services;
+    }
+
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-        string? i18nDirectoryPath, string authHost, string mcHost)
+       string? i18nDirectoryPath, string authHost, string mcHost)
     {
         services.AddAutoInject();
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
@@ -33,8 +54,6 @@ public static class ServiceCollectionExtensions
         .AddI18n(GetLocales().ToArray());
 
         if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
-        services.AddOss();
-        services.AddElasticsearchAutoComplete();
 
         return services;
     }
