@@ -5,7 +5,7 @@ namespace Masa.Stack.Components;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
-        string? i18nDirectoryPath, string? authHost = null, string? mcHost = null)
+        string? i18nDirectoryPath = null, string? authHost = null, string? mcHost = null)
     {
         builder.AddMasaConfiguration(configurationBuilder =>
         {
@@ -15,16 +15,16 @@ public static class ServiceCollectionExtensions
         builder.Services.AddMasaStackComponentsForServer(
                 i18nDirectoryPath,
                 authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
-                mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url")
+                mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"),
+                publicConfiguration.GetSection("$public.OSS").Get<OssOptions>(),
+                publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>()
             );
-        builder.Services.AddOss();
-        builder.Services.AddElasticsearchAutoComplete();
 
         return builder.Services;
     }
 
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-       string? i18nDirectoryPath, string authHost, string mcHost)
+       string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions, UserAutoCompleteOptions userAutoCompleteOptions)
     {
         services.AddAutoInject();
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
@@ -54,6 +54,8 @@ public static class ServiceCollectionExtensions
         .AddI18n(GetLocales().ToArray());
 
         if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
+        builder.Services.AddOss(ossOptions);
+        builder.Services.AddElasticsearchAutoComplete(userAutoCompleteOptions);
 
         return services;
     }
