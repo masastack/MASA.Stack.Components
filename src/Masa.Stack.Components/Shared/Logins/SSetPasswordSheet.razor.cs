@@ -15,7 +15,7 @@ public partial class SSetPasswordSheet : MasaComponentBase
 
     private async Task HandleOnClick()
     {
-        await _form.ResetAsync();
+        _form.Reset();
 
         if (OnBack.HasDelegate)
         {
@@ -25,7 +25,7 @@ public partial class SSetPasswordSheet : MasaComponentBase
 
     private async Task HandleOnValidSubmit()
     {
-        if (await _form.ValidateAsync())
+        if (_form.Validate())
         {
             // TODO: 更新密码
             await Task.Delay(1000);
