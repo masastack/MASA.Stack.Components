@@ -5,7 +5,7 @@ namespace Masa.Stack.Components.Extensions;
 
 public static class ElasticsearchAutoCompleteExtensions
 {
-    public static void AddElasticsearchAutoComplete(this IServiceCollection services,UserAutoCompleteOptions? options = null)
+    public static void AddElasticsearchAutoComplete(this IServiceCollection services, UserAutoCompleteOptions? options = null)
     {
         options ??= services.BuildServiceProvider()
                               .GetRequiredService<IOptions<UserAutoCompleteOptions>>()

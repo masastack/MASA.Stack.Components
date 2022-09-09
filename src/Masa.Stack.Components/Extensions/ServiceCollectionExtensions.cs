@@ -3,7 +3,7 @@
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
-        string? i18nDirectoryPath = null, string? authHost = null, string? mcHost = null)
+        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null)
     {
         builder.AddMasaConfiguration(configurationBuilder =>
         {
