@@ -5,14 +5,12 @@ namespace Masa.Stack.Components.Extensions;
 
 public static class OssExtensions
 {
-    public static void AddOss(this IServiceCollection services)
+    public static void AddOss(this IServiceCollection services, OssOptions? ossOptions = null)
     {
-        var ossOptions = services.BuildServiceProvider()
-                         .GetRequiredService<IMasaConfiguration>()
-                         .ConfigurationApi
-                         .GetPublic()
-                         .GetSection("$public.OSS")
-                         .Get<OssOptions>();
+        ossOptions ??= services.BuildServiceProvider()
+                              .GetRequiredService<IOptions<OssOptions>>()
+                              .Value;
+
         services.AddAliyunStorage(new AliyunStorageOptions(ossOptions.AccessId, ossOptions.AccessSecret, ossOptions.Endpoint, ossOptions.RoleArn, ossOptions.RoleSessionName)
         {
             Sts = new AliyunStsOptions()

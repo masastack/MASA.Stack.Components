@@ -1,6 +1,7 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 @using Masa.BuildingBlocks.StackSdks.Auth.Contracts
 @using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts
+@using Microsoft.AspNetCore.Identity
 @inherits MasaComponentBase
 @inject IAuthClient AuthClient
 @inject MasaUser MasaUser
@@ -35,7 +36,7 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            @if (string.IsNullOrWhiteSpace(Layout.TeamRouteFormat))
+            @if (!string.IsNullOrWhiteSpace(Layout.TeamRouteFormat))
             {
                 <MDivider></MDivider>
                 <SListItem>
@@ -103,5 +104,6 @@
     {
         await AuthClient.UserService.SetCurrentTeamAsync(teamId);
         await AuthenticationStateProvider.UpsertClaimAsync(IdentityClaimConsts.CURRENT_TEAM, teamId.ToString());
+        StateHasChanged();
     }
 }

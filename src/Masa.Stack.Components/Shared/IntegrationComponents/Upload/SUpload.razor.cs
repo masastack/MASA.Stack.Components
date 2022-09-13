@@ -61,6 +61,9 @@ public partial class SUpload : IAsyncDisposable
     [Parameter]
     public bool WhenFileChangeUpload { get; set; }
 
+    [Parameter]
+    public EventCallback<InputFileChangeEventArgs> OnChange { get; set; }
+
     public InputFile? InputFileRef { get; set; }
 
     public IReadOnlyList<IBrowserFile> Files { get; set; } = new List<IBrowserFile>();
@@ -77,6 +80,7 @@ public partial class SUpload : IAsyncDisposable
 
     protected virtual async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
+        if (OnChange.HasDelegate) await OnChange.InvokeAsync(e);
         Files = e.GetMultipleFiles(MaximumFileCount);
         if (OnInputFileChanged is null) return;
         if (OnInputFileChanged.IsJsCallback)

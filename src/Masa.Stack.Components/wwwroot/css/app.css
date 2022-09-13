@@ -432,9 +432,9 @@ body, .masa-stack-components {
     border: 1px solid;
 }
 
-    .masa-stack-components .m-input.no-border fieldset{
-        border:none;
-    }
+.masa-stack-components .m-input.no-border fieldset {
+    border: none !important;
+}
 
     .masa-stack-components .m-input:not(.m-input--is-focused,.m-input--has-state) fieldset {
         border-color: #E9EDF7;

@@ -19,11 +19,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenProvider>();
-builder.Services.AddMasaStackComponentsForServer(
-        default,
-        publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
-        publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url")
-    );
+builder.AddMasaStackComponentsForServer(default);
 
 var app = builder.Build();
 
