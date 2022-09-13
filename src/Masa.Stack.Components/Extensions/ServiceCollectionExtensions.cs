@@ -1,4 +1,8 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.BuildingBlocks.Authentication.Identity;
+using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
+using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -28,10 +32,19 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
         services.AddMasaIdentity(options =>
         {
-            options.Environment = "environment";
             options.UserName = "name";
             options.UserId = "sub";
-            options.Role = "role";
+            options.Role = IdentityClaimConsts.ROLES;
+            options.Environment = IdentityClaimConsts.ENVIRONMENT;
+            options.Mapping(nameof(MasaUser.CurrentTeamId), IdentityClaimConsts.CURRENT_TEAM);
+            options.Mapping(nameof(MasaUser.StaffId), IdentityClaimConsts.STAFF);
+            options.Mapping(nameof(MasaUser.Account), IdentityClaimConsts.ACCOUNT);
+        });
+        services.AddScoped((serviceProvider) =>
+        {
+            var userSetter = serviceProvider.GetRequiredService<IUserSetter>();
+            var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
+            return masaUser;
         });
         var authCallerOptions = delegate (CallerOptions callerOptions)
         {

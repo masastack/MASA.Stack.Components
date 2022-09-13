@@ -38,7 +38,7 @@ public partial class UpdatePhoneNumberModal : MasaComponentBase
         var field = FormRef.EditContext.Field(nameof(UpdateUserPhoneNumber.PhoneNumber));
         FormRef.EditContext.NotifyFieldChanged(field);
         var result = FormRef.EditContext.GetValidationMessages(field);
-        if(result.Any() is false)
+        if (result.Any() is false)
         {
             await AuthClient.UserService.SendMsgCodeAsync(new SendMsgCodeModel()
             {
@@ -50,7 +50,7 @@ public partial class UpdatePhoneNumberModal : MasaComponentBase
             while (second >= 0)
             {
                 CaptchaText = second.ToString();
-                StateHasChanged();               
+                StateHasChanged();
                 second--;
                 await Task.Delay(1000);
             }
@@ -62,7 +62,7 @@ public partial class UpdatePhoneNumberModal : MasaComponentBase
         FormRef.Reset();
         if (VisibleChanged.HasDelegate)
             await VisibleChanged.InvokeAsync(false);
-        else Visible = false;       
+        else Visible = false;
     }
 
     private async Task HandleOnOk()

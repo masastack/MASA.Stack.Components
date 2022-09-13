@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-
+﻿
 namespace Masa.Stack.Components;
 
 public partial class SLayout
@@ -13,6 +12,9 @@ public partial class SLayout
 
     [Inject]
     private I18n I18n { get; set; } = null!;
+
+    [Inject]
+    private MasaUser MasaUser { get; set; } = null!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -88,23 +90,9 @@ public partial class SLayout
             {
                 try
                 {
-                    var teams = await AuthClient.TeamService.GetUserTeamsAsync();
-                    var teamNav = new Nav("stack.team", "Team", "mdi-account-group-outline", "", 0);
-                    foreach (var team in teams)
+                    if (MasaUser.CurrentTeamId != Guid.Empty)
                     {
-                        var newNavItem = new Nav()
-                        {
-                            Code = $"{team.Id}",
-                            Name = team.Name,
-                            Icon = "mdi-circle",
-                            ParentCode = teamNav.Code,
-                            Url = string.Format(TeamRouteFormat, team.Id),
-                        };
-                        teamNav.Children.Add(newNavItem);
-                    }
-
-                    if (teams.Any())
-                    {
+                        var teamNav = new Nav("stack.team", "Team", "mdi-account-group-outline", string.Format(TeamRouteFormat, MasaUser.CurrentTeamId), 0);
                         NavItems.Add(teamNav);
                     }
                 }

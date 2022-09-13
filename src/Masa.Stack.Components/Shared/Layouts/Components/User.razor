@@ -1,8 +1,13 @@
 ﻿@namespace Masa.Stack.Components.Layouts
+@using Masa.BuildingBlocks.StackSdks.Auth.Contracts
+@using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts
+@using Microsoft.AspNetCore.Identity
 @inherits MasaComponentBase
 @inject IAuthClient AuthClient
+@inject MasaUser MasaUser
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<MMenu OffsetY OpenOnHover NudgeTop="-8"
+<MMenu @bind-Value="@_menuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
        ContentClass="px-4 py-2">
     <ActivatorContent>
         <MAvatar @attributes="@context.Attrs" Size=40>
@@ -21,7 +26,7 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            <SListItem Medium OnClick="() => _updatePasswordModal.Open()">
+            <SListItem Medium OnClick="() => { _updatePasswordModal.Open(); _menuVisible = false; }">
                 <MListItemIcon Class="mr-4">
                     <SIcon Color="emphasis2">mdi-pencil</SIcon>
                 </MListItemIcon>
@@ -31,6 +36,14 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
+            @if (!string.IsNullOrWhiteSpace(Layout.TeamRouteFormat))
+            {
+                <MDivider></MDivider>
+                <SListItem>
+                    <SSelect Value="@_currentTeam" ValueChanged="CurrentTeamChanged" TItem="KeyValuePair<Guid,string>" TValue="Guid" TItemValue="Guid"
+                        Items=_teams ItemText="v => v.Value" ItemValue="v=> v.Key" Class="no-border" />
+                </SListItem>
+            }
             <MDivider></MDivider>
             <SListItem Medium OnClick="HandleSignOut">
                 <MListItemIcon Class="mr-4">
@@ -54,8 +67,12 @@
     [CascadingParameter]
     public SLayout Layout { get; set; } = null!;
 
-    private UpdatePasswordModal _updatePasswordModal = null!;
-    private string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
+    UpdatePasswordModal _updatePasswordModal = null!;
+    string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
+
+    bool _menuVisible = false;
+    Guid _currentTeam;
+    List<KeyValuePair<Guid, string>> _teams = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -65,8 +82,11 @@
             if (!string.IsNullOrWhiteSpace(user.Avatar))
             {
                 avatar = user.Avatar;
-                StateHasChanged();
             }
+            var teams = await AuthClient.TeamService.GetUserTeamsAsync();
+            _currentTeam = MasaUser.CurrentTeamId;
+            _teams = teams.Select(t => new KeyValuePair<Guid, string>(t.Id, t.Name)).ToList();
+            StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -78,5 +98,12 @@
             return;
         }
         Layout.NavigationManager.NavigateTo("/Account/Logout", true);
+    }
+
+    private async Task CurrentTeamChanged(Guid teamId)
+    {
+        await AuthClient.UserService.SetCurrentTeamAsync(teamId);
+        await AuthenticationStateProvider.UpsertClaimAsync(IdentityClaimConsts.CURRENT_TEAM, teamId.ToString());
+        StateHasChanged();
     }
 }

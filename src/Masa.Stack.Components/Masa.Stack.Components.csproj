@@ -27,10 +27,4 @@
 		<EmbeddedResource Include="Locales\*.json" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Reference Include="Masa.Utils.Extensions.DependencyInjection">
-	    <HintPath>..\..\..\MASA.Framework\src\Utils\Extensions\Masa.Utils.Extensions.DependencyInjection\obj\Debug\net6.0\ref\Masa.Utils.Extensions.DependencyInjection.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-
 </Project>
