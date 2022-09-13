@@ -42,7 +42,6 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped((serviceProvider) =>
         {
-            var userSetter = serviceProvider.GetRequiredService<IUserSetter>();
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
