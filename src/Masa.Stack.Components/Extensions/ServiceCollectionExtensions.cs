@@ -1,10 +1,4 @@
-﻿using Masa.BuildingBlocks.Service.Caller.Options;
-using Masa.Contrib.Service.Caller.HttpClient;
-using Masa.Contrib.StackSdks.Auth;
-using Masa.Contrib.StackSdks.Mc;
-using System.Reflection;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
