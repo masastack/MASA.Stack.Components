@@ -1,4 +1,5 @@
 ﻿using Masa.BuildingBlocks.Authentication.Identity;
+using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
 using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
 
 namespace Masa.Stack.Components;
