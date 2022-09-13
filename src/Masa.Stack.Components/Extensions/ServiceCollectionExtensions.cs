@@ -30,9 +30,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddAutoInject();
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
-        services.AddSingleton<ICurrentPrincipalAccessor, BlazorCurrentPrincipalAccessor>();
-
-        services.AddMasaIdentityModel(options =>
+        services.AddMasaIdentity(options =>
         {
             options.UserName = "name";
             options.UserId = "sub";
@@ -48,10 +46,32 @@ public static class ServiceCollectionExtensions
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
-        services.AddAuthClient(authHost);
+        var authCallerOptions = delegate (CallerOptions callerOptions)
+        {
+            callerOptions.UseHttpClient("masa.contrib.basicability.auth", delegate (MasaHttpClientBuilder builder)
+            {
+                builder.Configure = delegate (HttpClient opt)
+                {
+                    opt.BaseAddress = new Uri(authHost);
+                };
+            }).AddHttpMessageHandler<HttpEnvironmentDelegatingHandler>();
+            callerOptions.Assemblies = new[] { Assembly.Load("Masa.Contrib.StackSdks.Auth") };
+        };
+        services.AddAuthClient(authCallerOptions);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
-        services.AddMcClient(mcHost);
+        var mcCallerOptions = delegate (CallerOptions callerOptions)
+        {
+            callerOptions.UseHttpClient("masa.contrib.basicability.mc", delegate (MasaHttpClientBuilder builder)
+            {
+                builder.Configure = delegate (HttpClient opt)
+                {
+                    opt.BaseAddress = new Uri(mcHost);
+                };
+            }).AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+            callerOptions.Assemblies = new[] { Assembly.Load("Masa.Contrib.StackSdks.Auth") };
+        };
+        services.AddMcClient(mcCallerOptions);
 
         var builder = services.AddMasaBlazor(builder =>
         {
