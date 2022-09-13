@@ -6,20 +6,15 @@ using Masa.Utils.Security.Authentication.OpenIdConnect;
 using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.AddMasaConfiguration(configurationBuilder =>
-{
-    configurationBuilder.UseDcc();
-});
-var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
-builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC:PMClient").Get<MasaOpenIdConnectOptions>());
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenProvider>();
 builder.AddMasaStackComponentsForServer(default);
+var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
+builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC:PMClient").Get<MasaOpenIdConnectOptions>());
 
 var app = builder.Build();
 
