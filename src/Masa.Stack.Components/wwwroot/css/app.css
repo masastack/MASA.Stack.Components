@@ -432,9 +432,13 @@ body, .masa-stack-components {
     border: 1px solid;
 }
 
-.masa-stack-components .m-input:not(.m-input--is-focused,.m-input--has-state) fieldset {
-    border-color: #E9EDF7;
-}
+    .masa-stack-components .m-input.no-border fieldset{
+        border:none;
+    }
+
+    .masa-stack-components .m-input:not(.m-input--is-focused,.m-input--has-state) fieldset {
+        border-color: #E9EDF7;
+    }
 
 .masa-stack-components .m-input .m-text-field__details {
     padding: 0 2px;
@@ -672,3 +676,4 @@ masa-stack-components .table-border-none.dense thead th {
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 }
+
