@@ -1,5 +1,4 @@
 ﻿using Masa.BuildingBlocks.Authentication.Identity;
-using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
 using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
 
 namespace Masa.Stack.Components;
@@ -42,7 +41,6 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped((serviceProvider) =>
         {
-            var userSetter = serviceProvider.GetRequiredService<IUserSetter>();
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
