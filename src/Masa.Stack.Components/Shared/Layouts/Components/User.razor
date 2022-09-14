@@ -5,6 +5,7 @@
 @inherits MasaComponentBase
 @inject IAuthClient AuthClient
 @inject MasaUser MasaUser
+@inject GlobalConfig GlobalConfig
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MMenu @bind-Value="@_menuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
@@ -104,6 +105,7 @@
     {
         await AuthClient.UserService.SetCurrentTeamAsync(teamId);
         await AuthenticationStateProvider.UpsertClaimAsync(IdentityClaimConsts.CURRENT_TEAM, teamId.ToString());
+        GlobalConfig.CurrentTeamId = teamId;
         StateHasChanged();
     }
 }

@@ -6,6 +6,7 @@ public class GlobalConfig : IScopedDependency
     private const string MiniCookieKey = "GlobalConfig_NavigationMini";
     private const string FavoriteCookieKey = "GlobalConfig_Favorite";
     private const string MenusKey = "GlobalConfig_Menus";
+    private const string CurrentTeamKey = "GlobalConfig_CurrentTeam";
 
     private readonly CookieStorage? _cookieStorage;
     private readonly I18n? _i18N;
@@ -13,10 +14,15 @@ public class GlobalConfig : IScopedDependency
     private bool _mini;
     private string _favorite;
     private List<Nav> _menus;
+    private Guid _currentTeamId;
 
     public delegate void GlobalConfigChanged();
 
     public event GlobalConfigChanged? OnLanguageChanged;
+
+    public delegate void CurrentTeamChanged(Guid teamId);
+
+    public event CurrentTeamChanged? OnCurrentTeamChanged;
 
     public GlobalConfig(CookieStorage cookieStorage, I18n i18n, IHttpContextAccessor httpContextAccessor)
     {
@@ -41,6 +47,20 @@ public class GlobalConfig : IScopedDependency
             _i18N.SetCulture(value);
 
             OnLanguageChanged?.Invoke();
+        }
+    }
+
+    public Guid CurrentTeamId
+    {
+        get
+        {
+            return _currentTeamId;
+        }
+        set
+        {
+            _currentTeamId = value;
+            _cookieStorage?.SetItemAsync(CurrentTeamKey, value);
+            OnCurrentTeamChanged?.Invoke(value);
         }
     }
 
@@ -89,6 +109,7 @@ public class GlobalConfig : IScopedDependency
         _dark = Convert.ToBoolean(cookies[DarkCookieKey]);
         _mini = !cookies.ContainsKey(MiniCookieKey) || Convert.ToBoolean(cookies[MiniCookieKey]);
         _favorite = cookies[FavoriteCookieKey];
+        Guid.TryParse(cookies[CurrentTeamKey], out _currentTeamId);
         if (cookies.TryGetValue(MenusKey, out string? value) && value != null)
         {
             _menus = JsonSerializer.Deserialize<List<Nav>>(value) ?? new();
