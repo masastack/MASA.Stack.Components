@@ -22,12 +22,11 @@ public abstract class MasaComponentBase : ComponentBase
     [Inject]
     public DynamicTranslateProvider TranslateProvider { get; set; } = default!;
 
-
     private I18n? _languageProvider;
 
     protected string T(string key)
     {
-        return LanguageProvider.T(key, true);
+        return LanguageProvider.T(key);
     }
 
     protected string DT(string key)
