@@ -86,22 +86,6 @@ public partial class SLayout
 
             NavItems = menus.Adapt<List<Nav>>();
 
-            if (!string.IsNullOrWhiteSpace(TeamRouteFormat))
-            {
-                try
-                {
-                    if (MasaUser.CurrentTeamId != Guid.Empty)
-                    {
-                        var teamNav = new Nav("stack.team", "Team", "mdi-account-group-outline", string.Format(TeamRouteFormat, MasaUser.CurrentTeamId), 0);
-                        NavItems.Add(teamNav);
-                    }
-                }
-                catch (Exception e)
-                {
-                    await PopupService.ToastErrorAsync(e.Message);
-                }
-            }
-
 #if DEBUG
             if (Debugger.IsAttached && !NavItems.Any())
             {
@@ -135,6 +119,22 @@ public partial class SLayout
                 };
             }
 #endif
+
+            if (!string.IsNullOrWhiteSpace(TeamRouteFormat))
+            {
+                try
+                {
+                    if (MasaUser.CurrentTeamId != Guid.Empty)
+                    {
+                        var teamNav = new Nav("stack.team", "Team", "mdi-account-group-outline", string.Format(TeamRouteFormat, MasaUser.CurrentTeamId), 0);
+                        NavItems.Add(teamNav);
+                    }
+                }
+                catch (Exception e)
+                {
+                    await PopupService.ToastErrorAsync(e.Message);
+                }
+            }
 
             GlobalConfig.Menus = NavItems;
 
