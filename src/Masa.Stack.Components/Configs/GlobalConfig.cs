@@ -58,9 +58,12 @@ public class GlobalConfig : IScopedDependency
         }
         set
         {
-            _currentTeamId = value;
-            _cookieStorage?.SetItemAsync(CurrentTeamKey, value);
-            OnCurrentTeamChanged?.Invoke(value);
+            if (_currentTeamId != value)
+            {
+                _currentTeamId = value;
+                OnCurrentTeamChanged?.Invoke(value);
+                _cookieStorage?.SetItemAsync(CurrentTeamKey, value);
+            }
         }
     }
 

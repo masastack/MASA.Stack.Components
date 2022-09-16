@@ -9,7 +9,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MMenu @bind-Value="@_menuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
-       ContentClass="px-4 py-2">
+       ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
     <ActivatorContent>
         <MAvatar @attributes="@context.Attrs" Size=40>
             <MImage Src="@avatar"></MImage>
@@ -40,10 +40,33 @@
             @if (!string.IsNullOrWhiteSpace(Layout.TeamRouteFormat))
             {
                 <MDivider></MDivider>
-                <SListItem>
-                    <SSelect Value="@_currentTeam" ValueChanged="CurrentTeamChanged" TItem="KeyValuePair<Guid,string>" TValue="Guid" TItemValue="Guid"
-                        Items=_teams ItemText="v => v.Value" ItemValue="v=> v.Key" Class="no-border" />
-                </SListItem>
+                <MListGroup @bind-Value="_showChangeTeam" NoAction Style="">
+                    <PrependIconContent>
+                        <MAvatar Width="24" Height="24" MinHeight="24" MinWidth="24" Style="margin-right: 10px;">
+                            <MImage Src="@CurrentTeam.Avatar"></MImage>
+                        </MAvatar>
+                    </PrependIconContent>
+                    <ActivatorContent>
+                        <MListItemContent>
+                            <MListItemTitle>@CurrentTeam.Name</MListItemTitle>
+                        </MListItemContent>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MListItemGroup Value="_currentTeamId" ValueChanged="CurrentTeamChanged">
+                            @foreach (var team in _teams)
+                            {
+                                <MListItem Value="@team.Id.ToString()">
+                                    <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
+                                        <MImage Src="@team.Avatar"></MImage>
+                                    </MListItemAvatar>
+                                    <MListItemContent>
+                                        <MListItemTitle>@team.Name</MListItemTitle>
+                                    </MListItemContent>
+                                </MListItem>
+                            }
+                        </MListItemGroup>
+                    </ChildContent>
+                </MListGroup>
             }
             <MDivider></MDivider>
             <SListItem Medium OnClick="HandleSignOut">
@@ -71,9 +94,11 @@
     UpdatePasswordModal _updatePasswordModal = null!;
     string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
 
-    bool _menuVisible = false;
-    Guid _currentTeam;
-    List<KeyValuePair<Guid, string>> _teams = new();
+    bool _menuVisible = false, _showChangeTeam;
+    StringNumber _currentTeamId;
+    List<TeamModel> _teams = new();
+
+    public TeamModel CurrentTeam => _teams.FirstOrDefault(t => t.Id.ToString() == _currentTeamId) ?? new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -84,9 +109,8 @@
             {
                 avatar = user.Avatar;
             }
-            var teams = await AuthClient.TeamService.GetUserTeamsAsync();
-            _currentTeam = MasaUser.CurrentTeamId;
-            _teams = teams.Select(t => new KeyValuePair<Guid, string>(t.Id, t.Name)).ToList();
+            _teams = await AuthClient.TeamService.GetUserTeamsAsync();
+            _currentTeamId = MasaUser.CurrentTeamId.ToString();
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -94,18 +118,21 @@
 
     private void HandleSignOut()
     {
-        if (Layout.OnSignOut!=null && Layout.OnSignOut.Invoke())
+        if (Layout.OnSignOut != null && Layout.OnSignOut.Invoke())
         {
             return;
         }
         Layout.NavigationManager.NavigateTo("/Account/Logout", true);
     }
 
-    private async Task CurrentTeamChanged(Guid teamId)
+    private async Task CurrentTeamChanged(StringNumber teamId)
     {
-        await AuthClient.UserService.SetCurrentTeamAsync(teamId);
+        var gTeamId = Guid.Parse(teamId.AsT0);
+        await AuthClient.UserService.SetCurrentTeamAsync(gTeamId);
         await AuthenticationStateProvider.UpsertClaimAsync(IdentityClaimConsts.CURRENT_TEAM, teamId.ToString());
-        GlobalConfig.CurrentTeamId = teamId;
+        GlobalConfig.CurrentTeamId = gTeamId;
+        _currentTeamId = teamId;
+        _showChangeTeam = false;
         StateHasChanged();
     }
 }
