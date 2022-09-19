@@ -1,8 +1,4 @@
-﻿using Masa.BuildingBlocks.Authentication.Identity;
-using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
-using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -19,14 +15,15 @@ public static class ServiceCollectionExtensions
                 authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
                 mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"),
                 publicConfiguration.GetSection("$public.OSS").Get<OssOptions>(),
-                publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>()
+                publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>(),
+                publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>()
             );
 
         return builder.Services;
     }
 
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-       string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions, UserAutoCompleteOptions userAutoCompleteOptions)
+       string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions, UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
     {
         services.AddAutoInject();
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
@@ -45,32 +42,10 @@ public static class ServiceCollectionExtensions
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
-        var authCallerOptions = delegate (CallerOptions callerOptions)
-        {
-            callerOptions.UseHttpClient("masa.contrib.basicability.auth", delegate (MasaHttpClientBuilder builder)
-            {
-                builder.Configure = delegate (HttpClient opt)
-                {
-                    opt.BaseAddress = new Uri(authHost);
-                };
-            }).AddHttpMessageHandler<HttpEnvironmentDelegatingHandler>();
-            callerOptions.Assemblies = new[] { Assembly.Load("Masa.Contrib.StackSdks.Auth") };
-        };
-        services.AddAuthClient(authCallerOptions);
+        services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
-        var mcCallerOptions = delegate (CallerOptions callerOptions)
-        {
-            callerOptions.UseHttpClient("masa.contrib.basicability.mc", delegate (MasaHttpClientBuilder builder)
-            {
-                builder.Configure = delegate (HttpClient opt)
-                {
-                    opt.BaseAddress = new Uri(mcHost);
-                };
-            }).AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
-            callerOptions.Assemblies = new[] { Assembly.Load("Masa.Contrib.StackSdks.Auth") };
-        };
-        services.AddMcClient(mcCallerOptions);
+        services.AddMcClient(mcHost);
 
         var builder = services.AddMasaBlazor(builder =>
         {
@@ -91,9 +66,9 @@ public static class ServiceCollectionExtensions
     }
 
     public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost, string mcHost)
+        string i18nDirectoryPath, string authHost, string mcHost, RedisConfigurationOptions redisOption)
     {
-        services.AddAuthClient(authHost);
+        services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
