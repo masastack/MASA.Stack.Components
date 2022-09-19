@@ -19,13 +19,12 @@
         <MIcon Size=16 Class="mr-2 my-2 emphasis2--text">mdi-magnify</MIcon>
     </PrependInnerContent>
     <ItemContent Context="data">
-        <div class="d-flex py-2" style="height:64px;width:100%;">
+            <div class="d-flex py-1" style="height:64px;width:100%;max-width:304px;">
             @if(string.IsNullOrEmpty(data.Item.InheritedIcon) is false)
             {
                 <MIcon>@data.Item.InheritedIcon</MIcon>
             }          
             <div class="Body2 emphasis2--text my-auto ml-4">@FullTitleI18n(data.Item.FullTitle)</div>
-            <MSpacer />
         </div>
     </ItemContent>
 </SAutoComplete>
