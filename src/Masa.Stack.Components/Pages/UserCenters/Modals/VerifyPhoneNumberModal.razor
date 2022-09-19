@@ -6,8 +6,8 @@
                IconOfTitle="mdi-phone"
                CancelText="@T("Cancel")"
                OkText="@T("Ok")"
+               HideCloseIcon
                OnCancel="HandleOnCancel"
-               HideCancel
                OnOk="HandleOnOk">
     <MForm EnableI18n EnableValidation Model="VerifyMsgCode" @ref="FormRef">
         <STextField @bind-Value="VerifyMsgCode.Code"

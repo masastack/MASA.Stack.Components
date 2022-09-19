@@ -41,6 +41,6 @@ public partial class SearchMenu
 
     string FullTitleI18n(string fullTitle)
     {
-        return string.Join(' ', fullTitle.Split(' ').Select(title => T(title)));
+        return string.Join(' ', fullTitle.Split(' ').Select(title => DT(title)));
     }
 }
