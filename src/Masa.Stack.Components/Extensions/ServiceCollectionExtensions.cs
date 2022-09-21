@@ -23,7 +23,8 @@ public static class ServiceCollectionExtensions
     }
 
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-       string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions, UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
+       string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions,
+       UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
     {
         services.AddAutoInject();
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
