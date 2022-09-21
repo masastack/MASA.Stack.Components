@@ -1,8 +1,4 @@
-﻿using Masa.BuildingBlocks.Authentication.Identity;
-using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
-using Masa.Utils.Caching.Redis.Models;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -28,7 +24,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
        string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions,
-       UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOptions)
+       UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
     {
         services.AddAutoInject();
         services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
@@ -47,32 +43,10 @@ public static class ServiceCollectionExtensions
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
-        var authCallerOptions = delegate (CallerOptions callerOptions)
-        {
-            callerOptions.UseHttpClient("masa.contrib.basicability.auth", delegate (MasaHttpClientBuilder builder)
-            {
-                builder.Configure = delegate (HttpClient opt)
-                {
-                    opt.BaseAddress = new Uri(authHost);
-                };
-            }).AddHttpMessageHandler<HttpEnvironmentDelegatingHandler>();
-            callerOptions.Assemblies = new[] { Assembly.Load("Masa.Contrib.StackSdks.Auth") };
-        };
-        services.AddAuthClient(authCallerOptions, redisOptions);
+        services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
-        var mcCallerOptions = delegate (CallerOptions callerOptions)
-        {
-            callerOptions.UseHttpClient("masa.contrib.basicability.mc", delegate (MasaHttpClientBuilder builder)
-            {
-                builder.Configure = delegate (HttpClient opt)
-                {
-                    opt.BaseAddress = new Uri(mcHost);
-                };
-            }).AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
-            callerOptions.Assemblies = new[] { Assembly.Load("Masa.Contrib.StackSdks.Auth") };
-        };
-        services.AddMcClient(mcCallerOptions);
+        services.AddMcClient(mcHost);
 
         var builder = services.AddMasaBlazor(builder =>
         {
@@ -93,9 +67,9 @@ public static class ServiceCollectionExtensions
     }
 
     public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost, string mcHost, RedisConfigurationOptions redisOptions)
+        string i18nDirectoryPath, string authHost, string mcHost, RedisConfigurationOptions redisOption)
     {
-        services.AddAuthClient(authHost, redisOptions);
+        services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);

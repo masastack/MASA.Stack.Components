@@ -68,6 +68,35 @@
                     </dt>
                     <dd class="overline regular3--text">@T("Email")</dd>
                 </dl>
+
+                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                    <dt class="d-inline-flex font-14 regular--text">
+                        <MIcon Class="regular3--text mr-2" Size="13">mdi-briefcase</MIcon>
+                        <span>@UserDetail.Position</span>
+                    </dt>
+                    <dd class="overline regular3--text">@T("Position")</dd>
+                </dl>
+                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                    <dt class="d-inline-flex font-14 regular--text">
+                        <MIcon Class="regular3--text mr-2" Size="13">mdi-office-building</MIcon>
+                        <span>@UserDetail.CompanyName</span>
+                    </dt>
+                    <dd class="overline regular3--text">@T("Company")</dd>
+                </dl>
+                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                    <dt class="d-inline-flex font-14 regular--text">
+                        <MIcon Class="regular3--text mr-2" Size="13">mdi-map-marker</MIcon>
+                        <span>@UserDetail.Address</span>
+                    </dt>
+                    <dd class="overline regular3--text">@T("Address")</dd>
+                </dl>
+                <dl class="d-flex mb-4" style="align-items: start; justify-content: space-between">
+                    <dt class="d-inline-flex font-14 regular--text">
+                        <MIcon Class="regular3--text mr-2" Size="13">mdi-file-tree</MIcon>
+                        <span>@UserDetail.Department</span>
+                    </dt>
+                    <dd class="overline regular3--text">@T("Department")</dd>
+                </dl>
             </MWindowItem>
             <MWindowItem Class="mb-n2">
                 <div class="d-flex mb-4" style="justify-content: space-between;align-items: center;">
@@ -104,6 +133,26 @@
                             Readonly
                             Action=EmailValidateAction />
                     </MCol>
+                    <MCol Cols="6">
+                        <STextField
+                            Value="@UpdateUser.Position"
+                            Label="@T("Position")" />
+                    </MCol>
+                    <MCol Cols="6">
+                        <STextField
+                            Value="@UpdateUser.CompanyName"
+                            Label="@T("Company")" />
+                    </MCol>
+                    <MCol Cols="6">
+                        <STextField
+                            Value="@UpdateUser.Address.Address"
+                            Label="@T("Address")" />
+                    </MCol>
+                    <MCol Cols="6">
+                        <STextField
+                            Value="@UpdateUser.Department"
+                            Label="@T("Department")" />
+                    </MCol>
                 </MRow>
             </MWindowItem>
         </MWindow>
@@ -114,7 +163,6 @@
                       Sm="12"
                       Md="12"
                       NoGutters
-                      Style="overflow: auto;height: calc(100% - 195px);"
                       ItemClass="@(_ => "mb-4")"
                       ItemStyle="@(_ => "justify-content: space-between; align-items: center;")"
                       TermClass="@(_ => "font-14 regular--text")"
