@@ -39,11 +39,7 @@ public partial class UserInfo : MasaComponentBase
         UpdateUserAvatar = new(default, UserDetail.Avatar);
 
         Items = new Dictionary<string, object?>()
-        {
-            ["Position"] = ("mdi-briefcase", UserDetail.Position),
-            ["Company"] = ("mdi-office-building", UserDetail.CompanyName),
-            ["Address"] = ("mdi-map-marker", UserDetail.Address.Address),
-            ["Department"] = ("mdi-file-tree", UserDetail.Department),
+        {           
             ["CreationTime"] = ("mdi-clock-outline", UserDetail.CreationTime.ToString("yyyy-MM-dd")),
         };
         _windowValue = default;
