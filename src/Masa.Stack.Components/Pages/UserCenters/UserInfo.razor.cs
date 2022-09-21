@@ -12,7 +12,7 @@ public partial class UserInfo : MasaComponentBase
 
     private Dictionary<string, object?>? Items { get; set; }
 
-    private bool IsStaff { get; set; }
+    private bool IsStaff => UserDetail.StaffId is not null;
 
     private bool UpdateUserPhoneNumberDialogVisible { get; set; }
 
@@ -27,7 +27,6 @@ public partial class UserInfo : MasaComponentBase
         if (firstRender)
         {
             await GetCurrentUserAsync();
-            IsStaff = (await AuthClient.UserService.GetCurrentStaffAsync()) is not null;
             StateHasChanged();
         }
     }
