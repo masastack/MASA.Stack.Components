@@ -1,6 +1,5 @@
 using Masa.BuildingBlocks.Configuration;
 using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Provider;
-using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 using Masa.Stack.Components;
 using Masa.Utils.Security.Authentication.OpenIdConnect;
 using MasaWebApp.Data;
