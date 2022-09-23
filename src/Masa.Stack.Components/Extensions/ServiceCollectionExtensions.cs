@@ -5,11 +5,11 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null)
     {
-        builder.AddMasaConfiguration(configurationBuilder =>
+        builder.Services.AddMasaConfiguration(configurationBuilder =>
         {
             configurationBuilder.UseDcc();
         });
-        var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
+        var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
         builder.Services.AddMasaStackComponentsForServer(
                 i18nDirectoryPath,
                 authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
