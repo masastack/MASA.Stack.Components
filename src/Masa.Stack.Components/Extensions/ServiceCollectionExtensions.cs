@@ -50,12 +50,15 @@ public static class ServiceCollectionExtensions
 
         var builder = services.AddMasaBlazor(builder =>
         {
-            builder.Theme.Primary = "#4318FF";
-            builder.Theme.Accent = "#4318FF";
-            builder.Theme.Error = "#FF5252";
-            builder.Theme.Success = "#00B42A";
-            builder.Theme.Warning = "#FF7D00";
-            builder.Theme.Info = "#37A7FF";
+            builder.ConfigureTheme(theme =>
+            {
+                theme.Themes.Light.Primary = "#4318FF";
+                theme.Themes.Light.Accent = "#4318FF";
+                theme.Themes.Light.Error = "#FF5252";
+                theme.Themes.Light.Success = "#00B42A";
+                theme.Themes.Light.Warning = "#FF7D00";
+                theme.Themes.Light.Info = "#37A7FF";
+            });
         })
         .AddI18n(GetLocales().ToArray());
 
@@ -76,12 +79,15 @@ public static class ServiceCollectionExtensions
 
         await services.AddMasaBlazor(builder =>
         {
-            builder.Theme.Primary = "#4318FF";
-            builder.Theme.Accent = "#4318FF";
-            builder.Theme.Error = "#FF5252";
-            builder.Theme.Success = "#00B42A";
-            builder.Theme.Warning = "#FF7D00";
-            builder.Theme.Info = "#37A7FF";
+            builder.ConfigureTheme(theme =>
+            {
+                theme.Themes.Light.Primary = "#4318FF";
+                theme.Themes.Light.Accent = "#4318FF";
+                theme.Themes.Light.Error = "#FF5252";
+                theme.Themes.Light.Success = "#00B42A";
+                theme.Themes.Light.Warning = "#FF7D00";
+                theme.Themes.Light.Info = "#37A7FF";
+            });
         }).AddI18nForWasmAsync(i18nDirectoryPath);
 
         return services;
