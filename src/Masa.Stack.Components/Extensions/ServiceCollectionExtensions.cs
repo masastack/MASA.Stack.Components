@@ -50,6 +50,15 @@ public static class ServiceCollectionExtensions
 
         var builder = services.AddMasaBlazor(builder =>
         {
+            //builder.ConfigureTheme(theme =>
+            //{
+            //    theme.Themes.Light.Primary = "#4318FF";
+            //    theme.Themes.Light.Accent = "#4318FF";
+            //    theme.Themes.Light.Error = "#FF5252";
+            //    theme.Themes.Light.Success = "#00B42A";
+            //    theme.Themes.Light.Warning = "#FF7D00";
+            //    theme.Themes.Light.Info = "#37A7FF";
+            //});
             builder.Theme.Primary = "#4318FF";
             builder.Theme.Accent = "#4318FF";
             builder.Theme.Error = "#FF5252";
