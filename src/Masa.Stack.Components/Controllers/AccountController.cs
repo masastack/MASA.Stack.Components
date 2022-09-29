@@ -4,8 +4,17 @@
 public class AccountController : Controller
 {
     [HttpGet]
-    public IActionResult Logout()
+    public IActionResult Logout(string? environment)
     {
+        if (!string.IsNullOrEmpty(environment))
+        {
+            return SignOut(new AuthenticationProperties
+            {
+                Items = {
+                    { IsolationConsts.ENVIRONMENT,environment }
+                }
+            }, "OpenIdConnect", "Cookies");
+        }
         return SignOut("OpenIdConnect", "Cookies");
     }
 }

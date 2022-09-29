@@ -64,6 +64,7 @@
   "RealName": "Real name",
   "IdentityCardNumber": "Identity Card Number",
   "TipsForLogout": "Are you sure to log out of the current account?",
+  "EnvironmentSwitchTips": "The current user not in the environment",
 
   "Counter": "Counter",
   "Fetch data": "Fetch Data",

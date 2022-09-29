@@ -1,19 +1,21 @@
-﻿namespace Masa.Stack.Components;
+﻿
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
-        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null)
+        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null, string? pmHost = null)
     {
-        builder.AddMasaConfiguration(configurationBuilder =>
+        builder.Services.AddMasaConfiguration(configurationBuilder =>
         {
             configurationBuilder.UseDcc();
         });
-        var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
+        var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
         builder.Services.AddMasaStackComponentsForServer(
                 i18nDirectoryPath,
                 authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
                 mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"),
+                pmHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:PmClient:Url"),
                 publicConfiguration.GetSection("$public.OSS").Get<OssOptions>(),
                 publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>(),
                 publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>()
@@ -23,7 +25,7 @@ public static class ServiceCollectionExtensions
     }
 
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-       string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions,
+       string? i18nDirectoryPath, string authHost, string mcHost, string pmHost, OssOptions ossOptions,
        UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
     {
         services.AddAutoInject();
@@ -47,6 +49,7 @@ public static class ServiceCollectionExtensions
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
+        services.AddPmClient(pmHost);
 
         var builder = services.AddMasaBlazor(builder =>
         {
@@ -67,12 +70,13 @@ public static class ServiceCollectionExtensions
     }
 
     public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost, string mcHost, RedisConfigurationOptions redisOption)
+        string i18nDirectoryPath, string authHost, string mcHost, string pmHost, RedisConfigurationOptions redisOption)
     {
         services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
+        services.AddPmClient(pmHost);
 
         await services.AddMasaBlazor(builder =>
         {
