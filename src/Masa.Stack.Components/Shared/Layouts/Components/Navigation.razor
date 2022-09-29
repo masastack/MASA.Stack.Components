@@ -199,7 +199,7 @@
     private async Task SwitchEnvironmentAsync(string environment)
     {
         var currentUser = await AuthClient.UserService.GetCurrentUserAsync();
-        var isIn = await AuthClient.UserService.GetInEnvironmentAsync(environment, currentUser?.PhoneNumber);
+        var isIn = await AuthClient.UserService.HasPhoneNumberInEnvAsync(environment, currentUser?.PhoneNumber);
         if (!isIn)
         {
             await PopupService.AlertAsync(T("EnvironmentSwitchTips"), AlertTypes.Warning);
