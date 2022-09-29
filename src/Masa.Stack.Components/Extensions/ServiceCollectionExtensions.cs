@@ -1,4 +1,5 @@
-﻿namespace Masa.Stack.Components;
+﻿
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
