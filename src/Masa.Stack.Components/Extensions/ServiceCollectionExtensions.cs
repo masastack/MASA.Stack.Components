@@ -1,9 +1,10 @@
-﻿namespace Masa.Stack.Components;
+﻿
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
-        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null)
+        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null, string? pmHost = null)
     {
         builder.Services.AddMasaConfiguration(configurationBuilder =>
         {
@@ -14,6 +15,7 @@ public static class ServiceCollectionExtensions
                 i18nDirectoryPath,
                 authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
                 mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"),
+                pmHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:PmClient:Url"),
                 publicConfiguration.GetSection("$public.OSS").Get<OssOptions>(),
                 publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>(),
                 publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>()
@@ -23,7 +25,7 @@ public static class ServiceCollectionExtensions
     }
 
     public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-       string? i18nDirectoryPath, string authHost, string mcHost, OssOptions ossOptions,
+       string? i18nDirectoryPath, string authHost, string mcHost, string pmHost, OssOptions ossOptions,
        UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
     {
         services.AddAutoInject();
@@ -47,24 +49,20 @@ public static class ServiceCollectionExtensions
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
+        services.AddPmClient(pmHost);
 
         var builder = services.AddMasaBlazor(builder =>
         {
-            //builder.ConfigureTheme(theme =>
-            //{
-            //    theme.Themes.Light.Primary = "#4318FF";
-            //    theme.Themes.Light.Accent = "#4318FF";
-            //    theme.Themes.Light.Error = "#FF5252";
-            //    theme.Themes.Light.Success = "#00B42A";
-            //    theme.Themes.Light.Warning = "#FF7D00";
-            //    theme.Themes.Light.Info = "#37A7FF";
-            //});
-            builder.Theme.Primary = "#4318FF";
-            builder.Theme.Accent = "#4318FF";
-            builder.Theme.Error = "#FF5252";
-            builder.Theme.Success = "#00B42A";
-            builder.Theme.Warning = "#FF7D00";
-            builder.Theme.Info = "#37A7FF";
+            builder.ConfigureTheme(theme =>
+            {
+                theme.Dark = true;
+                theme.Themes.Light.Primary = "#4318FF";
+                theme.Themes.Light.Accent = "#4318FF";
+                theme.Themes.Light.Error = "#FF5252";
+                theme.Themes.Light.Success = "#00B42A";
+                theme.Themes.Light.Warning = "#FF7D00";
+                theme.Themes.Light.Info = "#37A7FF";
+            });
         })
         .AddI18n(GetLocales().ToArray());
 
@@ -76,21 +74,26 @@ public static class ServiceCollectionExtensions
     }
 
     public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost, string mcHost, RedisConfigurationOptions redisOption)
+        string i18nDirectoryPath, string authHost, string mcHost, string pmHost, RedisConfigurationOptions redisOption)
     {
         services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
         services.AddMcClient(mcHost);
+        services.AddPmClient(pmHost);
 
         await services.AddMasaBlazor(builder =>
         {
-            builder.Theme.Primary = "#4318FF";
-            builder.Theme.Accent = "#4318FF";
-            builder.Theme.Error = "#FF5252";
-            builder.Theme.Success = "#00B42A";
-            builder.Theme.Warning = "#FF7D00";
-            builder.Theme.Info = "#37A7FF";
+            builder.ConfigureTheme(theme =>
+            {
+                theme.Dark = true;
+                theme.Themes.Light.Primary = "#4318FF";
+                theme.Themes.Light.Accent = "#4318FF";
+                theme.Themes.Light.Error = "#FF5252";
+                theme.Themes.Light.Success = "#00B42A";
+                theme.Themes.Light.Warning = "#FF7D00";
+                theme.Themes.Light.Info = "#37A7FF";
+            });
         }).AddI18nForWasmAsync(i18nDirectoryPath);
 
         return services;

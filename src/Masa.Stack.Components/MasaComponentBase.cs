@@ -17,6 +17,9 @@ public abstract class MasaComponentBase : ComponentBase
     public IAuthClient AuthClient { get; set; } = null!;
 
     [Inject]
+    public IPmClient PmClient { get; set; } = null!;
+
+    [Inject]
     public IPopupService PopupService { get; set; } = default!;
 
     [Inject]
