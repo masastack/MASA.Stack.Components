@@ -59,4 +59,4 @@ global using System.Text.Json.Serialization;
 global using System.Text.RegularExpressions;
 global using Masa.BuildingBlocks.Authentication.Identity;
 global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
-global using Masa.Utils.Caching.Redis.Models;
+global using Masa.Contrib.Caching.Distributed.StackExchangeRedis;
