@@ -30,11 +30,12 @@ public partial class SRelativeTime
     {
         get
         {
+            RelativeTimeTypes relativeTimeType = default;
             if (StartTime is not null && EndTime is not null)
             {
                 var timeSpan = EndTime.Value.AddSeconds(-EndTime.Value.Second).Subtract(StartTime.Value.AddSeconds(-StartTime.Value.Second));
                 var minutes = (int)timeSpan.TotalMinutes;
-                return (minutes) switch
+                relativeTimeType = (minutes) switch
                 {
                     15 => RelativeTimeTypes.FifteenMinutes,
                     30 => RelativeTimeTypes.ThirtyMinutes,
@@ -43,11 +44,15 @@ public partial class SRelativeTime
                     720 => RelativeTimeTypes.TwelveHour,
                     1440 => RelativeTimeTypes.OneDay,
                     10080 => RelativeTimeTypes.OneWeek,
-                    43200 => RelativeTimeTypes.OneMonth,
                     _ => default
                 };
+                if(relativeTimeType == default)
+                {
+                    var monthSpan = DateTime.Today.Subtract(DateTime.Today.AddMonths(-1)).TotalMinutes;
+                    if (minutes == monthSpan) return RelativeTimeTypes.OneMonth;
+                }               
             }
-            return default;
+            return relativeTimeType;
         }
     }
 

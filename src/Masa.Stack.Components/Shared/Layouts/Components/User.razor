@@ -27,7 +27,7 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            <SListItem Medium OnClick="() => { _updatePasswordModal.Open(); _menuVisible = false; }">
+            <SListItem Medium OnClick="() => { UpdatePasswordDialogVisible = true; _menuVisible = false; }">
                 <MListItemIcon Class="mr-4">
                     <SIcon Color="emphasis2">mdi-pencil</SIcon>
                 </MListItemIcon>
@@ -84,14 +84,14 @@
     </ChildContent>
 </MMenu>
 
-<UpdatePasswordModal @ref="_updatePasswordModal"></UpdatePasswordModal>
+<UpdatePasswordModal @bind-value="UpdatePasswordDialogVisible" />
 
 @code {
 
     [CascadingParameter]
     public SLayout Layout { get; set; } = null!;
 
-    UpdatePasswordModal _updatePasswordModal = null!;
+    public bool UpdatePasswordDialogVisible { get; set; }
     string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
 
     bool _menuVisible = false, _showChangeTeam;
