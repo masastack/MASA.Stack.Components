@@ -6,7 +6,7 @@ namespace Masa.Stack.Components;
 public partial class SCopyPassword : STextField<string>
 {
     private const string LETTERS = "ABCDEFGHIJKMLNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz";
-    private const string LETTERNUMBERS = "ABCDEFGHIJKMLNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz0123456789";
+    private const string NUMBERS = "0123456789";
    
     [Inject]
     public I18n I18n { get; set; } = default!;
@@ -49,8 +49,8 @@ public partial class SCopyPassword : STextField<string>
         {
             if (includeNumbers)
             {
-                var index = Random.Shared.Next(LETTERNUMBERS.Length);
-                sb.Append(LETTERNUMBERS[index]);
+                var index = Random.Shared.Next(NUMBERS.Length);
+                sb.Append(NUMBERS[index]);
             }
             else
             {

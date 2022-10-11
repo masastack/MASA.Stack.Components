@@ -27,6 +27,9 @@ public partial class SUpload : IAsyncDisposable
     public int MaximumFileCount { get; set; } = 10;
 
     [Parameter]
+    public int MaximumFileSize { get; set; }
+
+    [Parameter]
     public string? Value
     {
         get => MultipleValue.FirstOrDefault();
@@ -80,8 +83,17 @@ public partial class SUpload : IAsyncDisposable
 
     protected virtual async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
-        if (OnChange.HasDelegate) await OnChange.InvokeAsync(e);
         Files = e.GetMultipleFiles(MaximumFileCount);
+        if(MaximumFileSize !=0)
+        {
+            var file = Files.FirstOrDefault(file => file.Size > MaximumFileSize);
+            if(file is not null)
+            {
+                await PopupService.ToastErrorAsync($"{file.Name} of {file.Size} bytes is larger than the limit of {MaximumFileSize} bytes");
+                return;
+            }            
+        }
+        if (OnChange.HasDelegate) await OnChange.InvokeAsync(e);    
         if (OnInputFileChanged is null) return;
         if (OnInputFileChanged.IsJsCallback)
         {
