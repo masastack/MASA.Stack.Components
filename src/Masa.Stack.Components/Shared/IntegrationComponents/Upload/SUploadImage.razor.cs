@@ -30,6 +30,7 @@ public partial class SUploadImage : SUpload
     {
         Accept = "image/*";
         OnInputFileChanged = "GetPreviewImageUrls";
+        MaximumFileSize = 1024 * 1024 * 2;
         await base.SetParametersAsync(parameters);
     }
 
