@@ -677,3 +677,13 @@ masa-stack-components .table-border-none.dense thead th {
     border-bottom-right-radius: 20px;
 }
 
+/*
+    avatar
+*/
+
+.avatar-list-stacked .m-avatar {
+    box-shadow: 0 0 0 1px #f0f3fa;
+    margin-left: -0.3em !important;
+    user-select: none;
+    display: inline-grid;
+}
