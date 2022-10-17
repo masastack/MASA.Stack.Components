@@ -134,23 +134,19 @@
                             Action=EmailValidateAction />
                     </MCol>
                     <MCol Cols="6">
-                        <STextField
-                            Value="@UpdateUser.Position"
+                        <STextField @bind-Value="@UpdateUser.Position"
                             Label="@T("Position")" />
                     </MCol>
                     <MCol Cols="6">
-                        <STextField
-                            Value="@UpdateUser.CompanyName"
+                        <STextField @bind-Value="@UpdateUser.CompanyName"
                             Label="@T("Company")" />
                     </MCol>
                     <MCol Cols="6">
-                        <STextField
-                            Value="@UpdateUser.Address.Address"
+                        <STextField @bind-Value="@UpdateUser.Address.Address"
                             Label="@T("Address")" />
                     </MCol>
                     <MCol Cols="6">
-                        <STextField
-                            Value="@UpdateUser.Department"
+                        <STextField @bind-Value="@UpdateUser.Department"
                             Label="@T("Department")" />
                     </MCol>
                 </MRow>

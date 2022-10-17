@@ -17,7 +17,7 @@
     </ActivatorContent>
     <ChildContent>
         <MList>
-            <SListItem Medium Href="/user-center">
+            <SListItem Medium Href="/user-center" OnClick="() => { _menuVisible = false; }">
                 <MListItemIcon Class="mr-4">
                     <SIcon Color="emphasis2">mdi-account-circle</SIcon>
                 </MListItemIcon>
@@ -53,17 +53,23 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MListItemGroup Value="_currentTeamId" ValueChanged="CurrentTeamChanged">
-                            @foreach (var team in _teams)
+                            @if (_teams.Count > 5)
                             {
-                                <MListItem Value="@team.Id.ToString()">
-                                    <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
-                                        <MImage Src="@team.Avatar"></MImage>
-                                    </MListItemAvatar>
-                                    <MListItemContent>
-                                        <MListItemTitle>@team.Name</MListItemTitle>
-                                    </MListItemContent>
-                                </MListItem>
+                                <SSearch @bind-Value="@_teamSearchKey"/>
                             }
+                            <MVirtualScroll Items="_teams.Where(t=>t.Name.Contains(_teamSearchKey)).ToList()" 
+                                ItemSize=48 Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))>
+                                <ItemContent>
+                                    <MListItem Value="@context.Id.ToString()">
+                                        <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
+                                            <MImage Src="@context.Avatar"></MImage>
+                                        </MListItemAvatar>
+                                        <MListItemContent>
+                                            <MListItemTitle>@context.Name</MListItemTitle>
+                                        </MListItemContent>
+                                    </MListItem>
+                                </ItemContent>
+                            </MVirtualScroll>
                         </MListItemGroup>
                     </ChildContent>
                 </MListGroup>
@@ -93,9 +99,9 @@
 
     public bool UpdatePasswordDialogVisible { get; set; }
     string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
-
+    string _teamSearchKey = string.Empty;
     bool _menuVisible = false, _showChangeTeam;
-    StringNumber _currentTeamId;
+    StringNumber _currentTeamId = string.Empty;
     List<TeamModel> _teams = new();
 
     public TeamModel CurrentTeam => _teams.FirstOrDefault(t => t.Id.ToString() == _currentTeamId) ?? new();

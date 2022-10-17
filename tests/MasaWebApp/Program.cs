@@ -1,5 +1,5 @@
 using Masa.BuildingBlocks.Configuration;
-using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Provider;
+using Masa.Contrib.Service.Caller.Authentication.OpenIdConnect;
 using Masa.Stack.Components;
 using Masa.Utils.Security.Authentication.OpenIdConnect;
 using MasaWebApp.Data;
@@ -12,7 +12,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenProvider>();
 builder.AddMasaStackComponentsForServer(default);
-var publicConfiguration = builder.GetMasaConfiguration().ConfigurationApi.GetPublic();
+var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
 builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC:PMClient").Get<MasaOpenIdConnectOptions>());
 
 var app = builder.Build();
