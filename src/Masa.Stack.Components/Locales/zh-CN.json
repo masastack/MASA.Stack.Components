@@ -141,5 +141,6 @@
   "OperationConfirmation": "操作确认",
   "DeletionConfirmationMessage": "确定删除数据?",
   "DeletedSuccessfullyMessage": "删除成功.",
-  "OperationSuccessfulMessage": "操作成功."
+  "OperationSuccessfulMessage": "操作成功.",
+  "The employee account has been frozen,please contact the administrator!": "员工账号已冻结，请联系管理员!"
 }
