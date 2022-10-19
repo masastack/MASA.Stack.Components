@@ -26,7 +26,7 @@ public partial class StaffInfo : MasaComponentBase
         StaffDetail = await AuthClient.UserService.GetCurrentStaffAsync() ?? throw new UserFriendlyException("This staff does not exist");
         if(StaffDetail.Enabled is false)
         {
-            await PopupService.AlertAsync(T("The employee account has been frozen,please contact the administrator!"),AlertTypes.Error);
+            await PopupService.AlertAsync(T("The employee account has been frozen, please contact the administrator!"),AlertTypes.Error);
             NavigationManager.NavigateTo("/user-center");
         }
         UpdateStaff = StaffDetail.Adapt<UpdateStaffBasicInfoModel>();
