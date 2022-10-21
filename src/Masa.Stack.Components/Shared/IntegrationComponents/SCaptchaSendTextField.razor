@@ -4,7 +4,9 @@
 @inherits MasaComponentBase
 @implements IDisposable
 
-<STextField @bind-Value="Value"
+<STextField Value="Value"
+            ValueChanged="ValueChanged"
+            ValueExpression="ValueExpression"
             Label="@T("Captcha")"
             HideDetails="false" 
             Class="@Class"
@@ -18,6 +20,9 @@
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public Expression<Func<string>> ValueExpression { get; set; }
 
     [Parameter]
     public string Class { get; set; } = string.Empty;
