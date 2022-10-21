@@ -69,5 +69,6 @@
   "Counter": "Counter",
   "Fetch data": "Fetch Data",
   "Father": "Father",
-  "ChildOne": "Child One"
+  "ChildOne": "Child One",
+  "SmsSendTime": "second after resend"
 }

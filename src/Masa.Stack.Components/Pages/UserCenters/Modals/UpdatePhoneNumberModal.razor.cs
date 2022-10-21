@@ -2,8 +2,6 @@
 
 public partial class UpdatePhoneNumberModal : MasaComponentBase
 {
-    private string? _captchaText;
-
     [Parameter]
     public bool Visible { get; set; }
 
@@ -17,44 +15,21 @@ public partial class UpdatePhoneNumberModal : MasaComponentBase
 
     public MForm FormRef { get; set; } = default!;
 
-    [NotNull]
-    private string? CaptchaText
-    {
-        get => (_captchaText == "0" || _captchaText == null) ? T("Captcha") : _captchaText;
-        set => _captchaText = value;
-    }
 
-    private void CaptchaValidateAction(DefaultTextfieldAction action)
+    private async Task<bool> SendCaptcha()
     {
-        action.Content = CaptchaText;
-        action.Text = true;
-        action.DisableLoding = true;
-        action.OnClick = SendCaptcha;
-    }
-
-    private async Task SendCaptcha(MouseEventArgs _)
-    {
-        if (CaptchaText != T("Captcha")) return;
         var field = FormRef.EditContext.Field(nameof(UpdateUserPhoneNumber.PhoneNumber));
         FormRef.EditContext.NotifyFieldChanged(field);
         var result = FormRef.EditContext.GetValidationMessages(field);
-        if (result.Any() is false)
+        if (!result.Any())
         {
             await AuthClient.UserService.SendMsgCodeAsync(new SendMsgCodeModel()
             {
                 PhoneNumber = UpdateUserPhoneNumber.PhoneNumber,
                 SendMsgCodeType = SendMsgCodeTypes.UpdatePhoneNumber
             });
-            await PopupService.AlertAsync(T("The verification code is sent successfully, please enter the verification code within 60 seconds"), AlertTypes.Success);
-            int second = 60;
-            while (second >= 0)
-            {
-                CaptchaText = second.ToString();
-                StateHasChanged();
-                second--;
-                await Task.Delay(1000);
-            }
         }
+        return !result.Any();
     }
 
     private async Task HandleOnCancel()

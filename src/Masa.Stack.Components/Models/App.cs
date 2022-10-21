@@ -8,6 +8,8 @@ public partial class App
 
     public string Name { get; set; }
 
+    public bool Hiden { get; set; }
+
     public List<Nav> Navs
     {
         get => _navs ?? new();

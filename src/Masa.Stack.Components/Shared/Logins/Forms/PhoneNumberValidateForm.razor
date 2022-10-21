@@ -3,25 +3,28 @@
 @namespace Masa.Stack.Components.Forms
 @inherits MasaComponentBase
 
-<MForm Model="this" EnableValidation
+<MForm Model="_resetPasswordByPhoneModel" EnableValidation
        Class="full-height d-flex flex-column justify-space-between"
        OnValidSubmit="HandleOnValidSubmit"
        @ref="_form">
-    <div style="margin-top: 50%; transform: translateY(-50%);">
-        <STextField @bind-Value="PhoneNumber"
-                          OnInput="ValidatePhoneNumber"
-                          TValue="string"
-                          Label="@T("PhoneNumber")"
-                          Readonly="@_isDirty"
-                          HideDetails="false"
-                          Class="mb-6">
+    <div class="mt-2">
+        <STextField @bind-Value="_resetPasswordByPhoneModel.PhoneNumber"
+                    HideDetails="false" Class="mb-2"
+                    Label="@T("PhoneNumber")">
         </STextField>
 
-        <STextField @bind-Value="Captcha"
-                          Label="@T("Captcha")"
-                          HideDetails="false"
-                          Action="@(props => { props.Content = ActionContent; props.Disabled = ActionDisabled; props.OnClick = _ => SendCaptcha(); })">
+        <SCaptchaSendTextField @bind-Value="_resetPasswordByPhoneModel.Code" 
+            Class="mb-2" OnClick="SendCaptcha"/>
+
+        <STextField @bind-Value="_resetPasswordByPhoneModel.Password"
+                    Label="@T("NewPassword")" Class="mb-2"
+                    HideDetails="false">
+        </STextField>
+
+        <STextField @bind-Value="_resetPasswordByPhoneModel.ConfirmPassword"
+                    Label="@T("ConfirmNewPassword")" Class="mb-2"
+                    HideDetails="false">
         </STextField>
     </div>
-    <SButton Class="align-self-center" Large Type="submit">@T("Ok")</SButton>
+    <SButton Class="align-self-center" Disabled=_reseting Loading=_reseting Large Type="submit">@T("Ok")</SButton>
 </MForm>

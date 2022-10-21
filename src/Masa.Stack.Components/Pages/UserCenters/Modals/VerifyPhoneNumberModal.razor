@@ -10,8 +10,6 @@
                OnCancel="HandleOnCancel"
                OnOk="HandleOnOk">
     <MForm EnableI18n EnableValidation Model="VerifyMsgCode" @ref="FormRef">
-        <STextField @bind-Value="VerifyMsgCode.Code"
-                    Label="@T("Captcha")"
-                    Action="CaptchaValidateAction" />
+        <SCaptchaSendTextField @bind-Value="VerifyMsgCode.Code" OnClick="SendCaptcha"/>
     </MForm>
 </SSimpleDialog>

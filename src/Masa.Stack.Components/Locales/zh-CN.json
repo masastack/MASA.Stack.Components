@@ -32,6 +32,7 @@
   "PlaceholderForConfirmNewPassword": "再次输入新密码",
   "FailToConfirmNewPassword": "确认密码与新密码不一致",
   "EqualOldAndNewPassword": "新密码与旧密码不能相同",
+  "PasswordRequired": "密码不能空",
   "PasswordFormatVerificationPrompt": "密码必须是字母和数字的组合，且长度不小于8",
   "Account": "账号",
   "Logout": "退出登录",
@@ -92,7 +93,7 @@
   "ChangePhoneNumber": "更改手机号码",
   "Captcha": "验证码",
   "GetCaptcha": "获取验证码",
-  "The verification code is sent successfully, please enter the verification code within 60 seconds": "发送验证码成功，请在60秒内输入验证码",
+  "The verification code is sent successfully": "发送验证码成功",
   "Add": "添加",
   "Ok": "确定",
   "Send": "发送",
@@ -105,7 +106,7 @@
   "RealName": "真实姓名",
   "IdentityCardNumber": "身份证号码",
   "TipsForLogout": "您确定退出当前登录账号？",
-  "Update password success": "修改秘密成功",
+  "Update password success": "修改密码成功",
   "EnvironmentSwitchTips": "当前用户不在该环境中",
 
   "Counter": "计数",
@@ -141,5 +142,6 @@
   "OperationConfirmation": "操作确认",
   "DeletionConfirmationMessage": "确定删除数据?",
   "DeletedSuccessfullyMessage": "删除成功.",
-  "OperationSuccessfulMessage": "操作成功."
+  "OperationSuccessfulMessage": "操作成功.",
+  "SmsSendTime": "秒后可重发"
 }

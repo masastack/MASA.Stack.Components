@@ -13,8 +13,6 @@
         <STextField @bind-Value="UpdateUserEmail.Email"
                     Class="mb-6"
                     Label="@T("EmailAddress")" />
-        <STextField TValue="string"
-                    Label="@T("Captcha")"
-                    Action="CaptchaValidateAction" />
+        <SCaptchaSendTextField OnClick="SendCaptcha" />
     </MForm>
 </SSimpleDialog>

@@ -16,6 +16,8 @@ public class Nav : NavBase
 
     public string? Url { get; set; }
 
+    public bool Hiden { get; set; }
+
     public List<Nav> Children
     {
         get
