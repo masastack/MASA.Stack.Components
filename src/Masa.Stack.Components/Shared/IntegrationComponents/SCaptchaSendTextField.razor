@@ -30,7 +30,7 @@
 
     int _counter = 0;
     bool ActionDisabled => _counter > 0;
-    string ActionContent => _counter > 0 ? $"{_counter}{T("SmsSendTime")}" : T("GetCaptcha");
+    string ActionContent => _counter > 0 ? string.Format(T("SmsSendTime"), _counter) : T("GetCaptcha");
     private System.Timers.Timer? _timer;
 
     private async Task ClickHandler()

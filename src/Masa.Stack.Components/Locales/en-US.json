@@ -70,5 +70,5 @@
   "Fetch data": "Fetch Data",
   "Father": "Father",
   "ChildOne": "Child One",
-  "SmsSendTime": "second after resend"
+  "SmsSendTime": "Replays in {0} seconds"
 }
