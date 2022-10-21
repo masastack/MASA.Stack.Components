@@ -10,14 +10,13 @@
         {
             if ((AppChecked && InPreview) || !InPreview)
             {
-                <MSimpleCheckbox
-                    Color="primary"
-                    Ripple="false"
-                    Value="@AppChecked"
-                    ValueChanged="@AppCheckedChanged"
-                    Class="masa-icon-size-20"
-                    Style="flex: none;margin-right: -4px;"
-                    Readonly="InPreview">
+                <MSimpleCheckbox Color="primary"
+                         Ripple="false"
+                         Value="@AppChecked"
+                         ValueChanged="@AppCheckedChanged"
+                         Class="masa-icon-size-20"
+                         Style="flex: none;margin-right: -4px;"
+                         Readonly="InPreview">
                 </MSimpleCheckbox>
             }
         }
@@ -36,7 +35,7 @@
                 <MList Dense Class="pa-0">
                     <MListItemGroup Values="_values" Multiple>
                         <CascadingValue Value="this">
-                            <ExpansionAppItem Data="nav"                                          
+                            <ExpansionAppItem Data="nav"
                                           Level="1"
                                           Checkable="Checkable"
                                           InPreview="InPreview"
@@ -46,11 +45,11 @@
                             {
                                 foreach (var subNav in nav.Children.Where(subNav => Filter(subNav)))
                                 {
-                                    <ExpansionAppItem Data="@subNav"                                                      
-                                                      Checkable="@Checkable"
-                                                      InPreview="InPreview"
-                                                      Level="2"
-                                                      ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))">
+                                    <ExpansionAppItem Data="@subNav"
+                                          Checkable="@Checkable"
+                                          InPreview="InPreview"
+                                          Level="2"
+                                          ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))">
                                     </ExpansionAppItem>
 
                                     if (subNav.HasActions)
@@ -58,10 +57,10 @@
                                         @foreach (var action in subNav.Actions!.Where(action => Filter(action)))
                                         {
                                             <ExpansionAppItem Data="@action"
-                                                                NavCode="@subNav.Code"
-                                                                Checkable="@Checkable"
-                                                                InPreview="InPreview"
-                                                                Level="3">
+                                          NavCode="@subNav.Code"
+                                          Checkable="@Checkable"
+                                          InPreview="InPreview"
+                                          Level="3">
                                             </ExpansionAppItem>
                                         }
                                     }
@@ -71,11 +70,11 @@
                             {
                                 @foreach (var action in nav.Actions!.Where(action => Filter(action)))
                                 {
-                                    <ExpansionAppItem Data="@action"                                                       
-                                                        NavCode="@nav.Code"
-                                                        Checkable="@Checkable"
-                                                        InPreview="InPreview"
-                                                        Level="3">
+                                    <ExpansionAppItem Data="@action"
+                                          NavCode="@nav.Code"
+                                          Checkable="@Checkable"
+                                          InPreview="InPreview"
+                                          Level="3">
                                     </ExpansionAppItem>
                                 }
                             }

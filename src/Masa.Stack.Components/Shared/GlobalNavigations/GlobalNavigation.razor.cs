@@ -46,7 +46,7 @@ public partial class GlobalNavigation : MasaComponentBase
             {
                 Code = ag.Key,
                 Name = ag.Key,
-                Apps = ag.Select(a => a.Adapt<App>(config)).ToList()
+                Apps = ag.Select(a => a.Adapt<App>(config)).Where(a => a.Navs.Any()).ToList()
             }).ToList();
 
             return categories;

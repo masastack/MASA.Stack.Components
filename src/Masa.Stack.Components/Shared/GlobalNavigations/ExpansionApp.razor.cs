@@ -157,8 +157,14 @@ public partial class ExpansionApp
 
     private bool Filter(Nav nav)
     {
-        if (!InPreview) return true;
-        return InPreview && (ExpansionWrapper.Value.Any(value => value.NavModel == nav) || nav.Children.Any(Filter));
+        if (InPreview)
+        {
+            return ExpansionWrapper.Value.Any(value => value.NavModel == nav) || nav.Children.Any(Filter);
+        }
+        else
+        {
+            return !nav.Hiden;
+        }
     }
 
     public void Register(ExpansionAppItem expansionAppItem)
