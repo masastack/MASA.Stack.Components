@@ -57,6 +57,9 @@ public partial class SUrlTextField : IDisposable
     [Parameter]
     public string Label { get; set; } = "";
 
+    [Parameter]
+    public bool Required { get; set; }
+
     public string TextValue { get; set; } = "";
 
     protected FieldIdentifier ValueIdentifier { get; set; }
