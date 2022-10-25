@@ -37,40 +37,43 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            <MDivider></MDivider>
-            <MListGroup @bind-Value="_showChangeTeam" NoAction Style="">
-                <PrependIconContent>
-                    <MAvatar Width="24" Height="24" MinHeight="24" MinWidth="24" Style="margin-right: 10px;">
-                        <MImage Src="@CurrentTeam.Avatar"></MImage>
-                    </MAvatar>
-                </PrependIconContent>
-                <ActivatorContent>
-                    <MListItemContent>
-                        <MListItemTitle>@CurrentTeam.Name</MListItemTitle>
-                    </MListItemContent>
-                </ActivatorContent>
-                <ChildContent>
-                    <MListItemGroup Value="_currentTeamId" ValueChanged="CurrentTeamChanged">
-                        @if (_teams.Count > 5)
-                        {
-                            <SSearch @bind-Value="@_teamSearchKey" />
-                        }
-                        <MVirtualScroll Items="_teams.Where(t=>t.Name.Contains(_teamSearchKey)).ToList()"
+            @if (MasaUser.IsStaff)
+            {
+                <MDivider></MDivider>
+                <MListGroup @bind-Value="_showChangeTeam" NoAction Style="">
+                    <PrependIconContent>
+                        <MAvatar Width="24" Height="24" MinHeight="24" MinWidth="24" Style="margin-right: 10px;">
+                            <MImage Src="@CurrentTeam.Avatar"></MImage>
+                        </MAvatar>
+                    </PrependIconContent>
+                    <ActivatorContent>
+                        <MListItemContent>
+                            <MListItemTitle>@CurrentTeam.Name</MListItemTitle>
+                        </MListItemContent>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MListItemGroup Value="_currentTeamId" ValueChanged="CurrentTeamChanged">
+                            @if (_teams.Count > 5)
+                            {
+                                <SSearch @bind-Value="@_teamSearchKey" />
+                            }
+                            <MVirtualScroll Items="_teams.Where(t=>t.Name.Contains(_teamSearchKey)).ToList()"
                                         ItemSize=48 Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))>
-                            <ItemContent>
-                                <MListItem Value="@context.Id.ToString()">
-                                    <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
-                                        <MImage Src="@context.Avatar"></MImage>
-                                    </MListItemAvatar>
-                                    <MListItemContent>
-                                        <MListItemTitle>@context.Name</MListItemTitle>
-                                    </MListItemContent>
-                                </MListItem>
-                            </ItemContent>
-                        </MVirtualScroll>
-                    </MListItemGroup>
-                </ChildContent>
-            </MListGroup>
+                                <ItemContent>
+                                    <MListItem Value="@context.Id.ToString()">
+                                        <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
+                                            <MImage Src="@context.Avatar"></MImage>
+                                        </MListItemAvatar>
+                                        <MListItemContent>
+                                            <MListItemTitle>@context.Name</MListItemTitle>
+                                        </MListItemContent>
+                                    </MListItem>
+                                </ItemContent>
+                            </MVirtualScroll>
+                        </MListItemGroup>
+                    </ChildContent>
+                </MListGroup>
+            }
             <MDivider></MDivider>
             <SListItem Medium OnClick="HandleSignOut">
                 <MListItemIcon Class="mr-4">
@@ -82,7 +85,6 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-
         </MList>
     </ChildContent>
 </MMenu>

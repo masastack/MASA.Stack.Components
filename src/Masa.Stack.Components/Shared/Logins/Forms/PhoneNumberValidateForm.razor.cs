@@ -49,8 +49,7 @@ public partial class PhoneNumberValidateForm : MasaComponentBase
         {
             await AuthClient.UserService.SendMsgCodeAsync(new SendMsgCodeModel
             {
-                //todo SendMsgCodeTypes.ResetPassword
-                SendMsgCodeType = SendMsgCodeTypes.Register,
+                SendMsgCodeType = SendMsgCodeTypes.ForgotPassword,
                 PhoneNumber = _resetPasswordByPhoneModel.PhoneNumber
             });
         }
