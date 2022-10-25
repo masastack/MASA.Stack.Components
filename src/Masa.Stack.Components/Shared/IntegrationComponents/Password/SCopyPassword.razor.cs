@@ -47,16 +47,15 @@ public partial class SCopyPassword : STextField<string>
         var sb = new StringBuilder(length);
         for (var i = 0; i < length; i++)
         {
+            var index = 0;
             if (includeNumbers)
             {
-                var index = Random.Shared.Next(NUMBERS.Length);
+                index = Random.Shared.Next(NUMBERS.Length);
                 sb.Append(NUMBERS[index]);
+                length = length - 1;
             }
-            else
-            {
-                var index = Random.Shared.Next(LETTERS.Length);
-                sb.Append(LETTERS[index]);
-            }
+            index = Random.Shared.Next(LETTERS.Length);
+            sb.Append(LETTERS[index]);
         }
         return sb.ToString();
     }

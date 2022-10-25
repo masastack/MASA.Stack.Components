@@ -13,7 +13,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenProvider>();
 builder.AddMasaStackComponentsForServer(default);
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
-builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC:PMClient").Get<MasaOpenIdConnectOptions>());
+builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC").Get<MasaOpenIdConnectOptions>());
 
 var app = builder.Build();
 
