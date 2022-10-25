@@ -1,148 +1,79 @@
-﻿using System.Timers;
+﻿namespace Masa.Stack.Components.Forms;
 
-namespace Masa.Stack.Components.Forms;
-
-public partial class PhoneNumberValidateForm : MasaComponentBase, IDisposable
+public partial class PhoneNumberValidateForm : MasaComponentBase
 {
-    [Inject]
-    private IPopupService PopupService { get; set; } = null!;
-
-    [Parameter]
-    public EventCallback<string> OnOk { get; set; }
-
-    public string? PhoneNumber { get; set; }
-
-    public string? Captcha { get; set; }
-
-    private static System.Timers.Timer? _timer;
-
-    private bool _valid;
-    private bool _isDirty;
-    private int _counter = 0;
+    private bool _reseting = false;
+    private ResetPasswordByPhoneModel _resetPasswordByPhoneModel = new();
 
     private MForm _form = null!;
 
-    private string ActionContent => _counter > 0 ? $"{_counter}" : T("GetCaptcha");
-    private bool ActionDisabled => !_valid || _counter > 0;
-
-    private string? TargetCaptcha { get; set; }
-
     internal void ResetFields()
     {
-        _counter = 0;
-        _isDirty = false;
-        _valid = false;
-        TargetCaptcha = null;
-
         _form.Reset();
     }
 
     private async Task HandleOnValidSubmit()
     {
-        if (!_valid) return;
-
-        if (Captcha != null && Captcha != TargetCaptcha)
+        if (!_form.Validate())
         {
-            await PopupService.ToastErrorAsync("验证码不正确");
             return;
         }
-
-        if (OnOk.HasDelegate)
+        try
         {
-            await OnOk.InvokeAsync(PhoneNumber);
+            _reseting = true;
+            await AuthClient.UserService.ResetPasswordByPhoneAsync(new ResetPasswordByPhoneModel
+            {
+                PhoneNumber = _resetPasswordByPhoneModel.PhoneNumber,
+                Code = _resetPasswordByPhoneModel.Code,
+                Password = _resetPasswordByPhoneModel.Password,
+                ConfirmPassword = _resetPasswordByPhoneModel.ConfirmPassword
+            });
+            await PopupService.AlertAsync(T("OperationSuccessfulMessage"), AlertTypes.Success);
+        }
+        catch (Exception e)
+        {
+            await PopupService.AlertAsync(e.Message, AlertTypes.Error);
+        }
+        finally
+        {
+            _reseting = false;
         }
     }
 
-    private async Task SendCaptcha()
+    private async Task<bool> SendCaptcha()
     {
-        _valid = IsValid(PhoneNumber);
-        if (!_valid) return;
-
-        _isDirty = true;
-
-        // TODO: send captcha
-        await Task.Delay(1000);
-
-        TargetCaptcha = await Task.FromResult("123456");
-
-        if (string.IsNullOrWhiteSpace(TargetCaptcha))
+        var field = _form.EditContext.Field(nameof(_resetPasswordByPhoneModel.PhoneNumber));
+        _form.EditContext.NotifyFieldChanged(field);
+        var result = _form.EditContext.GetValidationMessages(field);
+        if (!result.Any())
         {
-            _isDirty = false;
-
-            await PopupService.AlertAsync("验证码发送失败，请稍后重试。", AlertTypes.Error);
+            await AuthClient.UserService.SendMsgCodeAsync(new SendMsgCodeModel
+            {
+                SendMsgCodeType = SendMsgCodeTypes.ForgotPassword,
+                PhoneNumber = _resetPasswordByPhoneModel.PhoneNumber
+            });
         }
-        else
-        {
-            StartCountdownTimer();
-
-            _isDirty = true;
-
-            await PopupService.AlertAsync("验证码发送成功，请查收。", AlertTypes.Success);
-        }
+        return !result.Any();
     }
 
-    private void ValidatePhoneNumber(string val)
+    class ResetPasswordByPhoneModelValidator : AbstractValidator<ResetPasswordByPhoneModel>
     {
-        // TODO: 验证输入的phoneNumber不是旧的phoneNumber
-
-        // TODO: 正则表达式是否不太严谨，或者有其他需求，需要Auth同学确认
-        _valid = IsValid(val);
-    }
-
-    private static bool IsValid(string? val)
-    {
-        if (val is null)
-        {
-            return false;
-        }
-
-        var match = Regex.Match(val, @"^[1]([3-9])[0-9]{9}$");
-        return match.Success;
-    }
-
-    private void StartCountdownTimer()
-    {
-        _counter = 60;
-        if (_timer is null)
-        {
-            _timer = new System.Timers.Timer(1000);
-            _timer.Elapsed += CountdownTimer;
-        }
-
-        _timer.Enabled = true;
-    }
-
-    private void CountdownTimer(object? sender, ElapsedEventArgs e)
-    {
-        if (_counter > 0)
-        {
-            _counter -= 1;
-        }
-        else
-        {
-            _timer!.Enabled = false;
-        }
-
-        InvokeAsync(StateHasChanged);
-    }
-
-    class PhoneNumberValidator : AbstractValidator<PhoneNumberValidateForm>
-    {
-        public PhoneNumberValidator(I18n i18n)
+        public ResetPasswordByPhoneModelValidator(I18n i18n)
         {
             RuleFor(c => c.PhoneNumber)
                 .NotEmpty()
-                .Must(IsValid).WithMessage(i18n.T("IncorrectFormat"))
+                .Matches(@"^\s{0}$|^((\+86)|(86))?(1[3-9][0-9])\d{8}$").WithMessage(i18n.T("IncorrectFormat"))
                 .WithName(i18n.T("PhoneNumber"));
-            RuleFor(c => c.Captcha)
+            RuleFor(c => c.Code)
                 .NotEmpty()
                 .WithName(i18n.T("Captcha"));
+            RuleFor(m => m.Password)
+                .NotEmpty().WithMessage(i18n.T("PasswordRequired")).WithName(i18n.T("Password"))
+                .Matches(@"^\s{0}$|^\S*(?=\S{6,})(?=\S*\d)(?=\S*[A-Za-z])\S*$");
+            RuleFor(m => m.ConfirmPassword)
+                .NotEmpty()
+                .Equal(u => u.Password).WithMessage(i18n.T("FailToConfirmNewPassword"))
+                .WithName(i18n.T("ConfirmNewPassword"));
         }
-    }
-
-    public void Dispose()
-    {
-        _timer?.Dispose();
-        _timer = null;
     }
 }

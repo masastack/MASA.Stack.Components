@@ -32,7 +32,7 @@
         public bool InPreview { get; set; }
 
         [Parameter]
-        public List<FavoriteNav>? FavoriteNavs { get; set; }
+        public List<FavoriteNav> FavoriteNavs { get; set; } = new();
 
         [Parameter]
         public List<CategoryAppNav> Value
@@ -72,7 +72,6 @@
             base.OnParametersSet();
 
             Categories ??= new();
-            FavoriteNavs ??= new();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

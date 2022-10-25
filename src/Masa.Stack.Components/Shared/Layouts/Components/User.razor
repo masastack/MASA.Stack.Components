@@ -37,7 +37,7 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            @if (!string.IsNullOrWhiteSpace(Layout.TeamRouteFormat))
+            @if (MasaUser.IsStaff)
             {
                 <MDivider></MDivider>
                 <MListGroup @bind-Value="_showChangeTeam" NoAction Style="">
@@ -55,10 +55,10 @@
                         <MListItemGroup Value="_currentTeamId" ValueChanged="CurrentTeamChanged">
                             @if (_teams.Count > 5)
                             {
-                                <SSearch @bind-Value="@_teamSearchKey"/>
+                                <SSearch @bind-Value="@_teamSearchKey" />
                             }
-                            <MVirtualScroll Items="_teams.Where(t=>t.Name.Contains(_teamSearchKey)).ToList()" 
-                                ItemSize=48 Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))>
+                            <MVirtualScroll Items="_teams.Where(t=>t.Name.Contains(_teamSearchKey)).ToList()"
+                                        ItemSize=48 Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))>
                                 <ItemContent>
                                     <MListItem Value="@context.Id.ToString()">
                                         <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
@@ -85,7 +85,6 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-
         </MList>
     </ChildContent>
 </MMenu>

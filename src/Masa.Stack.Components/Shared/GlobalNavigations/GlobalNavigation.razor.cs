@@ -46,7 +46,7 @@ public partial class GlobalNavigation : MasaComponentBase
             {
                 Code = ag.Key,
                 Name = ag.Key,
-                Apps = ag.Select(a => a.Adapt<App>(config)).ToList()
+                Apps = ag.Select(a => a.Adapt<App>(config)).Where(a => a.Navs.Any()).ToList()
             }).ToList();
 
             return categories;
@@ -153,21 +153,6 @@ public partial class GlobalNavigation : MasaComponentBase
             FavoriteNavs.Add(favoriteNav);
             nav.IsFavorite = true;
         }
-    }
-
-    private void VisitNav(Nav nav)
-    {
-        var item = RecentVisits.FirstOrDefault(r => r.name == nav.Name && r.url == nav.Url);
-
-        if (item.name is not null)
-        {
-            RecentVisits.Remove(item);
-        }
-
-        RecentVisits.Insert(0, (nav.Name, nav.Url!));
-
-        // TODO: add recentVisits
-        _ = Task.Delay(500);
     }
 
     public void InvokeStateHasChanged() => this.StateHasChanged();

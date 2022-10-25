@@ -6,6 +6,8 @@ public partial class Category
 
     public string Name { get; set; }
 
+    public bool Hiden { get; set; }
+
     public List<App> Apps { get; set; } = new();
 
     public Category()

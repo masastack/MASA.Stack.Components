@@ -1,8 +1,12 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
 @inject DynamicTranslateProvider TranslateProvider
 
+@{
+    var _categories = Categories?.Where(c => !c.Hiden).ToList() ?? new List<Category>();
+}
+
 <div class="global-nav-content__main @Class" style="@Style">
-    @foreach (var category in Categories!)
+    @foreach (var category in _categories!)
     {
         category.BindValues ??= CategoryCodes.TryGetValue(category.Code, out var values)
             ? values
@@ -19,7 +23,7 @@
                               CheckStrictly="CheckStrictly"
                               Checkable="Checkable"
                               InPreview="InPreview"
-                              FavoriteNavs="@FavoriteNavs" />
+                          FavoriteNavs="@FavoriteNavs" />
             </ExpansionCategory>
         </CascadingValue>
     }
@@ -28,9 +32,9 @@
 <div class="global-nav-content__side @SideClass" style="@SideStyle">
     <MNavigationDrawer Floating Right Width="256" Class="toc">
         <ul>
-            @for (var i = 0; i < Categories.Count; i++)
+            @for (var i = 0; i < _categories.Count(); i++)
             {
-                var category = Categories[i];
+                var category = _categories[i];
 
                 <li class="masa-text-2-2 pl-3 py-2"
                     @onclick="@(() => ScrollTo(category.TagId(TagIdPrefix), ".global-nav-content__main"))">

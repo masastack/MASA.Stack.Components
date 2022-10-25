@@ -18,7 +18,30 @@ public partial class ExpansionApp
     public string CategoryCode { get; set; } = null!;
 
     [Parameter, EditorRequired]
-    public List<FavoriteNav>? FavoriteNavs { get; set; }
+    public List<FavoriteNav> FavoriteNavs
+    {
+        get
+        {
+            return _favoriteNavs;
+        }
+        set
+        {
+            _favoriteNavs = value;
+            UpdateFavorite(App.Navs);
+
+            void UpdateFavorite(List<Nav> navs)
+            {
+                navs.ForEach(nav =>
+                {
+                    nav.IsFavorite = _favoriteNavs.FirstOrDefault(fn => fn.Nav.Code == nav.Code)?.Nav.IsFavorite ?? false;
+                    if (nav.Children.Any())
+                    {
+                        UpdateFavorite(nav.Children);
+                    }
+                });
+            }
+        }
+    }
 
     [Parameter]
     public bool Checkable { get; set; }
@@ -32,6 +55,7 @@ public partial class ExpansionApp
     public List<ExpansionAppItem> ExpansionAppItems { get; set; } = new();
 
     private List<StringNumber> _values = new();
+    private List<FavoriteNav> _favoriteNavs = new();
 
     public bool AppChecked => ExpansionAppItems.All(item => item.IsChecked);
 
@@ -129,36 +153,16 @@ public partial class ExpansionApp
         GlobalNavigation?.InvokeStateHasChanged();
     }
 
-    private List<Nav> FlattenNavs(List<Nav> tree, bool excludeNavHasChildren = false)
-    {
-        var res = new List<Nav>();
-
-        foreach (var nav in tree)
-        {
-            if (!(nav.HasChildren && excludeNavHasChildren))
-            {
-                res.Add(nav);
-            }
-
-            if (nav.HasChildren)
-            {
-                res.AddRange(FlattenNavs(nav.Children, excludeNavHasChildren));
-            }
-
-            if (nav.HasActions)
-            {
-                nav.Actions.ForEach(a => a.ParentCode ??= nav.Code);
-                res.AddRange(nav.Actions);
-            }
-        }
-
-        return res;
-    }
-
     private bool Filter(Nav nav)
     {
-        if (!InPreview) return true;
-        return InPreview && (ExpansionWrapper.Value.Any(value => value.NavModel == nav) || nav.Children.Any(Filter));
+        if (InPreview)
+        {
+            return ExpansionWrapper.Value.Any(value => value.NavModel == nav) || nav.Children.Any(Filter);
+        }
+        else
+        {
+            return !nav.Hiden;
+        }
     }
 
     public void Register(ExpansionAppItem expansionAppItem)
