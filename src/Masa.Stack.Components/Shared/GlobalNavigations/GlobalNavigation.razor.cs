@@ -155,20 +155,5 @@ public partial class GlobalNavigation : MasaComponentBase
         }
     }
 
-    private void VisitNav(Nav nav)
-    {
-        var item = RecentVisits.FirstOrDefault(r => r.name == nav.Name && r.url == nav.Url);
-
-        if (item.name is not null)
-        {
-            RecentVisits.Remove(item);
-        }
-
-        RecentVisits.Insert(0, (nav.Name, nav.Url!));
-
-        // TODO: add recentVisits
-        _ = Task.Delay(500);
-    }
-
     public void InvokeStateHasChanged() => this.StateHasChanged();
 }

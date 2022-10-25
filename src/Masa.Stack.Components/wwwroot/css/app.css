@@ -665,19 +665,6 @@ masa-stack-components .table-border-none.dense thead th {
 }
 
 /*
-    GlobalNavigation
-*/
-
-.m-list-item-group .fill-hover:first-child {
-    border-radius: 20px;
-}
-
-.m-list-item-group .fill-hover:last-child {
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-/*
     avatar
 */
 
@@ -689,5 +676,19 @@ masa-stack-components .table-border-none.dense thead th {
 }
 
 .masa-stack-components .m-dialog:not(.m-dialog--fullscreen) {
+    border-radius: 20px !important;
+}
+
+.masa-main .m-card {
+    box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 20%), 0px 0px 0px 0px rgb(0 0 0 / 14%), 0px 0px 0px 0px rgb(0 0 0 / 12%) !important;
+    border-radius: 20px !important;
+}
+
+    .masa-main .m-card.line {
+        border-radius: 10px !important;
+    }
+
+.m-sheet-dialog .m-card {
+    box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 20%), 0px 0px 0px 0px rgb(0 0 0 / 14%), 0px 0px 0px 0px rgb(0 0 0 / 12%) !important;
     border-radius: 20px !important;
 }

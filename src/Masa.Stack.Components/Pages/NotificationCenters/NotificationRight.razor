@@ -79,9 +79,8 @@
                 </MMenu>
             </div>
         </MCardTitle>
-        <MCardText Class="mt-6 overflow-y-auto">
-            <MList Subheader Height=0
-                   TwoLine>
+        <MCardText Class="mt-6 overflow-y-auto full-height">
+            <MList Subheader Height=0 TwoLine>
                 @foreach (var item in _entities.Result)
                 {
                     <MListItem Link OnClick="()=>HandleOnClick(item)">
