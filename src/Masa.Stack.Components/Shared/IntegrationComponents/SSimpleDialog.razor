@@ -15,19 +15,21 @@
             </MButton>
         </div>
     }
-    <div class="d-flex flex-column justify-center align-center my-@Size @HeaderClass">
-        @if (!string.IsNullOrWhiteSpace(IconOfTitle))
-        {
-            <span class="primary d-flex justify-center align-center mb-3"
-                  style="height: 52px;width: 52px;border-radius: 50%;border: 4px solid #ECE8FF !important;">
-                <MIcon Color="white">@IconOfTitle</MIcon>
+    @if (!string.IsNullOrWhiteSpace(IconOfTitle) || !string.IsNullOrWhiteSpace(Title))
+    {
+        <div class="d-flex flex-column justify-center align-center my-@Size @HeaderClass">
+            @if (!string.IsNullOrWhiteSpace(IconOfTitle))
+            {
+                <span class="primary d-flex justify-center align-center mb-3"
+              style="height: 52px;width: 52px;border-radius: 50%;border: 4px solid #ECE8FF !important;">
+                    <MIcon Color="white">@IconOfTitle</MIcon>
+                </span>
+            }
+            <span class="h6 emphasis2--text">
+                @Title
             </span>
-        }
-
-        <span class="h6 emphasis2--text">
-            @Title
-        </span>
-    </div>
+        </div>
+    }
 
     @if (ChildContent != default)
     {
