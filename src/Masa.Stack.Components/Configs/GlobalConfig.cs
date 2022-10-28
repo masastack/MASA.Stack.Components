@@ -6,7 +6,6 @@ public class GlobalConfig : IScopedDependency
     private const string MiniCookieKey = "GlobalConfig_NavigationMini";
     private const string FavoriteCookieKey = "GlobalConfig_Favorite";
     private const string MenusKey = "GlobalConfig_Menus";
-    private const string CurrentTeamKey = "GlobalConfig_CurrentTeam";
 
     private readonly CookieStorage? _cookieStorage;
     private readonly I18n? _i18N;
@@ -62,7 +61,6 @@ public class GlobalConfig : IScopedDependency
             {
                 _currentTeamId = value;
                 OnCurrentTeamChanged?.Invoke(value);
-                _cookieStorage?.SetItemAsync(CurrentTeamKey, value);
             }
         }
     }
@@ -112,7 +110,6 @@ public class GlobalConfig : IScopedDependency
         _dark = Convert.ToBoolean(cookies[DarkCookieKey]);
         _mini = !cookies.ContainsKey(MiniCookieKey) || Convert.ToBoolean(cookies[MiniCookieKey]);
         _favorite = cookies[FavoriteCookieKey];
-        Guid.TryParse(cookies[CurrentTeamKey], out _currentTeamId);
         if (cookies.TryGetValue(MenusKey, out string? value) && value != null)
         {
             _menus = JsonSerializer.Deserialize<List<Nav>>(value) ?? new();
