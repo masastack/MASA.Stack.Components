@@ -28,7 +28,7 @@ public static class ServiceCollectionExtensions
        UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
     {
         services.AddAutoInject();
-        services.AddSingleton<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+        services.Replace(ServiceDescriptor.Scoped<AuthenticationStateProvider, DefaultServerAuthenticationStateProvider>());       
         services.AddMasaIdentity(options =>
         {
             options.UserName = "name";
