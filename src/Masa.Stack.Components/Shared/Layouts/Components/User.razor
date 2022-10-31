@@ -1,12 +1,14 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 @using Masa.BuildingBlocks.StackSdks.Auth.Contracts
 @using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts
+@using Masa.Stack.Components.Infrastructure.Identity
 @using Microsoft.AspNetCore.Identity
 @inherits MasaComponentBase
+@implements IAsyncDisposable
 @inject IAuthClient AuthClient
 @inject MasaUser MasaUser
 @inject GlobalConfig GlobalConfig
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JS
 
 <MMenu @bind-Value="@_menuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
        ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
@@ -102,6 +104,7 @@
     bool _menuVisible = false, _showChangeTeam;
     StringNumber _currentTeamId = string.Empty;
     List<TeamModel> _teams = new();
+    IJSObjectReference _module;
 
     public TeamModel CurrentTeam => _teams.FirstOrDefault(t => t.Id.ToString() == _currentTeamId) ?? new();
 
@@ -109,6 +112,8 @@
     {
         if (firstRender)
         {
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Stack.Components/js/http.js");
+
             var user = await AuthClient.UserService.GetCurrentUserAsync();
             if (!string.IsNullOrWhiteSpace(user.Avatar))
             {
@@ -134,10 +139,18 @@
     {
         var gTeamId = Guid.Parse(teamId.AsT0);
         await AuthClient.UserService.SetCurrentTeamAsync(gTeamId);
-        await AuthenticationStateProvider.UpsertClaimAsync(IdentityClaimConsts.CURRENT_TEAM, teamId.ToString());
+        await _module.InvokeVoidAsync("upsertClaim", IdentityClaimConsts.CURRENT_TEAM, teamId.AsT0);
         GlobalConfig.CurrentTeamId = gTeamId;
         _currentTeamId = teamId;
         _showChangeTeam = false;
         StateHasChanged();
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (_module is not null)
+        {
+            await _module.DisposeAsync();
+        }
     }
 }
