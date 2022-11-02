@@ -27,7 +27,15 @@
         public List<FavoriteNav> FavoriteNavs { get; set; } = new();
 
         [Parameter]
-        public List<CategoryAppNav> Value { get; set; } = new();
+        public List<CategoryAppNav> Value
+        {
+            get => _value;
+            set
+            {
+                _allValue = value;
+                _value = value;
+            }
+        }
 
         [Parameter]
         public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
@@ -36,6 +44,8 @@
         public string? TagIdPrefix { get; set; }
 
         private DotNetObjectReference<ExpansionWrapper>? _objRef;
+        private List<CategoryAppNav> _value = new();
+        private List<CategoryAppNav> _allValue = new();
 
         private Dictionary<string, List<StringNumber>> CategoryCodes
         {
@@ -69,7 +79,9 @@
 
         internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
         {
-            await UpdateValue(value);
+            _allValue = _allValue.Where(v => v.App != code).ToList();
+            _allValue.AddRange(value);
+            await UpdateValue(_allValue);
         }
 
         private async Task ScrollTo(string tagId, string insideSelector)
