@@ -1,17 +1,9 @@
 ﻿namespace Masa.Stack.Components.GlobalNavigations
 {
-    public partial class ExpansionWrapper : IDisposable
+    public partial class ExpansionWrapper : BDomComponentBase, IDisposable
     {
-        private List<CategoryAppNav> _value = new();
-
         [Inject]
         private IJSRuntime JsRuntime { get; set; } = null!;
-
-        [Parameter]
-        public string Style { get; set; } = "";
-
-        [Parameter]
-        public string Class { get; set; } = "";
 
         [Parameter]
         public string SideStyle { get; set; } = "";
@@ -35,15 +27,7 @@
         public List<FavoriteNav> FavoriteNavs { get; set; } = new();
 
         [Parameter]
-        public List<CategoryAppNav> Value
-        {
-            get => _value;
-            set
-            {
-                _allValue = value;
-                _value = value;
-            }
-        }
+        public List<CategoryAppNav> Value { get; set; } = new();
 
         [Parameter]
         public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
@@ -51,18 +35,14 @@
         [Parameter]
         public string? TagIdPrefix { get; set; }
 
-        private int _activeCategoryIndex;
         private DotNetObjectReference<ExpansionWrapper>? _objRef;
-        private List<CategoryAppNav>? _allValue;
 
         private Dictionary<string, List<StringNumber>> CategoryCodes
         {
             get
             {
                 var codes = new Dictionary<string, List<StringNumber>>();
-
                 Categories!.ForEach(category => { codes.Add(category.Code, category.Apps.Select(app => (StringNumber)app.Code).ToList()); });
-
                 return codes;
             }
         }
@@ -70,7 +50,6 @@
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-
             Categories ??= new();
         }
 
@@ -81,25 +60,21 @@
                 _objRef = DotNetObjectReference.Create(this);
                 await JsRuntime.InvokeVoidAsync("MasaStackComponents.listenScroll", ".global-nav-content__main", ".category", _objRef);
             }
+
+            await NextTickWhile(async () =>
+            {
+                await JsRuntime.InvokeVoidAsync("MasaStackComponents.setAppBorder");
+            }, () => Categories == null || !Categories.Any());
         }
 
         internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
         {
-            _allValue = _allValue.Where(v => v.App != code).ToList();
-            _allValue.AddRange(value);
-            await UpdateValue(_allValue);
+            await UpdateValue(value);
         }
 
         private async Task ScrollTo(string tagId, string insideSelector)
         {
             await JsRuntime.InvokeVoidAsync("MasaStackComponents.scrollTo", $"#{tagId}", insideSelector);
-        }
-
-        [JSInvokable]
-        public void ComputeActiveCategory(int activeIndex)
-        {
-            _activeCategoryIndex = activeIndex;
-            StateHasChanged();
         }
 
         private async Task UpdateValue(List<CategoryAppNav> value)
@@ -116,9 +91,10 @@
             }
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             _objRef?.Dispose();
+            base.Dispose();
         }
     }
 }

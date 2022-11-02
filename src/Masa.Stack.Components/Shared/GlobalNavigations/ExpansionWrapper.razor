@@ -1,4 +1,5 @@
-﻿@namespace Masa.Stack.Components.GlobalNavigations
+﻿@inherits BDomComponentBase
+@namespace Masa.Stack.Components.GlobalNavigations
 @inject DynamicTranslateProvider TranslateProvider
 
 @{
@@ -9,23 +10,23 @@
     @foreach (var category in _categories!)
     {
         category.BindValues ??= CategoryCodes.TryGetValue(category.Code, out var values)
-            ? values
-            : new List<StringNumber>();
-
-        <CascadingValue Value="this" IsFixed>
-            <ExpansionCategory Category="category"
-                               Checkable="Checkable"
-                               CheckStrictly="CheckStrictly"
-                               InPreview="InPreview"
-                               Context="app">
-                <ExpansionApp App="app"
-                              CategoryCode="@category.Code"
-                              CheckStrictly="CheckStrictly"
-                              Checkable="Checkable"
-                              InPreview="InPreview"
+        ? values
+        : new List<StringNumber>();
+        <div class="masa-text-1-2__title title_category py-4" id="@category.TagId(TagIdPrefix)">@category.Name</div>
+        <div class="apps">
+            @foreach (var app in category.Apps)
+            {
+                <CascadingValue Value="this" IsFixed>
+                    <ExpansionApp App="app"
+                          CategoryCode="@category.Code"
+                          CheckStrictly="CheckStrictly"
+                          Checkable="Checkable"
+                          InPreview="InPreview"
                           FavoriteNavs="@FavoriteNavs" />
-            </ExpansionCategory>
-        </CascadingValue>
+                </CascadingValue>
+            }
+        </div>
+
     }
 </div>
 
@@ -36,12 +37,9 @@
             {
                 var category = _categories[i];
 
-                <li class="masa-text-2-2 pl-3 py-2"
-                    @onclick="@(() => ScrollTo(category.TagId(TagIdPrefix), ".global-nav-content__main"))">
-                    @if (i == _activeCategoryIndex)
-                    {
-                        <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>
-                    }
+                <li class="masa-text-2-2 pl-3 py-2 category_side" id="@($"{category.TagId(TagIdPrefix)}_side")"
+                @onclick="@(() => ScrollTo(category.TagId(TagIdPrefix), ".global-nav-content__main"))">
+                    <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>
                     <span>
                         @TranslateProvider.DT(category.Name)
                     </span>

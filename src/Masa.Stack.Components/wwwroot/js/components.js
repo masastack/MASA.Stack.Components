@@ -21,7 +21,37 @@ window.MasaStackComponents.scrollTo = (target, inside = 'window') => {
 
         let top = targetRect.top + scrollTop - insideRect.top;
 
-        insideElement.scrollTo({top, left: 0, behavior: "smooth"});
+        insideElement.scrollTo({ top, left: 0, behavior: "smooth" });
+
+        targetElement.parentNode.childNodes.forEach((element) => {
+            if (element.nodeType!=1) {
+                return;
+            }
+            if (targetElement != element) {
+                element.classList.remove('title_category_active')
+            } else {
+                if (!element.classList.contains('title_category_active')) {
+                    element.classList.add('title_category_active')
+                }
+            }
+        });
+
+        var sideId = target +"_side";
+        const sideElement = document.querySelector(sideId);
+        console.log(sideElement);
+        sideElement.parentNode.childNodes.forEach((element) => {
+            if (element.nodeType != 1) {
+                return;
+            }
+            if (sideElement != element) {
+                element.classList.remove('category_side_active')
+            } else {
+                if (!element.classList.contains('category_side_active')) {
+                    element.classList.add('category_side_active')
+                }
+            }
+        });
+
     }
 }
 
@@ -80,8 +110,6 @@ window.MasaStackComponents.listenScroll = (selector, childSelectors, dotNet) => 
         } else if (index > 0) {
             index--;
         }
-
-        dotNet.invokeMethodAsync("ComputeActiveCategory", index)
     }, 100)
 
     el.addEventListener("scroll", function (e) {
@@ -112,6 +140,31 @@ window.MasaStackComponents.intersectionObserver = (selector, invoker) => {
 
 window.MasaStackComponents.getTimezoneOffset = function() {
     return new Date().getTimezoneOffset();
+}
+
+window.MasaStackComponents.setAppBorder = function () {
+    var navContent = document.getElementsByClassName('global-nav-content__main')[0];
+    var apps = navContent.getElementsByClassName("app");
+    var topPosition = 9999;
+    var bottomRect = -9999;
+    apps.forEach((app) => {
+        if (app.offsetTop < topPosition) {
+            topPosition = app.offsetTop;
+        }
+        if (app.getBoundingClientRect().bottom > bottomRect) {
+            bottomRect = app.getBoundingClientRect().bottom;
+        }
+    });
+    apps.forEach((app) => {
+        if (app.offsetTop != 0 && app.offsetTop <= topPosition) {
+            app.style.borderTopLeftRadius = "20px";
+            app.style.borderTopRightRadius = "20px";
+        }
+        if (app.getBoundingClientRect().bottom != 0 && app.getBoundingClientRect().bottom >= bottomRect) {
+            app.style.borderBottomLeftRadius = "20px";
+            app.style.borderBottomRightRadius = "20px";
+        }
+    });
 }
 
 function debounce(fn, wait) {
