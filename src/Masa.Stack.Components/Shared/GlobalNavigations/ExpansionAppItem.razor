@@ -14,7 +14,7 @@
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="font-weight: inherit">@TranslateProvider.DT(Data.Name)</MListItemTitle>
+                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@TranslateProvider.DT(Data.Name)</MListItemTitle>
                     </MListItemContent>
 
                     @if (context.Hover)
@@ -69,7 +69,7 @@
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="font-weight: inherit">@Data.Name</MListItemTitle>
+                        <MListItemTitle Style="@(Data.IsChecked?"color: #323D6F;":"")">@Data.Name</MListItemTitle>
                     </MListItemContent>
 
                     @if (Checkable)

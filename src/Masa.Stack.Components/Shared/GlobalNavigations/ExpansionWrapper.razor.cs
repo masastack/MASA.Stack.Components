@@ -1,17 +1,9 @@
 ﻿namespace Masa.Stack.Components.GlobalNavigations
 {
-    public partial class ExpansionWrapper : IDisposable
+    public partial class ExpansionWrapper : BDomComponentBase, IDisposable
     {
-        private List<CategoryAppNav> _value = new();
-
         [Inject]
         private IJSRuntime JsRuntime { get; set; } = null!;
-
-        [Parameter]
-        public string Style { get; set; } = "";
-
-        [Parameter]
-        public string Class { get; set; } = "";
 
         [Parameter]
         public string SideStyle { get; set; } = "";
@@ -51,18 +43,16 @@
         [Parameter]
         public string? TagIdPrefix { get; set; }
 
-        private int _activeCategoryIndex;
         private DotNetObjectReference<ExpansionWrapper>? _objRef;
-        private List<CategoryAppNav>? _allValue;
+        private List<CategoryAppNav> _value = new();
+        private List<CategoryAppNav> _allValue = new();
 
         private Dictionary<string, List<StringNumber>> CategoryCodes
         {
             get
             {
                 var codes = new Dictionary<string, List<StringNumber>>();
-
                 Categories!.ForEach(category => { codes.Add(category.Code, category.Apps.Select(app => (StringNumber)app.Code).ToList()); });
-
                 return codes;
             }
         }
@@ -70,7 +60,6 @@
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-
             Categories ??= new();
         }
 
@@ -81,6 +70,11 @@
                 _objRef = DotNetObjectReference.Create(this);
                 await JsRuntime.InvokeVoidAsync("MasaStackComponents.listenScroll", ".global-nav-content__main", ".category", _objRef);
             }
+
+            await NextTickWhile(async () =>
+            {
+                await JsRuntime.InvokeVoidAsync("MasaStackComponents.setAppBorder");
+            }, () => Categories == null || !Categories.Any());
         }
 
         internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
@@ -93,13 +87,6 @@
         private async Task ScrollTo(string tagId, string insideSelector)
         {
             await JsRuntime.InvokeVoidAsync("MasaStackComponents.scrollTo", $"#{tagId}", insideSelector);
-        }
-
-        [JSInvokable]
-        public void ComputeActiveCategory(int activeIndex)
-        {
-            _activeCategoryIndex = activeIndex;
-            StateHasChanged();
         }
 
         private async Task UpdateValue(List<CategoryAppNav> value)
@@ -116,9 +103,10 @@
             }
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             _objRef?.Dispose();
+            base.Dispose();
         }
     }
 }

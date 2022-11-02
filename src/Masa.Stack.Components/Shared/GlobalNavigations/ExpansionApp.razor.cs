@@ -6,9 +6,6 @@ public partial class ExpansionApp
     public ExpansionWrapper ExpansionWrapper { get; set; } = default!;
 
     [CascadingParameter]
-    public ExpansionCategory ExpansionCategory { get; set; } = default!;
-
-    [CascadingParameter]
     public GlobalNavigation? GlobalNavigation { get; set; }
 
     [Parameter, EditorRequired]
@@ -33,7 +30,7 @@ public partial class ExpansionApp
             {
                 navs.ForEach(nav =>
                 {
-                    nav.IsFavorite = _favoriteNavs.FirstOrDefault(fn => fn.Nav.Code == nav.Code)?.Nav.IsFavorite ?? false;
+                    nav.IsFavorite = _favoriteNavs?.FirstOrDefault(fn => fn.Nav.Code == nav.Code)?.Nav.IsFavorite ?? false;
                     if (nav.Children.Any())
                     {
                         UpdateFavorite(nav.Children);
@@ -66,11 +63,6 @@ public partial class ExpansionApp
     private bool IsCheckable => Checkable && !InPreview;
 
     internal readonly string ActionCodeFormat = "nav#{0}__action#{1}";
-
-    protected override void OnInitialized()
-    {
-        ExpansionCategory.Register(this);
-    }
 
     private async Task AppCheckedChanged(bool v)
     {

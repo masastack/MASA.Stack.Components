@@ -1,34 +1,35 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
-@inject DynamicTranslateProvider TranslateProvider
+@inherits MasaComponentBase
 
-<MExpansionPanel Class="app"
-                 Id="@App.TagId(CategoryCode, ExpansionWrapper?.TagIdPrefix)"
-                 Value="@App.Code"
-                 Readonly="InPreview">
-    <MExpansionPanelHeader Class="masa-text-highlight-1 mb-0">
-        @if (Checkable)
-        {
-            if ((AppChecked && InPreview) || !InPreview)
+<div Class="app"
+     Id="@App.TagId(CategoryCode, ExpansionWrapper?.TagIdPrefix)"
+     Value="@App.Code"
+     Readonly="InPreview">
+    <MHover Disabled="!Checkable" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">
+        <div @attributes="@context.Attrs">
+            <span class="masa-text-2-2">
+                @TranslateProvider.DT(App.Name)
+            </span>
+            @if (Checkable && context.Hover)
             {
-                <MSimpleCheckbox Color="primary"
-                         Ripple="false"
-                         Value="@AppChecked"
-                         ValueChanged="@AppCheckedChanged"
-                         Class="masa-icon-size-20"
-                         Style="flex: none;margin-right: -4px;"
-                         Readonly="InPreview">
-                </MSimpleCheckbox>
+                if ((AppChecked && InPreview) || !InPreview)
+                {
+                    <div class="d-flex">
+                        <span class="masa-text-3-1">@T("SelectAll")</span>
+                        <MSimpleCheckbox Color="primary"
+                                 Ripple="false"
+                                 Value="@AppChecked"
+                                 ValueChanged="@AppCheckedChanged"
+                                 Class="masa-icon-size-20"
+                                 Style="flex: none;margin-right: -4px;"
+                                 Readonly="InPreview">
+                        </MSimpleCheckbox>
+                    </div>
+                }
             }
-        }
-        <span style="flex:none">
-            @TranslateProvider.DT(App.Name)
-        </span>
-        @if (!context && App.RoutableNavsCount > 0)
-        {
-            <span class="masa-text-3-1 ml-1">@App.RoutableNavsCount</span>
-        }
-    </MExpansionPanelHeader>
-    <MExpansionPanelContent Class="mt-4">
+        </div>
+    </MHover>
+    <div Class="mt-4">
         @foreach (var nav in App.Navs.Where(nav => Filter(nav)))
         {
             <MCard @key="nav" Class="nav" Outlined>
@@ -41,6 +42,10 @@
                                           InPreview="InPreview"
                                           ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)">
                             </ExpansionAppItem>
+                            @if (nav.Children.Any())
+                            {
+                                <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
+                            }
                             @if (nav.HasChildren)
                             {
                                 foreach (var subNav in nav.Children.Where(subNav => Filter(subNav)))
@@ -57,10 +62,10 @@
                                         @foreach (var action in subNav.Actions!.Where(action => Filter(action)))
                                         {
                                             <ExpansionAppItem Data="@action"
-                                          NavCode="@subNav.Code"
-                                          Checkable="@Checkable"
-                                          InPreview="InPreview"
-                                          Level="3">
+                                                NavCode="@subNav.Code"
+                                                Checkable="@Checkable"
+                                                InPreview="InPreview"
+                                                Level="3">
                                             </ExpansionAppItem>
                                         }
                                     }
@@ -83,5 +88,5 @@
                 </MList>
             </MCard>
         }
-    </MExpansionPanelContent>
-</MExpansionPanel>
+    </div>
+</div>
