@@ -40,7 +40,7 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.Account), IdentityClaimConsts.ACCOUNT);
         });
         services.AddScoped((serviceProvider) =>
-        {
+         {
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
