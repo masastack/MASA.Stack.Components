@@ -11,24 +11,20 @@ public partial class GlobalNavigation : MasaComponentBase
     [Parameter]
     public Func<string, Task>? OnFavoriteRemove { get; set; }
 
-    private bool _visible;
-
-    private List<FavoriteNav> FavoriteNavs { get; set; } = new();
-    private List<(string name, string url)> RecentVisits { get; set; } = new();
-    private List<Category> Categories { get; set; } = new();
+    string _searchMenu = string.Empty;
+    bool _visible;
+    List<FavoriteNav> _favoriteNavs = new();
+    List<(string name, string url)> _recentVisits = new();
+    List<Category> _categories { get; set; } = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            Categories = await FetchCategories();
-
+            _categories = await FetchCategories();
             var favorites = await FetchFavorites();
-
-            FavoriteNavs = GetFavoriteNavs(favorites, Categories);
-
-            RecentVisits = await GetRecentVisits();
-
+            _favoriteNavs = GetFavoriteNavs(favorites, _categories);
+            _recentVisits = await GetRecentVisits();
             StateHasChanged();
         }
     }
@@ -114,6 +110,35 @@ public partial class GlobalNavigation : MasaComponentBase
         }
     }
 
+    private void EnterSearch()
+    {
+        FilterCategory(_searchMenu);
+    }
+
+    private void FilterCategory(string searchMenu)
+    {
+        foreach (var category in _categories)
+        {
+            foreach (var app in category.Apps)
+            {
+                Search(searchMenu, app.Navs);
+            }
+        }
+
+        void Search(string searchMenu, List<Nav> items)
+        {
+            foreach (var item in items)
+            {
+                var displayName = DT(item.Name);
+                item.Hiden = !displayName.Contains(searchMenu);
+                if (item.Children.Any())
+                {
+                    Search(searchMenu, item.Children);
+                }
+            }
+        }
+    }
+
     private async Task<List<(string name, string url)>> GetRecentVisits()
     {
         var visitedList = await AuthClient.UserService.GetVisitedListAsync();
@@ -133,7 +158,7 @@ public partial class GlobalNavigation : MasaComponentBase
     private async Task ToggleFavorite(string categoryCode, string appCode, Nav nav)
     {
         var favoriteNav = new FavoriteNav(categoryCode, appCode, nav);
-        var item = FavoriteNavs.FirstOrDefault(f => f.Id == favoriteNav.Id);
+        var item = _favoriteNavs.FirstOrDefault(f => f.Id == favoriteNav.Id);
         if (item is not null)
         {
             if (OnFavoriteRemove is not null)
@@ -141,7 +166,7 @@ public partial class GlobalNavigation : MasaComponentBase
                 await OnFavoriteRemove.Invoke(item.Nav.Code);
             }
 
-            FavoriteNavs.Remove(item);
+            _favoriteNavs.Remove(item);
         }
         else
         {
@@ -150,7 +175,7 @@ public partial class GlobalNavigation : MasaComponentBase
                 await OnFavoriteAdd.Invoke(nav.Code);
             }
 
-            FavoriteNavs.Add(favoriteNav);
+            _favoriteNavs.Add(favoriteNav);
             nav.IsFavorite = true;
         }
     }

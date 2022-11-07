@@ -14,7 +14,7 @@
         : new List<StringNumber>();
         <div class="masa-text-1-2__title title_category py-4" id="@category.TagId(TagIdPrefix)">@category.Name</div>
         <div class="apps">
-            @foreach (var app in category.Apps)
+            @foreach (var app in category.Apps.Where(a=>!a.Hiden))
             {
                 <CascadingValue Value="this" IsFixed>
                     <ExpansionApp App="app"

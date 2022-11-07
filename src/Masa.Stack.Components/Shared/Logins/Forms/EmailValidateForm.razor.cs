@@ -8,6 +8,12 @@ public partial class EmailValidateForm : MasaComponentBase
 
     public string? EmailAddress { get; set; }
 
+    protected override void OnInitialized()
+    {
+        EmailAddress = MasaUser.Email;
+        base.OnInitialized();
+    }
+
     internal void ResetFields()
     {
         _valid = false;

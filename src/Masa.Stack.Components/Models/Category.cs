@@ -6,7 +6,13 @@ public partial class Category
 
     public string Name { get; set; }
 
-    public bool Hiden { get; set; }
+    public bool Hiden
+    {
+        get
+        {
+            return Apps.All(a => a.Hiden);
+        }
+    }
 
     public List<App> Apps { get; set; } = new();
 

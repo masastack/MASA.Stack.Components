@@ -38,7 +38,7 @@ public partial class UserInfo : MasaComponentBase
         UpdateUserAvatar = new(default, UserDetail.Avatar);
 
         Items = new Dictionary<string, object?>()
-        {           
+        {
             ["CreationTime"] = ("mdi-clock-outline", UserDetail.CreationTime.ToString("yyyy-MM-dd")),
         };
         _windowValue = default;
@@ -79,6 +79,7 @@ public partial class UserInfo : MasaComponentBase
     {
         action.Content = string.IsNullOrEmpty(UserDetail.Email) ? @T("Add") : @T("Change");
         action.Text = true;
+        action.Disabled = true;//todo
         action.OnClick = string.IsNullOrEmpty(UserDetail.Email) ? OpenUpdateEmailModal : OpenVerifyEmailModal;
     }
 

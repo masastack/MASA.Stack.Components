@@ -42,7 +42,7 @@
                                           InPreview="InPreview"
                                           ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)">
                             </ExpansionAppItem>
-                            @if (nav.Children.Any())
+                            @if (nav.Children.Any(c=>!c.Hiden))
                             {
                                 <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
                             }
