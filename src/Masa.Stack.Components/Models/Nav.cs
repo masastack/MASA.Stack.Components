@@ -18,6 +18,14 @@ public class Nav : NavBase
 
     public bool Hiden { get; set; }
 
+    public bool AllChildHiden
+    {
+        get
+        {
+            return Children.All(c => c.Hiden);
+        }
+    }
+
     public List<Nav> Children
     {
         get

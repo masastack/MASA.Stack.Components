@@ -109,6 +109,8 @@
   "TipsForLogout": "您确定退出当前登录账号？",
   "Update password success": "修改密码成功",
   "EnvironmentSwitchTips": "当前用户不在该环境中",
+  "External": "外部员工",
+  "Internal": "内部员工",
 
   "Counter": "计数",
   "Fetch data": "拉取数据",

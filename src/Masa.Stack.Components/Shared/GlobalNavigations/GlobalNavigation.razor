@@ -16,7 +16,7 @@
                             @T("Favorites")
                         </div>
                         <MListItemGroup Value="@("/users")" Class="full-width mt-3">
-                            @foreach (var item in FavoriteNavs)
+                            @foreach (var item in _favoriteNavs)
                             {
                                 <MListItem Dense Value="item.Nav.Url"
                                            Class="mb-4 full-width rounded-2"
@@ -45,14 +45,14 @@
                         <div class="d-flex">
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
                             <MSpacer/>
-                            <SSearch Dense Style="max-width:341px" Class="mr-6" />
+                            <SSearch Dense Style="max-width:341px" Class="mr-6" @bind-Value="_searchMenu" OnEnter="EnterSearch"/>
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>
                             </MButton>
                         </div>
                         <div class="mt-4">
                             <span class="masa-text-3-1">@T("RecentVisits")</span>
-                            @foreach (var (name, url) in RecentVisits)
+                            @foreach (var (name, url) in _recentVisits)
                             {
                                 <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@DT(name)</MChip>
                             }
@@ -61,8 +61,8 @@
                     <div class="global-nav-content">
                         <CascadingValue Value="this">
                             <ExpansionWrapper
-                                Categories="@Categories"
-                                FavoriteNavs="@FavoriteNavs"
+                                Categories="@_categories"
+                                FavoriteNavs="@_favoriteNavs"
                                 TagIdPrefix="Favorite" />
                         </CascadingValue>
                     </div> 

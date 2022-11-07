@@ -8,7 +8,13 @@ public partial class App
 
     public string Name { get; set; }
 
-    public bool Hiden { get; set; }
+    public bool Hiden
+    {
+        get
+        {
+            return Navs.All(a => a.Hiden && a.AllChildHiden);
+        }
+    }
 
     public List<Nav> Navs
     {

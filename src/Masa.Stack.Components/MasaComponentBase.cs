@@ -20,6 +20,9 @@ public abstract class MasaComponentBase : ComponentBase
     public IPmClient PmClient { get; set; } = null!;
 
     [Inject]
+    public MasaUser MasaUser { get; set; } = null!;
+
+    [Inject]
     public IPopupService PopupService { get; set; } = default!;
 
     [Inject]

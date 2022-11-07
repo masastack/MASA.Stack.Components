@@ -23,10 +23,10 @@ public partial class UpdateEmailModal : MasaComponentBase
         var result = FormRef.EditContext.GetValidationMessages(field);
         if (!result.Any())
         {
-            await AuthClient.UserService.SendMsgCodeAsync(new SendMsgCodeModel()
+            await AuthClient.UserService.SendEmailAsync(new SendEmailModel()
             {
-                PhoneNumber = UpdateUserEmail.Email,
-                SendMsgCodeType = SendMsgCodeTypes.UpdatePhoneNumber
+                Email = UpdateUserEmail.Email,
+                SendEmailType = SendEmailTypes.UpdateEmail
             });
         }
         return !result.Any();
