@@ -7,6 +7,12 @@ public partial class PhoneNumberValidateForm : MasaComponentBase
 
     private MForm _form = null!;
 
+    protected override void OnInitialized()
+    {
+        _resetPasswordByPhoneModel.PhoneNumber = MasaUser.PhoneNumber;
+        base.OnInitialized();
+    }
+
     internal void ResetFields()
     {
         _form.Reset();

@@ -120,6 +120,11 @@
                 avatar = user.Avatar;
             }
             _teams = await AuthClient.TeamService.GetUserTeamsAsync();
+            if (MasaUser.CurrentTeamId == Guid.Empty && _teams.Any())
+            {
+                MasaUser.CurrentTeamId = _teams.First().Id;
+                await CurrentTeamChanged(MasaUser.CurrentTeamId.ToString());
+            }
             _currentTeamId = MasaUser.CurrentTeamId.ToString();
             StateHasChanged();
         }

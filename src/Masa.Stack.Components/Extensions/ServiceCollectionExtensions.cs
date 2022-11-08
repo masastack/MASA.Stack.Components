@@ -28,7 +28,6 @@ public static class ServiceCollectionExtensions
        UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
     {
         services.AddAutoInject();
-        services.Replace(ServiceDescriptor.Scoped<AuthenticationStateProvider, DefaultServerAuthenticationStateProvider>());       
         services.AddMasaIdentity(options =>
         {
             options.UserName = "name";
@@ -38,6 +37,8 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.CurrentTeamId), IdentityClaimConsts.CURRENT_TEAM);
             options.Mapping(nameof(MasaUser.StaffId), IdentityClaimConsts.STAFF);
             options.Mapping(nameof(MasaUser.Account), IdentityClaimConsts.ACCOUNT);
+            options.Mapping(nameof(MasaUser.PhoneNumber), IdentityClaimConsts.PHONE_NUMBER);
+            options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
         services.AddScoped((serviceProvider) =>
          {
