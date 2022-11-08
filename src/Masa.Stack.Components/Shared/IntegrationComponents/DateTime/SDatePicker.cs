@@ -41,7 +41,6 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
                     builder3.CloseComponent();
                     builder3.OpenComponent<MButton>(6);
                     builder3.AddAttribute(7, "Text", true);
-                    Console.WriteLine(Value.ToString());
                     builder3.AddAttribute(8, "ChildContent", (RenderFragment)delegate (RenderTreeBuilder builder5)
                     {
                         builder5.AddContent(1, I18n.T("Reset"));
