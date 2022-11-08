@@ -145,6 +145,7 @@ window.MasaStackComponents.getTimezoneOffset = function() {
 window.MasaStackComponents.setAppBorder = function () {
     var navContent = document.getElementsByClassName('global-nav-content__main')[0];
     var apps = navContent.getElementsByClassName("app");
+    apps = Array.from(apps);
     var topPosition = 9999;
     var bottomRect = -9999;
     apps.forEach((app) => {
