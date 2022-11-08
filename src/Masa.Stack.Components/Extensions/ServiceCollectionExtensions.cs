@@ -42,9 +42,9 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped((serviceProvider) =>
          {
-            var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
-            return masaUser;
-        });
+             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
+             return masaUser;
+         });
         services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(mcHost);
         services.AddSingleton(options);
