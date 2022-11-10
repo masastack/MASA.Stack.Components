@@ -3,7 +3,8 @@
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
-        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null, string? pmHost = null)
+        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
+        string? pmHost = null, UserAutoCompleteOptions? userAutoCompleteOptions = null, RedisConfigurationOptions? redisOption = null)
     {
         builder.Services.AddMasaConfiguration(configurationBuilder =>
         {
@@ -14,8 +15,8 @@ public static class ServiceCollectionExtensions
         mcHost = mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url");
         pmHost = pmHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:PmClient:Url");
 
-        UserAutoCompleteOptions userAutoCompleteOptions = publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>();
-        RedisConfigurationOptions redisOption = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
+        userAutoCompleteOptions = userAutoCompleteOptions ?? publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>();
+        redisOption = redisOption ?? publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
 
         builder.Services.AddAutoInject();
         builder.Services.AddMasaIdentity(options =>
