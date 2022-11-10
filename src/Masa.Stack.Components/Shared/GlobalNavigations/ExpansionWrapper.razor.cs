@@ -57,6 +57,36 @@
             }
         }
 
+        //protected override void OnInitialized()
+        //{
+        //    if (InPreview)
+        //    {
+        //        Categories?.ForEach(category =>
+        //        {
+        //            category.Apps.ForEach(app =>
+        //            {
+        //                ProcessNav(category.Code, app.Code, app.Navs);
+        //            });
+        //        });
+
+        //        void ProcessNav(string category, string app, List<Nav> navs)
+        //        {
+        //            foreach (var nav in navs)
+        //            {
+        //                if (nav.HasChildren)
+        //                {
+        //                    ProcessNav(category, app, nav.Children);
+        //                }
+        //                else
+        //                {
+        //                    nav.Hiden = !Value.Any(can => can.Category == category && can.App == app && can.App == nav.Code);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    base.OnInitialized();
+        //}
+
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
@@ -75,6 +105,30 @@
             {
                 await JsRuntime.InvokeVoidAsync("MasaStackComponents.setAppBorder");
             }, () => Categories == null || !Categories.Any());
+        }
+
+        private bool Filter(App app)
+        {
+            if (InPreview)
+            {
+                return Value.Any(value => value.App == app.Code);
+            }
+            else
+            {
+                return !app.Hiden || !app.Navs.Any();
+            }
+        }
+
+        private bool Filter(Category category)
+        {
+            if (InPreview)
+            {
+                return Value.Any(value => value.Category == category.Code);
+            }
+            else
+            {
+                return !category.Hiden || !category.Apps.Any();
+            }
         }
 
         internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)

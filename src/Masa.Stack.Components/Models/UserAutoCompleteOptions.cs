@@ -3,14 +3,8 @@
 
 namespace Masa.Stack.Components.Models;
 
-public class UserAutoCompleteOptions : ConfigurationApiMasaConfigurationOptions
+public class UserAutoCompleteOptions
 {
-    [JsonIgnore]
-    public override string AppId => "public-$Config";
-
-    [JsonIgnore]
-    public override string? ObjectName { get; } = "$public.ES.UserAutoComplete";
-
     public string Name { get; set; } = "";
 
     public string[] Nodes { get; set; } = { };

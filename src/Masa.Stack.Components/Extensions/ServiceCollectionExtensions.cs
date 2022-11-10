@@ -10,25 +10,15 @@ public static class ServiceCollectionExtensions
             configurationBuilder.UseDcc();
         });
         var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
-        builder.Services.AddMasaStackComponentsForServer(
-                i18nDirectoryPath,
-                authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"),
-                mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"),
-                pmHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:PmClient:Url"),
-                publicConfiguration.GetSection("$public.OSS").Get<OssOptions>(),
-                publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>(),
-                publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>()
-            );
+        authHost = authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url");
+        mcHost = mcHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url");
+        pmHost = pmHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:PmClient:Url");
 
-        return builder.Services;
-    }
+        UserAutoCompleteOptions userAutoCompleteOptions = publicConfiguration.GetSection("$public.ES.UserAutoComplete").Get<UserAutoCompleteOptions>();
+        RedisConfigurationOptions redisOption = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
 
-    public static IServiceCollection AddMasaStackComponentsForServer(this IServiceCollection services,
-       string? i18nDirectoryPath, string authHost, string mcHost, string pmHost, OssOptions ossOptions,
-       UserAutoCompleteOptions userAutoCompleteOptions, RedisConfigurationOptions redisOption)
-    {
-        services.AddAutoInject();
-        services.AddMasaIdentity(options =>
+        builder.Services.AddAutoInject();
+        builder.Services.AddMasaIdentity(options =>
         {
             options.UserName = "name";
             options.UserId = "sub";
@@ -40,18 +30,18 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.PhoneNumber), IdentityClaimConsts.PHONE_NUMBER);
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
-        services.AddScoped((serviceProvider) =>
+        builder.Services.AddScoped((serviceProvider) =>
         {
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
-        services.AddAuthClient(authHost, redisOption);
+        builder.Services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(mcHost);
-        services.AddSingleton(options);
-        services.AddMcClient(mcHost);
-        services.AddPmClient(pmHost);
+        builder.Services.AddSingleton(options);
+        builder.Services.AddMcClient(mcHost);
+        builder.Services.AddPmClient(pmHost);
 
-        var builder = services.AddMasaBlazor(builder =>
+        var masaBuilder = builder.Services.AddMasaBlazor(builder =>
         {
             builder.ConfigureTheme(theme =>
             {
@@ -65,36 +55,14 @@ public static class ServiceCollectionExtensions
         })
         .AddI18n(GetLocales().ToArray());
 
-        if (i18nDirectoryPath is not null) builder.AddI18nForServer(i18nDirectoryPath);
-        builder.Services.AddOss(ossOptions);
+        if (i18nDirectoryPath is not null)
+        {
+            masaBuilder.AddI18nForServer(i18nDirectoryPath);
+        }
+        builder.Services.AddOss();
         builder.Services.AddElasticsearchAutoComplete(userAutoCompleteOptions);
 
-        return services;
-    }
-
-    public static async Task<IServiceCollection> AddMasaStackComponentsForWasmAsync(this IServiceCollection services,
-        string i18nDirectoryPath, string authHost, string mcHost, string pmHost, RedisConfigurationOptions redisOption)
-    {
-        services.AddAuthClient(authHost, redisOption);
-        var options = new McServiceOptions(mcHost);
-        services.AddSingleton(options);
-        services.AddMcClient(mcHost);
-        services.AddPmClient(pmHost);
-
-        await services.AddMasaBlazor(builder =>
-        {
-            builder.ConfigureTheme(theme =>
-            {
-                theme.Themes.Light.Primary = "#4318FF";
-                theme.Themes.Light.Accent = "#4318FF";
-                theme.Themes.Light.Error = "#FF5252";
-                theme.Themes.Light.Success = "#00B42A";
-                theme.Themes.Light.Warning = "#FF7D00";
-                theme.Themes.Light.Info = "#37A7FF";
-            });
-        }).AddI18nForWasmAsync(i18nDirectoryPath);
-
-        return services;
+        return builder.Services;
     }
 
     private static IEnumerable<(string cultureName, Dictionary<string, string> map)> GetLocales()
