@@ -205,6 +205,10 @@ body, .masa-stack-components {
             display: flex;
         }
 
+    .masa-stack-components .global-nav .toc .category_side_active span {
+        color: #4318FF !important;
+    }
+
         .masa-stack-components .global-nav .toc li span {
             margin-left: 4px;
         }

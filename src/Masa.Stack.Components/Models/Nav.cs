@@ -22,7 +22,7 @@ public class Nav : NavBase
     {
         get
         {
-            return Children.All(c => c.Hiden);
+            return Children.Any() && Children.All(c => c.Hiden);
         }
     }
 

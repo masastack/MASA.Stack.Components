@@ -9,7 +9,16 @@ public class UploadAvatar : SUploadImage
     public IClient Client { get; set; } = default!;
 
     [Inject]
-    public IOptions<OssOptions> OssOptions { get; set; } = default!;
+    public IMasaConfiguration MasaConfiguration { get; set; } = default!;
+
+    public OssOptions OssOptions
+    {
+        get
+        {
+            return MasaConfiguration.ConfigurationApi.GetPublic()
+            .GetValue<OssOptions>("$public.OSS");
+        }
+    }
 
     public override Task SetParametersAsync(ParameterView parameters)
     {
@@ -25,7 +34,7 @@ public class UploadAvatar : SUploadImage
         var accessId = response.AccessKeyId;
         var accessSecret = response.AccessKeySecret;
         var region = "oss-cn-hangzhou";
-        var bucket = OssOptions.Value.Bucket;
+        var bucket = OssOptions.Bucket;
 
         var paramter = new SecurityTokenModel(region, accessId, accessSecret, stsToken, bucket);
         OnInputFileUpload = FileUploadCallBack.CreateCallback("UploadImage", paramter);

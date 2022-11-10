@@ -10,7 +10,7 @@ public partial class Category
     {
         get
         {
-            return Apps.All(a => a.Hiden);
+            return Apps.All(a => a.Hiden) || !Apps.Any();
         }
     }
 

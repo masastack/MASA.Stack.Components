@@ -12,7 +12,7 @@ public partial class App
     {
         get
         {
-            return Navs.All(a => a.Hiden && a.AllChildHiden);
+            return Navs.All(a => a.Hiden || a.AllChildHiden) || !Navs.Any();
         }
     }
 

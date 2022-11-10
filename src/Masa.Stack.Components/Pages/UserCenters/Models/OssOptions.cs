@@ -1,13 +1,7 @@
 ﻿namespace Masa.Stack.Components.UserCenters.Models;
 
-public class OssOptions: ConfigurationApiMasaConfigurationOptions
+public class OssOptions
 {
-    [JsonIgnore]
-    public override string AppId => "public-$Config";
-
-    [JsonIgnore]
-    public override string? ObjectName { get; } = "$public.OSS";
-
     public string AccessId { get; set; } = "";
 
     public string AccessSecret { get; set; } = "";

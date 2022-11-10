@@ -77,6 +77,30 @@
             }, () => Categories == null || !Categories.Any());
         }
 
+        private bool Filter(App app)
+        {
+            if (InPreview)
+            {
+                return Value.Any(value => value.App == app.Code);
+            }
+            else
+            {
+                return !app.Hiden || !app.Navs.Any();
+            }
+        }
+
+        private bool Filter(Category category)
+        {
+            if (InPreview)
+            {
+                return Value.Any(value => value.Category == category.Code);
+            }
+            else
+            {
+                return !category.Hiden || !category.Apps.Any();
+            }
+        }
+
         internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
         {
             _allValue = _allValue.Where(v => v.App != code).ToList();
