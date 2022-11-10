@@ -57,36 +57,6 @@
             }
         }
 
-        //protected override void OnInitialized()
-        //{
-        //    if (InPreview)
-        //    {
-        //        Categories?.ForEach(category =>
-        //        {
-        //            category.Apps.ForEach(app =>
-        //            {
-        //                ProcessNav(category.Code, app.Code, app.Navs);
-        //            });
-        //        });
-
-        //        void ProcessNav(string category, string app, List<Nav> navs)
-        //        {
-        //            foreach (var nav in navs)
-        //            {
-        //                if (nav.HasChildren)
-        //                {
-        //                    ProcessNav(category, app, nav.Children);
-        //                }
-        //                else
-        //                {
-        //                    nav.Hiden = !Value.Any(can => can.Category == category && can.App == app && can.App == nav.Code);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    base.OnInitialized();
-        //}
-
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
