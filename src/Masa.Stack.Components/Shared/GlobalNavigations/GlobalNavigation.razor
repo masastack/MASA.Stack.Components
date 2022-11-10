@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<MDialog @bind-Value="_visible"
+<MDialog Value="_visible" ValueChanged="VisibleChanged"
          Fullscreen
          Transition="dialog-top-transition">
     <ActivatorContent>
@@ -45,7 +45,7 @@
                         <div class="d-flex">
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
                             <MSpacer/>
-                            <SSearch Dense Style="max-width:341px" Class="mr-6" @bind-Value="_searchMenu" OnEnter="EnterSearch"/>
+                            <SSearch Dense Style="max-width:341px" Class="mr-6" @bind-Value="_searchMenu" OnEnter="EnterSearch" />
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>
                             </MButton>

@@ -24,9 +24,19 @@ public partial class GlobalNavigation : MasaComponentBase
             _categories = await FetchCategories();
             var favorites = await FetchFavorites();
             _favoriteNavs = GetFavoriteNavs(favorites, _categories);
-            _recentVisits = await GetRecentVisits();
             StateHasChanged();
         }
+    }
+
+    public async Task VisibleChanged(bool visible)
+    {
+        if (visible)
+        {
+            _recentVisits = await GetRecentVisits();
+            _searchMenu = string.Empty;
+            EnterSearch();
+        }
+        _visible = visible;
     }
 
     private async Task<List<Category>> FetchCategories()
