@@ -113,10 +113,16 @@ body, .masa-stack-components {
             padding: 16px;
         }
 
-        .masa-stack-components .global-nav .apps .app:first-child {
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
+    .masa-stack-components .global-nav-content__main .category_title_app {
+        -webkit-column-break-inside: avoid;
+        page-break-inside: avoid;
+        break-inside: avoid-column;
+    }
+
+    .masa-stack-components .global-nav .apps .category_title_app .app {
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
 
         .masa-stack-components .global-nav .apps .app:last-child {
             border-bottom-right-radius: 20px;
