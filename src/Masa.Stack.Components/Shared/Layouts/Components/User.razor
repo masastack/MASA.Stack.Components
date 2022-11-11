@@ -10,7 +10,7 @@
 @inject GlobalConfig GlobalConfig
 @inject IJSRuntime JS
 
-<MMenu @bind-Value="@_menuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
+<MMenu @bind-Value="@MenuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
        ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
     <ActivatorContent>
         <MAvatar @attributes="@context.Attrs" Size=40>
@@ -19,7 +19,7 @@
     </ActivatorContent>
     <ChildContent>
         <MList>
-            <SListItem Medium Href="/user-center" OnClick="() => { _menuVisible = false; }">
+            <SListItem Medium Href="/user-center" OnClick="() => { MenuVisible = false; }">
                 <MListItemIcon Class="mr-4">
                     <SIcon Color="emphasis2">mdi-account-circle</SIcon>
                 </MListItemIcon>
@@ -29,7 +29,7 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            <SListItem Medium OnClick="() => { UpdatePasswordDialogVisible = true; _menuVisible = false; }">
+            <SListItem Medium OnClick="() => { UpdatePasswordDialogVisible = true; MenuVisible = false; }">
                 <MListItemIcon Class="mr-4">
                     <SIcon Color="emphasis2">mdi-pencil</SIcon>
                 </MListItemIcon>
@@ -39,7 +39,7 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            @if (MasaUser.IsStaff)
+            @if (MasaUser.IsStaff && _teams.Any())
             {
                 <MDivider></MDivider>
                 <MListGroup @bind-Value="_showChangeTeam" NoAction Style="">
@@ -106,6 +106,21 @@
     List<TeamModel> _teams = new();
     IJSObjectReference _module;
 
+    public bool MenuVisible {
+        get {
+            return _menuVisible;
+        }
+        set
+        {
+            _menuVisible = value;
+            if (!_menuVisible)
+            {
+                _showChangeTeam = false;
+                _teamSearchKey = string.Empty;
+            }
+        }
+    }
+
     public TeamModel CurrentTeam => _teams.FirstOrDefault(t => t.Id.ToString() == _currentTeamId) ?? new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -142,11 +157,14 @@
 
     private async Task CurrentTeamChanged(StringNumber teamId)
     {
-        var gTeamId = Guid.Parse(teamId.AsT0);
-        await AuthClient.UserService.SetCurrentTeamAsync(gTeamId);
-        await _module.InvokeVoidAsync("upsertClaim", IdentityClaimConsts.CURRENT_TEAM, teamId.AsT0);
-        GlobalConfig.CurrentTeamId = gTeamId;
-        _currentTeamId = teamId;
+        if (teamId != null)
+        {
+            var gTeamId = Guid.Parse(teamId.AsT0);
+            await AuthClient.UserService.SetCurrentTeamAsync(gTeamId);
+            await _module.InvokeVoidAsync("upsertClaim", IdentityClaimConsts.CURRENT_TEAM, teamId.AsT0);
+            GlobalConfig.CurrentTeamId = gTeamId;
+            _currentTeamId = teamId;
+        }
         _showChangeTeam = false;
         StateHasChanged();
     }

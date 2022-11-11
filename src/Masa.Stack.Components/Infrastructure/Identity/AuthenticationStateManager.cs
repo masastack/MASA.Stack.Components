@@ -3,7 +3,6 @@
 public class AuthenticationStateManager : IScopedDependency
 {
     readonly IHttpContextAccessor _contextAccessor;
-    readonly AuthenticationStateProvider _authenticationStateProvider;
 
     HttpContext? _context;
 
@@ -25,20 +24,18 @@ public class AuthenticationStateManager : IScopedDependency
     }
 
 
-    public AuthenticationStateManager(IHttpContextAccessor contextAccessor, AuthenticationStateProvider authenticationStateProvider)
+    public AuthenticationStateManager(IHttpContextAccessor contextAccessor)
     {
         if (contextAccessor == null)
         {
             throw new ArgumentNullException(nameof(contextAccessor));
         }
         _contextAccessor = contextAccessor;
-        _authenticationStateProvider = authenticationStateProvider;
     }
 
     public async Task UpsertClaimAsync(string key, string value)
     {
-        var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var identity = authenticationState.User.Identity as ClaimsIdentity;
+        var identity = Context.User.Identity as ClaimsIdentity;
         if (identity == null)
             return;
 
@@ -58,12 +55,6 @@ public class AuthenticationStateManager : IScopedDependency
         var auth = await Context.AuthenticateAsync(await Context.GetCookieAuthenticationSchemeAsync());
 
         await SignInWithClaimsAsync(userPrincipal, auth?.Properties);
-
-        var authenticationState = new AuthenticationState(userPrincipal);
-        if (_authenticationStateProvider is IHostEnvironmentAuthenticationStateProvider serverAuthenticationStateProvider)
-        {
-            serverAuthenticationStateProvider.SetAuthenticationState(Task.FromResult(authenticationState));
-        }
     }
 
     public virtual async Task SignInWithClaimsAsync(ClaimsPrincipal userPrincipal, AuthenticationProperties? authenticationProperties)

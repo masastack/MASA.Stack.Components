@@ -153,7 +153,7 @@ public partial class ExpansionApp
         }
         else
         {
-            return !nav.Hiden || !nav.AllChildHiden;
+            return !nav.Hiden || (nav.HasChildren && !nav.AllChildHiden);
         }
     }
 
