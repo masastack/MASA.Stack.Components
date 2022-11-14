@@ -9,8 +9,8 @@ public static class OssExtensions
     {
         services.AddAliyunStorage((provider) =>
         {
-            var ossOptions = provider.GetRequiredService<IMasaConfiguration>().ConfigurationApi
-            .GetPublic().GetSection("$public.OSS").Get<OssOptions>();
+            var ossOptions = provider.GetRequiredService<IMasaConfiguration>().ConfigurationApi.GetPublic()
+                    .GetSection("$public.OSS").Get<OssOptions>();
             return new AliyunStorageOptions(ossOptions.AccessId, ossOptions.AccessSecret, ossOptions.Endpoint, ossOptions.RoleArn, ossOptions.RoleSessionName)
             {
                 Sts = new AliyunStsOptions()

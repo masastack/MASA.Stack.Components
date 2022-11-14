@@ -40,14 +40,14 @@
                                 </MListItemIcon>
                                 <MListItemContent>
                                     <div class="ml-1 text-truncate @(context.Active ? "white--text" : "regular2--text")">
-                                        @T(nav.Name)
+                                        @DT(nav.Name)
                                     </div>
                                 </MListItemContent>
                             </ItemContent>
                         </SListItem>
                     </ActivatorContent>
                     <ChildContent>
-                        @T(nav.Name)
+                        @DT(nav.Name)
                     </ChildContent>
                 </STooltip>
             }
@@ -64,7 +64,7 @@
                             @attributes="@menuContext.Attrs">
                             <ActivatorContent>
                                 <MListItemContent>
-                                    <div class="ml-1 text-truncate regular2--text">@T(nav.Name)</div>
+                                    <div class="ml-1 text-truncate regular2--text">@DT(nav.Name)</div>
                                 </MListItemContent>
                             </ActivatorContent>
                             <PrependIconContent>
