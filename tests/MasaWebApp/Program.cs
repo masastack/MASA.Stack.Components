@@ -1,4 +1,4 @@
-using Masa.BuildingBlocks.Configuration;
+using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 using Masa.Contrib.Service.Caller.Authentication.OpenIdConnect;
 using Masa.Stack.Components;
 using Masa.Utils.Security.Authentication.OpenIdConnect;
