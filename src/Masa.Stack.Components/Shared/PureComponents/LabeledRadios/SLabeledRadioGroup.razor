@@ -51,6 +51,9 @@
     [Parameter]
     public EventCallback<TValue> ValueChanged { get; set; }
 
+    [Parameter]
+    public EventCallback OnChange { get; set; }
+
     private TValue? _prevValue;
     private StringNumber? _selectedKey;
 
@@ -118,6 +121,8 @@
             {
                 Value = item.Value;
             }
+
+            if (OnChange.HasDelegate) await OnChange.InvokeAsync();
         }
     }
 
