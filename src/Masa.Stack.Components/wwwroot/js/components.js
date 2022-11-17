@@ -22,11 +22,8 @@ window.MasaStackComponents.scrollTo = (target, inside = 'window') => {
         let top = targetRect.top + scrollTop - insideRect.top;
 
         insideElement.scrollTo({ top, left: 0, behavior: "smooth" });
-
-        targetElement.parentNode.childNodes.forEach((element) => {
-            if (element.nodeType!=1) {
-                return;
-            }
+        const allTitleCategories = document.querySelectorAll('.category_title_app > .title_category')
+        allTitleCategories.forEach((element) => {
             if (targetElement != element) {
                 element.classList.remove('title_category_active')
             } else {
@@ -38,7 +35,6 @@ window.MasaStackComponents.scrollTo = (target, inside = 'window') => {
 
         var sideId = target +"_side";
         const sideElement = document.querySelector(sideId);
-        console.log(sideElement);
         sideElement.parentNode.childNodes.forEach((element) => {
             if (element.nodeType != 1) {
                 return;
