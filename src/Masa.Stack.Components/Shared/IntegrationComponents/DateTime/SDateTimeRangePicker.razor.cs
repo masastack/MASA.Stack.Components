@@ -31,6 +31,9 @@ public partial class SDateTimeRangePicker
     [Parameter]
     public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
 
+    [Parameter]
+    public EventCallback OnChange { get; set; }
+
     private DateTime? InternalEndTime { get; set; }
 
     private bool StartTimeVisible { get; set; }
@@ -52,6 +55,7 @@ public partial class SDateTimeRangePicker
         {
             if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(InternalStartTime);
             else StartTime = InternalStartTime;
+            if (OnChange.HasDelegate) await OnChange.InvokeAsync();
         }
     }
 
@@ -63,6 +67,7 @@ public partial class SDateTimeRangePicker
         {
             if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(InternalEndTime);
             else EndTime = InternalEndTime;
+            if (OnChange.HasDelegate) await OnChange.InvokeAsync();
         }
     }
 }
