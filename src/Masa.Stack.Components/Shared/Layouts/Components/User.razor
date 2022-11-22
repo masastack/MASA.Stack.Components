@@ -160,7 +160,11 @@
         if (teamId != null)
         {
             var gTeamId = Guid.Parse(teamId.AsT0);
-            await AuthClient.UserService.SetCurrentTeamAsync(gTeamId);
+            //Guest accout change current team not persist to db
+            if (MasaUser.Account != "Guest")
+            {
+                await AuthClient.UserService.SetCurrentTeamAsync(gTeamId);
+            }
             await _module.InvokeVoidAsync("upsertClaim", IdentityClaimConsts.CURRENT_TEAM, teamId.AsT0);
             GlobalConfig.CurrentTeamId = gTeamId;
             _currentTeamId = teamId;
