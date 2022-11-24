@@ -40,7 +40,7 @@ public partial class UpdateEmailModal : MasaComponentBase
         else Visible = false;
     }
 
-    private async Task HandleOnOk()
+    private void HandleOnOk()
     {
     }
 }

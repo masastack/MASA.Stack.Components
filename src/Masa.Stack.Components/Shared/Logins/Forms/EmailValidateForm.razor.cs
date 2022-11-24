@@ -2,16 +2,22 @@
 
 public partial class EmailValidateForm : MasaComponentBase
 {
-    private bool _valid;
 
+    [CascadingParameter]
+    public ForgetPasswordModal ForgetPasswordModal { get; set; } = null!;
+
+    private bool _valid;
     private MForm _form = null!;
 
     public string? EmailAddress { get; set; }
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        EmailAddress = MasaUser.Email;
-        base.OnInitialized();
+        if (string.IsNullOrEmpty(EmailAddress))
+        {
+            EmailAddress = MasaUser.Email;
+        }
+        base.OnParametersSet();
     }
 
     internal void ResetFields()
@@ -21,7 +27,7 @@ public partial class EmailValidateForm : MasaComponentBase
         _form.Reset();
     }
 
-    private async Task HandleOnValidSubmit()
+    private void HandleOnValidSubmit()
     {
         // TODO: send a email
         // TODO: 需要一个点击邮箱链接直达更改密码的页面

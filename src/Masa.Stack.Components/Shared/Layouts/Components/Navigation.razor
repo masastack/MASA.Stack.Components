@@ -12,8 +12,8 @@
                    Width="300"
                    MiniVariant="GlobalConfig.Mini">
 
-    <div style="height:96px;margin-left:28px"
-         class="d-flex align-center">
+    <div style="height:96px;"
+         class="d-flex justify-space-around align-center px-3">
         @if (GlobalConfig.Mini)
         {
             <img height="40" width="40" src="@MiniLogo" alt="mini_log"
@@ -23,6 +23,10 @@
         {
             <img width="200" src="@Logo" alt="logo"
              style="cursor: pointer" @onclick="NavigateToIndex" />
+             <MChip Class="ma-2" Small
+                Color="primary">
+                0.7.0
+            </MChip>
         }
     </div>
 

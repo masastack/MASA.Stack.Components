@@ -23,6 +23,7 @@ global using Masa.Contrib.Storage.ObjectStorage.Aliyun.Options;
 global using Masa.Stack.Components.Configs;
 global using Masa.Stack.Components.Extensions;
 global using Masa.Stack.Components.Infrastructure;
+global using Masa.Stack.Components.Layouts;
 global using Masa.Stack.Components.Models;
 global using Masa.Stack.Components.NotificationCenters.Consts;
 global using Masa.Stack.Components.Options;

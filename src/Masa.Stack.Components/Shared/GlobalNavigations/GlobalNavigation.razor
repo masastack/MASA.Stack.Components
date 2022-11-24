@@ -19,9 +19,9 @@
                             @foreach (var item in _favoriteNavs)
                             {
                                 <MListItem Dense Value="item.Nav.Url"
-                                           Class="mb-4 full-width rounded-2"
-                                           ActiveClass="primary white--text"
-                                           OnClick="() => NavigateTo(item.Nav.Url)">
+                                       Class="mb-4 full-width rounded-2"
+                                       ActiveClass="primary white--text"
+                                       OnClick="() => NavigateTo(item.Nav.Url)">
                                     <ItemContent>
                                         <div class="global-nav-left__favorite-item full-width masa-text-2-2 @(context.ActiveClass)">
                                             <MListItemContent>
@@ -29,7 +29,7 @@
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
                                                 <SAutoLoadingButton Icon XSmall Color="@(item.Nav.IsFavorite ? "#FFB547" : "")"
-                                                                   OnClick="() => ToggleFavorite(item.CategoryCode, item.AppCode, item.Nav)" StopPropagation>
+                                                                OnClick="() => ToggleFavorite(item.CategoryCode, item.AppCode, item.Nav)" StopPropagation>
                                                     <MIcon Small>mdi-star</MIcon>
                                                 </SAutoLoadingButton>
                                             </MListItemAction>
@@ -37,14 +37,26 @@
                                     </ItemContent>
                                 </MListItem>
                             }
+                            <MListItem Dense Class="mb-4 full-width rounded-2" ActiveClass="primary white--text">
+                                @DT("Auth")
+                            </MListItem>
+                            <MListItem Dense Class="mb-4 full-width rounded-2" ActiveClass="primary white--text">
+                                @DT("Dcc")
+                            </MListItem>
+                            <MListItem Dense Class="mb-4 full-width rounded-2" ActiveClass="primary white--text">
+                                @DT("PM")
+                            </MListItem>
                         </MListItemGroup>
+                        <div class="global-nav-left__title">
+                            @T("PlatformTools")
+                        </div>
                     </div>
                 </div>
                 <div class="global-nav-right">
                     <div class="global-nav-header">
                         <div class="d-flex">
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
-                            <MSpacer/>
+                            <MSpacer />
                             <SSearch Dense Style="max-width:341px" Class="mr-6" @bind-Value="_searchMenu" OnEnter="EnterSearch" />
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>
@@ -60,12 +72,11 @@
                     </div>
                     <div class="global-nav-content">
                         <CascadingValue Value="this">
-                            <ExpansionWrapper
-                                Categories="@_categories"
-                                FavoriteNavs="@_favoriteNavs"
-                                TagIdPrefix="Favorite" />
+                            <ExpansionWrapper Categories="@_categories"
+                                              FavoriteNavs="@_favoriteNavs"
+                                              TagIdPrefix="Favorite" />
                         </CascadingValue>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </MCard>
