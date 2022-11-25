@@ -1,5 +1,6 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
+@inject IEnvironmentProvider EnvironmentProvider
 
 <MDialog Value="_visible" ValueChanged="VisibleChanged"
          Fullscreen
@@ -37,15 +38,13 @@
                                     </ItemContent>
                                 </MListItem>
                             }
-                            <MListItem Dense Class="mb-4 full-width rounded-2" ActiveClass="primary white--text">
-                                @DT("Auth")
-                            </MListItem>
-                            <MListItem Dense Class="mb-4 full-width rounded-2" ActiveClass="primary white--text">
-                                @DT("Dcc")
-                            </MListItem>
-                            <MListItem Dense Class="mb-4 full-width rounded-2" ActiveClass="primary white--text">
-                                @DT("PM")
-                            </MListItem>
+                            @foreach (var _recommendApp in _recommendApps)
+                            {
+                                <MListItem Dense Class="mb-4 full-width rounded-2"
+                                       ActiveClass="primary white--text" OnClick="() => NavigateTo(_recommendApp.Value)">
+                                    @DT(_recommendApp.Key)
+                                </MListItem>
+                            }
                         </MListItemGroup>
                         <div class="global-nav-left__title">
                             @T("PlatformTools")
