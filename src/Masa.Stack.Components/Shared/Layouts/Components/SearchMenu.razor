@@ -5,7 +5,7 @@
 <div style="min-width:340px;">
     <SAutoComplete
         @bind-Value="Url"
-        Items="Menus"
+        Items="_menus"
         TItem="Menu"
         TItemValue="string"
         TValue="string"
@@ -19,7 +19,7 @@
         <MIcon Size=16 Class="mr-2 my-2 emphasis2--text">mdi-magnify</MIcon>
     </PrependInnerContent>
     <ItemContent Context="data">
-            <div class="d-flex py-1" style="height:64px;width:100%;max-width:304px;">
+            <div class="d-flex py-1" style="height:48px;width:100%;max-width:304px;">
             @if(string.IsNullOrEmpty(data.Item.InheritedIcon) is false)
             {
                 <MIcon>@data.Item.InheritedIcon</MIcon>

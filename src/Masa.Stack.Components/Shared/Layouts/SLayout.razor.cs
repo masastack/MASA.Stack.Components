@@ -1,5 +1,4 @@
-﻿
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
@@ -120,22 +119,6 @@ public partial class SLayout
             }
 #endif
 
-            if (!string.IsNullOrWhiteSpace(TeamRouteFormat))
-            {
-                try
-                {
-                    if (MasaUser.CurrentTeamId != Guid.Empty)
-                    {
-                        var teamNav = new Nav("stack.team", "Team", "mdi-account-group-outline", string.Format(TeamRouteFormat, MasaUser.CurrentTeamId), 0);
-                        NavItems.Add(teamNav);
-                    }
-                }
-                catch (Exception e)
-                {
-                    await PopupService.ToastErrorAsync(e.Message);
-                }
-            }
-
             GlobalConfig.Menus = NavItems;
 
             var uri = NavigationManager.Uri;
@@ -242,7 +225,14 @@ public partial class SLayout
         }
 
         Logger.LogInformation("URL of new location: {Location}", e.Location);
-        AuthClient.UserService.VisitedAsync(AppId, relativeUri);
+        try
+        {
+            AuthClient.UserService.VisitedAsync(AppId, relativeUri);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "post user visited error");
+        }
     }
 
     private async Task AddFavoriteMenu(string code)

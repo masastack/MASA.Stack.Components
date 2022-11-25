@@ -31,6 +31,7 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.PhoneNumber), IdentityClaimConsts.PHONE_NUMBER);
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
+        builder.Services.AddScoped<TokenProvider>();
         builder.Services.AddScoped((serviceProvider) =>
         {
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();

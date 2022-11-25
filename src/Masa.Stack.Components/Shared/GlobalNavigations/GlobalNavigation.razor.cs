@@ -16,6 +16,7 @@ public partial class GlobalNavigation : MasaComponentBase
     List<FavoriteNav> _favoriteNavs = new();
     List<(string name, string url)> _recentVisits = new();
     List<Category> _categories { get; set; } = new();
+    List<KeyValuePair<string, string>> _recommendApps = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -24,8 +25,18 @@ public partial class GlobalNavigation : MasaComponentBase
             _categories = await FetchCategories();
             var favorites = await FetchFavorites();
             _favoriteNavs = GetFavoriteNavs(favorites, _categories);
+            await GetRecommendApps();
             StateHasChanged();
         }
+    }
+
+    private async Task GetRecommendApps()
+    {
+        //todo pm config
+        var recommendAppIdentities = new List<string>() { "masa-pm-web-admin", "masa-dcc-web-admin", "masa-auth-web-admin" };
+        var projects = await PmClient.ProjectService.GetProjectAppsAsync(EnvironmentProvider.GetEnvironment());
+        _recommendApps = projects.SelectMany(p => p.Apps).Where(a => recommendAppIdentities.Contains(a.Identity))
+            .Select(a => new KeyValuePair<string, string>(a.Name, a.Url)).ToList();
     }
 
     public async Task VisibleChanged(bool visible)
