@@ -48,7 +48,8 @@
   "Cancle": "取消",
   "Operational qualification": "操作确认",
   "SelectAll": "全选",
-
+  "UserException": "用户异常",
+  "UserExceptionMsg": "当前用户不存在，请尝试重新登录",
   "GlobalNavigation": "全局导航",
   "RecentVisits": "最近访问",
   "Favorites": "快捷访问",
