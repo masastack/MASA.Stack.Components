@@ -55,6 +55,7 @@ public partial class SLayout
     List<string> _preWhiteUris = new();
     List<Nav> FlattenedNavs { get; set; } = new();
     List<Nav> FlattenedAllNavs { get; set; } = new();
+    bool _noUserLogoutConfirm;
     List<string> _whiteUriList = new List<string> { "403", "404", "user-center",
         "notification-center", "notification-center/*" };
 
@@ -248,5 +249,20 @@ public partial class SLayout
     public void Dispose()
     {
         NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    private Task ErrorHandleAsync(Exception exception)
+    {
+        //todo handler caller return NoUserException
+        if (exception.Message == "current_user_not_found")
+        {
+            _noUserLogoutConfirm = true;
+            return Task.CompletedTask;
+        }
+        if (OnErrorAsync != null)
+        {
+            OnErrorAsync.Invoke(exception);
+        }
+        return Task.CompletedTask;
     }
 }

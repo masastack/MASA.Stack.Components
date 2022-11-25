@@ -1,0 +1,49 @@
+﻿@namespace Masa.Stack.Components.Layouts
+@inherits MasaComponentBase
+
+<MDialog @bind-Value="Visible"
+         Persistent
+         MaxWidth="290">
+    <ChildContent>
+        <MCard>
+            <MCardTitle>
+                @T("UserException")
+            </MCardTitle>
+            <MCardText>
+                @T("UserExceptionMsg")
+            </MCardText>
+            <MCardActions>
+                <MSpacer></MSpacer>
+                <MButton Color="red darken-1" Text OnClick="Logout">
+                    @T("Confirm")
+                </MButton>
+            </MCardActions>
+        </MCard>
+    </ChildContent>
+</MDialog>
+
+@code {
+    [Parameter]
+    public bool Visible { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> VisibleChanged { get; set; }
+
+    private async Task Logout()
+    {
+        await Hiden();
+        NavigationManager.NavigateTo("/Account/Logout", true);
+    }
+
+    private async Task Hiden()
+    {
+        if (VisibleChanged.HasDelegate)
+        {
+            await VisibleChanged.InvokeAsync(false);
+        }
+        else
+        {
+            Visible = false;
+        }
+    }
+}
