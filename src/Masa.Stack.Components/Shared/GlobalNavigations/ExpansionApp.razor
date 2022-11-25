@@ -42,12 +42,12 @@
                                           InPreview="InPreview"
                                           ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)">
                             </ExpansionAppItem>
-                            @if (nav.Children.Any(c=>!c.Hiden))
-                            {
-                                <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
-                            }
                             @if (nav.HasChildren)
                             {
+                                @if (nav.Children.Any(c => !c.Hiden))
+                                {
+                                    <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
+                                }
                                 foreach (var subNav in nav.Children.Where(subNav => Filter(subNav)))
                                 {
                                     <ExpansionAppItem Data="@subNav"
@@ -56,8 +56,8 @@
                                           Level="2"
                                           ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))">
                                     </ExpansionAppItem>
-
-                                    if (subNav.HasActions)
+                                    //Preview not display action
+                                    if (subNav.HasActions && !InPreview)
                                     {
                                         @foreach (var action in subNav.Actions!.Where(action => Filter(action)))
                                         {
@@ -71,8 +71,9 @@
                                     }
                                 }
                             }
-                            else if (nav.HasActions)
+                            else if (nav.HasActions && !InPreview)
                             {
+                                <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
                                 @foreach (var action in nav.Actions!.Where(action => Filter(action)))
                                 {
                                     <ExpansionAppItem Data="@action"

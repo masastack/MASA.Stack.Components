@@ -27,11 +27,15 @@ public partial class SSimpleSelect<TValue>
 
     public bool MenuState { get; set; }
 
+    [Parameter]
+    public EventCallback OnChange { get; set; }
+
     private string Icon => MenuState ? "mdi-menu-up" : "mdi-menu-down";
 
     public async Task UpdateValueAsync(TValue? value)
     {
         if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value);
         else Value = value;
+        if (OnChange.HasDelegate) await OnChange.InvokeAsync();
     }
 }

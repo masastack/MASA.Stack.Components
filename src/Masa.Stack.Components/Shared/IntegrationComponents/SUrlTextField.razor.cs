@@ -66,9 +66,18 @@ public partial class SUrlTextField : IDisposable
 
     public async Task ValueTextUpdateAsync(string value)
     {
-        value = $"{Protocol}://{value.TrimStart("https://".ToArray()).TrimStart("http://".ToArray())}";
-        if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value);
-        else Value = value;
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            value = $"{Protocol}://{value.TrimStart("https://".ToArray()).TrimStart("http://".ToArray())}";
+        }
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(value);
+        }
+        else
+        {
+            Value = value;
+        }
     }
 
     public async Task ProtocolUpdateAsync(string protocol)
