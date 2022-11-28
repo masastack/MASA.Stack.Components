@@ -9,14 +9,13 @@ public class UploadAvatar : SUploadImage
     public IClient Client { get; set; } = default!;
 
     [Inject]
-    public IMasaConfiguration MasaConfiguration { get; set; } = default!;
+    public IConfiguration Configuration { get; set; } = default!;
 
     public OssOptions OssOptions
     {
         get
         {
-            return MasaConfiguration.ConfigurationApi.GetPublic()
-            .GetValue<OssOptions>("$public.OSS");
+            return Configuration.GetSection("ConfigurationApi:public-$Config:$public.oss").Get<OssOptions>();
         }
     }
 

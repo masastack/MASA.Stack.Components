@@ -17,7 +17,8 @@
             <PBlockText Primary="@UserDetail.DisplayName"
                         PrimaryClass="font-20-bold emphasis2--text"
                         Secondary="@UserDetail.Account"
-                        SecondaryClass="regular3--text font-14 full-width" />
+                        SecondaryClass="regular3--text font-14 full-width"
+                        Style="height:40px;" />
             @if(IsStaff)
             {
                 <SButton Text OnClick="NavigateToStaff" Class="mt-6">@T("Switch to staff")</SButton>

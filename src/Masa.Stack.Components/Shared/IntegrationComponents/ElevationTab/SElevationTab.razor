@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components
+@inherits MasaComponentBase
 
 <CascadingValue Value="this">
     @ChildContent
@@ -13,7 +14,7 @@
             {
                 var tab = Tabs[i];
                 <SLabeledRadio MinWidth="@TabMinWidth" Value="@(tab)">
-                    <span class="@(Tab == tab ? "subtitle2 emphasis2--text" : "btn regular2--text")">@tab</span>
+                    <span class="@(Tab == tab ? "subtitle2 emphasis2--text" : "btn regular2--text")">@T(tab)</span>
                 </SLabeledRadio>
             }
         </SLabeledRadioGroup>
