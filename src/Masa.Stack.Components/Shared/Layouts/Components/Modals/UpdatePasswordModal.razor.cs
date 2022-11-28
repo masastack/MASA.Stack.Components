@@ -4,7 +4,7 @@ public partial class UpdatePasswordModal
 {
     private MForm _form = null!;
     private ForgetPasswordModal? _forgetPasswordModal;
-   
+
     [Parameter]
     public bool Value { get; set; }
 
@@ -17,7 +17,7 @@ public partial class UpdatePasswordModal
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
             HasOldPassword = await AuthClient.UserService.HasPasswordAsync();
         }
@@ -40,6 +40,7 @@ public partial class UpdatePasswordModal
                 OldPassword = Model.OldPassword
             });
             await PopupService.AlertAsync(@T("Update password success"), AlertTypes.Success);
+            _form.Reset();
             await UpdateValueAsync(false);
         }
     }
@@ -48,5 +49,5 @@ public partial class UpdatePasswordModal
     {
         if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value);
         else Value = value;
-    }  
+    }
 }

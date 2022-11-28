@@ -2,7 +2,7 @@
 
 public class DynamicTranslateProvider : IScopedDependency
 {
-    public const string I18N_KEY = "$public.I18n.";
+    public const string I18N_KEY = "$public.i18n.";
 
     readonly IMemoryCache _memoryCache;
     readonly IMasaConfiguration _masaConfiguration;
