@@ -9,7 +9,7 @@
 <CascadingValue Value="this" IsFixed>
     <CascadingValue Value="I18n">
         <MApp Class="masa masa-stack-components">
-            <MErrorHandler ErrorContent=ErrorContent OnErrorHandleAsync=OnErrorAsync>
+            <MErrorHandler ErrorContent=ErrorContent OnErrorHandleAsync=ErrorHandleAsync>
             <MAppBar App
                      Class="mx-6"
                      Elevation="0"
@@ -28,7 +28,7 @@
                 }
                 else
                 {
-                    <SearchMenu />  
+                    <SearchMenu Navs="NavItems"/>  
                 }
                 <MSpacer />
                 <Languages OnChange="() => { }" />
@@ -48,6 +48,7 @@
                 </div>
             </MMain>
             </MErrorHandler>
+            <NoUserLogoutConfirm @bind-Visible="_noUserLogoutConfirm" />
         </MApp>
     </CascadingValue>
 </CascadingValue>

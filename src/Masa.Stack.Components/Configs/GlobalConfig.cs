@@ -23,12 +23,14 @@ public class GlobalConfig : IScopedDependency
 
     public event CurrentTeamChanged? OnCurrentTeamChanged;
 
+    public string Version { get; init; }
+
     public GlobalConfig(CookieStorage cookieStorage, I18n i18n, IHttpContextAccessor httpContextAccessor)
     {
         _cookieStorage = cookieStorage;
         _i18N = i18n;
         _menus = new();
-
+        Version = "0.7.0";
         if (httpContextAccessor.HttpContext is not null)
             Initialization(httpContextAccessor.HttpContext.Request.Cookies);
     }

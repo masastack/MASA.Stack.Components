@@ -2,15 +2,20 @@
 
 public partial class PhoneNumberValidateForm : MasaComponentBase
 {
+    [CascadingParameter]
+    public ForgetPasswordModal ForgetPasswordModal { get; set; } = null!;
+
     private bool _reseting = false;
     private ResetPasswordByPhoneModel _resetPasswordByPhoneModel = new();
-
     private MForm _form = null!;
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        _resetPasswordByPhoneModel.PhoneNumber = MasaUser.PhoneNumber;
-        base.OnInitialized();
+        if (string.IsNullOrEmpty(_resetPasswordByPhoneModel.PhoneNumber))
+        {
+            _resetPasswordByPhoneModel.PhoneNumber = MasaUser.PhoneNumber;
+        }
+        base.OnParametersSet();
     }
 
     internal void ResetFields()
@@ -35,6 +40,7 @@ public partial class PhoneNumberValidateForm : MasaComponentBase
                 ConfirmPassword = _resetPasswordByPhoneModel.ConfirmPassword
             });
             await PopupService.AlertAsync(T("OperationSuccessfulMessage"), AlertTypes.Success);
+            ForgetPasswordModal.HandleOnCancel();
         }
         catch (Exception e)
         {

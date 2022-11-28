@@ -1,18 +1,25 @@
 ﻿@namespace Masa.Stack.Components
 
-<MTextField TValue="string?"
-            Value="Value"
+<MTextField Value="Value"
             ValueChanged="ValueChanged"
             BackgroundColor="#F0F3FA"
             Class="@Class"
             Dense="@Dense"
             Flat
+            Clearable
             Placeholder="Search"
             HideDetails="true"
             OnKeyDown="HandleOnKeyDown"
-            PrependInnerIcon="mdi-magnify"
             Solo
+            OnFocus="FocusHandler" 
+            OnBlur="BlurHandler"
             Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}")">
+                <PrependInnerContent>
+        @if (!isFocused)
+        {
+            <MIcon>mdi-magnify</MIcon>
+        }
+            </PrependInnerContent>
 </MTextField>
 
 @code {
@@ -35,6 +42,8 @@
     [Parameter]
     public string? Style { get; set; }
 
+    bool isFocused = false;
+
     private async Task HandleOnKeyDown(KeyboardEventArgs args)
     {
         if (args.Key == "Enter" && OnEnter.HasDelegate)
@@ -43,4 +52,13 @@
         }
     }
 
+    private void FocusHandler()
+    {
+        isFocused = true;
+    }
+
+    private void BlurHandler()
+    {
+        isFocused = false;
+    }
 }

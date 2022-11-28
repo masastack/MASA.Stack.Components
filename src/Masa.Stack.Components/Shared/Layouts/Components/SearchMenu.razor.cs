@@ -2,17 +2,13 @@
 
 public partial class SearchMenu
 {
-    List<Menu>? _menus;
-    string _url = "";
+    [EditorRequired]
+    [Parameter]
+    public List<Nav> Navs { get; set; } = new();
 
-    List<Menu> Menus
-    {
-        get
-        {
-            if (_menus?.Any() is not true) _menus = BuildMenus(GlobalConfig.Menus);
-            return _menus ?? new();
-        }
-    }
+    string _url = "";
+    List<Menu> _menus = new();
+    List<Nav> _navs = new();
 
     public string Url
     {
@@ -27,16 +23,25 @@ public partial class SearchMenu
         }
     }
 
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<List<Nav>>(nameof(Navs), out var navs) && !_navs.SequenceEqual(navs))
+        {
+            _menus = BuildMenus(GlobalConfig.Menus);
+        }
+        return base.SetParametersAsync(parameters);
+    }
+
     List<Menu> BuildMenus(List<Nav> navs, Menu? parent = null)
     {
         var menus = new List<Menu>();
         foreach (var nav in navs)
         {
-            var menu = new Menu(nav.Code, nav.Name, nav.Icon, nav.Url, parent);
+            var menu = new Menu(nav.Code, nav.Name, nav.Icon, nav.Url ?? "/", parent);
             menus.Add(menu);
             if (nav.HasChildren) menus.AddRange(BuildMenus(nav.Children, menu));
         }
-        return menus.Where(menu => string.IsNullOrEmpty(menu.Url) is false).ToList();
+        return menus.Where(menu => !string.IsNullOrEmpty(menu.Url)).ToList();
     }
 
     string FullTitleI18n(string fullTitle)

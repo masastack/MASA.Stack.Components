@@ -1,5 +1,4 @@
-﻿
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
@@ -56,6 +55,7 @@ public partial class SLayout
     List<string> _preWhiteUris = new();
     List<Nav> FlattenedNavs { get; set; } = new();
     List<Nav> FlattenedAllNavs { get; set; } = new();
+    bool _noUserLogoutConfirm;
     List<string> _whiteUriList = new List<string> { "403", "404", "user-center",
         "notification-center", "notification-center/*" };
 
@@ -119,22 +119,6 @@ public partial class SLayout
                 };
             }
 #endif
-
-            if (!string.IsNullOrWhiteSpace(TeamRouteFormat))
-            {
-                try
-                {
-                    if (MasaUser.CurrentTeamId != Guid.Empty)
-                    {
-                        var teamNav = new Nav("stack.team", "Team", "mdi-account-group-outline", string.Format(TeamRouteFormat, MasaUser.CurrentTeamId), 0);
-                        NavItems.Add(teamNav);
-                    }
-                }
-                catch (Exception e)
-                {
-                    await PopupService.ToastErrorAsync(e.Message);
-                }
-            }
 
             GlobalConfig.Menus = NavItems;
 
@@ -242,7 +226,14 @@ public partial class SLayout
         }
 
         Logger.LogInformation("URL of new location: {Location}", e.Location);
-        AuthClient.UserService.VisitedAsync(AppId, relativeUri);
+        try
+        {
+            AuthClient.UserService.VisitedAsync(AppId, relativeUri);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "post user visited error");
+        }
     }
 
     private async Task AddFavoriteMenu(string code)
@@ -258,5 +249,20 @@ public partial class SLayout
     public void Dispose()
     {
         NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    private Task ErrorHandleAsync(Exception exception)
+    {
+        //todo handler caller return NoUserException
+        if (exception.Message == "current_user_not_found")
+        {
+            _noUserLogoutConfirm = true;
+            return Task.CompletedTask;
+        }
+        if (OnErrorAsync != null)
+        {
+            OnErrorAsync.Invoke(exception);
+        }
+        return Task.CompletedTask;
     }
 }

@@ -2,7 +2,7 @@
 
 public class DynamicTranslateProvider : IScopedDependency
 {
-    const string I18N_KEY = "$public.I18n.";
+    public const string I18N_KEY = "$public.I18n.";
 
     readonly IMemoryCache _memoryCache;
     readonly IMasaConfiguration _masaConfiguration;
@@ -21,8 +21,8 @@ public class DynamicTranslateProvider : IScopedDependency
         var i18n_key = $"{I18N_KEY}{culture}";
         var section = _memoryCache.GetOrCreate(i18n_key, (entry) =>
         {
-            entry.SlidingExpiration = TimeSpan.FromSeconds(30);
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+            entry.SlidingExpiration = TimeSpan.FromSeconds(10);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
             return _masaConfiguration.ConfigurationApi.GetPublic().GetSection(i18n_key);
         });
         var value = section.GetValue<string>(key);
