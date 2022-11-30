@@ -26,6 +26,16 @@ public class UploadAvatar : SUploadImage
         return base.SetParametersAsync(parameters);
     }
 
+    protected override async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        if(e.File.ContentType == "image/gif")
+        {
+            await PopupService.AlertAsync(T($"Does not support gif format avatar"), AlertTypes.Error);
+            return;
+        }
+        await base.OnInputFileChange(e);
+    }
+
     public override async Task UploadAsync()
     {
         var response = Client.GetSecurityToken();
