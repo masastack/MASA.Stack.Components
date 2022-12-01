@@ -41,6 +41,7 @@ public partial class PhoneNumberValidateForm : MasaComponentBase
             });
             await PopupService.AlertAsync(T("OperationSuccessfulMessage"), AlertTypes.Success);
             ForgetPasswordModal.HandleOnCancel();
+            await ForgetPasswordModal.UpdatePasswordModal.HandleOnCancel();
         }
         catch (Exception e)
         {

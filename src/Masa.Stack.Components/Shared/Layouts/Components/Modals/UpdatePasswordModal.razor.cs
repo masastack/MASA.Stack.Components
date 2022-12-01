@@ -23,7 +23,7 @@ public partial class UpdatePasswordModal
         }
     }
 
-    async Task HandleOnCancel()
+    public async Task HandleOnCancel()
     {
         _form.Reset();
         await UpdateValueAsync(false);
