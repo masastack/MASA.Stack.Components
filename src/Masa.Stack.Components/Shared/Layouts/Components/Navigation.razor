@@ -4,6 +4,7 @@
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
 @inject IEnvironmentProvider EnvironmentProvider
+@inject ILogger<Navigation> Logger
 
 <MNavigationDrawer App
                    Class="navigation"
@@ -168,7 +169,15 @@
     {
         if (firstRender)
         {
-            _environments = await PmClient.EnvironmentService.GetListAsync();
+            try
+            {
+                _environments = await PmClient.EnvironmentService.GetListAsync();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, "PmClient.EnvironmentService.GetListAsync");
+            }
+            
             _currentEnvironment = EnvironmentProvider.GetEnvironment();
         }
         await base.OnAfterRenderAsync(firstRender);

@@ -8,6 +8,7 @@
 @inject MasaUser MasaUser
 @inject GlobalConfig GlobalConfig
 @inject IJSRuntime JS
+@inject ILogger<User> Logger
 
 <MMenu @bind-Value="@MenuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
        ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
@@ -128,18 +129,34 @@
         {
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Stack.Components/js/http.js");
 
-            var user = await AuthClient.UserService.GetCurrentUserAsync();
-            if (!string.IsNullOrWhiteSpace(user.Avatar))
+            try
             {
-                avatar = user.Avatar;
+                var user = await AuthClient.UserService.GetCurrentUserAsync();
+                if (!string.IsNullOrWhiteSpace(user?.Avatar))
+                {
+                    avatar = user.Avatar;
+                }
             }
-            _teams = await AuthClient.TeamService.GetUserTeamsAsync();
-            if (MasaUser.CurrentTeamId == Guid.Empty && _teams.Any())
+            catch (Exception e)
             {
-                MasaUser.CurrentTeamId = _teams.First().Id;
-                await CurrentTeamChanged(MasaUser.CurrentTeamId.ToString());
+                Logger.LogError(e, "AuthClient.UserService.GetCurrentUserAsync");
             }
-            _currentTeamId = MasaUser.CurrentTeamId.ToString();
+            
+            try
+            {
+                _teams = await AuthClient.TeamService.GetUserTeamsAsync();
+                if (MasaUser.CurrentTeamId == Guid.Empty && _teams.Any())
+                {
+                    MasaUser.CurrentTeamId = _teams.First().Id;
+                    await CurrentTeamChanged(MasaUser.CurrentTeamId.ToString());
+                }
+                _currentTeamId = MasaUser.CurrentTeamId.ToString();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, "AuthClient.TeamService.GetUserTeamsAsync");
+            }
+            
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
