@@ -5,6 +5,7 @@
 @inject IMcClient McClient
 @inject IHttpContextAccessor httpContextAccessor
 @using static Masa.Stack.Components.JsInitVariables;
+@inject ILogger<Notification> Logger
 
 <div class="notice">
     <MMenu OffsetY Bottom @bind-Value="_showMenu">

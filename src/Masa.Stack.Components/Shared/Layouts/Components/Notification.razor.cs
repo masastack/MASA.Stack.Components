@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-
-namespace Masa.Stack.Components.Layouts;
+﻿namespace Masa.Stack.Components.Layouts;
 
 public partial class Notification : MasaComponentBase
 {
@@ -80,8 +78,15 @@ public partial class Notification : MasaComponentBase
 
     async Task LoadData()
     {
-        var dtos = await McClient.WebsiteMessageService.GetNoticeListAsync(_queryParam);
-        NoticeState.SetNotices(dtos);
+        try
+        {
+            var dtos = await McClient.WebsiteMessageService.GetNoticeListAsync(_queryParam);
+            NoticeState.SetNotices(dtos);
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "McClient.WebsiteMessageService.GetNoticeListAsync");
+        }
     }
 
     async Task Changed()
