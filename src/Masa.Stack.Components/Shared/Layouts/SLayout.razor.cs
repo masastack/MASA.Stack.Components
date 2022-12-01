@@ -81,7 +81,7 @@ public partial class SLayout
             }
             catch (Exception e)
             {
-                await PopupService.ToastErrorAsync(e.Message);
+                Logger.LogError(e, "AuthClient.PermissionService.GetMenusAsync");
             }
 
             NavItems = menus.Adapt<List<Nav>>();
@@ -232,7 +232,7 @@ public partial class SLayout
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "post user visited error");
+            Logger.LogError(ex, "AuthClient.UserService.VisitedAsync");
         }
     }
 

@@ -11,15 +11,16 @@
             HideDetails="true"
             OnKeyDown="HandleOnKeyDown"
             Solo
-            OnFocus="FocusHandler" 
+            ClearIcon="mdi-close-circle"
+            OnFocus="FocusHandler"
             OnBlur="BlurHandler"
             Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}")">
-                <PrependInnerContent>
+    <PrependInnerContent>
         @if (!isFocused)
         {
             <MIcon>mdi-magnify</MIcon>
         }
-            </PrependInnerContent>
+    </PrependInnerContent>
 </MTextField>
 
 @code {
