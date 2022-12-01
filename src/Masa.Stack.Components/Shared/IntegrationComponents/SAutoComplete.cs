@@ -60,14 +60,15 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
             }
         }
 
-        if (Required && PrependInnerContent == default)
+        if (Required && LabelContent == default)
         {
-            PrependInnerContent = builder =>
+            LabelContent = builder =>
             {
                 builder.OpenElement(0, "label");
-                builder.AddAttribute(1, "class", "red--text");
+                builder.AddAttribute(1, "class", "red--text mr-1");
                 builder.AddContent(2, "*");
                 builder.CloseElement();
+                builder.AddContent(3, Label);
             };
         }
     }
