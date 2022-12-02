@@ -12,4 +12,7 @@ public class IconConstants
     public const string Filter = "mdi-filter";
     public const string FilterOff = "mdi-filter-off";
     public const string Setting = "mdi-cog-outline";
+    public const string Close = "mdi-close";
+    public const string Folder = "mdi-folder";
+    public const string List = "mdi-format-list-bulleted";
 }
