@@ -31,7 +31,7 @@ public class STextField<TValue> : MTextField<TValue>
         HideDetails = "auto";
         Outlined = true;
 
-        await base.SetParametersAsync(parameters);        
+        await base.SetParametersAsync(parameters);
     }
 
     protected override void OnParametersSet()
@@ -89,7 +89,7 @@ public class STextField<TValue> : MTextField<TValue>
                     subBuilder.AddAttribute(6, "Style", "border:none;border-radius: 0 8px 8px 0 !important;height:100%;");
                     subBuilder.AddAttribute(7, "DisableLoading", InternalAction.DisableLoding);
                     subBuilder.AddAttribute(8, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, InternalAction.OnClick));
-                    subBuilder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));                   
+                    subBuilder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));
                     subBuilder.CloseComponent();
                 });
                 builder.CloseElement();

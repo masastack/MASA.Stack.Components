@@ -28,7 +28,7 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
             props.OffsetY = true;
         };
 
-        await base.SetParametersAsync(parameters);      
+        await base.SetParametersAsync(parameters);
     }
 
     protected override void OnParametersSet()
