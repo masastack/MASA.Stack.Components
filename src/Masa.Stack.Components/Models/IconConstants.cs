@@ -15,4 +15,6 @@ public class IconConstants
     public const string Close = "mdi-close";
     public const string Folder = "mdi-folder";
     public const string List = "mdi-format-list-bulleted";
+    public const string Down = "mdi-chevron-down";
+    public const string Up = "mdi-chevron-up";
 }
