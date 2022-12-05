@@ -24,21 +24,6 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
         Style = "";
         Class = "";
         await base.SetParametersAsync(parameters);
-
-        if (string.IsNullOrEmpty(Label) && ValueExpression is not null)
-        {
-            var accessorBody = ValueExpression.Body;
-
-            if (accessorBody is UnaryExpression unaryExpression
-                && unaryExpression.NodeType == ExpressionType.Convert
-                && unaryExpression.Type == typeof(object))
-            {
-                accessorBody = unaryExpression.Operand;
-            }
-
-            var fieldName = (accessorBody as MemberExpression)!.Member.Name;
-            Label = I18n.T(fieldName);
-        }
     }
 
     protected override void OnParametersSet()
@@ -85,6 +70,21 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
                 builder.CloseElement();
                 builder.AddContent(3, Label);
             };
+        }
+
+        if (string.IsNullOrEmpty(Label) && ValueExpression is not null)
+        {
+            var accessorBody = ValueExpression.Body;
+
+            if (accessorBody is UnaryExpression unaryExpression
+                && unaryExpression.NodeType == ExpressionType.Convert
+                && unaryExpression.Type == typeof(object))
+            {
+                accessorBody = unaryExpression.Operand;
+            }
+
+            var fieldName = (accessorBody as MemberExpression)!.Member.Name;
+            Label = I18n.T(fieldName);
         }
     }
 }

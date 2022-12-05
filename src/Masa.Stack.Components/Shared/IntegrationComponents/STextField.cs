@@ -31,22 +31,7 @@ public class STextField<TValue> : MTextField<TValue>
         HideDetails = "auto";
         Outlined = true;
 
-        await base.SetParametersAsync(parameters);
-
-        if (string.IsNullOrEmpty(Label) && ValueExpression is not null)
-        {
-            var accessorBody = ValueExpression.Body;
-
-            if (accessorBody is UnaryExpression unaryExpression
-                && unaryExpression.NodeType == ExpressionType.Convert
-                && unaryExpression.Type == typeof(object))
-            {
-                accessorBody = unaryExpression.Operand;
-            }
-
-            var fieldName = (accessorBody as MemberExpression)!.Member.Name;
-            Label = I18n.T(fieldName);
-        }           
+        await base.SetParametersAsync(parameters);        
     }
 
     protected override void OnParametersSet()
@@ -133,6 +118,21 @@ public class STextField<TValue> : MTextField<TValue>
                 builder.CloseElement();
                 builder.AddContent(3, Label);
             };
+        }
+
+        if (string.IsNullOrEmpty(Label) && ValueExpression is not null)
+        {
+            var accessorBody = ValueExpression.Body;
+
+            if (accessorBody is UnaryExpression unaryExpression
+                && unaryExpression.NodeType == ExpressionType.Convert
+                && unaryExpression.Type == typeof(object))
+            {
+                accessorBody = unaryExpression.Operand;
+            }
+
+            var fieldName = (accessorBody as MemberExpression)!.Member.Name;
+            Label = I18n.T(fieldName);
         }
     }
 }
