@@ -2,6 +2,9 @@
 
 public class STextField<TValue> : MTextField<TValue>
 {
+    [Inject]
+    public I18n I18n { get; set; } = default!;
+
     [Parameter]
     public bool Small { get; set; }
 
@@ -86,7 +89,7 @@ public class STextField<TValue> : MTextField<TValue>
                     subBuilder.AddAttribute(6, "Style", "border:none;border-radius: 0 8px 8px 0 !important;height:100%;");
                     subBuilder.AddAttribute(7, "DisableLoading", InternalAction.DisableLoding);
                     subBuilder.AddAttribute(8, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, InternalAction.OnClick));
-                    subBuilder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));                   
+                    subBuilder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));
                     subBuilder.CloseComponent();
                 });
                 builder.CloseElement();
@@ -115,6 +118,21 @@ public class STextField<TValue> : MTextField<TValue>
                 builder.CloseElement();
                 builder.AddContent(3, Label);
             };
+        }
+
+        if (string.IsNullOrEmpty(Label) && ValueExpression is not null)
+        {
+            var accessorBody = ValueExpression.Body;
+
+            if (accessorBody is UnaryExpression unaryExpression
+                && unaryExpression.NodeType == ExpressionType.Convert
+                && unaryExpression.Type == typeof(object))
+            {
+                accessorBody = unaryExpression.Operand;
+            }
+
+            var fieldName = (accessorBody as MemberExpression)!.Member.Name;
+            Label = I18n.T(fieldName);
         }
     }
 }
