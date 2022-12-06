@@ -19,10 +19,8 @@
                BackgroundColor="@(FillBackground?"fill-background":"")"
                HideDetails="@("auto")"
                Style="@($"width:340px;height:40px;{Style}")"
-               Class="@($"{Class} rounded-2")">
-@*    <PrependInnerContent>
-        <MIcon Size=16 Class="mr-2 emphasis2--text">mdi-magnify</MIcon>
-    </PrependInnerContent>*@
+               Class="@($"{Class} rounded-2")"
+               Clearable=Clearable>
     <ItemContent Context="data">
         <div class="d-flex py-2" style="height:64px;">
             <MAvatar Size=30 Class="ma-auto">

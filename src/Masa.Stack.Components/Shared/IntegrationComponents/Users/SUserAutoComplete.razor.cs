@@ -48,6 +48,9 @@ public partial class SUserAutoComplete
     [Parameter]
     public bool PersistentPlaceholder { get; set; }
 
+    [Parameter]
+    public bool Clearable { get; set; }
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
