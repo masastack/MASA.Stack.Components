@@ -5,8 +5,9 @@
     @ChildContent
     <div Class="@($"d-flex flex-column {AlignItems} {Class}")" Style="@Style">
         <SLabeledRadioGroup Class="@TabsClass"
+                            ActiveClass="@ActiveClass"                           
                             Dense="Dense"
-                            Style="@($"width: fit-content {TabsStyle}")"
+                            Style="@($"width: fit-content; {TabsStyle}")"
                             TValue="string"
                             Value="Tab"
                             ValueChanged="ValueChanged">
@@ -45,6 +46,9 @@
 
     [Parameter]
     public string? ItemsClass { get; set; }
+
+    [Parameter]
+    public string? ActiveClass { get; set; }
 
     [Parameter]
     public string? ItemsStyle { get; set; }
