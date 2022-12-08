@@ -702,3 +702,7 @@ masa-stack-components .table-border-none.dense thead th {
     margin-top: auto !important;
     margin-bottom: auto !important;
 }
+
+.masa-stack-components .m-tabs.transparent-tab > .m-tabs-bar {
+    background-color: transparent;
+}
