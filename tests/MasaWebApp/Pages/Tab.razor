@@ -1,6 +1,6 @@
 ﻿@page "/tab"
 
-<div class="pa-5">
+<div class="white pa-5">
     <h3>SLabeledRadioGroup's value: @value</h3>
 
     <SLabeledRadioGroup @bind-Value="value" Dense Class="mb-2">
@@ -17,7 +17,7 @@
         }
     </SLabeledRadioGroup>
 
-    <SElevationTab TabMinWidth="200" ItemsClass="mt-4" ActiveClass="fill-background" TabsClass="white" Tabs='new List<string> { "Menu Permission", "Api Permission" }' Dense @bind-Tab="value3">
+    <SElevationTab TabMinWidth="200" ItemsClass="mt-4" Tabs='new List<string> { "Menu Permission", "Api Permission" }' Dense @bind-Tab="value3">
         <SElevationTabItem>
             Menu Permission
         </SElevationTabItem>
