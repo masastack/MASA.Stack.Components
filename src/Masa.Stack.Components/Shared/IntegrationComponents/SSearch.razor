@@ -2,7 +2,7 @@
 
 <MTextField Value="Value"
             ValueChanged="ValueChanged"
-            BackgroundColor="#F0F3FA"
+            BackgroundColor="@BackgroundColor"
             Class="@Class"
             Dense="@Dense"
             Flat
@@ -30,6 +30,9 @@
 
     [Parameter]
     public EventCallback<string?> ValueChanged { get; set; }
+
+    [Parameter]
+    public string BackgroundColor { get; set; } = "#F0F3FA";
 
     [Parameter]
     public string? Class { get; set; }
