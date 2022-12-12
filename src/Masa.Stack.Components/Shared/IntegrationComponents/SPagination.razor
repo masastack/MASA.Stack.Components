@@ -3,24 +3,32 @@
 
 <div class="@Class d-flex">
     <div class="d-flex" style="height: 30px !important;">
-        <SPaginationSelect Value=PageSize ValueChanged=PageSizeChanged Items="@PageSizeSelect" />
-        <div class="ml-2 mt-1 block-center caption regular3--text">@T("Rows per page")</div>
+        <SPaginationSelect Value="PageSize"
+                           ValueChanged="HandlePageSizeChanged"
+                           Items="@PageSizeSelect" />
+        <div class="ml-2 mt-1 block-center caption regular3--text">
+            @T("Rows per page")
+        </div>
         <div class="ml-2 mt-1 block-center caption regular3--text">
             <span>@T("Total") @Total @T("Item")</span>
         </div>
     </div>
     <div class="ml-auto d-flex">
-        <div @onclick=Previous class="@(PreviousDisabled?"":"hover-pointer") pa-1 regular3--text" style="width: 34px;height: 34px;background: #FFFFFF;border-radius: 34px;">
-            <MIcon Disabled=PreviousDisabled Size=24>mdi-chevron-left</MIcon>
+        <div @onclick="Previous"
+             class="@(PreviousDisabled ? "" : "hover-pointer") pa-1 regular3--text"
+             style="width: 34px;height: 34px;background: #FFFFFF;border-radius: 34px;">
+            <MIcon Disabled="PreviousDisabled" Size=24>mdi-chevron-left</MIcon>
         </div>
         <div class="mx-4 my-auto regular--text overline">@Page/@TotalPage</div>
-        <div @onclick=Next class="@(NextDisabled?"":"hover-pointer") pa-1 regular3--text" style="width: 34px;height: 34px;background: #FFFFFF;border-radius: 34px;">
-            <MIcon Disabled=NextDisabled Size=24>mdi-chevron-right</MIcon>
+        <div @onclick="Next" class="@(NextDisabled ? "" : "hover-pointer") pa-1 regular3--text"
+             style="width: 34px;height: 34px;background: #FFFFFF;border-radius: 34px;">
+            <MIcon Disabled="NextDisabled" Size="24">mdi-chevron-right</MIcon>
         </div>
     </div>
 </div>
 
 @code {
+
     [Parameter]
     public string Class { get; set; } = "";
 
@@ -42,6 +50,9 @@
     [Parameter]
     public List<int> PageSizeSelect { get; set; } = new() { 10, 20, 50, 100 };
 
+    [Parameter]
+    public EventCallback<(int page, int pageSize)> OnChange { get; set; }
+
     private int TotalPage
     {
         get
@@ -57,17 +68,32 @@
 
     async Task Next()
     {
-        if (NextDisabled is false)
-        {
-            await PageChanged.InvokeAsync(++Page);
-        }
+        if (NextDisabled)
+            return;
+
+        ++Page;
+        await PageChanged.InvokeAsync(Page);
+
+        await OnChange.InvokeAsync((Page, PageSize));
     }
 
     async Task Previous()
     {
-        if (PreviousDisabled is false)
-        {
-            await PageChanged.InvokeAsync(--Page);
-        }
+        if (PreviousDisabled)
+            return;
+
+        --Page;
+        await PageChanged.InvokeAsync(Page);
+
+        await OnChange.InvokeAsync((Page, PageSize));
     }
+
+    async Task HandlePageSizeChanged(int val)
+    {
+        PageSize = val;
+        await PageSizeChanged.InvokeAsync(val);
+
+        await OnChange.InvokeAsync((Page, PageSize));
+    }
+
 }
