@@ -12,9 +12,11 @@
             OnKeyDown="HandleOnKeyDown"
             Solo
             ClearIcon="mdi-close-circle"
+            MinHeight="MinHeight"
             OnFocus="FocusHandler"
             OnBlur="BlurHandler"
-            Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}")">
+            Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}")"
+            @attributes="@Attributes">
     <PrependInnerContent>
         @if (!isFocused)
         {
@@ -45,6 +47,15 @@
 
     [Parameter]
     public string? Style { get; set; }
+
+    [Parameter]
+    public StringNumber? Height { get; set; }
+    
+    [Parameter]
+    public StringNumber? MinHeight { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; } = new();
 
     bool isFocused = false;
 

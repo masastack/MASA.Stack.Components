@@ -499,6 +499,11 @@
         border-bottom-left-radius: 0 !important;
         border-bottom-right-radius: 0 !important;
     }
+    
+    .masa .rounded-t-0 {
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+    }
 
     .masa .rounded-r-1 {
         border-top-right-radius: 5px !important;
