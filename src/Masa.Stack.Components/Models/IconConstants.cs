@@ -17,4 +17,5 @@ public class IconConstants
     public const string List = "mdi-format-list-bulleted";
     public const string Down = "mdi-chevron-down";
     public const string Up = "mdi-chevron-up";
+    public const string Save = "mdi-content-save";
 }
