@@ -18,4 +18,6 @@ public class IconConstants
     public const string Down = "mdi-chevron-down";
     public const string Up = "mdi-chevron-up";
     public const string Save = "mdi-content-save";
+    public const string Chart = "mdi-chart-box-plus-outline";
+    public const string More = "mdi-dots-vertical";
 }
