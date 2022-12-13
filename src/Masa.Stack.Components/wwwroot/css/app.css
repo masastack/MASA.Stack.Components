@@ -702,3 +702,27 @@ masa-stack-components .table-border-none.dense thead th {
     margin-top: auto !important;
     margin-bottom: auto !important;
 }
+
+.masa-stack-components .m-tabs.transparent-tab > .m-tabs-bar {
+    background-color: transparent;
+}
+
+.masa-stack-components .m-text-field.m-input--h-40 {
+    padding-top: 0;
+}
+
+.masa-stack-components .m-text-field.m-text-field--solo.m-input--h-40>.m-input__control {
+    min-height: 40px;
+}
+
+.masa-stack-components .m-input--h-40:not(.m-input--hide-details)>.m-input__control>.m-input__slot {
+    margin-bottom: 4px;
+}
+
+.masa-stack-components .m-text-field.m-input--h-40:not(.m-text-field--outlined) .m-text-field__prefix, .m-text-field.m-input--h-40:not(.m-text-field--outlined) .m-text-field__suffix, .m-text-field.m-input--h-40:not(.m-text-field--outlined) input {
+    padding: 4px 0 2px;
+}
+
+.masa-stack-components .hover-pointer {
+    cursor: pointer;
+}

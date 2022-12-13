@@ -2,7 +2,7 @@
 
 <MTextField Value="Value"
             ValueChanged="ValueChanged"
-            BackgroundColor=BackgroundColor
+            BackgroundColor="@BackgroundColor"
             Class="@Class"
             Dense="@Dense"
             Flat
@@ -12,9 +12,11 @@
             OnKeyDown="HandleOnKeyDown"
             Solo
             ClearIcon="mdi-close-circle"
+            MinHeight="MinHeight"
             OnFocus="FocusHandler"
             OnBlur="BlurHandler"
-            Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}")">
+            Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}")"
+            @attributes="@Attributes">
     <PrependInnerContent>
         @if (!isFocused)
         {
@@ -32,6 +34,9 @@
     public EventCallback<string?> ValueChanged { get; set; }
 
     [Parameter]
+    public string BackgroundColor { get; set; } = "#F0F3FA";
+
+    [Parameter]
     public string? Class { get; set; }
 
     [Parameter]
@@ -44,7 +49,13 @@
     public string? Style { get; set; }
 
     [Parameter]
-    public string BackgroundColor { get; set; } = "#F0F3FA";
+    public StringNumber? Height { get; set; }
+    
+    [Parameter]
+    public StringNumber? MinHeight { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; } = new();
 
     bool isFocused = false;
 
