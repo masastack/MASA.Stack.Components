@@ -14,6 +14,9 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
     [Parameter]
     public bool Required { get; set; }
 
+    [Parameter]
+    public bool AutoLabel { get; set; } = true;
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Dense = true;
@@ -72,7 +75,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
             };
         }
 
-        if (string.IsNullOrEmpty(Label) && ValueExpression is not null)
+        if (string.IsNullOrEmpty(Label) is false && AutoLabel && ValueExpression is not null)
         {
             var accessorBody = ValueExpression.Body;
 

@@ -17,6 +17,9 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
     [Parameter]
     public string? Tooltip { get; set; }
 
+    [Parameter]
+    public bool AutoLabel { get; set; } = true;
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Dense = true;
@@ -89,7 +92,7 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
             };
         }
 
-        if (string.IsNullOrEmpty(Label) && ValueExpression is not null)
+        if (string.IsNullOrEmpty(Label) is false && AutoLabel && ValueExpression is not null)
         {
             var accessorBody = ValueExpression.Body;
 
