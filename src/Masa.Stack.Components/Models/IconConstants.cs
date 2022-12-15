@@ -20,4 +20,6 @@ public class IconConstants
     public const string Save = "mdi-content-save";
     public const string Chart = "mdi-chart-box-plus-outline";
     public const string More = "mdi-dots-vertical";
+    public const string MenuDown = "mdi-menu-down";
+    public const string MenuRight = "mdi-menu-right";
 }
