@@ -19,7 +19,14 @@ public partial class Notification : MasaComponentBase
 
         NoticeState.OnNoticeChanged += Changed;
 
-        await McClient.WebsiteMessageService.CheckAsync();
+        try
+        {
+            await McClient.WebsiteMessageService.CheckAsync();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "McClient.WebsiteMessageService.CheckAsync");
+        }
 
         await HubConnectionBuilder();
     }
@@ -50,7 +57,15 @@ public partial class Notification : MasaComponentBase
                 };
             })
             .Build();
-        await HubConnection.StartAsync();
+        try
+        {
+            await HubConnection.StartAsync();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "HubConnection.StartAsync");
+        }
+
 
         HubConnection?.On(SignalRMethodConsts.GET_NOTIFICATION, async () =>
         {
@@ -59,7 +74,14 @@ public partial class Notification : MasaComponentBase
 
         HubConnection?.On(SignalRMethodConsts.CHECK_NOTIFICATION, async () =>
         {
-            await McClient.WebsiteMessageService.CheckAsync();
+            try
+            {
+                await McClient.WebsiteMessageService.CheckAsync();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, "McClient.WebsiteMessageService.CheckAsync");
+            }
         });
     }
 
