@@ -12,6 +12,8 @@ public partial class StaffInfo : MasaComponentBase
 
     private Dictionary<string, object?>? Items { get; set; }
 
+    private Dictionary<string, object?>? PreviewItems { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -24,9 +26,9 @@ public partial class StaffInfo : MasaComponentBase
     private async Task GetCurrentStaffAsync()
     {
         StaffDetail = await AuthClient.UserService.GetCurrentStaffAsync() ?? throw new UserFriendlyException("This staff does not exist");
-        if(StaffDetail.Enabled is false)
+        if (StaffDetail.Enabled is false)
         {
-            await PopupService.AlertAsync(T("The employee account has been frozen, please contact the administrator!"),AlertTypes.Error);
+            await PopupService.AlertAsync(T("The employee account has been frozen, please contact the administrator!"), AlertTypes.Error);
             NavigationManager.NavigateTo("/user-center");
         }
         UpdateStaff = StaffDetail.Adapt<UpdateStaffBasicInfoModel>();
@@ -39,6 +41,12 @@ public partial class StaffInfo : MasaComponentBase
             ["Address"] = ("mdi-map-marker", StaffDetail.Address.Address),
             ["Department"] = ("mdi-file-tree", StaffDetail.Department),
             ["CreationTime"] = ("mdi-clock-outline", StaffDetail.CreationTime.ToString("yyyy-MM-dd")),
+        };
+
+        PreviewItems = new Dictionary<string, object?>()
+        {
+            ["PhoneNumber"] = ("mdi-phone", StaffDetail.PhoneNumber),
+            ["Email"] = ("mdi-email", StaffDetail.Email)
         };
     }
 

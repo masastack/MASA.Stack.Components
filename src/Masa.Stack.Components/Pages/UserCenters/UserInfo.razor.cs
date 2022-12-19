@@ -12,6 +12,8 @@ public partial class UserInfo : MasaComponentBase
 
     private Dictionary<string, object?>? Items { get; set; }
 
+    private Dictionary<string, object?>? PreviewItems { get; set; }
+
     private bool IsStaff => UserDetail.StaffId is not null;
 
     private bool UpdateUserPhoneNumberDialogVisible { get; set; }
@@ -41,6 +43,17 @@ public partial class UserInfo : MasaComponentBase
         {
             ["CreationTime"] = ("mdi-clock-outline", UserDetail.CreationTime.ToString("yyyy-MM-dd")),
         };
+
+        PreviewItems = new Dictionary<string, object?>()
+        {
+            ["PhoneNumber"] = ("di-phone", UserDetail.PhoneNumber),
+            ["Email"] = ("mdi-email", UserDetail.Email),
+            ["Position"] = ("mdi-briefcase", UserDetail.Position),
+            ["Company"] = ("mdi-office-building", UserDetail.CompanyName),
+            ["Address"] = ("mdi-map-marker", UserDetail.Address.ToString()),
+            ["Department"] = ("mdi-file-tree", UserDetail.Department),
+        };
+
         _windowValue = default;
     }
 
