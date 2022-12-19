@@ -23,6 +23,9 @@ public class STextField<TValue> : MTextField<TValue>
     [Parameter]
     public Action<DefaultTextfieldAction>? Action { get; set; }
 
+    [Parameter]
+    public bool AutoLabel { get; set; } = true;
+
     private DefaultTextfieldAction InternalAction { get; set; } = new();
 
     public override async Task SetParametersAsync(ParameterView parameters)
@@ -120,7 +123,7 @@ public class STextField<TValue> : MTextField<TValue>
             };
         }
 
-        if (string.IsNullOrEmpty(Label) && ValueExpression is not null)
+        if (string.IsNullOrEmpty(Label) is false && AutoLabel && ValueExpression is not null)
         {
             var accessorBody = ValueExpression.Body;
 

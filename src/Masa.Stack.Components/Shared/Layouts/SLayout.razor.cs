@@ -228,7 +228,7 @@ public partial class SLayout
     {
         var uri = e.Location;
         var relativeUri = uri.Replace(NavigationManager.BaseUri, "");
-        if (!IsMenusUri(NavItems, relativeUri))
+        if (uri.Contains("/dashboard") is false && !IsMenusUri(NavItems, relativeUri))
         {
             NavigationManager.NavigateTo("/403");
             return;
