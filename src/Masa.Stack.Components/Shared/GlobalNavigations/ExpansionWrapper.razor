@@ -48,10 +48,8 @@
 <div class="global-nav-content__side @SideClass" style="@SideStyle">
     <MNavigationDrawer Floating Right Width="256" Class="toc">
         <ul>
-            @for (var i = 0; i < _categories.Count(); i++)
+            @foreach (var category in _categories)
             {
-                var category = _categories[i];
-
                 <li class="masa-text-2-2 pl-3 py-2 category_side" id="@($"{category.TagId(TagIdPrefix)}_side")"
                 @onclick="@(() => ScrollTo(category.TagId(TagIdPrefix), ".global-nav-content__main"))">
                     <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>

@@ -122,22 +122,31 @@ public partial class SLayout
 
             GlobalConfig.Menus = NavItems;
 
-            var uri = NavigationManager.Uri;
             //add home index content sould remove this code
             if (NavigationManager.Uri == NavigationManager.BaseUri)
             {
                 NavigationManager.NavigateTo(NavItems.GetDefaultRoute());
                 return;
             }
-
-            if (!IsMenusUri(NavItems, uri.Replace(NavigationManager.BaseUri, "")))
+            var relativeUri = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+            if (!IsMenusUri(NavItems, relativeUri))
             {
                 NavigationManager.NavigateTo("/403");
                 return;
             }
 
-            FlattenedNavs = FlattenNavs(NavItems, true);
+            Logger.LogInformation("URL of navigation to : {Location}", NavigationManager.Uri);
+            try
+            {
+                await AuthClient.UserService.VisitedAsync(AppId, relativeUri);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
+            }
 
+
+            FlattenedNavs = FlattenNavs(NavItems, true);
             FlattenedAllNavs = FlattenNavs(NavItems, false);
 
             StateHasChanged();
