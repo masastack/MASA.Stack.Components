@@ -123,7 +123,7 @@ public class STextField<TValue> : MTextField<TValue>
             };
         }
 
-        if (string.IsNullOrEmpty(Label) is false && AutoLabel && ValueExpression is not null)
+        if (string.IsNullOrEmpty(Label) is true && AutoLabel && ValueExpression is not null)
         {
             var accessorBody = ValueExpression.Body;
 
