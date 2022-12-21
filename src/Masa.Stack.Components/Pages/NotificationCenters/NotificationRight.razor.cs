@@ -23,7 +23,7 @@ public partial class NotificationRight : MasaComponentBase
     [Parameter]
     public EventCallback OnAllRead { get; set; }
 
-    private GetWebsiteMessageModel _queryParam = new();
+    private GetWebsiteMessageModel _queryParam = new(1, 10);
     private PaginatedListModel<WebsiteMessageModel> _entities = new();
     private List<WebsiteMessageFilterType> _filterTypeItems = Enum.GetValues(typeof(WebsiteMessageFilterType)).Cast<WebsiteMessageFilterType>().ToList();
 

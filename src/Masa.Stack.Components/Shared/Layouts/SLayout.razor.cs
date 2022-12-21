@@ -262,8 +262,7 @@ public partial class SLayout
 
     private Task ErrorHandleAsync(Exception exception)
     {
-        //todo handler caller return NoUserException
-        if (exception.Message == "current_user_not_found")
+        if (exception is UserStatusException)
         {
             _noUserLogoutConfirm = true;
             return Task.CompletedTask;

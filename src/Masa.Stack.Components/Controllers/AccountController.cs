@@ -13,18 +13,19 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Logout(string? environment)
+    public IActionResult Logout(string? environment, bool redirectToLogin = false)
     {
+        var authenticationProperties = new AuthenticationProperties
+        {
+            Items = {
+                { PropertyConsts.REDIRECT_TO_LOGIN,redirectToLogin.ToString() }
+            }
+        };
         if (!string.IsNullOrEmpty(environment))
         {
-            return SignOut(new AuthenticationProperties
-            {
-                Items = {
-                    { IsolationConsts.ENVIRONMENT,environment }
-                }
-            }, "OpenIdConnect", "Cookies");
+            authenticationProperties.Items.TryAdd(IsolationConsts.ENVIRONMENT, environment);
         }
-        return SignOut("OpenIdConnect", "Cookies");
+        return SignOut(authenticationProperties, "OpenIdConnect", "Cookies");
     }
 
     [HttpGet, HttpPut]
