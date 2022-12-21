@@ -129,7 +129,7 @@ public partial class SLayout
                 return;
             }
             var relativeUri = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
-            if (uri.Contains("/dashboard") is false && !IsMenusUri(NavItems, relativeUri))
+            if (relativeUri.Contains("/dashboard") is false && !IsMenusUri(NavItems, relativeUri))
             {
                 NavigationManager.NavigateTo("/403");
                 return;
