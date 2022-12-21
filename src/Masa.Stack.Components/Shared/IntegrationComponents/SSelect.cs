@@ -92,7 +92,7 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
             };
         }
 
-        if (string.IsNullOrEmpty(Label) is false && AutoLabel && ValueExpression is not null)
+        if (string.IsNullOrEmpty(Label) is true && AutoLabel && ValueExpression is not null)
         {
             var accessorBody = ValueExpression.Body;
 
