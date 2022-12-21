@@ -46,7 +46,7 @@ public partial class UserInfo : MasaComponentBase
 
         PreviewItems = new Dictionary<string, object?>()
         {
-            ["PhoneNumber"] = ("di-phone", UserDetail.PhoneNumber),
+            ["PhoneNumber"] = ("mdi-phone", UserDetail.PhoneNumber),
             ["Email"] = ("mdi-email", UserDetail.Email),
             ["Position"] = ("mdi-briefcase", UserDetail.Position),
             ["Company"] = ("mdi-office-building", UserDetail.CompanyName),

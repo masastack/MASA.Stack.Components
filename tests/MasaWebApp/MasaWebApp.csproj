@@ -5,11 +5,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 	<ItemGroup>		
-		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.7.0-preview.14" />
-		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="0.7.0-preview.14" />
+		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.7.0-preview.15" />
+		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="0.7.0-preview.15" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
-		<PackageReference Include="Masa.Contrib.Configuration" Version="0.7.0-preview.14" />
-		<PackageReference Include="Masa.Utils.Security.Authentication.OpenIdConnect" Version="0.7.0-preview.14" />
+		<PackageReference Include="Masa.Contrib.Configuration" Version="0.7.0-preview.15" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.7" />
 	</ItemGroup>
 	<ItemGroup>
