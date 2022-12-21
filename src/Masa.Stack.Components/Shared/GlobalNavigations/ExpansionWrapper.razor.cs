@@ -91,13 +91,14 @@
 
         private bool Filter(Category category)
         {
+            //Expression<Func<Category, bool>> condition = _category => !_category.Hiden || !_category.Apps.Any();
             if (InPreview)
             {
-                return Value.Any(value => value.Category == category.Code);
+                return Value.Any(value => value.Category == category.Code) || !category.Hiden || !category.Apps.Any();
             }
             else
             {
-                return !category.Hiden || !category.Apps.Any();
+                return !category.Hiden || category.Apps.Any();
             }
         }
 
