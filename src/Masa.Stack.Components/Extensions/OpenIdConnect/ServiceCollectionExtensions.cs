@@ -1,6 +1,6 @@
-﻿namespace Masa.Stack.Components.Extensions;
+﻿namespace Masa.Stack.Components.Extensions.OpenIdConnect;
 
-public static class OpenIdConnectExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaOpenIdConnect(
         this IServiceCollection services,
@@ -27,6 +27,7 @@ public static class OpenIdConnectExtensions
         services.AddHttpContextAccessor();
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        services.AddTransient<CookieEventHandler>();
         services.AddAuthentication(options =>
         {
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -36,6 +37,7 @@ public static class OpenIdConnectExtensions
         .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
         {
             options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
+            options.EventsType = typeof(CookieEventHandler);
         })
         .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
         {
@@ -123,15 +125,4 @@ public static class OpenIdConnectExtensions
 
         return services;
     }
-}
-
-public class MasaOpenIdConnectOptions
-{
-    public string Authority { get; set; } = string.Empty;
-
-    public string ClientId { get; set; } = string.Empty;
-
-    public string ClientSecret { get; set; } = string.Empty;
-
-    public List<string> Scopes { get; set; } = new List<string>();
 }
