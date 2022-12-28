@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public class SCheckbox : MCheckbox
+public class SCheckbox<TValue> : MCheckbox<TValue>
 {
     [Parameter]
     public string? Tooltip { get; set; }

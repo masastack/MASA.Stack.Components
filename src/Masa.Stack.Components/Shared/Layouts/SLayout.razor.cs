@@ -260,18 +260,20 @@ public partial class SLayout
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
-    private Task ErrorHandleAsync(Exception exception)
+    private async Task<bool> ErrorHandleAsync(Exception exception)
     {
         //todo handler caller return NoUserException
         if (exception.Message == "current_user_not_found")
         {
             _noUserLogoutConfirm = true;
-            return Task.CompletedTask;
+            return true;
         }
+
         if (OnErrorAsync != null)
         {
-            OnErrorAsync.Invoke(exception);
+            await OnErrorAsync.Invoke(exception);
         }
-        return Task.CompletedTask;
+
+        return true;
     }
 }
