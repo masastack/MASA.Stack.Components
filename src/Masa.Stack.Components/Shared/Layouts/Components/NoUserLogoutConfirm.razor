@@ -32,7 +32,7 @@
     private async Task Logout()
     {
         await Hiden();
-        NavigationManager.NavigateTo("/Account/Logout", true);
+        NavigationManager.NavigateTo($"/Account/Logout?redirectToLogin={true}", true);
     }
 
     private async Task Hiden()

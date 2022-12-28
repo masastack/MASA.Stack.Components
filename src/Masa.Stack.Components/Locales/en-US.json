@@ -32,7 +32,7 @@
   "PlatformTools": "Platform Tools",
   "Search": "Search",
   "UserException": "User exception",
-  "UserExceptionMsg": "The current user does not exist, please try to login again",
+  "UserExceptionMsg": "The current user does not exist or is disabled. Please try to login again",
   "PhoneNumber": "Phone number",
   "Email": "Email",
   "Position": "Position",

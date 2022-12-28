@@ -75,7 +75,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
             };
         }
 
-        if (string.IsNullOrEmpty(Label) is false && AutoLabel && ValueExpression is not null)
+        if (string.IsNullOrEmpty(Label) is true && AutoLabel && ValueExpression is not null)
         {
             var accessorBody = ValueExpression.Body;
 
