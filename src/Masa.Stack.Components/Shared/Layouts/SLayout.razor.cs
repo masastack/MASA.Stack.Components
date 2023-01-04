@@ -51,6 +51,9 @@ public partial class SLayout
     [Parameter]
     public List<string> WhiteUris { get; set; } = new List<string>();
 
+    [Parameter]
+    public bool Exact { get; set; } = true;
+
     List<Nav> NavItems = new();
     List<string> _preWhiteUris = new();
     List<Nav> FlattenedNavs { get; set; } = new();
