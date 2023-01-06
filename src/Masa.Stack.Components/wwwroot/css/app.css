@@ -144,6 +144,10 @@ body, .masa-stack-components {
                 color: #7681AB;
             }
 
+                .masa-stack-components .global-nav .nav .nav-item .m-ripple__container {
+                    border-radius: 8px;
+                }
+
                 .masa-stack-components .global-nav .nav .nav-item .m-list-item__title {
                     font-size: 14px;
                 }
@@ -293,10 +297,6 @@ body, .masa-stack-components {
     .masa-stack-components .m-list--nav .m-list-item, .m-list--nav .m-list-item:before {
         border-radius: 8px;
     }
-
-    /*.masa-stack-components .m-list--nav .m-list-item, .m-ripple__container{
-        border-radius: 8px;
-    }*/
 
     .masa-stack-components .m-menu__content:not(.m-ellipsis-text__tooltip) {
         background: #FFFFFF;

@@ -2,10 +2,18 @@
 
 public class McServiceOptions
 {
-    public string BaseAddress { get; set; }
+    private Func<string> _baseAddress;
 
-    public McServiceOptions(string baseAddress)
+    public string BaseAddress
     {
-        BaseAddress = baseAddress;
+        get
+        {
+            return _baseAddress.Invoke();
+        }
+    }
+
+    public McServiceOptions(Func<string> baseAddress)
+    {
+        _baseAddress = baseAddress;
     }
 }

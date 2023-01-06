@@ -14,7 +14,7 @@
             @for (var i = 0; i < Tabs!.Count; i++)
             {
                 var tab = Tabs[i];
-                <SLabeledRadio MinWidth="@TabMinWidth" Value="@(tab)">
+                <SLabeledRadio MinWidth="@TabMinWidth" Value="@(IndexTab?i.ToString():tab)">
                     <span class="@(Tab == tab ? "subtitle2 emphasis2--text" : "btn regular2--text")">@T(tab)</span>
                 </SLabeledRadio>
             }
@@ -29,7 +29,7 @@
                 if (item is not null)
                 {
                     var tab = Tabs[i];
-                    <MWindowItem Class="full-height" Value="@tab">
+                    <MWindowItem Class="full-height" Value="@(IndexTab?i.ToString():tab)">
                         @item.ChildContent
                     </MWindowItem>
                 }
@@ -67,6 +67,9 @@
 
     [Parameter]
     public string? Style { get; set; }
+
+    [Parameter]
+    public bool IndexTab { get; set; }
 
     [EditorRequired]
     [Parameter]
