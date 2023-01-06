@@ -11,6 +11,9 @@ public partial class SUserAutoComplete
     public EventCallback<Guid> ValueChanged { get; set; }
 
     [Parameter]
+    public EventCallback<UserSelectModel> OnSelectedItemUpdate { get; set; }
+
+    [Parameter]
     public int Page { get; set; } = 1;
 
     [Parameter]
