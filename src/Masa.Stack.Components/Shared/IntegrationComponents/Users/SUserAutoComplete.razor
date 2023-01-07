@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<MAutocomplete Value="Value"
+<SAutoComplete Value="Value"
                ValueChanged="ValueChanged"
                OnSelectedItemUpdate="OnSelectedItemUpdate"
                OnSearchInputUpdate=OnSearchChanged
@@ -15,6 +15,9 @@
                Dense="@Dense"
                Solo="@Solo"
                Outlined="@Outlined"
+               Small="@Small"
+               Medium="@Medium"
+               Large="@Large"
                Placeholder="@Placeholder"
                PersistentPlaceholder="@PersistentPlaceholder"
                BackgroundColor="@(FillBackground?"fill-background":"")"
@@ -47,4 +50,4 @@
             </div>
         </div>
     </ItemContent>
-</MAutocomplete>
+</SAutoComplete>
