@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
