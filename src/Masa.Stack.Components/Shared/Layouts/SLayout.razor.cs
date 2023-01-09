@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using System;
+
+namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
@@ -129,7 +131,7 @@ public partial class SLayout
                 return;
             }
             var relativeUri = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
-            if (!IsMenusUri(NavItems, relativeUri))
+            if (relativeUri.Contains("dashboard") is false && !IsMenusUri(NavItems, relativeUri))
             {
                 NavigationManager.NavigateTo("/403");
                 return;
