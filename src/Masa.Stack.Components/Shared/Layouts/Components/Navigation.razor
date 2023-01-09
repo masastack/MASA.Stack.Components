@@ -38,7 +38,7 @@
             {
                 <STooltip Disabled="!GlobalConfig.Mini">
                     <ActivatorContent Context="tooltipContext">
-                        <SListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs" Exact>
+                        <SListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs" Exact="Exact">
                             <ItemContent>
                                 <MListItemIcon>
                                     <MIcon Dense Style="margin-left:6px" Color="@(context.Active ? "white" : "regular3--text")">@nav.Icon</MIcon>
@@ -154,6 +154,9 @@
     [EditorRequired]
     [Parameter]
     public string? MiniLogo { get; set; }
+
+    [Parameter]
+    public bool Exact { get; set; } = true;
 
     List<EnvironmentModel> _environments = new();
     string _currentEnvironment = "";

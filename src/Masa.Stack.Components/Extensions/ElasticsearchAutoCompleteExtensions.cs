@@ -5,17 +5,26 @@ namespace Masa.Stack.Components.Extensions;
 
 public static class ElasticsearchAutoCompleteExtensions
 {
-    public static void AddElasticsearchAutoComplete(this IServiceCollection services, UserAutoCompleteOptions options)
+    public static void AddElasticsearchAutoComplete(this IServiceCollection services, Func<UserAutoCompleteOptions> options)
     {
         var esBuilder = services.AddElasticsearchClient(
-                options.Name,
-                option => option.UseNodes(options.Nodes).UseDefault()
+                "",
+                option =>
+                {
+                    var autoCompleteOptions = options.Invoke();
+                    option.UseNodes(autoCompleteOptions.Nodes);
+                },
+                true
             );
 
         esBuilder.AddAutoCompleteBySpecifyDocument<UserSelectModel>(option =>
         {
-            option.UseIndexName(options.Index);
-            if (string.IsNullOrEmpty(options.Alias) is false) option.UseAlias(options.Alias);
+            var autoCompleteOptions = options.Invoke();
+            option.UseIndexName(autoCompleteOptions.Index);
+            if (string.IsNullOrEmpty(autoCompleteOptions.Alias) is false)
+            {
+                option.UseAlias(autoCompleteOptions.Alias);
+            }
         });
     }
 }

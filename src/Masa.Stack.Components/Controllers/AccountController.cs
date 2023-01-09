@@ -33,4 +33,19 @@ public class AccountController : Controller
     {
         await _authenticationStateManager.UpsertClaimAsync(key, value);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> FrontChannelLogout(string sid)
+    {
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            var currentSid = User.FindFirst("sid")?.Value ?? "";
+            if (string.Equals(currentSid, sid, StringComparison.Ordinal))
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+            }
+        }
+        return NoContent();
+    }
 }

@@ -11,6 +11,9 @@ public partial class SUserAutoComplete
     public EventCallback<Guid> ValueChanged { get; set; }
 
     [Parameter]
+    public EventCallback<UserSelectModel> OnSelectedItemUpdate { get; set; }
+
+    [Parameter]
     public int Page { get; set; } = 1;
 
     [Parameter]
@@ -50,6 +53,15 @@ public partial class SUserAutoComplete
 
     [Parameter]
     public bool Clearable { get; set; }
+
+    [Parameter]
+    public bool Small { get; set; }
+
+    [Parameter]
+    public bool Medium { get; set; }
+
+    [Parameter]
+    public bool Large { get; set; }
 
     public List<UserSelectModel> UserSelect { get; set; } = new();
 

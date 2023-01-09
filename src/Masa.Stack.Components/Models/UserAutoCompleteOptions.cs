@@ -5,8 +5,6 @@ namespace Masa.Stack.Components.Models;
 
 public class UserAutoCompleteOptions
 {
-    public string Name { get; set; } = "";
-
     public string[] Nodes { get; set; } = { };
 
     public string Alias { get; set; } = "";

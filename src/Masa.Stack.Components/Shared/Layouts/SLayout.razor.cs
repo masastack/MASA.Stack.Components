@@ -53,6 +53,9 @@ public partial class SLayout
     [Parameter]
     public List<string> WhiteUris { get; set; } = new List<string>();
 
+    [Parameter]
+    public bool Exact { get; set; } = true;
+
     List<Nav> NavItems = new();
     List<string> _preWhiteUris = new();
     List<Nav> FlattenedNavs { get; set; } = new();
@@ -262,17 +265,19 @@ public partial class SLayout
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
-    private Task ErrorHandleAsync(Exception exception)
+    private async Task<bool> ErrorHandleAsync(Exception exception)
     {
         if (exception is UserStatusException)
         {
             _noUserLogoutConfirm = true;
-            return Task.CompletedTask;
+            return true;
         }
+
         if (OnErrorAsync != null)
         {
-            OnErrorAsync.Invoke(exception);
+            await OnErrorAsync.Invoke(exception);
         }
-        return Task.CompletedTask;
+
+        return true;
     }
 }
