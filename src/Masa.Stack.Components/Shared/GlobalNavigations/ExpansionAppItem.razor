@@ -68,7 +68,7 @@
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="@(Data.IsChecked?"color: #323D6F;":"")">@Data.Name</MListItemTitle>
+                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@Data.Name</MListItemTitle>
                     </MListItemContent>
 
                     @if (Checkable)
