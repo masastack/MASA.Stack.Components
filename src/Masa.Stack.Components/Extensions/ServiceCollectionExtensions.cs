@@ -2,7 +2,7 @@
 
 public static class ServiceCollectionExtensions
 {
-    public static async Task<IServiceCollection> AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
+    public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
         string? pmHost = null, RedisConfigurationOptions? redisOption = null)
     {
@@ -94,7 +94,7 @@ public static class ServiceCollectionExtensions
 
             return userAutoCompleteOptions;
         });
-
+        builder.Services.AddSingleton<LogoutSessionManager>();
         return builder.Services;
     }
 

@@ -13,11 +13,12 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         MasaOpenIdConnectOptions masaOpenIdConnectOptions)
     {
+        services.AddSingleton(masaOpenIdConnectOptions);
         return services.AddMasaOpenIdConnect(masaOpenIdConnectOptions.Authority, masaOpenIdConnectOptions.ClientId,
                 masaOpenIdConnectOptions.ClientSecret, masaOpenIdConnectOptions.Scopes.ToArray());
     }
 
-    public static IServiceCollection AddMasaOpenIdConnect(
+    private static IServiceCollection AddMasaOpenIdConnect(
         this IServiceCollection services,
         string authority,
         string clinetId,
