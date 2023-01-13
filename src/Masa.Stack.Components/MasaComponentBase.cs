@@ -38,4 +38,9 @@ public abstract class MasaComponentBase : ComponentBase
     {
         return TranslateProvider.DT(key);
     }
+
+    protected string GetIsDisplayStyle(bool show)
+    {
+        return show ? "" : "display:none !important;";
+    }
 }

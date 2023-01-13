@@ -6,26 +6,24 @@
      Value="@App.Code"
      Readonly="InPreview">
     <MHover Disabled="!Checkable" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">
-        <div @attributes="@context.Attrs">
+        <div @attributes="@context.Attrs" class="d-flex">
             <span class="masa-text-2-2 d-inline-block text-truncate">
                 @TranslateProvider.DT(App.Name) 
             </span>
-            @if (Checkable && context.Hover)
+            @if (Checkable)
             {
-                if ((AppChecked && InPreview) || !InPreview)
-                {
-                    <div class="d-flex">
-                        <span class="masa-text-3-1">@T("SelectAll")</span>
-                        <MSimpleCheckbox Color="primary"
-                                 Ripple="false"
-                                 Value="@AppChecked"
-                                 ValueChanged="@AppCheckedChanged"
-                                 Class="masa-icon-size-20"
-                                 Style="flex: none;margin-right: -4px;"
-                                 Readonly="InPreview">
-                        </MSimpleCheckbox>
-                    </div>
-                }
+                <MSpacer />
+                <div class="d-flex" style="@GetIsDisplayStyle(context.Hover)">
+                    <span class="masa-text-3-1">@T("SelectAll")</span>
+                    <MSimpleCheckbox Color="primary"
+                                     Ripple="false"
+                                     Value="@AppChecked"
+                                     ValueChanged="@AppCheckedChanged"
+                                     Class="masa-icon-size-20"
+                                     Style="flex: none;margin-right: -4px;"
+                                     Readonly="InPreview">
+                    </MSimpleCheckbox>
+                </div>
             }
         </div>
     </MHover>
