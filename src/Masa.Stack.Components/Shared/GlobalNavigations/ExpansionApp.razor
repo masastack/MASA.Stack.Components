@@ -12,20 +12,6 @@
             </span>
             @if (Checkable)
             {
-@*                if ((AppChecked && InPreview) || !InPreview)
-                {
-                    <div class="d-flex">
-                        <span class="masa-text-3-1">@T("SelectAll")</span>
-                        <MSimpleCheckbox Color="primary"
-                                 Ripple="false"
-                                 Value="@AppChecked"
-                                 ValueChanged="@AppCheckedChanged"
-                                 Class="masa-icon-size-20"
-                                 Style="flex: none;margin-right: -4px;"
-                                 Readonly="InPreview">
-                        </MSimpleCheckbox>
-                    </div>
-                }*@
                 <MSpacer />
                 <div class="d-flex" style="@GetIsDisplayStyle(context.Hover)">
                     <span class="masa-text-3-1">@T("SelectAll")</span>
