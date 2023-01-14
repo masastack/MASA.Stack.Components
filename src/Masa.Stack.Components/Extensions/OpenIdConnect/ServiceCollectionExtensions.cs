@@ -115,6 +115,15 @@ public static class ServiceCollectionExtensions
                     return Task.CompletedTask;
                 }
             };
+
+            //ensure normal i use self signed certificate
+            options.BackchannelHttpHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = delegate
+                {
+                    return true;
+                }
+            };
         });
 
         services.AddAuthorization(options =>
