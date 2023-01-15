@@ -13,6 +13,7 @@ global using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
 global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
 global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Enum;
 global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Model;
+global using Masa.BuildingBlocks.StackSdks.Config;
 global using Masa.BuildingBlocks.StackSdks.Mc.Enum;
 global using Masa.BuildingBlocks.StackSdks.Mc.Model;
 global using Masa.BuildingBlocks.StackSdks.Pm;
