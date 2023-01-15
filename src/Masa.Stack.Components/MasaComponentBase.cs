@@ -1,5 +1,4 @@
-﻿using Masa.BuildingBlocks.StackSdks.Config;
-
+﻿
 namespace Masa.Stack.Components;
 
 public abstract class MasaComponentBase : ComponentBase
