@@ -1,4 +1,5 @@
-﻿namespace Masa.Stack.Components;
+﻿
+namespace Masa.Stack.Components;
 
 public abstract class MasaComponentBase : ComponentBase
 {
@@ -23,6 +24,9 @@ public abstract class MasaComponentBase : ComponentBase
 
     [Inject]
     public IPopupService PopupService { get; set; } = default!;
+
+    [Inject]
+    public IMasaStackConfig MasaStackConfig { get; set; } = default!;
 
     [Inject]
     public DynamicTranslateProvider TranslateProvider { get; set; } = default!;

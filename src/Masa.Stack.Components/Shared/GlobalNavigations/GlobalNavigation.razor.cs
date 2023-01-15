@@ -1,4 +1,5 @@
-﻿namespace Masa.Stack.Components;
+﻿
+namespace Masa.Stack.Components;
 
 public partial class GlobalNavigation : MasaComponentBase
 {
@@ -33,7 +34,7 @@ public partial class GlobalNavigation : MasaComponentBase
     private async Task GetRecommendApps()
     {
         //todo pm config
-        var recommendAppIdentities = new List<string>() { "masa-pm-web-admin", "masa-dcc-web-admin", "masa-auth-web-admin" };
+        var recommendAppIdentities = new List<string>() { MasaStackConfig.GetWebId(MasaStackConstant.PM), MasaStackConfig.GetWebId(MasaStackConstant.DCC), MasaStackConfig.GetWebId(MasaStackConstant.AUTH) };
         var projects = await PmClient.ProjectService.GetProjectAppsAsync(EnvironmentProvider.GetEnvironment());
         _recommendApps = projects.SelectMany(p => p.Apps).Where(a => recommendAppIdentities.Contains(a.Identity))
             .Select(a => new KeyValuePair<string, string>(a.Name, a.Url)).ToList();
