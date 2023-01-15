@@ -66,6 +66,10 @@ public static class ServiceCollectionExtensions
                     Nodes = new string[1] { masaStackConfig.ElasticModel.ESNode }
                 };
             });
+
+            var autoCompleteFactory = builder.Services.BuildServiceProvider().GetRequiredService<IAutoCompleteFactory>();
+            var autoCompleteClient = autoCompleteFactory.Create();
+            autoCompleteClient.BuildAsync();
         }
         else
         {
