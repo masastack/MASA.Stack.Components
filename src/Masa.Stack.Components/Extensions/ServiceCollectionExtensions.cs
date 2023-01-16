@@ -26,6 +26,7 @@ public static class ServiceCollectionExtensions
         //temporary compatible
         if (masaStackConfig.IsDemo)
         {
+            Console.WriteLine("11111111111");
             builder.Services.AddMasaConfiguration(configurationBuilder =>
             {
                 configurationBuilder.UseDcc(masaStackConfig.GetDccMiniOptions<DccOptions>());
@@ -58,6 +59,9 @@ public static class ServiceCollectionExtensions
             builder.Services.AddPmClient(pmHost);
 
             builder.Services.AddOss();
+            Console.WriteLine($"es========{masaStackConfig.ElasticModel.ESNode}:{masaStackConfig.ElasticModel.ESPort}");
+            Console.WriteLine(masaStackConfig.ElasticModel.Index);
+            Console.WriteLine("AddElasticsearchAutoComplete");
             builder.Services.AddElasticsearchAutoComplete(() =>
             {
                 return new UserAutoCompleteOptions
@@ -69,6 +73,7 @@ public static class ServiceCollectionExtensions
         }
         else
         {
+            Console.WriteLine("22222222222222");
             builder.Services.AddMasaConfiguration(configurationBuilder =>
             {
                 configurationBuilder.UseDcc();
