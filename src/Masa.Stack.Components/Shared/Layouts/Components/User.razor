@@ -175,8 +175,6 @@
     {
         if (teamId != null)
         {
-            Console.WriteLine("============");
-            Console.WriteLine(JsonSerializer.Serialize(MasaUser));
             var gTeamId = Guid.Parse(teamId.AsT0);
             //guest accout change current team not persist to db
             if (MasaUser.Account?.ToLower() != "guest")
