@@ -41,7 +41,7 @@ public static class ServiceCollectionExtensions
                     new RedisServerOptions()
                     {
                         Host= masaStackConfig.RedisModel.RedisHost,
-                        Port=   masaStackConfig.RedisModel.RedisPort
+                        Port= masaStackConfig.RedisModel.RedisPort
                     }
                 },
                 DefaultDatabase = masaStackConfig.RedisModel.RedisDb,
@@ -63,13 +63,9 @@ public static class ServiceCollectionExtensions
                 return new UserAutoCompleteOptions
                 {
                     Index = masaStackConfig.ElasticModel.Index,
-                    Nodes = new string[1] { masaStackConfig.ElasticModel.ESNode }
+                    Nodes = new string[1] { $"{masaStackConfig.ElasticModel.ESNode}:{masaStackConfig.ElasticModel.ESPort}" }
                 };
             });
-
-            var autoCompleteFactory = builder.Services.BuildServiceProvider().GetRequiredService<IAutoCompleteFactory>();
-            var autoCompleteClient = autoCompleteFactory.Create();
-            autoCompleteClient.BuildAsync();
         }
         else
         {
