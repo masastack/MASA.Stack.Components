@@ -12,7 +12,8 @@ public static class ElasticsearchAutoCompleteExtensions
                 option =>
                 {
                     var autoCompleteOptions = options.Invoke();
-                    option.UseNodes(autoCompleteOptions.Nodes);
+                    option.UseNodes(autoCompleteOptions.Nodes)
+                        .UseConnectionSettings(setting => setting.EnableApiVersioningHeader(false));
                 },
                 true
             );
