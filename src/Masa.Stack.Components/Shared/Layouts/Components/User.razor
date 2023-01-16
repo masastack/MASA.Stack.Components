@@ -177,7 +177,7 @@
         {
             var gTeamId = Guid.Parse(teamId.AsT0);
             //guest accout change current team not persist to db
-            if (MasaUser.Account != "guest")
+            if (MasaUser.Account?.ToLower() != "guest")
             {
                 await AuthClient.UserService.SetCurrentTeamAsync(gTeamId);
             }
