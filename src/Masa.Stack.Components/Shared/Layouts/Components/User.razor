@@ -141,7 +141,7 @@
             {
                 Logger.LogError(e, "AuthClient.UserService.GetCurrentUserAsync");
             }
-            
+
             try
             {
                 _teams = await AuthClient.TeamService.GetUserTeamsAsync();
@@ -156,7 +156,7 @@
             {
                 Logger.LogError(e, "AuthClient.TeamService.GetUserTeamsAsync");
             }
-            
+
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -175,6 +175,8 @@
     {
         if (teamId != null)
         {
+            Console.WriteLine("============");
+            Console.WriteLine(JsonSerializer.Serialize(MasaUser));
             var gTeamId = Guid.Parse(teamId.AsT0);
             //guest accout change current team not persist to db
             if (MasaUser.Account?.ToLower() != "guest")
