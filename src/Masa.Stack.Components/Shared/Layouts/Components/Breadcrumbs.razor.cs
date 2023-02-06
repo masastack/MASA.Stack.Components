@@ -22,7 +22,7 @@
             Items = parents.Select(n => new BreadcrumbItem()
             {
                 Exact = true,
-                Href = n.Url,
+                Href = n.Url,             
                 Text = n.Name
             }).ToList();
         }
