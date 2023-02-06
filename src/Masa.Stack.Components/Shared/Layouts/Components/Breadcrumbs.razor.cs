@@ -23,7 +23,6 @@
             {
                 Exact = true,
                 Href = n.Url,
-                Linkage = true,
                 Text = n.Name
             }).ToList();
         }
