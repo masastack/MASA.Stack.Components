@@ -75,5 +75,21 @@
   "Fetch data": "Fetch Data",
   "Father": "Father",
   "ChildOne": "Child One",
-  "SmsSendTime": "Replays in {0} seconds"
+  "SmsSendTime": "Replays in {0} seconds",
+
+  "$MonthDayFormat": "MM/dd",
+  "DisplayName.Notice.Title": "Website message notification",
+  "Description.Notice.MoreTips": "View more messages",
+  "Permission.WebsiteMessageManagement": "Message center",
+  "DisplayName.AllWebsiteMessage": "All messages",
+  "DisplayName.WebsiteMessageAction.MarkAllRead": "Mark all read",
+  "DisplayName.WebsiteMessageAction.ShowAll": "Show All",
+  "DisplayName.WebsiteMessageAction.ShowUnread": "Show unread",
+  "DisplayName.WebsiteMessageFilterType": "Search Type",
+  "DisplayName.WebsiteMessageFilterType.Title": "Message Title",
+  "DisplayName.WebsiteMessageFilterType.Content": "Message content",
+  "OperationConfirmation": "Operation confirmation",
+  "DeletionConfirmationMessage": "Are you sure to delete the data?",
+  "DeletedSuccessfullyMessage": "Delete succeeded.",
+  "OperationSuccessfulMessage": "Operation succeeded."
 }
