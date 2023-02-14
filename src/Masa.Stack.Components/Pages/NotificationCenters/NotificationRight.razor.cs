@@ -34,6 +34,11 @@ public partial class NotificationRight : MasaComponentBase
         StateHasChanged();
     }
 
+    protected override void OnInitialized()
+    {
+        TypeAdapterConfig<GetWebsiteMessageModel, ReadAllWebsiteMessageModel>.NewConfig().MapToConstructor(true);
+    }
+
     public async Task LoadData()
     {
         _entities = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
