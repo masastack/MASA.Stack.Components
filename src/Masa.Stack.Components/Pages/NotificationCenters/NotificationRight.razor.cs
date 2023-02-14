@@ -1,10 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Humanizer;
-using Masa.Contrib.StackSdks.Mc.Service;
-using System.Reflection.PortableExecutable;
-
 namespace Masa.Stack.Components.NotificationCenters;
 
 public partial class NotificationRight : MasaComponentBase
