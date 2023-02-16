@@ -6,7 +6,7 @@ namespace Masa.Stack.Components;
 public class UploadAvatar : SUploadImage
 {
     [Inject]
-    public IClient Client { get; set; } = default!;
+    public IObjectStorageClient Client { get; set; } = default!;
 
     [Inject]
     public IConfiguration Configuration { get; set; } = default!;

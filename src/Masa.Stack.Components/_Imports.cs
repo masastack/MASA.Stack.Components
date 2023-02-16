@@ -62,3 +62,5 @@ global using System.Text;
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
 global using System.Text.RegularExpressions;
+global using Masa.Contrib.Storage.ObjectStorage.Aliyun;
+global using Masa.Stack.Components.UserCenters.Models;

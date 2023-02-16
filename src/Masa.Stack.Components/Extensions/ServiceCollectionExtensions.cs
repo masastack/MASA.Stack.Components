@@ -21,16 +21,15 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
         builder.Services.AddMasaStackConfig();
+        builder.Services.AddMasaConfiguration(configurationBuilder =>
+        {
+            configurationBuilder.UseDcc();
+        });
         var masaStackConfig = builder.Services.GetMasaStackConfig();
 
         //temporary compatible
         if (masaStackConfig.IsDemo)
         {
-            builder.Services.AddMasaConfiguration(configurationBuilder =>
-            {
-                configurationBuilder.UseDcc(masaStackConfig.GetDccMiniOptions<DccOptions>());
-            });
-
             var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
             authHost = masaStackConfig.GetAuthServiceDomain();
             mcHost = masaStackConfig.GetMcServiceDomain();
@@ -69,11 +68,6 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            builder.Services.AddMasaConfiguration(configurationBuilder =>
-            {
-                configurationBuilder.UseDcc();
-            });
-
             var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
             authHost = authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url");
             redisOption = redisOption ?? publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();

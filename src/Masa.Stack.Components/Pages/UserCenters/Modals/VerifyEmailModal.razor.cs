@@ -11,7 +11,7 @@ public partial class VerifyEmailModal : MasaComponentBase
     [Parameter]
     public EventCallback OnSuccess { get; set; }
 
-    public VerifyMsgCodeModel VerifyMsgCode { get; set; } = new(default, "");
+    public VerifyMsgCodeModel VerifyMsgCode { get; set; } = new();
 
     public MForm FormRef { get; set; } = default!;
 
