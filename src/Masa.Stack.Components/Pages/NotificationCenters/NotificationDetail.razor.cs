@@ -5,6 +5,8 @@ namespace Masa.Stack.Components.NotificationCenters;
 
 public partial class NotificationDetail
 {
+    [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
 
     [Inject]
     private IPopupService PopupService { get; set; } = null!;

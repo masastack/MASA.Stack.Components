@@ -1,7 +1,6 @@
 ﻿@namespace Masa.Stack.Components.NotificationCenters
 @inherits MasaComponentBase
 @inject IMcClient McClient
-@using static Masa.Stack.Components.JsInitVariables;
 
 <div class="message-right full-height @(Visible?"":"d-none")">
     <MCard Class="d-flex full-height flex-column rounded-5">
@@ -97,7 +96,7 @@
                             </MListItemSubtitle>
                         </MListItemContent>
                         <MListItemAction Class="align-self-start">
-                            <MListItemActionText Class="caption regular2--text">@item.SendTime.ToOffset(TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemActionText>
+                            <MListItemActionText Class="caption regular2--text">@item.SendTime.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemActionText>
                         </MListItemAction>
                     </MListItem>
                 }

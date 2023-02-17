@@ -23,7 +23,7 @@ else if (Value is DateTime dateTime)
     {
         if (dateTime.Kind != DateTimeKind.Local)
         {
-            dateTime = dateTime.Add(TimezoneOffset);
+            dateTime = dateTime.Add(JsInitVariables.TimezoneOffset);
         }
 
         var major = @DateOnly.FromDateTime(dateTime).ToString(DateFormat);

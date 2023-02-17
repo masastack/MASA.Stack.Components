@@ -6,6 +6,9 @@ namespace Masa.Stack.Components.NotificationCenters;
 public partial class NotificationRight : MasaComponentBase
 {
     [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
+    [Inject]
     public NoticeState NoticeState { get; set; } = default!;
 
     [Inject]

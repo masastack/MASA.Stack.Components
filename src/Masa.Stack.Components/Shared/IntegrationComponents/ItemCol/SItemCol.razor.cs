@@ -2,6 +2,9 @@
 
 public partial class SItemCol : MasaComponentBase
 {
+    [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
     [Parameter]
     public Func<bool, string>? BoolFormatter { get; set; }
 

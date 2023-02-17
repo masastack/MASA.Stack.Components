@@ -2,11 +2,12 @@
 @using Masa.Stack.Components.Configs
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
+@inject JsInitVariables JsInitVariables
 @implements IDisposable
 
 <PageTitle>Index</PageTitle>
 
-<h1>Index @TimezoneOffset</h1>
+<h1>Index @JsInitVariables.TimezoneOffset</h1>
 <h2>@DT("User")</h2>
 <h2>Current Team:@_currentTeamId</h2>
 <SForgetPasswordSheet></SForgetPasswordSheet>
