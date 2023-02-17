@@ -7,6 +7,9 @@ public partial class SDateTimeTitle
 {
     DateTime? _value;
 
+    [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
     [Parameter]
     public bool DateTime { get; set; }
 
@@ -20,7 +23,7 @@ public partial class SDateTimeTitle
     public string? Class { get; set; }
 
     [Parameter]
-    public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
+    public TimeSpan DisplayTimezoneOffset { get; set; }
 
     [Parameter]
     public DateTime? Value
@@ -30,6 +33,12 @@ public partial class SDateTimeTitle
         {
             _value = value?.Add(DisplayTimezoneOffset);       
         }
+    }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        DisplayTimezoneOffset = JsInitVariables.TimezoneOffset;
+        return base.SetParametersAsync(parameters);
     }
 
     protected override void OnParametersSet()

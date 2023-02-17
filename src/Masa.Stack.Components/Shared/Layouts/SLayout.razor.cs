@@ -15,6 +15,9 @@ public partial class SLayout
     [Inject]
     private MasaUser MasaUser { get; set; } = null!;
 
+    [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
     [Parameter]
     public string? Class { get; set; }
 
@@ -76,6 +79,7 @@ public partial class SLayout
     {
         if (firstRender)
         {
+            await JsInitVariables.SetTimezoneOffset();
             List<MenuModel> menus = new();
 
             try

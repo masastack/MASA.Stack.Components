@@ -1,12 +1,27 @@
 ﻿namespace Masa.Stack.Components;
 
-public static class JsInitVariables
+public class JsInitVariables: IAsyncDisposable
 {
-    public static TimeSpan TimezoneOffset { get; private set; }
+    IJSObjectReference? _helper;
+    IJSRuntime _jsRuntime;
 
-    [JSInvokable]
-    public static void SetTimezoneOffset(long offset)
+    public JsInitVariables(IJSRuntime jsRuntime)
     {
+        _jsRuntime = jsRuntime;
+    }
+
+    public TimeSpan TimezoneOffset { get; private set; }
+
+    public async Task SetTimezoneOffset()
+    {
+        _helper ??= await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Stack.Components/js/jsInitVariables/jsInitVariables.js");
+        var offset = await _helper.InvokeAsync<double>("getTimezoneOffset");
         TimezoneOffset = TimeSpan.FromMinutes(-offset);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if(_helper is not null)
+            await _helper.DisposeAsync();
     }
 }
