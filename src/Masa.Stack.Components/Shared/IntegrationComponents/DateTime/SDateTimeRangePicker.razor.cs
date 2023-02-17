@@ -5,6 +5,9 @@ namespace Masa.Stack.Components;
 
 public partial class SDateTimeRangePicker
 {
+    [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
     [Parameter]
     public string Class { get; set; } = "";
 
@@ -29,7 +32,7 @@ public partial class SDateTimeRangePicker
     public TimeSpan ValueTimezoneOffset { get; set; } = TimeSpan.Zero;
 
     [Parameter]
-    public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
+    public TimeSpan DisplayTimezoneOffset { get; set; }
 
     [Parameter]
     public EventCallback OnChange { get; set; }
@@ -42,6 +45,7 @@ public partial class SDateTimeRangePicker
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
+        DisplayTimezoneOffset = JsInitVariables.TimezoneOffset;
         await base.SetParametersAsync(parameters);
         InternalStartTime = StartTime;
         InternalEndTime = EndTime;

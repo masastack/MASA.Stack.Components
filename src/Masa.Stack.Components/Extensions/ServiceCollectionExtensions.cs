@@ -7,6 +7,7 @@ public static class ServiceCollectionExtensions
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
         string? pmHost = null, RedisConfigurationOptions? redisOption = null)
     {
+        builder.Services.AddScoped<JsInitVariables>();
         builder.Services.AddAutoInject();
         builder.Services.AddMasaIdentity(options =>
         {

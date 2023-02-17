@@ -3,6 +3,9 @@
 public partial class Notification : MasaComponentBase
 {
     [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
+    [Inject]
     public NoticeState NoticeState { get; set; } = default!;
 
     [Inject]
