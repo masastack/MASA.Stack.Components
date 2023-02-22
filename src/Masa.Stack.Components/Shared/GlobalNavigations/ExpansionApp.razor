@@ -1,11 +1,8 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
 @inherits MasaComponentBase
 
-<div Class="app"
-     Id="@App.TagId(CategoryCode, ExpansionWrapper?.TagIdPrefix)"
-     Value="@App.Code"
-     Readonly="InPreview">
-    <MHover Disabled="!Checkable" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">
+<div class="app" id="@App.TagId(CategoryCode, ExpansionWrapper?.TagIdPrefix)">
+    <MHover Disabled="Checkable is false" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">
         <div @attributes="@context.Attrs" class="d-flex">
             <span class="masa-text-2-2 d-inline-block text-truncate">
                 @TranslateProvider.DT(App.Name) 
@@ -20,66 +17,45 @@
                                      Value="@AppChecked"
                                      ValueChanged="@AppCheckedChanged"
                                      Class="masa-icon-size-20"
-                                     Style="flex: none;margin-right: -4px;"
-                                     Readonly="InPreview">
+                                     Style="flex: none;margin-right: -4px;">
                     </MSimpleCheckbox>
                 </div>
             }
         </div>
     </MHover>
     <div Class="mt-4">
-        @foreach (var nav in App.Navs.Where(nav => Filter(nav)))
+        @foreach (var nav in App.Navs.Where(nav => nav.Filter(ExpansionWrapper!.Search)))
         {
             <MCard @key="nav" Class="nav" Outlined>
                 <MList Dense Class="pa-0">
                     <MListItemGroup Values="_values" Multiple>
-                        <CascadingValue Value="this">
-                            <ExpansionAppItem Data="nav"
-                                          Level="1"
-                                          Checkable="Checkable"
-                                          InPreview="InPreview"
-                                          ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)">
-                            </ExpansionAppItem>
+                        <CascadingValue Value="this" IsFixed>
+                            <ExpansionAppItem Data="nav" Level="1" ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)" />
                             @if (nav.HasChildren)
                             {
-                                @if (nav.Children.Any(c => !c.Hiden))
+                                var subNavs = nav.Children.Where(subNav => subNav.Filter(ExpansionWrapper!.Search));
+                                @if (subNavs.Any())
                                 {
                                     <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
                                 }
-                                foreach (var subNav in nav.Children.Where(subNav => Filter(subNav)))
+                                foreach (var subNav in subNavs)
                                 {
-                                    <ExpansionAppItem Data="@subNav"
-                                          Checkable="@Checkable"
-                                          InPreview="InPreview"
-                                          Level="2"
-                                          ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))">
-                                    </ExpansionAppItem>
-                                    //Preview not display action
-                                    if (subNav.HasActions && !InPreview)
+                                    <ExpansionAppItem Data="@subNav" Level="2" ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))" />
+                                    if (InPreview is false && subNav.HasActions)
                                     {
-                                        @foreach (var action in subNav.Actions!.Where(action => Filter(action)))
+                                        @foreach (var action in subNav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
                                         {
-                                            <ExpansionAppItem Data="@action"
-                                                NavCode="@subNav.Code"
-                                                Checkable="@Checkable"
-                                                InPreview="InPreview"
-                                                Level="3">
-                                            </ExpansionAppItem>
+                                            <ExpansionAppItem Data="@action" NavCode="@subNav.Code" Level="3" />
                                         }
                                     }
                                 }
                             }
-                            else if (nav.HasActions && !InPreview)
+                            else if (InPreview is false && nav.HasActions)
                             {
                                 <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
-                                @foreach (var action in nav.Actions!.Where(action => Filter(action)))
+                                @foreach (var action in nav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
                                 {
-                                    <ExpansionAppItem Data="@action"
-                                          NavCode="@nav.Code"
-                                          Checkable="@Checkable"
-                                          InPreview="InPreview"
-                                          Level="3">
-                                    </ExpansionAppItem>
+                                    <ExpansionAppItem Data="@action" NavCode="@nav.Code" Level="3" />
                                 }
                             }
                         </CascadingValue>

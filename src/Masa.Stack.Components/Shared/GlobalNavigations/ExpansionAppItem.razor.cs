@@ -4,17 +4,13 @@ public partial class ExpansionAppItem
 {
     private CategoryAppNav? _categoryAppNav;
 
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = null!;
-
-    [CascadingParameter]
-    public ExpansionWrapper ExpansionWrapper { get; set; } = null!;
-
     [CascadingParameter]
     public ExpansionApp ExpansionApp { get; set; } = null!;
 
+    ExpansionWrapper ExpansionWrapper => ExpansionApp.ExpansionWrapper;
+
     [Parameter, EditorRequired]
-    public Nav? Data { get; set; }
+    public Nav Data { get; set; } = default!;
 
     public CategoryAppNav CategoryAppNav
     {
@@ -22,7 +18,7 @@ public partial class ExpansionAppItem
         {
             if (_categoryAppNav is null)
             {
-                if (Data!.IsAction)
+                if (Data.IsAction)
                 {
                     Data.ParentCode = NavCode;
                     _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, NavCode, Data.Code, Data);
@@ -33,11 +29,11 @@ public partial class ExpansionAppItem
         }
     }
 
-    [Parameter]
-    public bool Checkable { get; set; }
+    public bool Checkable => ExpansionWrapper.Checkable;
 
-    [Parameter]
-    public bool InPreview { get; set; }
+    public bool InPreview => ExpansionWrapper.InPreview;
+
+    public bool Favorite => ExpansionWrapper.Favorite;
 
     [Parameter, EditorRequired]
     public int Level { get; set; }
@@ -57,7 +53,7 @@ public partial class ExpansionAppItem
         }
     }
 
-    private bool IsDisabled => Data?.IsDisabled is true || Data is { HasChildren: true } || InPreview;
+    private bool IsDisabled => InPreview || Data.Disabled || Data.HasChildren;
 
     private string ActiveClass
     {
@@ -78,7 +74,7 @@ public partial class ExpansionAppItem
 
     protected override void OnInitialized()
     {
-        if (Data!.HasChildren is false)
+        if (Data.HasChildren is false)
         {
             ExpansionApp.Register(this);
         }
@@ -117,14 +113,15 @@ public partial class ExpansionAppItem
         return string.Empty;
     }
 
-    private async Task NavigateTo(string? url)
+    private async Task SelectItem()
     {
-        if (Checkable || url is null)
+        if (Checkable)
         {
             await ExpansionApp.SwitchValue(CategoryAppNav);
-            return;
         }
-
-        NavigationManager.NavigateTo(url, true);
+        if(Favorite && Data.Url is not null)
+        {
+            NavigationManager.NavigateTo(Data.Url, true);
+        }
     }
 }

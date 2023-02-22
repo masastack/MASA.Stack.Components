@@ -29,7 +29,7 @@
                                                 <MListItemTitle>@DT(item.Nav.Name)</MListItemTitle>
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
-                                                <SAutoLoadingButton Icon XSmall Color="@(item.Nav.IsFavorite ? "#FFB547" : "")"
+                                                <SAutoLoadingButton Icon XSmall Color="@(item.Nav.Favorited ? "#FFB547" : "")"
                                                                 OnClick="() => ToggleFavorite(item.CategoryCode, item.AppCode, item.Nav)" StopPropagation>
                                                     <MIcon Small>mdi-star</MIcon>
                                                 </SAutoLoadingButton>
@@ -56,7 +56,7 @@
                         <div class="d-flex">
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
                             <MSpacer />
-                            <SSearch Dense Style="max-width:341px" Class="mr-6" @bind-Value="_searchMenu" OnEnter="EnterSearch" />
+                            <SSearch Dense Style="max-width:341px" Class="mr-6" @bind-Value="_searchMenu" />
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>
                             </MButton>
@@ -73,7 +73,8 @@
                         <CascadingValue Value="this">
                             <ExpansionWrapper Categories="@_categories"
                                               FavoriteNavs="@_favoriteNavs"
-                                              TagIdPrefix="Favorite" />
+                                              Search="@_searchMenu"
+                                              Favorite />
                         </CascadingValue>
                     </div>
                 </div>

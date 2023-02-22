@@ -3,44 +3,24 @@
 @inject DynamicTranslateProvider TranslateProvider
 
 @{
-    var _categories = Categories?.Where(c => Filter(c)).ToList() ?? new List<Category>();
+    var categorys = FilterCategories();
 }
 
 <div class="global-nav-content__main @Class" style="@Style">
-    @foreach (var category in _categories!)
+    @foreach (var category in categorys)
     {
-        category.BindValues ??= CategoryCodes.TryGetValue(category.Code, out var values)
-        ? values
-        : new List<StringNumber>();
-        var index = 0;
         <div class="apps">
-            @foreach (var app in category.Apps.Where(a => Filter(a)))
-            {
-                <CascadingValue Value="this" IsFixed>
-                    @if (index == 0)
-                    {
-                        index++;
-                        <div class="category_title_app">
-                            <div class="masa-text-1-2__title title_category py-4" id="@category.TagId(TagIdPrefix)">@category.Name</div>
-                            <ExpansionApp App="app"
-                              CategoryCode="@category.Code"
-                              CheckStrictly="CheckStrictly"
-                              Checkable="Checkable"
-                              InPreview="InPreview"
-                              FavoriteNavs="@FavoriteNavs" />
-                        </div>
-                    }
-                    else
-                    {
+            <div class="category_title_app">
+                <div class="masa-text-1-2__title title_category py-4" id="@category.TagId(TagIdPrefix)">@category.Name</div>
+                @foreach (var app in category.Apps.Where(app => app.Filter(Search)))
+                {
+                    <CascadingValue Value="this" IsFixed>
                         <ExpansionApp App="app"
-                          CategoryCode="@category.Code"
-                          CheckStrictly="CheckStrictly"
-                          Checkable="Checkable"
-                          InPreview="InPreview"
-                          FavoriteNavs="@FavoriteNavs" />
-                    }
-                </CascadingValue>
-            }
+                                      CategoryCode="@category.Code"
+                                      FavoriteNavs="@FavoriteNavs" />
+                    </CascadingValue>
+                }
+            </div>
         </div>
     }
 </div>
@@ -48,7 +28,7 @@
 <div class="global-nav-content__side @SideClass" style="@SideStyle">
     <MNavigationDrawer Floating Right Width="256" Class="toc">
         <ul>
-            @foreach (var category in _categories)
+            @foreach (var category in categorys)
             {
                 <li class="masa-text-2-2 pl-3 py-2 category_side" id="@($"{category.TagId(TagIdPrefix)}_side")"
                 @onclick="@(() => ScrollTo(category.TagId(TagIdPrefix), ".global-nav-content__main"))">

@@ -50,7 +50,7 @@ public partial class ExpansionWrapperUnique
             {
                 _categories = value;
                 var navs = value.SelectMany(v => v.Apps.Select(app => new { CategoryCode = v.Code, app }))
-                                .SelectMany(ca => ca.app.Navs.Select(nav => new CategoryAppNavModel { CategoryCode = ca.CategoryCode, AppCode = ca.app.Code, Nav = nav }))
+                                .SelectMany(ca => ca.app.Navs.Select(nav => new CategoryAppNavModel(ca.CategoryCode, ca.app.Code, nav)))
                                 .ToList();
                 CategoryAppNavs = BuilderCategoryAppNavs(navs);
                 SetCheckedCategoryAppNavs();
@@ -70,8 +70,8 @@ public partial class ExpansionWrapperUnique
         var value = new List<UniqueModel>();
         foreach (var categoryAppNav in categoryAppNavs)
         {
-            if (string.IsNullOrEmpty(categoryAppNav.Action) is false) value.Add(new UniqueModel(categoryAppNav.Action, categoryAppNav.NavModel?.IsDisabled));
-            else if (string.IsNullOrEmpty(categoryAppNav.Nav) is false) value.Add(new UniqueModel(categoryAppNav.Nav, categoryAppNav.NavModel?.IsDisabled));
+            if (string.IsNullOrEmpty(categoryAppNav.Action) is false) value.Add(new UniqueModel(categoryAppNav.Action, categoryAppNav.NavModel?.Disabled));
+            else if (string.IsNullOrEmpty(categoryAppNav.Nav) is false) value.Add(new UniqueModel(categoryAppNav.Nav, categoryAppNav.NavModel?.Disabled));
         }
         await UpdateValueAsync(value);
     }
@@ -87,15 +87,15 @@ public partial class ExpansionWrapperUnique
         CheckedCategoryAppNavs.Clear();
         foreach (var categoryAppNav in CategoryAppNavs)
         {
-            categoryAppNav.NavModel!.IsDisabled = false;
+            categoryAppNav.NavModel!.Disabled = false;
             var code = categoryAppNav.Action ?? categoryAppNav.Nav;
             if (code is not null)
             {
                 var value = Value.FirstOrDefault(value => value.Code.Contains(code));
                 if (value is not null)
                 {
-                    categoryAppNav.NavModel.IsDisabled = value.IsDisabled;
-                    categoryAppNav.NavModel.IsClose = value.IsClose;
+                    categoryAppNav.NavModel.Disabled = value.IsDisabled;
+                    categoryAppNav.NavModel.Reversed = value.IsClose;
                     if (value.IsChecked)
                     {
                         CheckedCategoryAppNavs.Add(categoryAppNav);
@@ -120,12 +120,7 @@ public partial class ExpansionWrapperUnique
             }
 
             if (categoryAppNav.Nav.Children.Count > 0)
-                all.AddRange(BuilderCategoryAppNavs(categoryAppNav.Nav.Children.Select(nav => new CategoryAppNavModel
-                {
-                    CategoryCode = categoryAppNav.CategoryCode,
-                    AppCode = categoryAppNav.AppCode,
-                    Nav = nav,
-                }).ToList(), categoryAppNav.Nav.Code));
+                all.AddRange(BuilderCategoryAppNavs(categoryAppNav.Nav.Children.Select(nav => new CategoryAppNavModel(categoryAppNav.CategoryCode, categoryAppNav.AppCode, nav)).ToList(), categoryAppNav.Nav.Code));
         }
         return all;
     }

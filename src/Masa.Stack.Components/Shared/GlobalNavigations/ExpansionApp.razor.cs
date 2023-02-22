@@ -30,7 +30,7 @@ public partial class ExpansionApp
             {
                 navs.ForEach(nav =>
                 {
-                    nav.IsFavorite = _favoriteNavs?.FirstOrDefault(fn => fn.Nav.Code == nav.Code)?.Nav.IsFavorite ?? false;
+                    nav.Favorited = _favoriteNavs?.FirstOrDefault(fn => fn.Nav.Code == nav.Code)?.Nav.Favorited ?? false;
                     if (nav.Children.Any())
                     {
                         UpdateFavorite(nav.Children);
@@ -40,14 +40,9 @@ public partial class ExpansionApp
         }
     }
 
-    [Parameter]
-    public bool Checkable { get; set; }
+    public bool Checkable => ExpansionWrapper.Checkable;
 
-    [Parameter]
-    public bool CheckStrictly { get; set; }
-
-    [Parameter]
-    public bool InPreview { get; set; }
+    public bool InPreview => ExpansionWrapper.InPreview;
 
     public List<ExpansionAppItem> ExpansionAppItems { get; set; } = new();
 
@@ -60,23 +55,12 @@ public partial class ExpansionApp
 
     public List<CategoryAppNav> CheckedCategoryAppNavs => ExpansionAppItems.Where(item => item.IsChecked).Select(item => item.CategoryAppNav).ToList();
 
-    private bool IsCheckable => Checkable && !InPreview;
-
     internal readonly string ActionCodeFormat = "nav#{0}__action#{1}";
 
     private async Task AppCheckedChanged(bool v)
     {
-        if (!CheckStrictly)
-        {
-            if (AppChecked) await UpdateValues(new List<CategoryAppNav>());
-            else await UpdateValues(CategoryAppNavs);
-        }
-    }
-
-    public async Task CheckedAllNavs(bool isChecked)
-    {
-        if (isChecked) await UpdateValues(CategoryAppNavs);
-        else await UpdateValues(new());
+        if (AppChecked) await UpdateValues(new List<CategoryAppNav>());
+        else await UpdateValues(CategoryAppNavs);
     }
 
     public async Task SwitchValue(CategoryAppNav value)
@@ -127,7 +111,7 @@ public partial class ExpansionApp
 
             FavoriteNavs!.Remove(item);
 
-            nav.IsFavorite = false;
+            nav.Favorited = false;
         }
         else
         {
@@ -138,23 +122,11 @@ public partial class ExpansionApp
 
             FavoriteNavs!.Add(favoriteNav);
 
-            nav.IsFavorite = true;
+            nav.Favorited = true;
         }
 
         // TODO: need to notify parent
         GlobalNavigation?.InvokeStateHasChanged();
-    }
-
-    private bool Filter(Nav nav)
-    {
-        if (InPreview)
-        {
-            return ExpansionWrapper.Value.Any(value => value.NavModel == nav) || nav.Children.Any(Filter);
-        }
-        else
-        {
-            return !nav.Hiden || (nav.HasChildren && !nav.AllChildHiden);
-        }
     }
 
     public void Register(ExpansionAppItem expansionAppItem)

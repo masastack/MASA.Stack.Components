@@ -10,21 +10,7 @@ public class Nav : NavBase
 
     public string? ParentCode { get; set; }
 
-    public string? ParentIcon { get; set; }
-
-    public string? Target { get; set; }
-
     public string? Url { get; set; }
-
-    public bool Hiden { get; set; }
-
-    public bool AllChildHiden
-    {
-        get
-        {
-            return Children.Any() && Children.All(c => c.Hiden);
-        }
-    }
 
     public List<Nav> Children
     {
@@ -39,41 +25,24 @@ public class Nav : NavBase
         set => _children = value;
     }
 
-    public bool IsAction { get; set; }
-
     public List<Nav> Actions => Children.Where(item => item.IsAction).ToList();
 
-    public bool IsFavorite { get; set; }
+    public bool IsAction { get; set; }
 
-    public bool IsDisabled { get; set; }
+    public bool Favorited { get; set; }
 
-    public bool IsChecked { get; set; }
+    public bool Disabled { get; set; }
 
-    public bool IsClose { get; set; }
+    public bool Reversed { get; set; }
 
     public bool HasChildren => Children.Any() && !HasActions;
 
     public bool HasActions => Actions.Any();
 
-    public bool IsActive(string url)
-    {
-        if (Url is null)
-        {
-            return false;
-        }
-
-        var tempUrl = Url;
-
-        if (tempUrl.StartsWith("/"))
-        {
-            tempUrl = tempUrl[1..];
-        }
-
-        return string.Equals(tempUrl, url, StringComparison.OrdinalIgnoreCase);
-    }
-
     public Nav()
     {
+        Code = "";
+        Name = "";
     }
 
     /// <summary>
@@ -151,8 +120,32 @@ public class Nav : NavBase
         Children = children;
     }
 
+    public bool IsActive(string url)
+    {
+        if (Url is null)
+        {
+            return false;
+        }
+
+        var tempUrl = Url;
+
+        if (tempUrl.StartsWith("/"))
+        {
+            tempUrl = tempUrl[1..];
+        }
+
+        return string.Equals(tempUrl, url, StringComparison.OrdinalIgnoreCase);
+    }
+
+    internal bool Filter(string? search) => string.IsNullOrEmpty(search) ? true : Name.Contains(search, StringComparison.OrdinalIgnoreCase) || Children.Any(children => children.Filter(search));
+
     public override bool Equals(object? obj)
     {
         return obj is Nav nav && nav.Code == Code;
+    }
+
+    public override int GetHashCode()
+    {
+        return 1;
     }
 }
