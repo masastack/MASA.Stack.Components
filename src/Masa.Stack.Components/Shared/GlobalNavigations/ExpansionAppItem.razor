@@ -26,8 +26,8 @@
                         {
                             <SAutoLoadingButton Icon
                                                 XSmall
-                                                Color="@(Data.Favorited ? "#FFB547" : "")"
-                                                OnClick="@ToggleFavorite"
+                                                Color="@(IsChecked ? "#FFB547" : "")"
+                                                OnClick="AddFavorite"
                                                 StopPropagation>
                                 <MIcon Small>mdi-star</MIcon>
                             </SAutoLoadingButton>
@@ -46,7 +46,7 @@
                                 <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
                             }
                         }
-                        else if (Data.Favorited)
+                        else if (IsChecked)
                         {
                             <MIcon Small Style="margin-right: 6px" Color="#FFB547">mdi-star</MIcon>
                         }

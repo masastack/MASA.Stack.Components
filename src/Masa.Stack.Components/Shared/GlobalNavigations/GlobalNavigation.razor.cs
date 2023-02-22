@@ -1,5 +1,4 @@
-﻿
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class GlobalNavigation : MasaComponentBase
 {
@@ -14,10 +13,10 @@ public partial class GlobalNavigation : MasaComponentBase
 
     string _searchMenu = string.Empty;
     bool _visible;
-    List<FavoriteNav> _favoriteNavs = new();
     List<(string name, string url)> _recentVisits = new();
     List<Category> _categories { get; set; } = new();
     List<KeyValuePair<string, string>> _recommendApps = new();
+    List<CategoryAppNav> _favoriteNavs = new();
 
     async Task IniDataAsync()
     {
@@ -75,7 +74,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task GetFavoriteNavs(List<Category> categories)
     {
-        List<FavoriteNav> result = new();
+        _favoriteNavs.Clear();
 
         var categoryAppNavs = categories.SelectMany(category =>
             category.Apps.SelectMany(app => app.Navs.Select(nav => new
@@ -88,20 +87,16 @@ public partial class GlobalNavigation : MasaComponentBase
             var favoriteItem = ConvertFavoriteNavs(categoryAppNavs, favorite);
             if (favoriteItem != null)
             {
-                result.Add(new FavoriteNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav));
+                _favoriteNavs.Add(favoriteItem);
             }
         }
 
-        result.ForEach(fn => fn.Nav.Favorited = true);
-
-        _favoriteNavs = result;
-
-        FavoriteNav? ConvertFavoriteNavs(List<CategoryAppNavModel> items, string code)
+        CategoryAppNav? ConvertFavoriteNavs(List<CategoryAppNavModel> items, string code)
         {
             var favoriteItem = items.FirstOrDefault(f => f.Nav.Code == code);
             if (favoriteItem != null)
             {
-                return new FavoriteNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav);
+                return new CategoryAppNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav.Code, default, favoriteItem.Nav);
             }
             else
             {
@@ -131,30 +126,18 @@ public partial class GlobalNavigation : MasaComponentBase
         NavigationManager.NavigateTo(url, forceLoad: true);
     }
 
-    private async Task ToggleFavorite(string categoryCode, string appCode, Nav nav)
+    private async Task FavoriteChanged(List<CategoryAppNav> favoriteNavs)
     {
-        var favoriteNav = new FavoriteNav(categoryCode, appCode, nav);
-        var item = _favoriteNavs.FirstOrDefault(f => f.Id == favoriteNav.Id);
-        if (item is not null)
+        var removes = _favoriteNavs.Except(favoriteNavs);
+        foreach (var remove in removes)
         {
-            if (OnFavoriteRemove is not null)
-            {
-                await OnFavoriteRemove.Invoke(item.Nav.Code);
-            }
-
-            _favoriteNavs.Remove(item);
+            await OnFavoriteRemove.Invoke(remove.Nav);
         }
-        else
+        var adds = favoriteNavs.Except(_favoriteNavs);
+        foreach (var add in adds)
         {
-            if (OnFavoriteAdd is not null)
-            {
-                await OnFavoriteAdd.Invoke(nav.Code);
-            }
-
-            _favoriteNavs.Add(favoriteNav);
-            nav.Favorited = true;
+            await OnFavoriteAdd.Invoke(add.Nav);
         }
+        _favoriteNavs = favoriteNavs;
     }
-
-    public void InvokeStateHasChanged() => this.StateHasChanged();
 }

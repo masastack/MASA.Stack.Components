@@ -3,7 +3,7 @@
 @inject DynamicTranslateProvider TranslateProvider
 
 @{
-    var categorys = FilterCategories();
+    var categorys = Categories.Where(categorie => categorie.Filter(Search));
 }
 
 <div class="global-nav-content__main @Class" style="@Style">
@@ -16,8 +16,7 @@
                 {
                     <CascadingValue Value="this" IsFixed>
                         <ExpansionApp App="app"
-                                      CategoryCode="@category.Code"
-                                      FavoriteNavs="@FavoriteNavs" />
+                                      CategoryCode="@category.Code" />
                     </CascadingValue>
                 }
             </div>

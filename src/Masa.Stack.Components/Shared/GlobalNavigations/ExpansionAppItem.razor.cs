@@ -41,9 +41,6 @@ public partial class ExpansionAppItem
     [Parameter]
     public string? NavCode { get; set; }
 
-    [Parameter]
-    public EventCallback ToggleFavorite { get; set; }
-
     public bool IsChecked
     {
         get
@@ -123,5 +120,10 @@ public partial class ExpansionAppItem
         {
             NavigationManager.NavigateTo(Data.Url, true);
         }
+    }
+
+    private async Task AddFavorite()
+    {
+        await ExpansionApp.SwitchValue(CategoryAppNav);
     }
 }

@@ -49,11 +49,6 @@
         private List<CategoryAppNav> _value = new();
         private List<CategoryAppNav> _allValue = new();
 
-        IEnumerable<Category> FilterCategories()
-        {
-            return Categories.Where(categorie => categorie.Filter(Search));
-        }
-
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -68,7 +63,7 @@
             }, () => Categories == null || Categories.Any() is false);
         }
 
-        internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
+        internal async Task UpdateValues(string code, List<CategoryAppNav> value)
         {
             _allValue = _allValue.Where(v => v.App != code).ToList();
             _allValue.AddRange(value);

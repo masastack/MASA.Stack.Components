@@ -28,9 +28,9 @@
         {
             <MCard @key="nav" Class="nav" Outlined>
                 <MList Dense Class="pa-0">
-                    <MListItemGroup Values="_values" Multiple>
+                    <MListItemGroup Multiple>
                         <CascadingValue Value="this" IsFixed>
-                            <ExpansionAppItem Data="nav" Level="1" ToggleFavorite="() => ToggleFavorite(CategoryCode, App.Code, nav)" />
+                            <ExpansionAppItem Data="nav" Level="1" />
                             @if (nav.HasChildren)
                             {
                                 var subNavs = nav.Children.Where(subNav => subNav.Filter(ExpansionWrapper!.Search));
@@ -40,7 +40,7 @@
                                 }
                                 foreach (var subNav in subNavs)
                                 {
-                                    <ExpansionAppItem Data="@subNav" Level="2" ToggleFavorite="@(() => ToggleFavorite(CategoryCode, App.Code, subNav))" />
+                                    <ExpansionAppItem Data="@subNav" Level="2" />
                                     if (InPreview is false && subNav.HasActions)
                                     {
                                         @foreach (var action in subNav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
