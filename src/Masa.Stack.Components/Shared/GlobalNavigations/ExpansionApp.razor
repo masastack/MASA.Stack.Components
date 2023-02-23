@@ -45,7 +45,7 @@
                                     {
                                         @foreach (var action in subNav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
                                         {
-                                            <ExpansionAppItem Data="@action" NavCode="@subNav.Code" Level="3" />
+                                            <ExpansionAppItem Data="@action" ParentCode="@subNav.Code" Level="3" />
                                         }
                                     }
                                 }
@@ -55,7 +55,7 @@
                                 <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
                                 @foreach (var action in nav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
                                 {
-                                    <ExpansionAppItem Data="@action" NavCode="@nav.Code" Level="3" />
+                                    <ExpansionAppItem Data="@action" ParentCode="@nav.Code" Level="3" />
                                 }
                             }
                         </CascadingValue>

@@ -6,8 +6,6 @@ public class Nav : NavBase
 
     public string? Icon { get; set; }
 
-    public int Level { get; set; }
-
     public string? ParentCode { get; set; }
 
     public string? Url { get; set; }
@@ -28,8 +26,6 @@ public class Nav : NavBase
     public List<Nav> Actions => Children.Where(item => item.IsAction).ToList();
 
     public bool IsAction { get; set; }
-
-    public bool Favorited { get; set; }
 
     public bool Disabled { get; set; }
 
@@ -54,69 +50,21 @@ public class Nav : NavBase
     {
         Code = code;
         Name = name;
-        IsAction = true;
     }
 
-    /// <summary>
-    /// Initializes a nav-action.
-    /// </summary>
-    /// <param name="code"></param>
-    /// <param name="name"></param>
-    /// <param name="parentCode"></param>
-    public Nav(string code, string name, string parentCode)
-    {
-        Code = code;
-        Name = name;
-        ParentCode = parentCode;
-        IsAction = true;
-    }
-
-    public Nav(string code, string name, string? url, int level)
+    public Nav(string code, string name, string url, string parentCode)
     {
         Code = code;
         Name = name;
         Url = url;
-        Level = level;
-    }
-
-    public Nav(string code, string name, string url, int level, string parentCode)
-    {
-        Code = code;
-        Name = name;
-        Url = url;
-        Level = level;
         ParentCode = parentCode;
     }
 
-    public Nav(string code, string name, int level, List<Nav> children)
+    public Nav(string code, string name, string parentCode, List<Nav> children)
     {
         Code = code;
         Name = name;
-        Level = level;
-        Children = children;
-    }
-
-    public Nav(string code, string name, int level, string parentCode, List<Nav> children) : this(code, name, level, children)
-    {
         ParentCode = parentCode;
-    }
-
-    public Nav(string code, string name, string icon, string? url, int level) : this(code, name, url, level)
-    {
-        Icon = icon;
-    }
-
-    public Nav(string code, string name, string icon, string? url, int level, string parentCode) : this(code, name, icon, url, level)
-    {
-        ParentCode = parentCode;
-    }
-
-    public Nav(string code, string name, string icon, int level, List<Nav> children)
-    {
-        Code = code;
-        Name = name;
-        Icon = icon;
-        Level = level;
         Children = children;
     }
 

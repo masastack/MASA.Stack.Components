@@ -98,30 +98,30 @@ public partial class SLayout
             {
                 NavItems = new List<Nav>()
                 {
-                    new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index", 1),
-                    new Nav("counter", "Counter", "mdi-pencil", "/counter", 1),
-                    new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
-                    new Nav("father", "Father", "mdi-numeric-0-box-outline", 1, new List<Nav>
+                    new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index"),
+                    new Nav("counter", "Counter", "mdi-pencil", "/counter"),
+                    new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata"),
+                    new Nav("father", "Father", "mdi-numeric-0-box-outline", new List<Nav>
                     {
-                        new Nav("children2", "ChildTwo", 2, "father", new List<Nav>()
+                        new Nav("children2", "ChildTwo", "father", new List<Nav>()
                         {
-                            new Nav("children", "ChildOne", "/has-children", 3, "children2"),
+                            new Nav("children", "ChildOne", "/has-children", "children2"),
                         }),
-                        new Nav("dialog", "dialog", "/dialog", 2, "father"),
-                        new Nav("tab", "tab", "/tab", 2, "father"),
-                        new Nav("mini", "mini", "/mini-components", 2, "father"),
-                        new Nav("extend", "extend", "/extend", 2, "father"),
-                        new Nav("userAutoCompleteExample", "userAutoComplete", "/userAutoCompleteExample", 2, "father"),
-                        new Nav("defaultTextFieldExample", "defaultTextField", "/defaultTextFieldExample", 2, "father"),
-                        new Nav("defaultButtonExample", "defaultButton", "/defaultButtonExample", 2, "father"),
-                        new Nav("defaultDataTableExample", "defaultDataTable", "/defaultDataTableExample", 2, "father"),
-                        new Nav("paginationExample", "pagination", "/defaultPaginationExample", 2, "father"),
-                        new Nav("uploadImageExample", "uploadImage", "/uploadImageExample", 2, "father"),
-                        new Nav("comboxExample", "combox", "/comboxExample", 2, "father"),
-                        new Nav("paginationSelectExample", "paginationSelect", "/paginationSelectExample", 2, "father"),
-                        new Nav("dateRangePickerExample", "dateRangePicker", "/dateRangePickerExample", 2, "father"),
-                        new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", "/dateTimeRangePickerExample", 2, "father"),
-                        new Nav("simpleModalExample", "simpleModal", "/simpleModalExample", 2, "father"),
+                        new Nav("dialog", "dialog", "/dialog", "father"),
+                        new Nav("tab", "tab", "/tab", "father"),
+                        new Nav("mini", "mini", "/mini-components", "father"),
+                        new Nav("extend", "extend", "/extend", "father"),
+                        new Nav("userAutoCompleteExample", "userAutoComplete", "/userAutoCompleteExample", "father"),
+                        new Nav("defaultTextFieldExample", "defaultTextField", "/defaultTextFieldExample", "father"),
+                        new Nav("defaultButtonExample", "defaultButton", "/defaultButtonExample", "father"),
+                        new Nav("defaultDataTableExample", "defaultDataTable", "/defaultDataTableExample", "father"),
+                        new Nav("paginationExample", "pagination", "/defaultPaginationExample", "father"),
+                        new Nav("uploadImageExample", "uploadImage", "/uploadImageExample", "father"),
+                        new Nav("comboxExample", "combox", "/comboxExample", "father"),
+                        new Nav("paginationSelectExample", "paginationSelect", "/paginationSelectExample", "father"),
+                        new Nav("dateRangePickerExample", "dateRangePicker", "/dateRangePickerExample", "father"),
+                        new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", "/dateTimeRangePickerExample", "father"),
+                        new Nav("simpleModalExample", "simpleModal", "/simpleModalExample", "father"),
                     }),
                 };
             }

@@ -20,8 +20,8 @@ public partial class ExpansionAppItem
             {
                 if (Data.IsAction)
                 {
-                    Data.ParentCode = NavCode;
-                    _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, NavCode, Data.Code, Data);
+                    Data.ParentCode = ParentCode;
+                    _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, ParentCode, Data.Code, Data);
                 }
                 else _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, Data.Code, default, Data);
             }
@@ -39,7 +39,7 @@ public partial class ExpansionAppItem
     public int Level { get; set; }
 
     [Parameter]
-    public string? NavCode { get; set; }
+    public string? ParentCode { get; set; }
 
     public bool IsChecked
     {

@@ -95,7 +95,7 @@ public partial class ExpansionWrapperUnique
                 if (value is not null)
                 {
                     categoryAppNav.NavModel.Disabled = value.IsDisabled;
-                    categoryAppNav.NavModel.Reversed = value.IsClose;
+                    categoryAppNav.NavModel.Reversed = value.Reversed;
                     if (value.IsChecked)
                     {
                         CheckedCategoryAppNavs.Add(categoryAppNav);

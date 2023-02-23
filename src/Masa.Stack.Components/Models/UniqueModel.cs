@@ -6,15 +6,15 @@ public class UniqueModel
 
     public bool IsDisabled { get; set; }
 
-    public bool IsClose { get; set; }
+    public bool Reversed { get; set; }
 
     public bool IsChecked { get; set; }
 
-    public UniqueModel(string key, bool? isDisabled = null, bool? isClose = null, bool? isChecked = null)
+    public UniqueModel(string key, bool? isDisabled = null, bool? reversed = null, bool? isChecked = null)
     {
         Code = key;
         IsDisabled = isDisabled ?? false;
-        IsClose = isClose ?? false;
+        Reversed = reversed ?? false;
         IsChecked = isChecked ?? true;
     }
 
