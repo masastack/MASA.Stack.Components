@@ -17,7 +17,9 @@ public partial class ExpansionApp
 
     public List<ExpansionAppItem> ExpansionAppItems { get; set; } = new();
 
-    public bool AppChecked => ExpansionAppItems.All(item => item.IsChecked);
+    public bool AppChecked => ExpansionAppItems.Any() && ExpansionAppItems.All(item => item.IsChecked);
+
+    public bool Indeterminate => ExpansionAppItems.Any(item => item.IsChecked) && ExpansionAppItems.Any(item => item.IsChecked is false);
 
     public List<CategoryAppNav> CategoryAppNavs => ExpansionAppItems.Select(item => item.CategoryAppNav).ToList();
 
@@ -31,13 +33,20 @@ public partial class ExpansionApp
         else await UpdateValues(CategoryAppNavs);
     }
 
-    public async Task SwitchValue(CategoryAppNav value)
+    public async Task SwitchValue(CategoryAppNav value, bool isQueryNav = false)
     {
         var values = CheckedCategoryAppNavs;
-        if (values.Contains(value))
+        if (isQueryNav is false && value.NavModel!.HasActions)
+        {
+            foreach (var item in values)
+            {
+                await SwitchValue(new CategoryAppNav(item.Category, item.App, item.Nav, item.Action, item.NavModel));
+            }
+        }
+        else if (values.Contains(value))
         {
             values.Remove(value);
-            if (value.NavModel!.HasActions)
+            if (isQueryNav is false && value.NavModel!.HasActions)
             {
                 foreach (var categoryAppNav in CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code == v.Action)))
                 {
@@ -52,10 +61,6 @@ public partial class ExpansionApp
             {
                 var parent = CategoryAppNavs.First(v => v.Nav == value.NavModel.ParentCode);
                 if (values.Contains(parent) is false) values.Add(parent);
-            }
-            if (value.NavModel.HasActions)
-            {
-                values.AddRange(CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code == v.Action)));
             }
         }
         await UpdateValues(values);

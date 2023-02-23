@@ -36,7 +36,7 @@ public class CategoryAppNav
         Action = action;
     }
 
-    public CategoryAppNav(string? category, string? app, string? nav, string? action, Nav navModel) : this(category, app, nav, action)
+    public CategoryAppNav(string? category, string? app, string? nav, string? action, Nav? navModel) : this(category, app, nav, action)
     {
         NavModel = navModel;
     }

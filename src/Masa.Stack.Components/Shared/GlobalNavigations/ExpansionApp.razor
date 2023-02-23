@@ -14,11 +14,11 @@
                     <span class="masa-text-3-1">@T("SelectAll")</span>
                     <MSimpleCheckbox Color="primary"
                                      Ripple="false"
-                                     Value="@AppChecked"
+                                     Value="@AppChecked"                      
                                      ValueChanged="@AppCheckedChanged"
+                                     Indeterminate=Indeterminate
                                      Class="masa-icon-size-20"
-                                     Style="flex: none;margin-right: -4px;">
-                    </MSimpleCheckbox>
+                                     Style="flex: none;margin-right: -4px;" />
                 </div>
             }
         </div>
@@ -43,6 +43,7 @@
                                     <ExpansionAppItem Data="@subNav" Level="2" />
                                     if (InPreview is false && subNav.HasActions)
                                     {
+                                        <ExpansionAppItem Data="@subNav" Level="3" />
                                         @foreach (var action in subNav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
                                         {
                                             <ExpansionAppItem Data="@action" ParentCode="@subNav.Code" Level="3" />
@@ -53,6 +54,7 @@
                             else if (InPreview is false && nav.HasActions)
                             {
                                 <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
+                                <ExpansionAppItem Data="@nav" Level="3" />
                                 @foreach (var action in nav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
                                 {
                                     <ExpansionAppItem Data="@action" ParentCode="@nav.Code" Level="3" />

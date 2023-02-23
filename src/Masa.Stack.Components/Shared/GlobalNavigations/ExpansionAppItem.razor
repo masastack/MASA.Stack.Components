@@ -15,7 +15,7 @@
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@TranslateProvider.DT(Data.Name)</MListItemTitle>
+                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@Name</MListItemTitle>
                     </MListItemContent>
                     <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
                         @if (Checkable)
@@ -41,7 +41,7 @@
                             {
                                 <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
                             }
-                            else if(Data.Reversed)
+                            else if (Data.HasActions is false && Data.Reversed)
                             {
                                 <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
                             }
@@ -65,7 +65,7 @@
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@Data.Name</MListItemTitle>
+                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@Name</MListItemTitle>
                     </MListItemContent>
 
                     @if (Checkable)
