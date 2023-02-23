@@ -5,26 +5,20 @@
         [Inject]
         private IJSRuntime JsRuntime { get; set; } = null!;
 
-        [Parameter]
-        public string SideStyle { get; set; } = "";
-
-        [Parameter]
-        public string SideClass { get; set; } = "";
-
         [Parameter, EditorRequired]
-        public List<Category>? Categories { get; set; }
+        public List<Category> Categories { get; set; } = new();
 
         [Parameter]
         public bool Checkable { get; set; }
 
         [Parameter]
-        public bool CheckStrictly { get; set; }
-
-        [Parameter]
         public bool InPreview { get; set; }
 
         [Parameter]
-        public List<FavoriteNav> FavoriteNavs { get; set; } = new();
+        public bool Favorite { get; set; }
+
+        [Parameter]
+        public string? Search { get; set; }
 
         [Parameter]
         public List<CategoryAppNav> Value
@@ -41,27 +35,19 @@
         public EventCallback<List<CategoryAppNav>> ValueChanged { get; set; }
 
         [Parameter]
-        public string? TagIdPrefix { get; set; }
+        public string SideStyle { get; set; } = "";
+
+        [Parameter]
+        public string SideClass { get; set; } = "";
+
+        [Parameter]
+        public List<FavoriteNav> FavoriteNavs { get; set; } = new();
+
+        public string TagIdPrefix { get; } = Guid.NewGuid().ToString();
 
         private DotNetObjectReference<ExpansionWrapper>? _objRef;
         private List<CategoryAppNav> _value = new();
         private List<CategoryAppNav> _allValue = new();
-
-        private Dictionary<string, List<StringNumber>> CategoryCodes
-        {
-            get
-            {
-                var codes = new Dictionary<string, List<StringNumber>>();
-                Categories!.ForEach(category => { codes.Add(category.Code, category.Apps.Select(app => (StringNumber)app.Code).ToList()); });
-                return codes;
-            }
-        }
-
-        protected override void OnParametersSet()
-        {
-            base.OnParametersSet();
-            Categories ??= new();
-        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -74,34 +60,10 @@
             await NextTickWhile(async () =>
             {
                 await JsRuntime.InvokeVoidAsync("MasaStackComponents.setAppBorder");
-            }, () => Categories == null || !Categories.Any());
+            }, () => Categories == null || Categories.Any() is false);
         }
 
-        private bool Filter(App app)
-        {
-            if (InPreview)
-            {
-                return Value.Any(value => value.App == app.Code);
-            }
-            else
-            {
-                return !app.Hiden || !app.Navs.Any();
-            }
-        }
-
-        private bool Filter(Category category)
-        {
-            if (InPreview)
-            {
-                return Value.Any(value => value.Category == category.Code);
-            }
-            else
-            {
-                return !category.Hiden || category.Apps.Any();
-            }
-        }
-
-        internal async Task UpdateValues(string code, List<CategoryAppNav> value, CodeType type)
+        internal async Task UpdateValues(string code, List<CategoryAppNav> value)
         {
             _allValue = _allValue.Where(v => v.App != code).ToList();
             _allValue.AddRange(value);

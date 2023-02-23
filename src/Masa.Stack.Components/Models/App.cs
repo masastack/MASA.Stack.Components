@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components.Models;
 
-public partial class App
+public class App
 {
     private List<Nav>? _navs = new();
 
@@ -8,26 +8,16 @@ public partial class App
 
     public string Name { get; set; }
 
-    public bool Hiden
-    {
-        get
-        {
-            return Navs.All(a => a.Hiden || a.AllChildHiden) || !Navs.Any();
-        }
-    }
-
     public List<Nav> Navs
     {
         get => _navs ?? new();
         set => _navs = value;
     }
 
-    public int RoutableNavsCount => Navs.Any()
-        ? Navs.SelectMany(n => n.Children).Concat(Navs).Count(n => !n.HasChildren)
-        : 0;
-
     public App()
     {
+        Code = "";
+        Name = "";
     }
 
     public App(string code, string name)
@@ -41,13 +31,17 @@ public partial class App
         Navs = navs;
     }
 
+    internal bool Filter(string? search) => string.IsNullOrEmpty(search) ? true : Name.Contains(search, StringComparison.OrdinalIgnoreCase) || Navs.Any(nav => nav.Filter(search));
+
+    public string TagId(string categoryCode, string? prefix) => $"{prefix}category-{categoryCode}-app-{Code}";
+
     public override bool Equals(object? obj)
     {
         return obj is App app && app.Code == Code && app.Navs.Except(Navs).Count() == 0;
     }
-}
 
-public partial class App
-{
-    public string TagId(string categoryCode, string? prefix) => $"{prefix}category-{categoryCode}-app-{Code}";
+    public override int GetHashCode()
+    {
+        return 1;
+    }
 }

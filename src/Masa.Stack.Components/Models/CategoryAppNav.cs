@@ -47,4 +47,9 @@ public class CategoryAppNav
                 (categoryAppNav.Category, categoryAppNav.App, categoryAppNav.Nav, categoryAppNav.Action)
                 == (Category, App, Nav, Action);
     }
+
+    public override int GetHashCode()
+    {
+        return 1;
+    }
 }

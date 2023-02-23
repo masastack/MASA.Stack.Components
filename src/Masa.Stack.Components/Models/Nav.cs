@@ -6,25 +6,9 @@ public class Nav : NavBase
 
     public string? Icon { get; set; }
 
-    public int Level { get; set; }
-
     public string? ParentCode { get; set; }
 
-    public string? ParentIcon { get; set; }
-
-    public string? Target { get; set; }
-
     public string? Url { get; set; }
-
-    public bool Hiden { get; set; }
-
-    public bool AllChildHiden
-    {
-        get
-        {
-            return Children.Any() && Children.All(c => c.Hiden);
-        }
-    }
 
     public List<Nav> Children
     {
@@ -39,21 +23,50 @@ public class Nav : NavBase
         set => _children = value;
     }
 
-    public bool IsAction { get; set; }
-
     public List<Nav> Actions => Children.Where(item => item.IsAction).ToList();
 
-    public bool IsFavorite { get; set; }
+    public bool IsAction { get; set; }
 
-    public bool IsDisabled { get; set; }
+    public bool Disabled { get; set; }
 
-    public bool IsChecked { get; set; }
-
-    public bool IsClose { get; set; }
+    public bool Reversed { get; set; }
 
     public bool HasChildren => Children.Any() && !HasActions;
 
     public bool HasActions => Actions.Any();
+
+    public Nav()
+    {
+        Code = "";
+        Name = "";
+    }
+
+    /// <summary>
+    /// Initializes a nav-action.
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="name"></param>
+    public Nav(string code, string name)
+    {
+        Code = code;
+        Name = name;
+    }
+
+    public Nav(string code, string name, string url, string parentCode)
+    {
+        Code = code;
+        Name = name;
+        Url = url;
+        ParentCode = parentCode;
+    }
+
+    public Nav(string code, string name, string parentCode, List<Nav> children)
+    {
+        Code = code;
+        Name = name;
+        ParentCode = parentCode;
+        Children = children;
+    }
 
     public bool IsActive(string url)
     {
@@ -72,87 +85,15 @@ public class Nav : NavBase
         return string.Equals(tempUrl, url, StringComparison.OrdinalIgnoreCase);
     }
 
-    public Nav()
-    {
-    }
-
-    /// <summary>
-    /// Initializes a nav-action.
-    /// </summary>
-    /// <param name="code"></param>
-    /// <param name="name"></param>
-    public Nav(string code, string name)
-    {
-        Code = code;
-        Name = name;
-        IsAction = true;
-    }
-
-    /// <summary>
-    /// Initializes a nav-action.
-    /// </summary>
-    /// <param name="code"></param>
-    /// <param name="name"></param>
-    /// <param name="parentCode"></param>
-    public Nav(string code, string name, string parentCode)
-    {
-        Code = code;
-        Name = name;
-        ParentCode = parentCode;
-        IsAction = true;
-    }
-
-    public Nav(string code, string name, string? url, int level)
-    {
-        Code = code;
-        Name = name;
-        Url = url;
-        Level = level;
-    }
-
-    public Nav(string code, string name, string url, int level, string parentCode)
-    {
-        Code = code;
-        Name = name;
-        Url = url;
-        Level = level;
-        ParentCode = parentCode;
-    }
-
-    public Nav(string code, string name, int level, List<Nav> children)
-    {
-        Code = code;
-        Name = name;
-        Level = level;
-        Children = children;
-    }
-
-    public Nav(string code, string name, int level, string parentCode, List<Nav> children) : this(code, name, level, children)
-    {
-        ParentCode = parentCode;
-    }
-
-    public Nav(string code, string name, string icon, string? url, int level) : this(code, name, url, level)
-    {
-        Icon = icon;
-    }
-
-    public Nav(string code, string name, string icon, string? url, int level, string parentCode) : this(code, name, icon, url, level)
-    {
-        ParentCode = parentCode;
-    }
-
-    public Nav(string code, string name, string icon, int level, List<Nav> children)
-    {
-        Code = code;
-        Name = name;
-        Icon = icon;
-        Level = level;
-        Children = children;
-    }
+    internal bool Filter(string? search) => string.IsNullOrEmpty(search) ? true : Name.Contains(search, StringComparison.OrdinalIgnoreCase) || Children.Any(children => children.Filter(search));
 
     public override bool Equals(object? obj)
     {
         return obj is Nav nav && nav.Code == Code;
+    }
+
+    public override int GetHashCode()
+    {
+        return 1;
     }
 }
