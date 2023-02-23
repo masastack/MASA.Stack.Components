@@ -52,11 +52,12 @@ public class Nav : NavBase
         Name = name;
     }
 
-    public Nav(string code, string name, string url, string parentCode)
+    public Nav(string code, string name, string? icon, string? url, string? parentCode =  null)
     {
         Code = code;
         Name = name;
         Url = url;
+        Icon = icon;
         ParentCode = parentCode;
     }
 
