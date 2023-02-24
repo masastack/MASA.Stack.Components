@@ -41,16 +41,29 @@ public partial class ExpansionAppItem
     [Parameter]
     public string? ParentCode { get; set; }
 
+    public bool IsQueryNav => Level == 3 && ParentCode is null;
+
+    public string Name => IsQueryNav ? T("Query") : TranslateProvider.DT(Data.Name);
+
     public bool IsChecked
     {
         get
         {
-            var value = ExpansionWrapper.Value.Contains(CategoryAppNav);
-            return value;
+            if (Data.HasChildren) return false;
+            if (Data.HasActions && Level != 3 && ParentCode is null)
+            {
+                return ExpansionWrapper.Value.Any(children => children.NavModel == Data) && Data.Children.All(children => ExpansionWrapper.Value.Any(can => can.NavModel == children));
+            }
+            else
+            {
+                return ExpansionWrapper.Value.Contains(CategoryAppNav);
+            }
         }
     }
 
     private bool IsDisabled => InPreview || Data.Disabled || Data.HasChildren;
+
+    public bool Indeterminate => IsQueryNav is false && Data.HasActions && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked is false && item.Data.ParentCode == Data.Code);
 
     private string ActiveClass
     {
@@ -71,7 +84,7 @@ public partial class ExpansionAppItem
 
     protected override void OnInitialized()
     {
-        if (Data.HasChildren is false)
+        if ((Data.HasChildren is false && Data.HasActions is false) || IsQueryNav)
         {
             ExpansionApp.Register(this);
         }
@@ -114,9 +127,9 @@ public partial class ExpansionAppItem
     {
         if (Checkable)
         {
-            await ExpansionApp.SwitchValue(CategoryAppNav);
+            await ExpansionApp.SwitchValue(CategoryAppNav, IsQueryNav);
         }
-        if(Favorite && Data.Url is not null)
+        if (Favorite && Data.Url is not null)
         {
             NavigationManager.NavigateTo(Data.Url, true);
         }

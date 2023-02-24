@@ -17,7 +17,9 @@ public partial class ExpansionApp
 
     public List<ExpansionAppItem> ExpansionAppItems { get; set; } = new();
 
-    public bool AppChecked => ExpansionAppItems.All(item => item.IsChecked);
+    public bool AppChecked => ExpansionAppItems.Any() && ExpansionAppItems.All(item => item.IsChecked);
+
+    public bool Indeterminate => ExpansionAppItems.Any(item => item.IsChecked) && ExpansionAppItems.Any(item => item.IsChecked is false);
 
     public List<CategoryAppNav> CategoryAppNavs => ExpansionAppItems.Select(item => item.CategoryAppNav).ToList();
 
@@ -31,34 +33,48 @@ public partial class ExpansionApp
         else await UpdateValues(CategoryAppNavs);
     }
 
-    public async Task SwitchValue(CategoryAppNav value)
+    public async Task SwitchValue(CategoryAppNav value, bool isQueryNav = false, bool excuteUpdate = true, List<CategoryAppNav>? values = null)
     {
-        var values = CheckedCategoryAppNavs;
+        values ??= CheckedCategoryAppNavs;
         if (values.Contains(value))
         {
             values.Remove(value);
             if (value.NavModel!.HasActions)
             {
-                foreach (var categoryAppNav in CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code == v.Action)))
+                if (isQueryNav is false)
                 {
-                    values.Remove(categoryAppNav);
+                    foreach (var item in value.NavModel.Actions)
+                    {
+                        await SwitchValue(new CategoryAppNav(value.Category, value.App, value.Nav, item.Code, item), false, false, values);
+                    }
+                }
+                else
+                {
+                    foreach (var item in value.NavModel.Actions)
+                    {
+                        values.Remove(new CategoryAppNav(value.Category, value.App, value.Nav, item.Code, item));
+                    }
                 }
             }
         }
         else
         {
             values.Add(value);
-            if (value.NavModel!.IsAction)
+            if (isQueryNav is false && value.NavModel!.HasActions)
+            {
+                foreach (var item in value.NavModel.Actions)
+                {
+                    values.Add(new CategoryAppNav(value.Category, value.App, value.Nav, item.Code, item));
+                }
+            }
+            else if (value.NavModel!.IsAction)
             {
                 var parent = CategoryAppNavs.First(v => v.Nav == value.NavModel.ParentCode);
                 if (values.Contains(parent) is false) values.Add(parent);
             }
-            if (value.NavModel.HasActions)
-            {
-                values.AddRange(CategoryAppNavs.Where(v => value.NavModel.Actions.Any(action => action.Code == v.Action)));
-            }
         }
-        await UpdateValues(values);
+        if(excuteUpdate)
+            await UpdateValues(values);
     }
 
     private async Task UpdateValues(List<CategoryAppNav> values)
