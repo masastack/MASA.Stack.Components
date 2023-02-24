@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Masa.Stack.Components.GlobalNavigations;
+﻿namespace Masa.Stack.Components.GlobalNavigations;
 
 public partial class ExpansionAppItem
 {
