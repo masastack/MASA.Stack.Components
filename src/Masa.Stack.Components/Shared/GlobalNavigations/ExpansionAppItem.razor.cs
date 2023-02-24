@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components.GlobalNavigations;
+﻿using System.Linq;
+
+namespace Masa.Stack.Components.GlobalNavigations;
 
 public partial class ExpansionAppItem
 {
@@ -62,6 +64,8 @@ public partial class ExpansionAppItem
     }
 
     private bool IsDisabled => InPreview || Data.Disabled || Data.HasChildren;
+
+    public bool Indeterminate => IsQueryNav is false && Data.HasActions && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked is false && item.Data.ParentCode == Data.Code);
 
     private string ActiveClass
     {

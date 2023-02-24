@@ -8,15 +8,21 @@
                 @TranslateProvider.DT(App.Name) 
             </span>
             @if (Checkable)
-            {
+            {               
                 <MSpacer />
+
+                var indeterminate = Indeterminate;
+                if (context.Hover is false && indeterminate)
+                {
+                    <MIcon Small Class="mr-1" Color="primary">mdi-minus-box</MIcon>
+                }
                 <div class="d-flex" style="@GetIsDisplayStyle(context.Hover)">
                     <span class="masa-text-3-1">@T("SelectAll")</span>
                     <MSimpleCheckbox Color="primary"
                                      Ripple="false"
-                                     Value="@AppChecked"                      
+                                     Value="@(indeterminate || AppChecked)"
                                      ValueChanged="@AppCheckedChanged"
-                                     Indeterminate=Indeterminate
+                                     Indeterminate=indeterminate
                                      Class="masa-icon-size-20"
                                      Style="flex: none;margin-right: -4px;" />
                 </div>
