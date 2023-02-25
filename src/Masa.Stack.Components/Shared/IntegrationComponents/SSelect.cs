@@ -20,6 +20,9 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
     [Parameter]
     public bool AutoLabel { get; set; } = true;
 
+    [Parameter]
+    public bool EnableVerticalLine { get; set; } = false;
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Dense = true;
@@ -105,6 +108,11 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
 
             var fieldName = (accessorBody as MemberExpression)!.Member.Name;
             Label = I18n.T(fieldName);
+        }
+
+        if (EnableVerticalLine)
+        {
+            Class += " select_vertical_line";
         }
     }
 }
