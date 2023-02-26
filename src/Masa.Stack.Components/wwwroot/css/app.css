@@ -730,3 +730,8 @@ masa-stack-components .table-border-none.dense thead th {
 .masa-stack-components .hover-pointer {
     cursor: pointer;
 }
+
+.select_vertical_line .m-select__slot .m-input__append-inner:nth-last-of-type(1) {
+    border-left: solid 1px rgba(0,0,0,.12) !important;
+    min-height: 24px !important;
+}
