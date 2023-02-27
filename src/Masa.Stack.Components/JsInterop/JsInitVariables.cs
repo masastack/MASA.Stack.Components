@@ -5,7 +5,7 @@ public class JsInitVariables : IAsyncDisposable
     IJSObjectReference? _helper;
     IJSRuntime _jsRuntime;
     TimeSpan _timezoneOffset;
-    ProtectedLocalStorage _storage;
+    CookieStorage _storage;
     static readonly string _timezoneOffsetKey = "timezoneOffset";
 
     public TimeSpan TimezoneOffset
@@ -13,23 +13,29 @@ public class JsInitVariables : IAsyncDisposable
         get => _timezoneOffset;
         set
         {
-            _storage.SetAsync(_timezoneOffsetKey, value.TotalMinutes);
+            _storage.SetItemAsync(_timezoneOffsetKey, value.TotalMinutes);
             _timezoneOffset = value;
         }
     }
 
-    public JsInitVariables(IJSRuntime jsRuntime, ProtectedLocalStorage storage)
+    public JsInitVariables(IJSRuntime jsRuntime, CookieStorage storage,IHttpContextAccessor httpContextAccessor)
     {
         _jsRuntime = jsRuntime;
         _storage = storage;
+        var httpContext = httpContextAccessor.HttpContext;
+        if(httpContext is not null)
+        {
+            var timezoneOffsetResult = httpContext.Request.Cookies[_timezoneOffsetKey];
+            _timezoneOffset = TimeSpan.FromMinutes(Convert.ToDouble(timezoneOffsetResult));
+        }
     }
 
     public async Task SetTimezoneOffset()
     {
-        var timezoneOffsetResult = await _storage.GetAsync<double>(_timezoneOffsetKey);
-        if(timezoneOffsetResult.Success)
+        var timezoneOffsetResult = await _storage.GetCookieAsync(_timezoneOffsetKey);
+        if(string.IsNullOrEmpty(timezoneOffsetResult) is false)
         {
-            TimezoneOffset = TimeSpan.FromMinutes(timezoneOffsetResult.Value);
+            TimezoneOffset = TimeSpan.FromMinutes(Convert.ToDouble(timezoneOffsetResult));
             return;
         }
         _helper ??= await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Stack.Components/js/jsInitVariables/jsInitVariables.js");
