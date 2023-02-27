@@ -1,13 +1,10 @@
-﻿
-using Masa.Contrib.Configuration.ConfigurationApi.Dcc.Options;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
-        string? pmHost = null, RedisConfigurationOptions? redisOption = null, DccOptions? dccOptions = null)
+        string? pmHost = null, RedisConfigurationOptions? redisOption = null)
     {
         builder.Services.AddScoped<JsInitVariables>();
         builder.Services.AddAutoInject();
@@ -24,8 +21,7 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
 
-        dccOptions ??= builder.Configuration.GetSection("dccOptions").Get<DccOptions>();
-        builder.Services.AddMasaStackConfigAsync(dccOptions).ConfigureAwait(false).GetAwaiter().GetResult();
+        builder.Services.AddMasaStackConfigAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         var masaStackConfig = builder.Services.GetMasaStackConfig();
 
         //temporary compatible
