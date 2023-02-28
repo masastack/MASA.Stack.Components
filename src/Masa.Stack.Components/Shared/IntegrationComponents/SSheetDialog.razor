@@ -2,10 +2,10 @@
 
 <MBottomSheet ContentClass="m-sheet-dialog full-height elevation-0 m-dialog--fullscreen" Value=Value ValueChanged="ValueChanged">
     <MHover>
-        <div @attributes="context.Attrs" style="@($"padding-right:{Padding}px;padding-left:{Padding}px")" class="m-sheet-dialog-overlay d-flex flex-column full-height" @onclick="OnClose" stopPropagation>
+        <div @attributes="context.Attrs" style="@($"padding-right:{Padding}px;padding-left:{Padding}px")" class="m-sheet-dialog-overlay d-flex flex-column full-height" @onclick="OnClose" @onclick:stopPropagation>
             @if (HeaderContent is null)
             {
-                <div @onclick="OnClose" stopPropagation class="m-sheet-dialog-header d-flex align-center justify-space-between px-3" style="@($"height:{HeaderHeight}px;")">
+                <div @onclick="OnClose" @onclick:stopPropagation class="m-sheet-dialog-header d-flex align-center justify-space-between px-3" style="@($"height:{HeaderHeight}px;")">
                     <div class="d-flex align-center">
                         <MIcon Size=16 Color="@(IconColor)">
                             @Icon
