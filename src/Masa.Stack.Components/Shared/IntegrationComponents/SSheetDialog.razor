@@ -78,12 +78,10 @@
     {
         if (ValueChanged.HasDelegate)
         {
-            Console.WriteLine("SSheetDialog HasDelegate OnClose");
             await ValueChanged.InvokeAsync(false);
         }
         else
         {
-            Console.WriteLine("SSheetDialog OnClose");
             Value = false;
         }
     }
