@@ -60,7 +60,7 @@ public partial class NotificationDetail
     private async Task DeleteAsync()
     {
         await McClient.WebsiteMessageService.DeleteAsync(MessageId);
-        await PopupService.EnqueueSnackbarAsync(T("DeletedSuccessfullyMessage"));
+        await PopupService.EnqueueSnackbarAsync(T("DeletedSuccessfullyMessage"), AlertTypes.Success);
 
         await HandleOnBack();
         await HandleOnOk();
