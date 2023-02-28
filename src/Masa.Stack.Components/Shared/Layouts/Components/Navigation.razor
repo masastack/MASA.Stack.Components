@@ -218,7 +218,7 @@
         var isIn = await AuthClient.UserService.HasPhoneNumberInEnvAsync(environment, currentUser?.PhoneNumber);
         if (!isIn)
         {
-            await PopupService.AlertAsync(T("EnvironmentSwitchTips"), AlertTypes.Warning);
+            await PopupService.EnqueueSnackbarAsync(T("EnvironmentSwitchTips"), AlertTypes.Warning);
             return;
         }
         NavigationManager.NavigateTo($"/Account/Logout?environment={environment}", true);

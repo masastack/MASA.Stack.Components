@@ -95,7 +95,7 @@ public partial class NotificationRight : MasaComponentBase
     {
         var dto = _queryParam.Adapt<ReadAllWebsiteMessageModel>();
         await McClient.WebsiteMessageService.SetAllReadAsync(dto);
-        await PopupService.ToastSuccessAsync(T("OperationSuccessfulMessage"));
+        await PopupService.EnqueueSnackbarAsync(T("OperationSuccessfulMessage"));
         await LoadData();
         NoticeState.SetAllRead();
         if (OnAllRead.HasDelegate)

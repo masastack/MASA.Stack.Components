@@ -119,9 +119,9 @@ public static class ServiceCollectionExtensions
             return masaUser;
         });
 
-        var masaBuilder = builder.Services.AddMasaBlazor(builder =>
+        var masaBuilder = builder.Services.AddMasaBlazor(options =>
         {
-            builder.ConfigureTheme(theme =>
+            options.ConfigureTheme(theme =>
             {
                 theme.Themes.Light.Primary = "#4318FF";
                 theme.Themes.Light.Accent = "#4318FF";
@@ -130,6 +130,15 @@ public static class ServiceCollectionExtensions
                 theme.Themes.Light.Warning = "#FF7D00";
                 theme.Themes.Light.Info = "#37A7FF";
             });
+            options.Defaults = new Dictionary<string, IDictionary<string, object?>?>()
+            {
+                {
+                    PopupComponents.SNACKBAR, new Dictionary<string, object?>()
+                    {
+                        { nameof(PEnqueuedSnackbars.Position), SnackPosition.TopLeft }
+                    }
+                }
+            };
         })
         .AddI18n(GetLocales().ToArray());
 

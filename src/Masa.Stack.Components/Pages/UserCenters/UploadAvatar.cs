@@ -30,7 +30,7 @@ public class UploadAvatar : SUploadImage
     {
         if(e.File.ContentType == "image/gif")
         {
-            await PopupService.AlertAsync(T($"Does not support gif format avatar"), AlertTypes.Error);
+            await PopupService.EnqueueSnackbarAsync(T($"Does not support gif format avatar"), AlertTypes.Error);
             return;
         }
         await base.OnInputFileChange(e);

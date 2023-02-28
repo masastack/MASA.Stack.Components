@@ -32,7 +32,7 @@ public partial class SSetPasswordSheet : MasaComponentBase
 
             if (true)
             {
-                await PopupService.ToastSuccessAsync("密码更新成功");
+                await PopupService.EnqueueSnackbarAsync("密码更新成功", AlertTypes.Success);
                 // TODO: 已登录修改密码后需要自动退出，重新登录
             }
         }
