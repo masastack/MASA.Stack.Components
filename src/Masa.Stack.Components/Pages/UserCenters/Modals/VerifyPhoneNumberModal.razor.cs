@@ -42,12 +42,12 @@ public partial class VerifyPhoneNumberModal : MasaComponentBase
                 if (OnSuccess.HasDelegate)
                     await OnSuccess.InvokeAsync();
 
-                await PopupService.AlertAsync(T("Verify the phone number successfully"), AlertTypes.Success);
+                await PopupService.EnqueueSnackbarAsync(T("Verify the phone number successfully"), AlertTypes.Success);
                 await HandleOnCancel();
             }
             else
             {
-                await PopupService.AlertAsync(T("Verify the phone number failed"), AlertTypes.Error);
+                await PopupService.EnqueueSnackbarAsync(T("Verify the phone number failed"), AlertTypes.Error);
             }
         }
     }

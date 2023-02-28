@@ -57,7 +57,7 @@ public partial class SDateTimePicker
         await base.SetParametersAsync(parameters);
         if (Max is not null && Min is not null && Max < Min)
         {
-            await PopupService.AlertAsync(T("The maximum time cannot be less than the minimum time"), AlertTypes.Error);
+            await PopupService.EnqueueSnackbarAsync(T("The maximum time cannot be less than the minimum time"), AlertTypes.Error);
             Max = null;
         }
     }

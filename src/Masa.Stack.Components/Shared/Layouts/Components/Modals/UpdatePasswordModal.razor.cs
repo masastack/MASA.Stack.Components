@@ -39,7 +39,7 @@ public partial class UpdatePasswordModal
                 NewPassword = Model.NewPassword,
                 OldPassword = Model.OldPassword
             });
-            await PopupService.AlertAsync(@T("Update password success"), AlertTypes.Success);
+            await PopupService.EnqueueSnackbarAsync(@T("Update password success"), AlertTypes.Success);
             _form.Reset();
             await UpdateValueAsync(false);
         }

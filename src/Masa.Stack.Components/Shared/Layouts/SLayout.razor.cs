@@ -220,15 +220,11 @@ public partial class SLayout
     {
         OnErrorAsync ??= async exception =>
         {
-            await PopupService.ToastErrorAsync(exception.Message);
+            await PopupService.EnqueueSnackbarAsync(exception, false);
         };
 
         ErrorContent ??= Exception => builder => { };
 
-        PopupService.ConfigToast(config =>
-        {
-            config.Position = ToastPosition.TopLeft;
-        });
         NavigationManager.LocationChanged += HandleLocationChanged;
     }
 
@@ -268,7 +264,7 @@ public partial class SLayout
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
-    private async Task<bool> ErrorHandleAsync(Exception exception)
+    private async Task<bool> OnErrorHandleAsync(Exception exception)
     {
         if (exception is UserStatusException)
         {

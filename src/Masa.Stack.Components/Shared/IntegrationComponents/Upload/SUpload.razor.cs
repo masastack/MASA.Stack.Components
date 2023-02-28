@@ -89,7 +89,7 @@ public partial class SUpload : IAsyncDisposable
             var file = Files.FirstOrDefault(file => file.Size > MaximumFileSize);
             if(file is not null)
             {
-                await PopupService.AlertAsync($"{file.Name} of {file.Size} bytes is larger than the limit of {MaximumFileSize} bytes", AlertTypes.Error);
+                await PopupService.EnqueueSnackbarAsync($"{file.Name} of {file.Size} bytes is larger than the limit of {MaximumFileSize} bytes", AlertTypes.Error);
                 return;
             }            
         }
