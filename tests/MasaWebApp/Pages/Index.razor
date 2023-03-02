@@ -20,6 +20,12 @@
     protected override void OnInitialized()
     {
         GlobalConfig.OnCurrentTeamChanged += CurrentTeamChanged;
+        JsInitVariables.TimezoneOffsetChanged += TestTimezoneOffsetChanged;
+    }
+
+    void TestTimezoneOffsetChanged()
+    {
+        Console.WriteLine(JsInitVariables.TimezoneOffset);
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -37,5 +43,6 @@
     public void Dispose()
     {
         GlobalConfig.OnCurrentTeamChanged -= CurrentTeamChanged;
+        JsInitVariables.TimezoneOffsetChanged -= TestTimezoneOffsetChanged;
     }
 }

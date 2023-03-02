@@ -2,11 +2,12 @@
 
 public class JsInitVariables : IAsyncDisposable
 {
-    IJSObjectReference? _helper;
-    IJSRuntime _jsRuntime;
+    static readonly string _timezoneOffsetKey = "timezoneOffset";   
+    readonly IJSRuntime _jsRuntime;   
+    readonly CookieStorage _storage;
     TimeSpan _timezoneOffset;
-    CookieStorage _storage;
-    static readonly string _timezoneOffsetKey = "timezoneOffset";
+    IJSObjectReference? _helper;
+    public event Action TimezoneOffsetChanged;
 
     public TimeSpan TimezoneOffset
     {
@@ -15,6 +16,7 @@ public class JsInitVariables : IAsyncDisposable
         {
             _storage.SetItemAsync(_timezoneOffsetKey, value.TotalMinutes);
             _timezoneOffset = value;
+            TimezoneOffsetChanged?.Invoke();
         }
     }
 
