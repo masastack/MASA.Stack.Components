@@ -495,11 +495,12 @@ body, .masa-stack-components {
 .masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-56 .m-label--active {
     transform: translateY(-24.5px) scale(0.75);
 }
-
+.masa-stack-components .s-slect.m-text-field--outlined.m-input--dense .m-chip{
+    margin: 4px;
+}
 /*
     default dataTable
 */
-
 .masa-stack-components .table-border-none thead th {
     border-bottom: 0px !important;
     box-shadow: none !important;
