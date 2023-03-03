@@ -135,7 +135,7 @@ public static class ServiceCollectionExtensions
                 {
                     PopupComponents.SNACKBAR, new Dictionary<string, object?>()
                     {
-                        { nameof(PEnqueuedSnackbars.Position), SnackPosition.TopLeft }
+                        { nameof(PEnqueuedSnackbars.Position), SnackPosition.BottomCenter }
                     }
                 }
             };
