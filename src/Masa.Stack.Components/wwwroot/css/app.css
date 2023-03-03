@@ -496,6 +496,10 @@ body, .masa-stack-components {
     transform: translateY(-24.5px) scale(0.75);
 }
 
+.masa-stack-components .s-slect.m-text-field--outlined.m-input--dense .m-chip {
+    margin: 4px;
+}
+
 /*
     default dataTable
 */
