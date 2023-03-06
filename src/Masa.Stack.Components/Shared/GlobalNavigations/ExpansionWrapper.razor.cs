@@ -40,7 +40,7 @@
         [Parameter]
         public string SideClass { get; set; } = "";
 
-        public string TagIdPrefix { get; } = Guid.NewGuid().ToString();
+        public string TagIdPrefix { get; } = "g" + Guid.NewGuid().ToString();
 
         private DotNetObjectReference<ExpansionWrapper>? _objRef;
         private List<CategoryAppNav> _value = new();
