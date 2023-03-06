@@ -82,6 +82,15 @@ public partial class ExpansionApp
         await ExpansionWrapper!.UpdateValues(App.Code, values);
     }
 
+    private bool Filter(Nav nav)
+    {
+        if (InPreview)
+        {
+            return ExpansionWrapper.Value.Any(value => value.NavModel == nav) || nav.Children.Any(Filter);
+        }
+        return true;
+    }
+
     public void Register(ExpansionAppItem expansionAppItem)
     {
         ExpansionAppItems.Add(expansionAppItem);
