@@ -55,7 +55,10 @@
         }
         catch (Exception e)
         {
-            await PopupService.EnqueueSnackbarAsync(e, false);
+            await InvokeAsync(async () =>
+            {
+                await PopupService.EnqueueSnackbarAsync(e, false);
+            });
         }
     }
 
