@@ -10,6 +10,7 @@
 <SButton Depressed Color="primary" @onclick="IncrementCount">Click me</SButton>
 <SButton Depressed Color="primary" @onclick="PopupAsync">PopupService</SButton>
 
+<MForm EnableValidation class="mt-12 mx-12 text-center">
 <MTextField @bind-Value="@_password" Class="mt-3" Label="Password" OnKeyDown="KeyDownHandler"
             Type="@(_showPwd ? "text" : "password")" Placeholder="PasswordPlaceHolder"
             AppendIcon="@(_showPwd ? "mdi-eye" : "mdi-eye-off")" OnAppendClick="()=>_showPwd = !_showPwd" Outlined>
@@ -17,7 +18,7 @@
         <MIcon>mdi-lock</MIcon>
     </PrependInnerContent>
 </MTextField>
-
+</MForm>
 @code {
     private int currentCount = 0;
     bool _showPwd;
@@ -33,7 +34,7 @@
         await PopupService.EnqueueSnackbarAsync("Test",AlertTypes.Success);
     }
 
-    private async Task KeyDownHandler(KeyboardEventArgs args)
+    private void KeyDownHandler(KeyboardEventArgs args)
     {
         
     }
