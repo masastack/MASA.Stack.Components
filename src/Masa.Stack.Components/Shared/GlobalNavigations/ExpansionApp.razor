@@ -30,7 +30,7 @@
         </div>
     </MHover>
     <div Class="mt-4">
-        @foreach (var nav in App.Navs.Where(nav => nav.Filter(ExpansionWrapper!.Search)))
+        @foreach (var nav in App.Navs.Where(Filter).Where(nav => nav.Filter(ExpansionWrapper!.Search)))
         {
             <MCard @key="nav" Class="nav" Outlined>
                 <MList Dense Class="pa-0">
@@ -39,7 +39,7 @@
                             <ExpansionAppItem Data="nav" Level="1" />
                             @if (nav.HasChildren)
                             {
-                                var subNavs = nav.Children.Where(subNav => subNav.Filter(ExpansionWrapper!.Search));
+                                var subNavs = nav.Children.Where(Filter).Where(subNav => subNav.Filter(ExpansionWrapper!.Search));
                                 @if (subNavs.Any())
                                 {
                                     <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
@@ -47,7 +47,7 @@
                                 foreach (var subNav in subNavs)
                                 {
                                     <ExpansionAppItem Data="@subNav" Level="2" />
-                                    if (InPreview is false && subNav.HasActions)
+                                    if (Checkable && subNav.HasActions)
                                     {
                                         <ExpansionAppItem Data="@subNav" Level="3" />
                                         @foreach (var action in subNav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
@@ -57,7 +57,7 @@
                                     }
                                 }
                             }
-                            else if (InPreview is false && nav.HasActions)
+                            else if (Checkable && nav.HasActions)
                             {
                                 <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
                                 <ExpansionAppItem Data="@nav" Level="3" />

@@ -3,7 +3,7 @@
 @inject DynamicTranslateProvider TranslateProvider
 
 @{
-    var categorys = Categories.Where(categorie => categorie.Filter(Search));
+    var categorys = Categories.Where(Filter).Where(categorie => categorie.Filter(Search));
 }
 
 <div class="global-nav-content__main @Class" style="@Style">
@@ -12,7 +12,7 @@
         <div class="apps">
             <div class="category_title_app">
                 <div class="masa-text-1-2__title title_category py-4" id="@category.TagId(TagIdPrefix)">@category.Name</div>
-                @foreach (var app in category.Apps.Where(app => app.Filter(Search)))
+                @foreach (var app in category.Apps.Where(Filter).Where(app => app.Filter(Search)))
                 {
                     <CascadingValue Value="this" IsFixed>
                         <ExpansionApp App="app"
