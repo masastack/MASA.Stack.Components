@@ -45,3 +45,11 @@
     width: 20px;
     min-width: 20px;
 }
+
+.delete-btn:hover {
+    color: #FF8A80 !important;
+}
+
+.delete-btn:active {
+    color: #B71C1C !important;
+}
