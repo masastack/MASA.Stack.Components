@@ -110,6 +110,7 @@ public partial class SLayout
                         new Nav("dialog", "dialog",default, "/dialog", "father"),
                         new Nav("tab", "tab", default,"/tab", "father"),
                         new Nav("sselect", "sselect", default,"/sselect", "father"),
+                        new Nav("deleteButton", "deleteButton", default,"/deleteButton", "father"),
                         new Nav("mini", "mini",default, "/mini-components", "father"),
                         new Nav("extend", "extend", default,"/extend", "father"),
                         new Nav("userAutoCompleteExample", "userAutoComplete",default, "/userAutoCompleteExample", "father"),

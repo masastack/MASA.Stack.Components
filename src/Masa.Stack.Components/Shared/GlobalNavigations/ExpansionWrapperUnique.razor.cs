@@ -70,8 +70,14 @@ public partial class ExpansionWrapperUnique
         var value = new List<UniqueModel>();
         foreach (var categoryAppNav in categoryAppNavs)
         {
-            if (string.IsNullOrEmpty(categoryAppNav.Action) is false) value.Add(new UniqueModel(categoryAppNav.Action, categoryAppNav.NavModel?.Disabled));
-            else if (string.IsNullOrEmpty(categoryAppNav.Nav) is false) value.Add(new UniqueModel(categoryAppNav.Nav, categoryAppNav.NavModel?.Disabled));
+            if (!string.IsNullOrEmpty(categoryAppNav.Action))
+            {
+                value.Add(new UniqueModel(categoryAppNav.Action, categoryAppNav.NavModel?.Disabled));
+            }
+            else if (!string.IsNullOrEmpty(categoryAppNav.Nav))
+            {
+                value.Add(new UniqueModel(categoryAppNav.Nav, categoryAppNav.NavModel?.Disabled));
+            }
         }
         await UpdateValueAsync(value);
     }

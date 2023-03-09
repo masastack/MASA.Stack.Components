@@ -40,10 +40,7 @@
         [Parameter]
         public string SideClass { get; set; } = "";
 
-        [Parameter]
-        public List<FavoriteNav> FavoriteNavs { get; set; } = new();
-
-        public string TagIdPrefix { get; } = Guid.NewGuid().ToString();
+        public string TagIdPrefix { get; } = "g" + Guid.NewGuid().ToString();
 
         private DotNetObjectReference<ExpansionWrapper>? _objRef;
         private List<CategoryAppNav> _value = new();
@@ -73,6 +70,30 @@
         private async Task ScrollTo(string tagId, string insideSelector)
         {
             await JsRuntime.InvokeVoidAsync("MasaStackComponents.scrollTo", $"#{tagId}", insideSelector);
+        }
+
+        private bool Filter(Category category)
+        {
+            if (InPreview)
+            {
+                return Value.Any(value => value.Category == category.Code);
+            }
+            else
+            {
+                return category.Apps.Any();
+            }
+        }
+
+        private bool Filter(App app)
+        {
+            if (InPreview)
+            {
+                return Value.Any(value => value.App == app.Code);
+            }
+            else
+            {
+                return app.Navs.Any();
+            }
         }
 
         private async Task UpdateValue(List<CategoryAppNav> value)
