@@ -496,10 +496,13 @@ body, .masa-stack-components {
     transform: translateY(-24.5px) scale(0.75);
 }
 
+.masa-stack-components .s-select.m-text-field--outlined.m-input--dense .m-chip {
+    margin: 4px;
+}
+
 /*
     default dataTable
 */
-
 .masa-stack-components .table-border-none thead th {
     border-bottom: 0px !important;
     box-shadow: none !important;
