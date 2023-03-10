@@ -126,6 +126,13 @@ public partial class GlobalNavigation : MasaComponentBase
         NavigationManager.NavigateTo(url, forceLoad: true);
     }
 
+    private async Task FavoriteRemove(string nav)
+    {
+        var favoriteNav = _favoriteNavs.FirstOrDefault(e => e.Nav == nav);
+        _favoriteNavs.Remove(favoriteNav);
+        await OnFavoriteRemove.Invoke(favoriteNav.Nav);
+    }
+
     private async Task FavoriteChanged(List<CategoryAppNav> favoriteNavs)
     {
         var removes = _favoriteNavs.Except(favoriteNavs);

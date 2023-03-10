@@ -29,8 +29,7 @@
                                                 <MListItemTitle>@DT(item.NavModel.Name)</MListItemTitle>
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
-                                                <SAutoLoadingButton Icon XSmall Color="#FFB547"
-                                                                    OnClick="async () => await OnFavoriteRemove(item.Nav)" StopPropagation>
+                                            <SAutoLoadingButton Icon XSmall Color="#FFB547" OnClick="async () => await FavoriteRemove(item.Nav)" StopPropagation>
                                                     <MIcon Small>mdi-star</MIcon>
                                                 </SAutoLoadingButton>
                                             </MListItemAction>
