@@ -6,6 +6,9 @@ namespace Masa.Stack.Components.NotificationCenters;
 public partial class NotificationRight : MasaComponentBase
 {
     [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
+    [Inject]
     public NoticeState NoticeState { get; set; } = default!;
 
     [Inject]
@@ -32,6 +35,11 @@ public partial class NotificationRight : MasaComponentBase
         _queryParam.ChannelId = Channel?.Id;
         await LoadData();
         StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        TypeAdapterConfig<GetWebsiteMessageModel, ReadAllWebsiteMessageModel>.NewConfig().MapToConstructor(true);
     }
 
     public async Task LoadData()
@@ -87,7 +95,7 @@ public partial class NotificationRight : MasaComponentBase
     {
         var dto = _queryParam.Adapt<ReadAllWebsiteMessageModel>();
         await McClient.WebsiteMessageService.SetAllReadAsync(dto);
-        await PopupService.ToastSuccessAsync(T("OperationSuccessfulMessage"));
+        await PopupService.EnqueueSnackbarAsync(T("OperationSuccessfulMessage"), AlertTypes.Success);
         await LoadData();
         NoticeState.SetAllRead();
         if (OnAllRead.HasDelegate)

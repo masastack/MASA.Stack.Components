@@ -32,7 +32,7 @@ public partial class SDateRangePicker
 
     private async Task UpdateStartTimeAsync(DateOnly? dateTime)
     {
-        if (dateTime > EndTime) await PopupService.AlertAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
+        if (dateTime > EndTime) await PopupService.EnqueueSnackbarAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
         else
         {
             StartTime = dateTime;
@@ -42,7 +42,7 @@ public partial class SDateRangePicker
 
     private async Task UpdateEndTimeAsync(DateOnly? dateTime)
     {
-        if (dateTime < StartTime) await PopupService.AlertAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
+        if (dateTime < StartTime) await PopupService.EnqueueSnackbarAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
         else
         {
             EndTime = dateTime;

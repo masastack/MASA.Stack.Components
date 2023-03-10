@@ -6,6 +6,9 @@ public partial class SDateTimePicker
     private static readonly int[] _minutes = Enumerable.Range(0, 60).ToArray();
     private static readonly int[] _seconds = Enumerable.Range(0, 60).ToArray();
 
+    [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
     [Parameter]
     public DateTime? Max { get; set; }
 
@@ -28,7 +31,7 @@ public partial class SDateTimePicker
     public TimeSpan OutputTimezoneOffset { get; set; } = TimeSpan.FromMinutes(0);
 
     [Parameter]
-    public TimeSpan DisplayTimezoneOffset { get; set; } = JsInitVariables.TimezoneOffset;
+    public TimeSpan DisplayTimezoneOffset { get; set; }
 
     private DateOnly? Date
     {
@@ -50,10 +53,11 @@ public partial class SDateTimePicker
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
+        DisplayTimezoneOffset = JsInitVariables.TimezoneOffset;
         await base.SetParametersAsync(parameters);
         if (Max is not null && Min is not null && Max < Min)
         {
-            await PopupService.AlertAsync(T("The maximum time cannot be less than the minimum time"), AlertTypes.Error);
+            await PopupService.EnqueueSnackbarAsync(T("The maximum time cannot be less than the minimum time"), AlertTypes.Error);
             Max = null;
         }
     }

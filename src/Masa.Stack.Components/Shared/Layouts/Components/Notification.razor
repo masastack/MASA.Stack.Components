@@ -4,7 +4,6 @@
 @inherits MasaComponentBase
 @inject IMcClient McClient
 @inject IHttpContextAccessor httpContextAccessor
-@using static Masa.Stack.Components.JsInitVariables;
 @inject ILogger<Notification> Logger
 
 <div class="notice">
@@ -54,7 +53,7 @@
                             <MListItemContent>
                                 <MListItemTitle Class="btn emphasis--text">@item.Channel?.DisplayName</MListItemTitle>
                                 <MListItemSubtitle Class="caption regular2--text mt-1">@item.Title</MListItemSubtitle>
-                                <MListItemSubtitle Class="overline regular3--text mt-1">@item.SendTime.ToOffset(TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemSubtitle>
+                                <MListItemSubtitle Class="overline regular3--text mt-1">@item.SendTime.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemSubtitle>
                             </MListItemContent>
                         </MListItem>
                     }

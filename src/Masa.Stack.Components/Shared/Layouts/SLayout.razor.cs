@@ -15,6 +15,9 @@ public partial class SLayout
     [Inject]
     private MasaUser MasaUser { get; set; } = null!;
 
+    [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
+
     [Parameter]
     public string? Class { get; set; }
 
@@ -76,6 +79,7 @@ public partial class SLayout
     {
         if (firstRender)
         {
+            await JsInitVariables.SetTimezoneOffset();
             List<MenuModel> menus = new();
 
             try
@@ -94,30 +98,32 @@ public partial class SLayout
             {
                 NavItems = new List<Nav>()
                 {
-                    new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index", 1),
-                    new Nav("counter", "Counter", "mdi-pencil", "/counter", 1),
-                    new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata", 1),
-                    new Nav("father", "Father", "mdi-numeric-0-box-outline", 1, new List<Nav>
+                    new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index"),
+                    new Nav("counter", "Counter", "mdi-pencil", "/counter"),
+                    new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata"),
+                    new Nav("father", "Father", "mdi-numeric-0-box-outline", new List<Nav>
                     {
-                        new Nav("children2", "ChildTwo", 2, "father", new List<Nav>()
+                        new Nav("children2", "ChildTwo", "father", new List<Nav>()
                         {
-                            new Nav("children", "ChildOne", "/has-children", 3, "children2"),
+                            new Nav("children", "ChildOne", "/has-children", "children2"),
                         }),
-                        new Nav("dialog", "dialog", "/dialog", 2, "father"),
-                        new Nav("tab", "tab", "/tab", 2, "father"),
-                        new Nav("mini", "mini", "/mini-components", 2, "father"),
-                        new Nav("extend", "extend", "/extend", 2, "father"),
-                        new Nav("userAutoCompleteExample", "userAutoComplete", "/userAutoCompleteExample", 2, "father"),
-                        new Nav("defaultTextFieldExample", "defaultTextField", "/defaultTextFieldExample", 2, "father"),
-                        new Nav("defaultButtonExample", "defaultButton", "/defaultButtonExample", 2, "father"),
-                        new Nav("defaultDataTableExample", "defaultDataTable", "/defaultDataTableExample", 2, "father"),
-                        new Nav("paginationExample", "pagination", "/defaultPaginationExample", 2, "father"),
-                        new Nav("uploadImageExample", "uploadImage", "/uploadImageExample", 2, "father"),
-                        new Nav("comboxExample", "combox", "/comboxExample", 2, "father"),
-                        new Nav("paginationSelectExample", "paginationSelect", "/paginationSelectExample", 2, "father"),
-                        new Nav("dateRangePickerExample", "dateRangePicker", "/dateRangePickerExample", 2, "father"),
-                        new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", "/dateTimeRangePickerExample", 2, "father"),
-                        new Nav("simpleModalExample", "simpleModal", "/simpleModalExample", 2, "father"),
+                        new Nav("dialog", "dialog",default, "/dialog", "father"),
+                        new Nav("tab", "tab", default,"/tab", "father"),
+                        new Nav("sselect", "sselect", default,"/sselect", "father"),
+                        new Nav("deleteButton", "deleteButton", default,"/deleteButton", "father"),
+                        new Nav("mini", "mini",default, "/mini-components", "father"),
+                        new Nav("extend", "extend", default,"/extend", "father"),
+                        new Nav("userAutoCompleteExample", "userAutoComplete",default, "/userAutoCompleteExample", "father"),
+                        new Nav("defaultTextFieldExample", "defaultTextField",default, "/defaultTextFieldExample", "father"),
+                        new Nav("defaultButtonExample", "defaultButton",default, "/defaultButtonExample", "father"),
+                        new Nav("defaultDataTableExample", "defaultDataTable",default, "/defaultDataTableExample", "father"),
+                        new Nav("paginationExample", "pagination", default,"/defaultPaginationExample", "father"),
+                        new Nav("uploadImageExample", "uploadImage",default, "/uploadImageExample", "father"),
+                        new Nav("comboxExample", "combox", default,"/comboxExample", "father"),
+                        new Nav("paginationSelectExample", "paginationSelect",default, "/paginationSelectExample", "father"),
+                        new Nav("dateRangePickerExample", "dateRangePicker",default, "/dateRangePickerExample", "father"),
+                        new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", default,"/dateTimeRangePickerExample", "father"),
+                        new Nav("simpleModalExample", "simpleModal", default,"/simpleModalExample", "father"),
                     }),
                 };
             }
@@ -132,7 +138,7 @@ public partial class SLayout
                 return;
             }
             var relativeUri = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
-            if (!IsMenusUri(NavItems, relativeUri))
+            if (relativeUri.Contains("dashboard") is false && !IsMenusUri(NavItems, relativeUri))
             {
                 NavigationManager.NavigateTo("/403");
                 return;
@@ -215,15 +221,11 @@ public partial class SLayout
     {
         OnErrorAsync ??= async exception =>
         {
-            await PopupService.ToastErrorAsync(exception.Message);
+            await PopupService.EnqueueSnackbarAsync(exception, false);
         };
 
         ErrorContent ??= Exception => builder => { };
 
-        PopupService.ConfigToast(config =>
-        {
-            config.Position = ToastPosition.TopLeft;
-        });
         NavigationManager.LocationChanged += HandleLocationChanged;
     }
 
@@ -263,7 +265,7 @@ public partial class SLayout
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
-    private async Task<bool> ErrorHandleAsync(Exception exception)
+    private async Task<bool> OnErrorHandleAsync(Exception exception)
     {
         if (exception is UserStatusException)
         {

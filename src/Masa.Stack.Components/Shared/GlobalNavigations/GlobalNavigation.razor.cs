@@ -13,27 +13,24 @@ public partial class GlobalNavigation : MasaComponentBase
 
     string _searchMenu = string.Empty;
     bool _visible;
-    List<FavoriteNav> _favoriteNavs = new();
     List<(string name, string url)> _recentVisits = new();
     List<Category> _categories { get; set; } = new();
     List<KeyValuePair<string, string>> _recommendApps = new();
+    List<CategoryAppNav> _favoriteNavs = new();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    async Task IniDataAsync()
     {
-        if (firstRender)
-        {
-            _categories = await FetchCategories();
-            var favorites = await FetchFavorites();
-            _favoriteNavs = GetFavoriteNavs(favorites, _categories);
-            await GetRecommendApps();
-            StateHasChanged();
-        }
+        _searchMenu = string.Empty;
+        _categories = await FetchCategories();
+        await GetFavoriteNavs(_categories);
+        await GetRecommendApps();
+        await GetRecentVisits();
     }
 
     private async Task GetRecommendApps()
     {
         //todo pm config
-        var recommendAppIdentities = new List<string>() { "masa-pm-web-admin", "masa-dcc-web-admin", "masa-auth-web-admin" };
+        var recommendAppIdentities = new List<string>() { MasaStackConfig.GetWebId(MasaStackConstant.PM), MasaStackConfig.GetWebId(MasaStackConstant.DCC), MasaStackConfig.GetWebId(MasaStackConstant.AUTH) };
         var projects = await PmClient.ProjectService.GetProjectAppsAsync(EnvironmentProvider.GetEnvironment());
         _recommendApps = projects.SelectMany(p => p.Apps).Where(a => recommendAppIdentities.Contains(a.Identity))
             .Select(a => new KeyValuePair<string, string>(a.Name, a.Url)).ToList();
@@ -43,9 +40,7 @@ public partial class GlobalNavigation : MasaComponentBase
     {
         if (visible)
         {
-            _recentVisits = await GetRecentVisits();
-            _searchMenu = string.Empty;
-            EnterSearch();
+            await IniDataAsync();
         }
         _visible = visible;
     }
@@ -59,12 +54,7 @@ public partial class GlobalNavigation : MasaComponentBase
         try
         {
             var apps = (await AuthClient.ProjectService.GetGlobalNavigations()).SelectMany(p => p.Apps).ToList();
-            var categories = apps.GroupBy(a => a.Tag).Select(ag => new Category
-            {
-                Code = ag.Key,
-                Name = ag.Key,
-                Apps = ag.Select(a => a.Adapt<App>(config)).Where(a => a.Navs.Any()).ToList()
-            }).ToList();
+            var categories = apps.GroupBy(a => a.Tag).Select(ag => new Category(ag.Key, ag.Key, ag.Select(a => a.Adapt<App>(config)).Where(a => a.Navs.Any()).ToList())).ToList();
 
             return categories;
         }
@@ -82,46 +72,35 @@ public partial class GlobalNavigation : MasaComponentBase
             .Select(m => m.Value.ToString()).ToList();
     }
 
-    private List<FavoriteNav> GetFavoriteNavs(List<string> favorites, List<Category> categories)
+    private async Task GetFavoriteNavs(List<Category> categories)
     {
-        List<FavoriteNav> result = new();
+        _favoriteNavs.Clear();
 
         var categoryAppNavs = categories.SelectMany(category =>
             category.Apps.SelectMany(app => app.Navs.Select(nav => new
-            CategoryAppNavModel
-            {
-                CategoryCode = category.Code,
-                AppCode = app.Code,
-                Nav = nav
-            }))).ToList();
+            CategoryAppNavModel(category.Code, app.Code, nav)))).ToList();
+
+        var favorites = await FetchFavorites();
 
         foreach (var favorite in favorites)
         {
             var favoriteItem = ConvertFavoriteNavs(categoryAppNavs, favorite);
             if (favoriteItem != null)
             {
-                result.Add(new FavoriteNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav));
+                _favoriteNavs.Add(favoriteItem);
             }
         }
 
-        result.ForEach(fn => fn.Nav.IsFavorite = true);
-
-        return result;
-        FavoriteNav? ConvertFavoriteNavs(List<CategoryAppNavModel> items, string code)
+        CategoryAppNav? ConvertFavoriteNavs(List<CategoryAppNavModel> items, string code)
         {
             var favoriteItem = items.FirstOrDefault(f => f.Nav.Code == code);
             if (favoriteItem != null)
             {
-                return new FavoriteNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav);
+                return new CategoryAppNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav.Code, default, favoriteItem.Nav);
             }
             else
             {
-                var children = items.SelectMany(n => n.Nav.Children.Select(nav => new CategoryAppNavModel
-                {
-                    CategoryCode = n.CategoryCode,
-                    AppCode = n.AppCode,
-                    Nav = nav
-                })).ToList();
+                var children = items.SelectMany(n => n.Nav.Children.Select(nav => new CategoryAppNavModel(n.CategoryCode, n.AppCode, nav))).ToList();
                 if (children.Any())
                 {
                     return ConvertFavoriteNavs(children, code);
@@ -131,39 +110,10 @@ public partial class GlobalNavigation : MasaComponentBase
         }
     }
 
-    private void EnterSearch()
-    {
-        FilterCategory(_searchMenu);
-    }
-
-    private void FilterCategory(string searchMenu)
-    {
-        foreach (var category in _categories)
-        {
-            foreach (var app in category.Apps)
-            {
-                Search(searchMenu, app.Navs);
-            }
-        }
-
-        void Search(string searchMenu, List<Nav> items)
-        {
-            foreach (var item in items)
-            {
-                var displayName = DT(item.Name);
-                item.Hiden = !displayName.Contains(searchMenu);
-                if (item.Children.Any())
-                {
-                    Search(searchMenu, item.Children);
-                }
-            }
-        }
-    }
-
-    private async Task<List<(string name, string url)>> GetRecentVisits()
+    private async Task GetRecentVisits()
     {
         var visitedList = await AuthClient.UserService.GetVisitedListAsync();
-        return visitedList.Select(v => new ValueTuple<string, string>(v.Name, v.Url)).ToList();
+        _recentVisits = visitedList.Select(v => new ValueTuple<string, string>(v.Name, v.Url)).ToList();
     }
 
     private void NavigateTo(string? url)
@@ -176,30 +126,18 @@ public partial class GlobalNavigation : MasaComponentBase
         NavigationManager.NavigateTo(url, forceLoad: true);
     }
 
-    private async Task ToggleFavorite(string categoryCode, string appCode, Nav nav)
+    private async Task FavoriteChanged(List<CategoryAppNav> favoriteNavs)
     {
-        var favoriteNav = new FavoriteNav(categoryCode, appCode, nav);
-        var item = _favoriteNavs.FirstOrDefault(f => f.Id == favoriteNav.Id);
-        if (item is not null)
+        var removes = _favoriteNavs.Except(favoriteNavs);
+        foreach (var remove in removes)
         {
-            if (OnFavoriteRemove is not null)
-            {
-                await OnFavoriteRemove.Invoke(item.Nav.Code);
-            }
-
-            _favoriteNavs.Remove(item);
+            await OnFavoriteRemove.Invoke(remove.Nav);
         }
-        else
+        var adds = favoriteNavs.Except(_favoriteNavs);
+        foreach (var add in adds)
         {
-            if (OnFavoriteAdd is not null)
-            {
-                await OnFavoriteAdd.Invoke(nav.Code);
-            }
-
-            _favoriteNavs.Add(favoriteNav);
-            nav.IsFavorite = true;
+            await OnFavoriteAdd.Invoke(add.Nav);
         }
+        _favoriteNavs = favoriteNavs;
     }
-
-    public void InvokeStateHasChanged() => this.StateHasChanged();
 }

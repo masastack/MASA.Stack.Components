@@ -5,6 +5,8 @@ namespace Masa.Stack.Components.NotificationCenters;
 
 public partial class NotificationDetail
 {
+    [Inject]
+    public JsInitVariables JsInitVariables { get; set; } = default!;
 
     [Inject]
     private IPopupService PopupService { get; set; } = null!;
@@ -58,7 +60,7 @@ public partial class NotificationDetail
     private async Task DeleteAsync()
     {
         await McClient.WebsiteMessageService.DeleteAsync(MessageId);
-        await PopupService.ToastSuccessAsync(T("DeletedSuccessfullyMessage"));
+        await PopupService.EnqueueSnackbarAsync(T("DeletedSuccessfullyMessage"), AlertTypes.Success);
 
         await HandleOnBack();
         await HandleOnOk();

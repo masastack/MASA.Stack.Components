@@ -1,7 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using static Masa.Stack.Components.JsInitVariables;
-
-namespace Masa.Stack.Components.JsonConverters;
+﻿namespace Masa.Stack.Components.JsonConverters;
 
 public class LocalDateTimeJsonConverter : JsonConverter<DateTime>
 {
@@ -19,7 +16,7 @@ public class LocalDateTimeJsonConverter : JsonConverter<DateTime>
     {
         if (value.Kind == DateTimeKind.Utc)
         {
-            value = value.Add(TimezoneOffset);
+            //value = value.Add(TimezoneOffset);
         }
 
         writer.WriteStringValue(value);

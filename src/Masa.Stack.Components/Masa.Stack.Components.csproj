@@ -9,19 +9,20 @@
 	<ItemGroup>
 		<PackageReference Include="Humanizer" Version="2.14.1" />
 		<PackageReference Include="Mapster" Version="7.3.0" />
-		<PackageReference Include="Masa.Blazor" Version="0.7.0-alpha.1726" />
-		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="0.7.0-preview.20" />
-		<PackageReference Include="Masa.Contrib.StackSdks.Mc" Version="0.7.0-preview.20" />
-		<PackageReference Include="Masa.Contrib.Authentication.Identity.BlazorServer" Version="0.7.0-preview.20" />
-		<PackageReference Include="Masa.Contrib.StackSdks.Pm" Version="0.7.0-preview.20" />
-		<PackageReference Include="Masa.Utils.Extensions.DependencyInjection" Version="0.7.0-preview.20" />
-		<PackageReference Include="Masa.Contrib.StackSdks.Auth" Version="0.7.0-preview.20" />
-		<PackageReference Include="Masa.Utils.Extensions.Enums" Version="0.7.0-preview.20" />
-		<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="0.7.0-preview.20" />
-		<PackageReference Include="Masa.Contrib.Storage.ObjectStorage.Aliyun" Version="0.7.0-preview.20" />
+		<PackageReference Include="Masa.Blazor" Version="1.0.0-preview.7" />
+		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Config" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Mc" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Contrib.Authentication.Identity.BlazorServer" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Pm" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Utils.Extensions.DependencyInjection" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Auth" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Utils.Extensions.Enums" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="1.0.0-preview.15" />
+		<PackageReference Include="Masa.Contrib.Storage.ObjectStorage.Aliyun" Version="1.0.0-preview.15" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
-		<PackageReference Include="Masa.Contrib.Configuration" Version="0.7.0-preview.20" />
+		<PackageReference Include="Masa.Contrib.Configuration" Version="1.0.0-preview.15" />
 	</ItemGroup>
 
 	<ItemGroup>

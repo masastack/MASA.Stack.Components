@@ -7,24 +7,22 @@ public static class ElasticsearchAutoCompleteExtensions
 {
     public static void AddElasticsearchAutoComplete(this IServiceCollection services, Func<UserAutoCompleteOptions> options)
     {
-        var esBuilder = services.AddElasticsearchClient(
-                "",
-                option =>
-                {
-                    var autoCompleteOptions = options.Invoke();
-                    option.UseNodes(autoCompleteOptions.Nodes);
-                },
-                true
-            );
-
-        esBuilder.AddAutoCompleteBySpecifyDocument<UserSelectModel>(option =>
+        services.AddAutoCompleteBySpecifyDocument<UserSelectModel>("", option =>
         {
-            var autoCompleteOptions = options.Invoke();
-            option.UseIndexName(autoCompleteOptions.Index);
-            if (string.IsNullOrEmpty(autoCompleteOptions.Alias) is false)
+            option.UseElasticSearch(esOption =>
             {
-                option.UseAlias(autoCompleteOptions.Alias);
-            }
+                var autoCompleteOptions = options.Invoke();
+                esOption.ElasticsearchOptions.UseNodes(autoCompleteOptions.Nodes).UseConnectionSettings(setting => setting.EnableApiVersioningHeader(false));
+                esOption.IndexName = autoCompleteOptions.Index;
+                if (string.IsNullOrEmpty(autoCompleteOptions.Alias) is false)
+                {
+                    esOption.Alias = autoCompleteOptions.Alias;
+                }
+            });
+
+            var autoCompleteFactory = services.BuildServiceProvider().GetRequiredService<IAutoCompleteFactory>();
+            var autoCompleteClient = autoCompleteFactory.Create();
+            autoCompleteClient.BuildAsync();
         });
     }
 }

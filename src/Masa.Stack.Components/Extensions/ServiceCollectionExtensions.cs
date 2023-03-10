@@ -6,6 +6,7 @@ public static class ServiceCollectionExtensions
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
         string? pmHost = null, RedisConfigurationOptions? redisOption = null)
     {
+        builder.Services.AddScoped<JsInitVariables>();
         builder.Services.AddAutoInject();
         builder.Services.AddMasaIdentity(options =>
         {
@@ -20,14 +21,45 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
 
-        builder.Services.AddMasaConfiguration(configurationBuilder =>
-        {
-            configurationBuilder.UseDcc();
-        });
+        builder.Services.AddMasaStackConfigAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        var masaStackConfig = builder.Services.GetMasaStackConfig();
 
         var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
-        authHost = authHost ?? publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url");
-        redisOption = redisOption ?? publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
+        authHost = masaStackConfig.GetAuthServiceDomain();
+        mcHost = masaStackConfig.GetMcServiceDomain();
+        pmHost = masaStackConfig.GetPmServiceDomain();
+        redisOption = new RedisConfigurationOptions
+        {
+            Servers = new List<RedisServerOptions> {
+                    new RedisServerOptions()
+                    {
+                        Host= masaStackConfig.RedisModel.RedisHost,
+                        Port= masaStackConfig.RedisModel.RedisPort
+                    }
+                },
+            DefaultDatabase = masaStackConfig.RedisModel.RedisDb,
+            Password = masaStackConfig.RedisModel.RedisPassword
+        };
+
+        builder.Services.AddAuthClient(authHost, redisOption);
+        var options = new McServiceOptions(() =>
+        {
+            return masaStackConfig.GetMcServiceDomain();
+        });
+        builder.Services.AddSingleton(options);
+        builder.Services.AddMcClient(mcHost);
+        builder.Services.AddPmClient(pmHost);
+
+        builder.Services.AddOss();
+        builder.Services.AddElasticsearchAutoComplete(() =>
+        {
+            return new UserAutoCompleteOptions
+            {
+                Index = masaStackConfig.ElasticModel.Index,
+                Nodes = new string[1] { $"{masaStackConfig.ElasticModel.ESNode}:{masaStackConfig.ElasticModel.ESPort}" }
+            };
+        });
+
 
         builder.Services.AddScoped<TokenProvider>();
         builder.Services.AddScoped((serviceProvider) =>
@@ -35,35 +67,10 @@ public static class ServiceCollectionExtensions
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
-        builder.Services.AddAuthClient(authHost, redisOption);
 
-        var cluster = builder.Services.GetLocalConfiguration("DccOptions").GetValue<string>("Cluster");
-        var appId = "public-$Config";
-        var configurationApiClient = builder.Services.BuildServiceProvider().GetRequiredService<IConfigurationApiClient>();
-
-        var options = new McServiceOptions(() =>
+        var masaBuilder = builder.Services.AddMasaBlazor(options =>
         {
-            var envirment = builder.Services.BuildServiceProvider().GetRequiredService<IEnvironmentProvider>().GetEnvironment();
-            var appSettings = configurationApiClient.GetDynamicAsync(envirment, cluster, appId, "$public.AppSettings").ConfigureAwait(false).GetAwaiter().GetResult();
-            return mcHost ?? appSettings.McClient.Url;
-        });
-        builder.Services.AddSingleton(options);
-        builder.Services.AddMcClient(() =>
-        {
-            var envirment = builder.Services.BuildServiceProvider().GetRequiredService<IEnvironmentProvider>().GetEnvironment();
-            var appSettings = configurationApiClient.GetDynamicAsync(envirment, cluster, appId, "$public.AppSettings").ConfigureAwait(false).GetAwaiter().GetResult();
-            return mcHost ?? appSettings.McClient.Url;
-        });
-        builder.Services.AddPmClient(() =>
-        {
-            var envirment = builder.Services.BuildServiceProvider().GetRequiredService<IEnvironmentProvider>().GetEnvironment();
-            var appSettings = configurationApiClient.GetDynamicAsync(envirment, cluster, appId, "$public.AppSettings").ConfigureAwait(false).GetAwaiter().GetResult();
-            return pmHost ?? appSettings.PmClient.Url;
-        });
-
-        var masaBuilder = builder.Services.AddMasaBlazor(builder =>
-        {
-            builder.ConfigureTheme(theme =>
+            options.ConfigureTheme(theme =>
             {
                 theme.Themes.Light.Primary = "#4318FF";
                 theme.Themes.Light.Accent = "#4318FF";
@@ -72,6 +79,15 @@ public static class ServiceCollectionExtensions
                 theme.Themes.Light.Warning = "#FF7D00";
                 theme.Themes.Light.Info = "#37A7FF";
             });
+            options.Defaults = new Dictionary<string, IDictionary<string, object?>?>()
+            {
+                {
+                    PopupComponents.SNACKBAR, new Dictionary<string, object?>()
+                    {
+                        { nameof(PEnqueuedSnackbars.Position), SnackPosition.BottomCenter }
+                    }
+                }
+            };
         })
         .AddI18n(GetLocales().ToArray());
 
@@ -79,22 +95,7 @@ public static class ServiceCollectionExtensions
         {
             masaBuilder.AddI18nForServer(i18nDirectoryPath);
         }
-        builder.Services.AddOss();
-        builder.Services.AddElasticsearchAutoComplete(() =>
-        {
-            var envirment = builder.Services.BuildServiceProvider()
-                .GetRequiredService<IEnvironmentProvider>().GetEnvironment();
-            var userAutoCompleteOptions = configurationApiClient
-                .GetAsync<UserAutoCompleteOptions>(envirment, cluster, appId, "$public.ES.UserAutoComplete", (_) =>
-                {
-                    var autoCompleteFactory = builder.Services.BuildServiceProvider().GetRequiredService<IAutoCompleteFactory>();
-                    var autoCompleteClient = autoCompleteFactory.Create();
-                    autoCompleteClient.BuildAsync();
-                }).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            return userAutoCompleteOptions;
-        });
-        builder.Services.AddSingleton<LogoutSessionManager>();
         return builder.Services;
     }
 

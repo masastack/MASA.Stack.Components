@@ -36,7 +36,7 @@ public class CategoryAppNav
         Action = action;
     }
 
-    public CategoryAppNav(string? category, string? app, string? nav, string? action, Nav navModel) : this(category, app, nav, action)
+    public CategoryAppNav(string? category, string? app, string? nav, string? action, Nav? navModel) : this(category, app, nav, action)
     {
         NavModel = navModel;
     }
@@ -46,5 +46,10 @@ public class CategoryAppNav
         return obj is CategoryAppNav categoryAppNav &&
                 (categoryAppNav.Category, categoryAppNav.App, categoryAppNav.Nav, categoryAppNav.Action)
                 == (Category, App, Nav, Action);
+    }
+
+    public override int GetHashCode()
+    {
+        return 1;
     }
 }

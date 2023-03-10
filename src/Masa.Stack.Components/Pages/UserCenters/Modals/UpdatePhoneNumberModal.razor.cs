@@ -50,12 +50,12 @@ public partial class UpdatePhoneNumberModal : MasaComponentBase
                 if (OnSuccess.HasDelegate)
                     await OnSuccess.InvokeAsync(UpdateUserPhoneNumber.PhoneNumber);
 
-                await PopupService.AlertAsync(T("Modify the phone number successfully"), AlertTypes.Success);
+                await PopupService.EnqueueSnackbarAsync(T("Modify the phone number successfully"), AlertTypes.Success);
                 await HandleOnCancel();
             }
             else
             {
-                await PopupService.AlertAsync(T("Modify the phone number failed"), AlertTypes.Error);
+                await PopupService.EnqueueSnackbarAsync(T("Modify the phone number failed"), AlertTypes.Error);
             }
         }
     }

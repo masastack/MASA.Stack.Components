@@ -1,91 +1,94 @@
 ﻿@namespace Masa.Stack.Components.GlobalNavigations
 @inject DynamicTranslateProvider TranslateProvider
+@inherits MasaComponentBase
 
 @if (Data is not null)
 {
+    var indeterminate = Indeterminate;
+
     <MHover Disabled="@IsDisabled">
-        @if (!Data.IsAction)
+        @if (Data.IsAction is false)
         {
             <MListItem @attributes="@context.Attrs"
                        Class="@GetClass(context.Hover)"
                        Value="@Data.Code"
                        Disabled="@IsDisabled"
-                       OnClick="async () => await NavigateTo(Data.Url)"
+                       OnClick="SelectItem"
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@TranslateProvider.DT(Data.Name)</MListItemTitle>
+                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@Name</MListItemTitle>
                     </MListItemContent>
-                    @if (context.Hover)
-                    {
-                        <MListItemAction Class="ma-0">
-                            @if (Checkable)
-                            {
-                                <MCheckbox Dense Value="@IsChecked"></MCheckbox>
-                            }
-                            else if (Level < 3)
-                            {
-                                <SAutoLoadingButton
-                                    Icon
-                                    XSmall
-                                    Color="@(Data.IsFavorite ? "#FFB547" : "")"
-                                    OnClick="@ToggleFavorite"
-                                    StopPropagation>
-                                    <MIcon Small>mdi-star</MIcon>
-                                </SAutoLoadingButton>
-                            }
-                        </MListItemAction>
-                    }
-                    else if (Checkable && Data.HasChildren is false)
-                    {                                              
-                        if(IsChecked)
+                    <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
+                        @if (Checkable)
                         {
-                            <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                            <MCheckbox Color="primary" Indeterminate=indeterminate Dense Value="@(indeterminate ||IsChecked)" />
                         }
-                        else if(Data.IsClose)
+                        else if (Favorite && Level < 3)
                         {
-                            <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
+                            <SAutoLoadingButton Icon
+                                                XSmall
+                                                Color="@(IsChecked ? "#FFB547" : "")"
+                                                OnClick="AddFavorite"
+                                                StopPropagation>
+                                <MIcon Small>mdi-star</MIcon>
+                            </SAutoLoadingButton>
+                        }
+                    </MListItemAction>
+                    @if(context.Hover is false)
+                    {
+                        if (Checkable && Data.HasChildren is false)
+                        {
+                            if(IsChecked)
+                            {
+                                <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                            }
+                            else if (Data.HasActions is false && Data.Reversed)
+                            {
+                                <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
+                            }
+                            else if (indeterminate)
+                            {
+                                <MIcon Small Class="mr-1" Color="primary">mdi-minus-box</MIcon>
+                            }
+                        }
+                        else if (Favorite && IsChecked)
+                        {
+                            <MIcon Small Style="margin-right: 6px" Color="#FFB547">mdi-star</MIcon>
                         }
                     }
-                    else if (Data.IsFavorite)
-                    {
-                        <MIcon Small Style="margin-right: 6px" Color="#FFB547">mdi-star</MIcon>
-                    }
+                   
                 </ItemContent>
             </MListItem>
-            @if (Data.Level == 1 && Data.HasChildren)
-            {
-                <MDivider />
-            }
         }
         else
         {
             <MListItem @attributes="@context.Attrs"
                        Class="@GetClass(context.Hover)"
                        Disabled="IsDisabled"
-                       OnClick="async () => await NavigateTo(Data.Url)"
-                       Value="@string.Format(ExpansionApp.ActionCodeFormat, NavCode, Data.Code)"
+                       OnClick="SelectItem"
+                       Value="@string.Format(ExpansionApp.ActionCodeFormat, ParentCode, Data.Code)"
                        ActiveClass="@ActiveClass">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="@(Data.IsChecked?"color: #323D6F;":"")">@Data.Name</MListItemTitle>
+                        <MListItemTitle Style="@(IsChecked?"color: #323D6F;":"")">@Name</MListItemTitle>
                     </MListItemContent>
 
                     @if (Checkable)
                     {
-                        @if (context.Hover)
+                        <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
+                            <MCheckbox Dense Value="@IsChecked"></MCheckbox>
+                        </MListItemAction>
+                        @if (context.Hover is false)
                         {
-                            <MListItemAction Class="ma-0">
-                                <MCheckbox Dense Value="@IsChecked"></MCheckbox>
-                            </MListItemAction>
-                        }
-                        else if(IsChecked)
-                        {
-                            <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
-                        }
-                        else if(Data.IsClose)
-                        {
-                            <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
+                            if (IsChecked)
+                            {
+                                <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                            }
+                            else if (Data.Reversed)
+                            {
+                                <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
+                            }
                         }
                     }
                 </ItemContent>

@@ -1,0 +1,33 @@
+﻿@page "/sselect"
+<h3>Select</h3>
+
+<SSelect Small @bind-Value="@_bindVersion"
+         Items="@_items"
+         ItemText="item => item"
+         ItemValue="item => item"
+         BackgroundColor="white"
+         Clearable
+         HideDetails="@("auto")"
+         TItem="string"
+         TItemValue="string"
+         TValue="string"
+         Class="fill-card body2"
+         EnableVerticalLine="true"
+         OnClearClick="RefreshAsync"
+         OnSelectedItemUpdate="RefreshAsync">
+</SSelect>
+
+@code {
+    private List<string> _items = new List<string>
+    {
+        "1.0",
+        "2.0",
+        "3.0",
+    };
+    private string _bindVersion;
+
+    private async Task RefreshAsync()
+    {
+        
+    }
+}

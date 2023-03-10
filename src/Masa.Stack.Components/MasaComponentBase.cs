@@ -1,4 +1,5 @@
-﻿namespace Masa.Stack.Components;
+﻿
+namespace Masa.Stack.Components;
 
 public abstract class MasaComponentBase : ComponentBase
 {
@@ -25,6 +26,9 @@ public abstract class MasaComponentBase : ComponentBase
     public IPopupService PopupService { get; set; } = default!;
 
     [Inject]
+    public IMasaStackConfig MasaStackConfig { get; set; } = default!;
+
+    [Inject]
     public DynamicTranslateProvider TranslateProvider { get; set; } = default!;
 
     private I18n? _languageProvider;
@@ -37,5 +41,10 @@ public abstract class MasaComponentBase : ComponentBase
     protected string DT(string key)
     {
         return TranslateProvider.DT(key);
+    }
+
+    protected string GetIsDisplayStyle(bool show)
+    {
+        return show ? "" : "display:none !important;";
     }
 }

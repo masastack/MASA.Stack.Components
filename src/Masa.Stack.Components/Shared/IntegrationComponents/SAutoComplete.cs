@@ -26,6 +26,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
         Color = "primary";
         Style = "";
         Class = "";
+
         await base.SetParametersAsync(parameters);
     }
 

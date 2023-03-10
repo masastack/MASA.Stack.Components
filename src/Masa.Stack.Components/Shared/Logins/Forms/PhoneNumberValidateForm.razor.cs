@@ -39,13 +39,13 @@ public partial class PhoneNumberValidateForm : MasaComponentBase
                 Password = _resetPasswordByPhoneModel.Password,
                 ConfirmPassword = _resetPasswordByPhoneModel.ConfirmPassword
             });
-            await PopupService.AlertAsync(T("OperationSuccessfulMessage"), AlertTypes.Success);
+            await PopupService.EnqueueSnackbarAsync(T("OperationSuccessfulMessage"), AlertTypes.Success);
             ForgetPasswordModal.HandleOnCancel();
             await ForgetPasswordModal.UpdatePasswordModal.HandleOnCancel();
         }
         catch (Exception e)
         {
-            await PopupService.AlertAsync(e.Message, AlertTypes.Error);
+            await PopupService.EnqueueSnackbarAsync(e.Message, AlertTypes.Error);
         }
         finally
         {

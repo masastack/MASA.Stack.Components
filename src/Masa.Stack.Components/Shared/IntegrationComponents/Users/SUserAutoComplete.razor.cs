@@ -54,6 +54,15 @@ public partial class SUserAutoComplete
     [Parameter]
     public bool Clearable { get; set; }
 
+    [Parameter]
+    public bool Small { get; set; }
+
+    [Parameter]
+    public bool Medium { get; set; }
+
+    [Parameter]
+    public bool Large { get; set; }
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";

@@ -78,7 +78,7 @@ public class STextField<TValue> : MTextField<TValue>
             {
                 builder.OpenElement(0, "div");
                 builder.AddAttribute(1, "class", "d-flex");
-                builder.AddAttribute(2, "style", $"margin-right:-12px;height:{Height}px;margin-top: -12px;");
+                builder.AddAttribute(2, "style", $"margin-right:-12px;height:{Height}px;");
                 builder.AddContent(3, subBuilder =>
                 {
                     subBuilder.OpenComponent<MDivider>(0);

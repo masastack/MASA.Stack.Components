@@ -1,24 +1,12 @@
 ﻿namespace Masa.Stack.Components.Models;
 
-public partial class Category
+public class Category
 {
     public string Code { get; set; }
 
     public string Name { get; set; }
 
-    public bool Hiden
-    {
-        get
-        {
-            return Apps.All(a => a.Hiden) || !Apps.Any();
-        }
-    }
-
     public List<App> Apps { get; set; } = new();
-
-    public Category()
-    {
-    }
 
     public Category(string code, string name, List<App> apps)
     {
@@ -27,17 +15,17 @@ public partial class Category
         Apps = apps;
     }
 
+    internal bool Filter(string? search) => string.IsNullOrEmpty(search) ? true : Name.Contains(search, StringComparison.OrdinalIgnoreCase) || Apps.Any(app => app.Filter(search));
+
+    internal string TagId(string? prefix) => $"{prefix}category-{Code}";
+
     public override bool Equals(object? obj)
     {
         return obj is Category category && category.Code == Code;
     }
-}
 
-public partial class Category
-{
-    internal string TagId(string? prefix) => $"{prefix}category-{Code}";
-
-    internal string TagStyle { get; set; }
-
-    internal List<StringNumber>? BindValues { get; set; }
+    public override int GetHashCode()
+    {
+        return 1;
+    }
 }

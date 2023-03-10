@@ -2,14 +2,16 @@
 @using Masa.Stack.Components.Configs
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
+@inject JsInitVariables JsInitVariables
 @implements IDisposable
 
 <PageTitle>Index</PageTitle>
 
-<h1>Index @TimezoneOffset</h1>
+<h1>Index @JsInitVariables.TimezoneOffset</h1>
 <h2>@DT("User")</h2>
 <h2>Current Team:@_currentTeamId</h2>
 <SForgetPasswordSheet></SForgetPasswordSheet>
+<SButton OnClick="() => JsInitVariables.TimezoneOffset = JsInitVariables.TimezoneOffset.Add(TimeSpan.FromMinutes(-60))">change timezoneOffset</SButton>
 
 
 @code{
@@ -18,6 +20,12 @@
     protected override void OnInitialized()
     {
         GlobalConfig.OnCurrentTeamChanged += CurrentTeamChanged;
+        JsInitVariables.TimezoneOffsetChanged += TestTimezoneOffsetChanged;
+    }
+
+    void TestTimezoneOffsetChanged()
+    {
+        Console.WriteLine(JsInitVariables.TimezoneOffset);
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -35,5 +43,6 @@
     public void Dispose()
     {
         GlobalConfig.OnCurrentTeamChanged -= CurrentTeamChanged;
+        JsInitVariables.TimezoneOffsetChanged -= TestTimezoneOffsetChanged;
     }
 }

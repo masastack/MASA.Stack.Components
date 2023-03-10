@@ -8,7 +8,7 @@
 
 <MNavigationDrawer App
                    Class="navigation"
-                   Permanent
+                          Permanent
                    MiniVariantWidth="96"
                    Width="300"
                    MiniVariant="GlobalConfig.Mini">
@@ -18,20 +18,20 @@
         @if (GlobalConfig.Mini)
         {
             <img height="40" width="40" src="@MiniLogo" alt="mini_log"
-             style="cursor: pointer" @onclick="NavigateToIndex" />
+                 style="cursor: pointer" @onclick="NavigateToIndex" />
         }
         else
         {
             <img width="200" src="@Logo" alt="logo"
-             style="cursor: pointer" @onclick="NavigateToIndex" />
-             <MChip Class="ma-2" Small
-                Color="primary">
-                @GlobalConfig.Version
+                 style="cursor: pointer" @onclick="NavigateToIndex" />
+            <MChip Class="ma-2" Small
+               Color="primary">
+            @MasaStackConfig.Version
             </MChip>
         }
     </div>
 
-    <MList Nav Linkage Class="pa-6 subtitle2">
+    <MList Nav Routable Class="pa-6 subtitle2">
         @foreach (var nav in Items!)
         {
             if (!nav.HasChildren)
@@ -39,49 +39,49 @@
                 <STooltip Disabled="!GlobalConfig.Mini">
                     <ActivatorContent Context="tooltipContext">
                         <SListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs" Exact="Exact">
-                            <ItemContent>
-                                <MListItemIcon>
-                                    <MIcon Dense Style="margin-left:6px" Color="@(context.Active ? "white" : "regular3--text")">@nav.Icon</MIcon>
-                                </MListItemIcon>
-                                <MListItemContent>
+                        <ItemContent>
+                            <MListItemIcon>
+                            <MIcon Dense Style="margin-left:6px" Color="@(context.Active ? "white" : "regular3--text")">@nav.Icon</MIcon>
+                                    </MListItemIcon>
+                                    <MListItemContent>
                                     <div class="ml-1 text-truncate @(context.Active ? "white--text" : "regular2--text")">
                                         @DT(nav.Name)
                                     </div>
-                                </MListItemContent>
-                            </ItemContent>
-                        </SListItem>
-                    </ActivatorContent>
-                    <ChildContent>
-                        @DT(nav.Name)
-                    </ChildContent>
-                </STooltip>
+                                    </MListItemContent>
+                                </ItemContent>
+                                </SListItem>
+                            </ActivatorContent>
+                            <ChildContent>
+                                @DT(nav.Name)
+                            </ChildContent>
+                            </STooltip>
             }
             else
             {
                 <MMenu Disabled="!GlobalConfig.Mini" OffsetY OpenOnHover CloseOnContentClick="false"
                ContentClass="white pa-2 subtitle2"
                MinWidth="250">
-                    <ActivatorContent Context="menuContext">
-                        <MListGroup Group="@GenGroup(nav.Children)"
-                            NoAction
+                <ActivatorContent Context="menuContext">
+                    <MListGroup Group="@GenGroup(nav.Children)"
+                                        NoAction
                             ActiveClass="primary--text"
                             AppendIcon="mdi-menu-down"
                             @attributes="@menuContext.Attrs">
-                            <ActivatorContent>
-                                <MListItemContent>
-                                    <div class="ml-1 text-truncate regular2--text">@DT(nav.Name)</div>
-                                </MListItemContent>
-                            </ActivatorContent>
-                            <PrependIconContent>
-                                <MIcon Dense Style="margin-left: 6px">@nav.Icon</MIcon>
+                        <ActivatorContent>
+                            <MListItemContent>
+                            <div class="ml-1 text-truncate regular2--text">@DT(nav.Name)</div>
+                            </MListItemContent>
+                        </ActivatorContent>
+                        <PrependIconContent>
+                            <MIcon Dense Style="margin-left: 6px">@nav.Icon</MIcon>
                             </PrependIconContent>
                             <ChildContent>
                                 <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
                             </ChildContent>
-                        </MListGroup>
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MList Nav Linkage>
+                            </MListGroup>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MList Nav Linkage>
                             <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
                         </MList>
                     </ChildContent>
@@ -107,15 +107,15 @@
                                         <MListItem @attributes="@itemContext.Attrs" OnClick="()=>SwitchEnvironmentAsync(environment.Name)">
                                             <MListItemContent>
                                                 <MIcon Large Color="@(environment.Color??"primary")">
-                                                    mdi-record-circle
+                                                mdi-record-circle
                                                 </MIcon>
-                                            </MListItemContent>
-                                        </MListItem>
-                                    </ActivatorContent>
-                                    <ChildContent>
-                                        @environment.Name
-                                    </ChildContent>
-                                </STooltip>
+                                                </MListItemContent>
+                                                </MListItem>
+                                            </ActivatorContent>
+                                            <ChildContent>
+                                                @environment.Name
+                                            </ChildContent>
+                                            </STooltip>
                             }
                         </MList>
                     </ChildContent>
@@ -180,7 +180,7 @@
             {
                 Logger.LogError(e, "PmClient.EnvironmentService.GetListAsync");
             }
-            
+
             _currentEnvironment = EnvironmentProvider.GetEnvironment();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -218,7 +218,7 @@
         var isIn = await AuthClient.UserService.HasPhoneNumberInEnvAsync(environment, currentUser?.PhoneNumber);
         if (!isIn)
         {
-            await PopupService.AlertAsync(T("EnvironmentSwitchTips"), AlertTypes.Warning);
+            await PopupService.EnqueueSnackbarAsync(T("EnvironmentSwitchTips"), AlertTypes.Warning);
             return;
         }
         NavigationManager.NavigateTo($"/Account/Logout?environment={environment}", true);
