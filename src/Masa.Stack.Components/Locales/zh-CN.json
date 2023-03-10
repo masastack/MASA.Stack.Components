@@ -136,7 +136,7 @@
   "$MonthDayFormat": "MM月dd日",
   "DisplayName.Notice.Title": "站内消息通知",
   "Description.Notice.MoreTips": "查看更多消息",
-  "Permission.WebsiteMessageManagement": "消息中心",
+  "Permission.WebsiteMessageManagement": "我的消息",
   "DisplayName.AllWebsiteMessage": "全部消息",
   "DisplayName.WebsiteMessageAction.MarkAllRead": "全部标记已读",
   "DisplayName.WebsiteMessageAction.ShowAll": "显示全部",
