@@ -151,5 +151,6 @@
   "The employee account has been frozen, please contact the administrator!": "员工账号已冻结，请联系管理员!",
   "SmsSendTime": "{0}秒后可重发",
   "Does not support gif format avatar": "不支持gif格式头像",
-  "Query": "查询"
+  "Query": "查询",
+  "DeletionNotificationConfirmMessage": "确定要删除消息“{Message}”吗？"
 }
