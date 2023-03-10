@@ -91,5 +91,6 @@
   "OperationConfirmation": "Operation confirmation",
   "DeletionConfirmationMessage": "Are you sure to delete the data?",
   "DeletedSuccessfullyMessage": "Delete succeeded.",
-  "OperationSuccessfulMessage": "Operation succeeded."
+  "OperationSuccessfulMessage": "Operation succeeded.",
+  "DeletionNotificationConfirmMessage": "Are you sure you want to delete message \"{Message}\"?"
 }
