@@ -80,7 +80,7 @@
   "$MonthDayFormat": "MM/dd",
   "DisplayName.Notice.Title": "Website message notification",
   "Description.Notice.MoreTips": "View more messages",
-  "Permission.WebsiteMessageManagement": "Message center",
+  "Permission.WebsiteMessageManagement": "My messages",
   "DisplayName.AllWebsiteMessage": "All messages",
   "DisplayName.WebsiteMessageAction.MarkAllRead": "Mark all read",
   "DisplayName.WebsiteMessageAction.ShowAll": "Show All",
