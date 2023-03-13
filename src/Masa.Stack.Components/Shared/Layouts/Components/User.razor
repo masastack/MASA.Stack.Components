@@ -39,7 +39,7 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            @if (MasaUser.IsStaff && _teams.Any())
+            @if (MasaUser.IsStaff && MasaUser.StaffId != Guid.Empty && _teams.Any())
             {
                 <MDivider></MDivider>
                 <MListGroup @bind-Value="_showChangeTeam" NoAction Style="">
