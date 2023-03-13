@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components
+@inherits BDomComponentBase
 
 <MBottomSheet ContentClass="m-sheet-dialog full-height elevation-0 m-dialog--fullscreen" Value=Value ValueChanged="ValueChanged">
     <MHover>
@@ -25,7 +26,7 @@
             Style="@($"position: absolute;top: 0;left: {Padding}px;right: {Padding}px;top: {HeaderHeight}px;height: calc(100% - {HeaderHeight}px);width: calc(100% - {2*Padding}px); {ContentStyle}")">
         @if (EnableDomReload)
         {
-            if(Value)
+            if (Value)
             {
                 @ChildContent
             }
@@ -74,6 +75,9 @@
     [Parameter]
     public bool EnableDomReload { get; set; }
 
+    [Parameter]
+    public EventCallback<ElementReference> OnClosed { get; set; }
+
     private async Task OnClose()
     {
         if (ValueChanged.HasDelegate)
@@ -83,6 +87,17 @@
         else
         {
             Value = false;
+        }
+        if (!Value)
+        {
+            if (OnClosed.HasDelegate)
+            {
+                NextTick(async () =>
+                {
+                    await Task.Delay(150);
+                    await OnClosed.InvokeAsync(Ref);
+                });
+            }
         }
     }
 }
