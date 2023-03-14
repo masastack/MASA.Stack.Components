@@ -154,5 +154,5 @@
   "Query": "查询",
   "DeletionNotificationConfirmMessage": "确定要删除消息“{Message}”吗？",
 
-  "UpdateAvatar": "上传头像"
+  "UploadAvatar": "上传头像"
 }

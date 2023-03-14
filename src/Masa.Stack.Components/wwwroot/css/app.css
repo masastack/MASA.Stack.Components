@@ -740,29 +740,11 @@ masa-stack-components .table-border-none.dense thead th {
 }
 
 /* avatar */
-.masa-stack-components .avatar-overlay{
-  position: relative;
-}
 .masa-stack-components .avatar-overlay-tips{
-  position: absolute;
-  top: 0px;
-  background: rgba(0,0,0,0);
-  color: #FFFFFF00;
-}
-.masa-stack-components .twelve-m{
-  font-family: 'Roboto';
-  font-style: normal;
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 18px;
-}
-.masa-stack-components .avatar-overlay-tips:hover{
-  color:#FFFFFF;
-  background: rgba(27, 37, 89, 0.5);
+    background: rgba(27, 37, 89, 0.5);
 }
 .masa-stack-components .avatar-overlay-tips:active{
-  color:#FFFFFF;
-  background: rgba(27, 37, 89, 0.8);
+    background: rgba(27, 37, 89, 0.8);
 }
 
 .masa-stack-components .s-auto-complete input {

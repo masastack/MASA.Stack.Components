@@ -26,6 +26,18 @@ public partial class SUploadImage : SUpload
     [Parameter]
     public uint Size { get; set; }
 
+    [Parameter]
+    public bool IsOverlay { get; set; } 
+
+    [Parameter]
+    public int OverlayOpenDelay { get; set; }
+
+    [Parameter]
+    public int OverlayCloseDelay { get; set; }
+
+    [Parameter]
+    public string OverlayTips { get; set; } = string.Empty;
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Accept = "image/*";
@@ -55,6 +67,7 @@ public partial class SUploadImage : SUpload
     string GetClass()
     {
         var css = Class;
+        css += " mx-auto hover-misc-transition";
         if (Avatar) css += " m-avatar";
         return css;
     }
@@ -68,5 +81,6 @@ public partial class SUploadImage : SUpload
         if (Avatar) style += $"border-radius: 50%;";
         return $"{style};{Style}";
     }
+    
+    List<string> getSrcList()=> MultipleValue.Count == 0 ? new List<string> { Icon } : MultipleValue;
 }
-

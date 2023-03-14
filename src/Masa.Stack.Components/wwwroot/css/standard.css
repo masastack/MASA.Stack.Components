@@ -525,3 +525,11 @@
     .masa .full-height {
         height: 100% !important;
     }
+
+    .masa .twelve-m{
+        font-family: 'Roboto';
+	font-style: normal;
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 18px;
+    }
