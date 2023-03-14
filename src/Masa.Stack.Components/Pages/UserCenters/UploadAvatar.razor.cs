@@ -13,7 +13,7 @@ public partial class UploadAvatar : SUploadImage
 
     [Inject]
     public I18n I18n { get; set; } = default!;
-
+    
     public OssOptions OssOptions
     {
         get

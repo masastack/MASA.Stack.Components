@@ -1,0 +1,21 @@
+@namespace Masa.Stack.Components
+@inherits SUploadImage
+
+<label class="uploadImage">
+    <Microsoft.AspNetCore.Components.Forms.InputFile @ref="InputFileRef" OnChange=OnInputFileChange accept="@Accept" multiple=@Multiple />
+    <div>
+	<div class="avatar-overlay d-flex justify-center">
+            @if (MultipleValue.Count == 0)
+            {
+	      <img src="@Icon" style="width:@(Size)px;height:@(Size)px;border-radius:50%" />
+            }
+            @foreach (var imageUrl in MultipleValue)
+            {
+	      <img src="@imageUrl" style="width:@(Size)px;height:@(Size)px;border-radius:50%" />
+            }
+            <div class="avatar-overlay-tips twelve-m d-flex justify-center align-center" style="width:@(Size)px;height:@(Size)px;border-radius:50%">
+		<i class="mdi mdi-upload"></i>@T("UploadAvatar")
+            </div>
+        </div>
+    </div>
+</label>
