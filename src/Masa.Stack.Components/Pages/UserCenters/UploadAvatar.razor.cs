@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public class UploadAvatar : SUploadImage
+public partial class UploadAvatar : SUploadImage
 {
     [Inject]
     public IObjectStorageClient Client { get; set; } = default!;
