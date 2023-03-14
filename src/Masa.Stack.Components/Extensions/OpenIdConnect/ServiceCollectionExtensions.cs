@@ -14,6 +14,9 @@ public static class ServiceCollectionExtensions
         MasaOpenIdConnectOptions masaOpenIdConnectOptions)
     {
         services.AddSingleton(masaOpenIdConnectOptions);
+        services.AddSingleton<LogoutSessionManager>();
+        services.AddTransient<CookieEventHandler>();
+        services.AddTransient<OidcEventHandler>();
         return services.AddMasaOpenIdConnect(masaOpenIdConnectOptions.Authority, masaOpenIdConnectOptions.ClientId,
                 masaOpenIdConnectOptions.ClientSecret, masaOpenIdConnectOptions.Scopes.ToArray());
     }
@@ -28,7 +31,7 @@ public static class ServiceCollectionExtensions
         services.AddHttpContextAccessor();
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-        services.AddTransient<CookieEventHandler>();
+
         services.AddAuthentication(options =>
         {
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -38,7 +41,7 @@ public static class ServiceCollectionExtensions
         .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
         {
             options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
-            options.EventsType = typeof(CookieEventHandler);
+            //options.EventsType = typeof(CookieEventHandler);
         })
         .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
         {
@@ -72,50 +75,7 @@ public static class ServiceCollectionExtensions
             options.ClaimActions.MapUniqueJsonKey("phone_number", "phone_number");
             options.ClaimActions.MapUniqueJsonKey("staff_id", "staff_id");
 
-            options.Events = new OpenIdConnectEvents
-            {
-                OnAccessDenied = context =>
-                {
-                    context.HandleResponse();
-                    context.Response.Redirect("/");
-                    return Task.CompletedTask;
-                },
-                OnRemoteFailure = context =>
-                {
-                    if (context.HttpContext.Request.Path.Value == "/signin-oidc")
-                    {
-                        context.SkipHandler();
-                        context.Response.Redirect("/");
-                    }
-                    else
-                    {
-                        context.HandleResponse();
-                    }
-                    return Task.CompletedTask;
-                },
-                OnRedirectToIdentityProviderForSignOut = context =>
-                {
-                    if (context.Properties.Items.ContainsKey("env"))
-                    {
-                        context.ProtocolMessage.SetParameter("env",
-                            context.Properties.Items["env"]);
-                    }
-                    if (context.Properties.Items.ContainsKey("RedirectToLogin"))
-                    {
-                        context.ProtocolMessage.SetParameter("RedirectToLogin",
-                            context.Properties.Items["RedirectToLogin"]);
-                    }
-                    return Task.CompletedTask;
-                },
-                OnRedirectToIdentityProvider = context =>
-                {
-                    return Task.CompletedTask;
-                },
-                OnSignedOutCallbackRedirect = context =>
-                {
-                    return Task.CompletedTask;
-                }
-            };
+            options.EventsType = typeof(OidcEventHandler);
 
             //ensure normal i use self signed certificate
             options.BackchannelHttpHandler = new HttpClientHandler

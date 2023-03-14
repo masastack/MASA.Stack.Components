@@ -1,5 +1,4 @@
-﻿
-namespace Masa.Stack.Components.Controllers;
+﻿namespace Masa.Stack.Components.Controllers;
 
 [Microsoft.AspNetCore.Mvc.Route("[controller]/[action]")]
 public class AccountController : Controller
@@ -76,11 +75,14 @@ public class AccountController : Controller
                 _logger.LogWarning("sub or sid is empty");
                 return BadRequest();
             }
-            _logoutSessionManager.Add(sub, sid);
+            //_logoutSessionManager.Add(sub, sid);
 
             return Ok();
         }
-        catch { }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "BackChannelLogout");
+        }
 
         return BadRequest();
     }
@@ -135,8 +137,6 @@ public class AccountController : Controller
             ValidIssuer = disco.Issuer,
             ValidAudience = _masaOpenIdConnectOptions.ClientId,
             IssuerSigningKeys = keys,
-#warning delete this line
-            ValidateIssuer = false
         };
 
         var handler = new JwtSecurityTokenHandler();

@@ -1,5 +1,4 @@
-﻿
-namespace Masa.Stack.Components.Infrastructure.Identity;
+﻿namespace Masa.Stack.Components.Extensions.OpenIdConnect;
 
 public class LogoutSessionManager
 {
@@ -16,27 +15,27 @@ public class LogoutSessionManager
 
     public void Add(string sub, string sid)
     {
-        _logger.LogWarning($"Backchannel add a logout to the session: sub: {sub}, sid: {sid}");
+        _logger.LogDebug($"Backchannel add a logout to the session: sub: {sub}, sid: {sid}");
         //todo Masa DistributedLock
         lock (_lock)
         {
             var key = sub + sid;
             var logoutSession = new BackchannelLogoutSession(sub, sid);
-            _logger.LogInformation($"Backchannel logoutSession: {logoutSession}");
-            _distributedCacheClient.Set(key, logoutSession);
+            _logger.LogDebug($"Backchannel logoutSession: {logoutSession}");
+            _distributedCacheClient.Set(key, logoutSession, TimeSpan.FromDays(7));
         }
     }
 
     public async Task<bool> IsLoggedOutAsync(string sub, string sid)
     {
-        _logger.LogInformation($"Backchannel IsLoggedOutAsync: sub: {sub}, sid: {sid}");
+        _logger.LogDebug($"Backchannel IsLoggedOutAsync: sub: {sub}, sid: {sid}");
         var key = sub + sid;
         var matches = false;
         var logoutSession = await _distributedCacheClient.GetAsync<BackchannelLogoutSession>(key);
         if (logoutSession != null)
         {
             matches = logoutSession.IsMatch(sub, sid);
-            _logger.LogInformation($"Backchannel Logout session exists T/F {matches} : {sub}, sid: {sid}");
+            _logger.LogDebug($"Backchannel Logout session exists T/F {matches} : {sub}, sid: {sid}");
         }
         return matches;
     }
@@ -56,8 +55,8 @@ class BackchannelLogoutSession
 
     public bool IsMatch(string sub, string sid)
     {
-        return (Sid == sid && Sub == sub) ||
-               (Sid == sid && Sub == null) ||
-               (Sid == null && Sub == sub);
+        return Sid == sid && Sub == sub ||
+               Sid == sid && Sub == null ||
+               Sid == null && Sub == sub;
     }
 }
