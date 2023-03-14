@@ -555,7 +555,7 @@ masa-stack-components .table-border-none.dense thead th {
 }
 
 .masa-stack-components .table-border-none tr .m-icon {
-    color: #485585 !important;
+    color: #323D6F !important;
 }
 
 .masa-stack-components .table-border-none tr td:first-child, th:first-child {
@@ -737,4 +737,8 @@ masa-stack-components .table-border-none.dense thead th {
 .select_vertical_line .m-select__slot .m-input__append-inner:nth-last-of-type(1) {
     border-left: solid 1px rgba(0,0,0,.12) !important;
     min-height: 24px !important;
+}
+
+.masa-stack-components .s-auto-complete input {
+    color: #7681AB;
 }
