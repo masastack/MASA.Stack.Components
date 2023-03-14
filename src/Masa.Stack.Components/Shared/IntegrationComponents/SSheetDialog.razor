@@ -88,16 +88,13 @@
         {
             Value = false;
         }
-        if (!Value)
+        if (OnClosed.HasDelegate)
         {
-            if (OnClosed.HasDelegate)
+            NextTick(async () =>
             {
-                NextTick(async () =>
-                {
-                    await Task.Delay(150);
-                    await OnClosed.InvokeAsync();
-                });
-            }
+                await Task.Delay(150);
+                await OnClosed.InvokeAsync();
+            });
         }
     }
 }
