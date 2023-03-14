@@ -76,7 +76,7 @@
     public bool EnableDomReload { get; set; }
 
     [Parameter]
-    public EventCallback<ElementReference> OnClosed { get; set; }
+    public EventCallback OnClosed { get; set; }
 
     private async Task OnClose()
     {
@@ -95,7 +95,7 @@
                 NextTick(async () =>
                 {
                     await Task.Delay(150);
-                    await OnClosed.InvokeAsync(Ref);
+                    await OnClosed.InvokeAsync();
                 });
             }
         }
