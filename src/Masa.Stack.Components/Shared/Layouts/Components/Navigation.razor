@@ -89,7 +89,7 @@
             }
         }
     </MList>
-    @if (_environments.Count>1)
+    @if (IsShowEnvironmentSwitch && _environments.Count > 1)
     {
         <STooltip>
             <ActivatorContent>
@@ -160,6 +160,9 @@
 
     [Parameter]
     public bool Exact { get; set; } = true;
+
+    [Parameter]
+    public bool IsShowEnvironmentSwitch { get; set; } = true;
 
     List<EnvironmentModel> _environments = new();
     string _currentEnvironment = "";
