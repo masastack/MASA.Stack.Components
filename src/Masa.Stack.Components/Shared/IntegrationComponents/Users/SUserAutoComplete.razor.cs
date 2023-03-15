@@ -77,14 +77,14 @@ public partial class SUserAutoComplete
     public async Task OnSearchChanged(string search)
     {
         search = search.TrimStart(' ').TrimEnd(' ');
-        Search = search;
-        await Task.Delay(300);
+        Search = search;   
         if (Search == "")
         {
             UserSelect.Clear();
         }
         else if (Search == search)
         {
+            await Task.Delay(300);
             var response = await AutoCompleteClient.GetBySpecifyDocumentAsync<UserSelectModel>(search, new AutoCompleteOptions
             {
                 Page = Page,
