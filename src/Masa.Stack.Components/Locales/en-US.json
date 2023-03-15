@@ -94,5 +94,5 @@
   "OperationSuccessfulMessage": "Operation succeeded.",
   "DeletionNotificationConfirmMessage": "Are you sure you want to delete message \"{Message}\"?",
 
-  "UpdateAvatar": "Upload avatar"
+  "UploadAvatar": "Upload avatar"
 }
