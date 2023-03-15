@@ -58,7 +58,7 @@ public partial class SLayout
     public bool Exact { get; set; } = true;
 
     [Parameter]
-    public bool IsShowEnvironmentSwitch { get; set; } = true;
+    public bool IsShowEnvironmentSwitch { get; set; } = false;
 
     List<Nav> NavItems = new();
     List<string> _preWhiteUris = new();
