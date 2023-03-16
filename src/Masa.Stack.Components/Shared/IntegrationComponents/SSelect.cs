@@ -42,7 +42,11 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
         base.OnParametersSet();
 
         Class ??= "";
-        Class += " s-select";
+
+        if (Class.Contains("s-select") is false)
+        {
+            Class += " s-select";
+        }
         if (Large is false && Small is false) Medium = true;
         if (Dense is true)
         {
