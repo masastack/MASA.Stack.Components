@@ -82,7 +82,7 @@ public partial class SUserAutoComplete
         {
             UserSelect.Clear();
         }
-        else if (Search == search)
+        else
         {
             await Task.Delay(300);
             var response = await AutoCompleteClient.GetBySpecifyDocumentAsync<UserSelectModel>(search, new AutoCompleteOptions
