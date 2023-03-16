@@ -36,7 +36,7 @@ public class CookieEventHandler : CookieAuthenticationEvents
                 return;
             }
             //todo:too many call rework in 2.0
-            if (await _logoutSessionManager.IsLoggedOutAsync(sub, sid))
+            if (_logoutSessionManager.IsLoggedOut(sub, sid))
             {
                 context.RejectPrincipal();
                 await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
