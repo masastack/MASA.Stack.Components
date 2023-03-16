@@ -21,8 +21,7 @@ public class DynamicTranslateProvider : IScopedDependency
         var i18n_key = $"{I18N_KEY}{culture}";
         var section = _memoryCache.GetOrCreate(i18n_key, (entry) =>
         {
-            entry.SlidingExpiration = TimeSpan.FromSeconds(10);
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
             return _masaConfiguration.ConfigurationApi.GetPublic().GetSection(i18n_key);
         });
         var value = section.GetValue<string>(key);
