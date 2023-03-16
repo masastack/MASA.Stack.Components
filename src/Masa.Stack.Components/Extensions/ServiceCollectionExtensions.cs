@@ -60,8 +60,6 @@ public static class ServiceCollectionExtensions
             };
         });
 
-
-        builder.Services.AddScoped<TokenProvider>();
         builder.Services.AddScoped((serviceProvider) =>
         {
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();

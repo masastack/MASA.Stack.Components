@@ -21,7 +21,7 @@ global using Masa.BuildingBlocks.StackSdks.Pm;
 global using Masa.BuildingBlocks.Storage.ObjectStorage;
 global using Masa.Contrib.Caching.Distributed.StackExchangeRedis;
 global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
-global using Masa.Contrib.Service.Caller.Authentication.OpenIdConnect;
+global using Masa.Contrib.StackSdks.Caller;
 global using Masa.Contrib.StackSdks.Config;
 global using Masa.Contrib.Storage.ObjectStorage.Aliyun.Options;
 global using Masa.Stack.Components.Configs;
