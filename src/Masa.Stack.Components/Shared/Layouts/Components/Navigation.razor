@@ -22,10 +22,8 @@
         }
         else
         {
-            <img width="200" src="@Logo" alt="logo"
-                 style="cursor: pointer" @onclick="NavigateToIndex" />
-            <MChip Class="ma-2" Small
-               Color="primary">
+            <img width="200" src="@Logo" alt="logo" style="cursor: pointer" @onclick="NavigateToIndex" />
+            <MChip Class="ma-2" Small Color="primary">
             @MasaStackConfig.Version
             </MChip>
         }
@@ -48,13 +46,13 @@
                                         @DT(nav.Name)
                                     </div>
                                     </MListItemContent>
-                                </ItemContent>
-                                </SListItem>
-                            </ActivatorContent>
-                            <ChildContent>
-                                @DT(nav.Name)
-                            </ChildContent>
-                            </STooltip>
+                             </ItemContent>
+                        </SListItem>
+                    </ActivatorContent>
+                    <ChildContent>
+                        @DT(nav.Name)
+                    </ChildContent>
+                </STooltip>
             }
             else
             {
