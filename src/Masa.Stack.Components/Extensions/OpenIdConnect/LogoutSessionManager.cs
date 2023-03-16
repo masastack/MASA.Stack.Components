@@ -1,37 +1,30 @@
-﻿namespace Masa.Stack.Components.Extensions.OpenIdConnect;
+﻿
+namespace Masa.Stack.Components.Extensions.OpenIdConnect;
 
 public class LogoutSessionManager
 {
-    private static readonly object _lock = new object();
     private readonly ILogger<LogoutSessionManager> _logger;
-    readonly IDistributedCacheClient _distributedCacheClient;
+    //todo expired
+    readonly ConcurrentDictionary<string, BcLogoutSession> _sessions = new ConcurrentDictionary<string, BcLogoutSession>();
 
-
-    public LogoutSessionManager(ILoggerFactory loggerFactory, IDistributedCacheClient distributedCacheClient)
+    public LogoutSessionManager(ILoggerFactory loggerFactory)
     {
-        _distributedCacheClient = distributedCacheClient;
         _logger = loggerFactory.CreateLogger<LogoutSessionManager>();
     }
 
     public void Add(string sub, string sid)
     {
         _logger.LogDebug($"Backchannel add a logout to the session: sub: {sub}, sid: {sid}");
-        //todo Masa DistributedLock
-        lock (_lock)
-        {
-            var key = sub + sid;
-            var logoutSession = new BackchannelLogoutSession(sub, sid);
-            _logger.LogDebug($"Backchannel logoutSession: {logoutSession}");
-            _distributedCacheClient.Set(key, logoutSession, TimeSpan.FromDays(7));
-        }
+        var logoutSession = new BcLogoutSession(sub, sid);
+        _sessions[sub + sid] = logoutSession;
     }
 
-    public async Task<bool> IsLoggedOutAsync(string sub, string sid)
+    public bool IsLoggedOut(string sub, string sid)
     {
         _logger.LogDebug($"Backchannel IsLoggedOutAsync: sub: {sub}, sid: {sid}");
         var key = sub + sid;
         var matches = false;
-        var logoutSession = await _distributedCacheClient.GetAsync<BackchannelLogoutSession>(key);
+        _sessions.TryGetValue(key, out var logoutSession);
         if (logoutSession != null)
         {
             matches = logoutSession.IsMatch(sub, sid);
@@ -41,13 +34,13 @@ public class LogoutSessionManager
     }
 }
 
-class BackchannelLogoutSession
+class BcLogoutSession
 {
     public string Sub { get; set; }
 
     public string Sid { get; set; }
 
-    public BackchannelLogoutSession(string sub, string sid)
+    public BcLogoutSession(string sub, string sid)
     {
         Sub = sub;
         Sid = sid;
