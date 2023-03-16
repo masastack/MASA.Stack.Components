@@ -23,10 +23,11 @@
                BackgroundColor="@(FillBackground?"fill-background":"")"
                HideDetails="@("auto")"
                Style="@($"width:340px;height:40px;{Style}")"
-               Class="@($"{Class} rounded-2")"
-               Clearable=Clearable>
+               Class="@($"{Class} rounded-2 s-auto-complete")"
+               Clearable=Clearable
+               PrependInnerIcon="mdi-magnify">
     <ItemContent Context="data">
-        <div class="d-flex py-2" style="height:64px;">
+        <div class="d-flex py-2" style="height:40px;">
             <MAvatar Size=30 Class="ma-auto">
                 <img src="@data.Item.Avatar" />
             </MAvatar>

@@ -3,7 +3,7 @@
 
 namespace Masa.Stack.Components;
 
-public class UploadAvatar : SUploadImage
+public partial class UploadAvatar : SUploadImage
 {
     [Inject]
     public IObjectStorageClient Client { get; set; } = default!;
@@ -11,6 +11,9 @@ public class UploadAvatar : SUploadImage
     [Inject]
     public IConfiguration Configuration { get; set; } = default!;
 
+    [Inject]
+    public I18n I18n { get; set; } = default!;
+    
     public OssOptions OssOptions
     {
         get
@@ -23,6 +26,8 @@ public class UploadAvatar : SUploadImage
     {
         Avatar = true;
         Size = 120;
+        IsOverlay = true;
+        OverlayTips = I18n?.T("UploadAvatar") ?? string.Empty;
         return base.SetParametersAsync(parameters);
     }
 

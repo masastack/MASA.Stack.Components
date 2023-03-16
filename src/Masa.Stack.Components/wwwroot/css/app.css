@@ -496,10 +496,13 @@ body, .masa-stack-components {
     transform: translateY(-24.5px) scale(0.75);
 }
 
+.masa-stack-components .s-select.m-text-field--outlined.m-input--dense .m-chip {
+    margin: 4px;
+}
+
 /*
     default dataTable
 */
-
 .masa-stack-components .table-border-none thead th {
     border-bottom: 0px !important;
     box-shadow: none !important;
@@ -552,7 +555,7 @@ masa-stack-components .table-border-none.dense thead th {
 }
 
 .masa-stack-components .table-border-none tr .m-icon {
-    color: #485585 !important;
+    color: #323D6F !important;
 }
 
 .masa-stack-components .table-border-none tr td:first-child, th:first-child {
@@ -734,4 +737,16 @@ masa-stack-components .table-border-none.dense thead th {
 .select_vertical_line .m-select__slot .m-input__append-inner:nth-last-of-type(1) {
     border-left: solid 1px rgba(0,0,0,.12) !important;
     min-height: 24px !important;
+}
+
+/* avatar */
+.masa-stack-components .avatar-overlay-tips{
+    background: rgba(27, 37, 89, 0.5);
+}
+.masa-stack-components .avatar-overlay-tips:active{
+    background: rgba(27, 37, 89, 0.8);
+}
+
+.masa-stack-components .s-auto-complete input {
+    color: #7681AB;
 }

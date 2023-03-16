@@ -47,7 +47,16 @@
                     {
                         <MListItem Link Href="@($"/notification-center/{item.Id}")">
                             <MListItemAvatar Class="mt-2">
-                                <SEmptyAvatar Value="@item.Channel?.DisplayName" Size="40" />
+                                @if (item.IsRead)
+                                {
+                                    <SEmptyAvatar Value="@item.Channel?.DisplayName" Size="40" />
+                                }
+                                else
+                                {
+                                    <MBadge Bordered Color="pink" Dot OffsetX="10" OffsetY="10">
+                                        <SEmptyAvatar Value="@item.Channel?.DisplayName" Size="40" />
+                                    </MBadge>
+                                }
                             </MListItemAvatar>
 
                             <MListItemContent>

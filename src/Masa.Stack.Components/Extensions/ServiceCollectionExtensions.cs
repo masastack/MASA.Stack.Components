@@ -25,9 +25,9 @@ public static class ServiceCollectionExtensions
         var masaStackConfig = builder.Services.GetMasaStackConfig();
 
         var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
-        authHost = masaStackConfig.GetAuthServiceDomain();
-        mcHost = masaStackConfig.GetMcServiceDomain();
-        pmHost = masaStackConfig.GetPmServiceDomain();
+        authHost = authHost ?? masaStackConfig.GetAuthServiceDomain();
+        mcHost = mcHost ?? masaStackConfig.GetMcServiceDomain();
+        pmHost = pmHost ?? masaStackConfig.GetPmServiceDomain();
         redisOption = new RedisConfigurationOptions
         {
             Servers = new List<RedisServerOptions> {
@@ -44,7 +44,7 @@ public static class ServiceCollectionExtensions
         builder.Services.AddAuthClient(authHost, redisOption);
         var options = new McServiceOptions(() =>
         {
-            return masaStackConfig.GetMcServiceDomain();
+            return mcHost;
         });
         builder.Services.AddSingleton(options);
         builder.Services.AddMcClient(mcHost);

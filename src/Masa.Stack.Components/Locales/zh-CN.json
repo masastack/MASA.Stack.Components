@@ -136,7 +136,7 @@
   "$MonthDayFormat": "MM月dd日",
   "DisplayName.Notice.Title": "站内消息通知",
   "Description.Notice.MoreTips": "查看更多消息",
-  "Permission.WebsiteMessageManagement": "消息中心",
+  "Permission.WebsiteMessageManagement": "我的消息",
   "DisplayName.AllWebsiteMessage": "全部消息",
   "DisplayName.WebsiteMessageAction.MarkAllRead": "全部标记已读",
   "DisplayName.WebsiteMessageAction.ShowAll": "显示全部",
@@ -151,5 +151,8 @@
   "The employee account has been frozen, please contact the administrator!": "员工账号已冻结，请联系管理员!",
   "SmsSendTime": "{0}秒后可重发",
   "Does not support gif format avatar": "不支持gif格式头像",
-  "Query": "查询"
+  "Query": "查询",
+  "DeletionNotificationConfirmMessage": "确定要删除消息“{Message}”吗？",
+
+  "UploadAvatar": "上传头像"
 }

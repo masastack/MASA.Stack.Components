@@ -11,6 +11,9 @@ public partial class Notification : MasaComponentBase
     [Inject]
     public McServiceOptions McApiOptions { get; set; } = default!;
 
+    [Inject]
+    public TokenProvider TokenProvider { get; set; } = default!;
+
     public HubConnection? HubConnection { get; set; }
 
     private GetNoticeListModel _queryParam = new();
@@ -42,12 +45,7 @@ public partial class Notification : MasaComponentBase
             {
                 options.AccessTokenProvider = async () =>
                 {
-                    string? accessToken = string.Empty;
-                    if (httpContextAccessor.HttpContext != null)
-                    {
-                        accessToken = await httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-                    }
-                    return accessToken;
+                    return TokenProvider.AccessToken;
                 };
             })
             .Build();
