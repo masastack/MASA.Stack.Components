@@ -4,14 +4,15 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
-	<ItemGroup>		
-		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="1.0.0-preview.15" />
-		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="1.0.0-preview.15" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
-		<PackageReference Include="Masa.Contrib.Configuration" Version="1.0.0-preview.15" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.7" />
+	<ItemGroup>
+		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="1.0.0-preview.18" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Caller" Version="1.0.0-preview.18" />
+		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="1.0.0-preview.18" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.15" />
+		<PackageReference Include="Masa.Contrib.Configuration" Version="1.0.0-preview.18" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.15" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
+		<ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
 	</ItemGroup>
 </Project>
