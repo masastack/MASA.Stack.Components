@@ -1,5 +1,5 @@
 using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
-using Masa.Contrib.Service.Caller.Authentication.OpenIdConnect;
+using Masa.Contrib.StackSdks.Caller;
 using Masa.Stack.Components;
 using Masa.Stack.Components.Extensions.OpenIdConnect;
 using MasaWebApp.Data;
