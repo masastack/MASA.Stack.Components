@@ -48,7 +48,7 @@
     public long Total { get; set; }
 
     [Parameter]
-    public List<int> PageSizeSelect { get; set; } = new() { 10, 20, 50, 100 };
+    public List<int> PageSizeSelect { get; set; } = new() { 20, 50, 100 };
 
     [Parameter]
     public EventCallback<(int page, int pageSize)> OnChange { get; set; }
