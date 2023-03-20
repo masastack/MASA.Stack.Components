@@ -30,7 +30,6 @@ public class CookieEventHandler : CookieAuthenticationEvents
         {
             var sub = context.Principal.FindFirst("sub")?.Value;
             var sid = context.Principal.FindFirst("sid")?.Value;
-
             if (sub.IsNullOrEmpty() || sid.IsNullOrEmpty())
             {
                 return;
