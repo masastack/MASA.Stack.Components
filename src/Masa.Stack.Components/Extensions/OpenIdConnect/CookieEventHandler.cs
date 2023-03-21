@@ -34,7 +34,6 @@ public class CookieEventHandler : CookieAuthenticationEvents
             {
                 return;
             }
-            //todo:too many call rework in 2.0
             if (_logoutSessionManager.IsLoggedOut(sub, sid))
             {
                 context.RejectPrincipal();
