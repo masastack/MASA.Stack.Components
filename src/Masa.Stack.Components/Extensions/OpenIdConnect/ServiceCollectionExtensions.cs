@@ -41,7 +41,7 @@ public static class ServiceCollectionExtensions
         .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
         {
             options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
-            //options.EventsType = typeof(CookieEventHandler);
+            options.EventsType = typeof(CookieEventHandler);
         })
         .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
         {
