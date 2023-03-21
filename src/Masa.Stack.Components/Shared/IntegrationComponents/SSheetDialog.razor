@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components
 @inherits NextTickComponentBase
 
-<MBottomSheet ContentClass="m-sheet-dialog full-height elevation-0 m-dialog--fullscreen" Value=Value ValueChanged="ValueChanged">
+<MBottomSheet ContentClass="m-sheet-dialog full-height elevation-0 m-dialog--fullscreen" Value=Value ValueChanged="SheetValueChangedAsync">
     <MHover>
         <div @attributes="context.Attrs" style="@($"padding-right:{Padding}px;padding-left:{Padding}px")" class="m-sheet-dialog-overlay d-flex flex-column full-height" @onclick="OnClose" @onclick:stopPropagation>
             @if (HeaderContent is null)
@@ -88,6 +88,19 @@
         {
             Value = false;
         }
+        if (OnClosed.HasDelegate)
+        {
+            NextTick(async () =>
+            {
+                await Task.Delay(150);
+                await OnClosed.InvokeAsync();
+            });
+        }
+    }
+
+    private async Task SheetValueChangedAsync(bool arg)
+    {
+        Value = arg;
         if (OnClosed.HasDelegate)
         {
             NextTick(async () =>
