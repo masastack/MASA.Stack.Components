@@ -49,7 +49,7 @@
             var result = await (OnClick.Invoke()).ConfigureAwait(false);
             if (result)
             {
-                await PopupService.EnqueueSnackbarAsync(T("The verification code is sent successfully"), AlertTypes.Success);
+                await InvokeAsync(async () => await PopupService.EnqueueSnackbarAsync(T("The verification code is sent successfully"), AlertTypes.Success));
                 StartCountdownTimer();
             }
         }
