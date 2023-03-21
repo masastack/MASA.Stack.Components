@@ -24,6 +24,8 @@ public partial class UserInfo : MasaComponentBase
 
     private bool VerifyUserEmailDialogVisible { get; set; }
 
+    private bool UpdateUserNickNameDialogVisible { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -125,6 +127,12 @@ public partial class UserInfo : MasaComponentBase
         UpdateUserPhoneNumberDialogVisible = true;
     }
 
+    public Task OpenUpdateNickNameModal(MouseEventArgs _)
+    {
+       UpdateUserNickNameDialogVisible= true;
+        return Task.CompletedTask;
+    }
+
     private async Task OnUpdatePhoneNumberSuccess(string phoneNumber)
     {
         await GetCurrentUserAsync();
@@ -137,6 +145,12 @@ public partial class UserInfo : MasaComponentBase
 
     private async Task OnUpdateEmailSuccess(string email)
     {
+        await GetCurrentUserAsync();
+    }
+
+    private async Task OnUpdateNickNameSuccess()
+    {
+        UpdateUserNickNameDialogVisible = false;
         await GetCurrentUserAsync();
     }
 }

@@ -19,7 +19,7 @@
                         SecondaryClass="regular3--text font-14 full-width"
                         Style="height:40px;flex-wrap: wrap;">
                         <SecondaryContent>
-                            <MButton Icon Small OnClick="() => _windowValue=1" Style="height:24px">
+                            <MButton Icon Small OnClick="OpenUpdateNickNameModal" Style="height:24px">
                                 <MIcon Size="15" Class="regular--text">mdi-pencil</MIcon>
                             </MButton>
                         </SecondaryContent>
@@ -148,3 +148,4 @@
 <UpdatePhoneNumberModal OnSuccess=OnUpdatePhoneNumberSuccess @bind-Visible="UpdateUserPhoneNumberDialogVisible" />
 <VerifyEmailModal OnSuccess=OnVerifyEmailSuccess @bind-Visible="VerifyUserEmailDialogVisible" />
 <UpdateEmailModal OnSuccess=OnVerifyEmailSuccess @bind-Visible="UpdateUserEmailDialogVisible" />
+<UpdateNickNameModal OnSuccess=OnUpdateNickNameSuccess @bind-Visible="UpdateUserNickNameDialogVisible" />
