@@ -98,10 +98,17 @@
         }
     }
 
-    private async Task SheetValueChangedAsync(bool arg)
+    private async Task SheetValueChangedAsync(bool val)
     {
-        Value = arg;
-        if (OnClosed.HasDelegate)
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(false);
+        }
+        else
+        {
+            Value = false;
+        }
+        if (!val && OnClosed.HasDelegate)
         {
             NextTick(async () =>
             {
