@@ -751,6 +751,10 @@ masa-stack-components .table-border-none.dense thead th {
     color: #7681AB;
 }
 
+.masa-stack-components .rounded-sm-before::before {
+    border-radius: 4px;
+}
+
 .masa-stack-components .m-input.name-textfield .m-text-field__slot {
     padding-bottom: 2px;
 }
