@@ -1,0 +1,26 @@
+﻿@page "/simpleConfirmExample"
+@using Masa.Stack.Components.Shared.IntegrationComponents.Confirm;
+
+@code {
+    [Inject]
+    public IPopupService PopupService { get; set; } = default!;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var confirm = await PopupService.OpenAsync(typeof(SSimpleConfirm), new Dictionary<string, object>()
+            {
+                { nameof(SSimpleConfirm.Type), AlertTypes.None },
+                { nameof(SSimpleConfirm.Content), "是否确认禁用消息任务?" }
+            });
+
+            if (confirm is true)
+            {
+                
+            }
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}
