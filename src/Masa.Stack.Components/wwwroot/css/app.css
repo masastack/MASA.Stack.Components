@@ -47,9 +47,9 @@ body, .masa-stack-components {
             border-radius: 8px;
         }
 
-        .masa-stack-components .global-nav .global-nav-right {
-            width: calc(100% - 300px);
-        }
+.masa-stack-components .global-nav .global-nav-right {
+    width: calc(100% - 300px);
+}
 
         .masa-stack-components .global-nav .global-nav-header {
             padding: 24px 24px 24px 0;
@@ -97,7 +97,7 @@ body, .masa-stack-components {
             }
 
             .masa-stack-components .global-nav .global-nav-content__main .m-list-item.fill-hover {
-                background-color: transparent !important;
+                background-color:transparent !important;
             }
 
         .masa-stack-components .global-nav .global-nav-content__side {
@@ -105,13 +105,13 @@ body, .masa-stack-components {
             margin-right: 8px;
         }
 
-    .masa-stack-components .global-nav-content__main .app {
-        -webkit-column-break-inside: avoid;
-        page-break-inside: avoid;
-        break-inside: avoid-column;
-        background: #F6F8FD;
-        padding: 16px;
-    }
+        .masa-stack-components .global-nav-content__main  .app {
+            -webkit-column-break-inside: avoid;
+            page-break-inside: avoid;
+            break-inside: avoid-column;
+            background: #F6F8FD;
+            padding: 16px;
+        }
 
     .masa-stack-components .global-nav-content__main .category_title_app {
         -webkit-column-break-inside: avoid;
@@ -124,104 +124,104 @@ body, .masa-stack-components {
         border-top-right-radius: 20px;
     }
 
-    .masa-stack-components .global-nav .apps .app:last-child {
-        border-bottom-right-radius: 20px;
-        border-bottom-left-radius: 20px;
-    }
-
-    .masa-stack-components .global-nav .nav {
-        margin-bottom: 16px;
-        border: 1px solid #E2E7F4;
-        border-radius: 8px;
-    }
-
-        .masa-stack-components .global-nav .nav:last-child {
-            margin-bottom: 0;
+        .masa-stack-components .global-nav .apps .app:last-child {
+            border-bottom-right-radius: 20px;
+            border-bottom-left-radius: 20px;
         }
 
-        .masa-stack-components .global-nav .nav .nav-item {
-            padding: 0 8px;
-            color: #7681AB;
+        .masa-stack-components .global-nav .nav {
+            margin-bottom: 16px;
+            border: 1px solid #E2E7F4;
+            border-radius: 8px;
         }
 
-            .masa-stack-components .global-nav .nav .nav-item .m-ripple__container {
-                border-radius: 8px;
+            .masa-stack-components .global-nav .nav:last-child {
+                margin-bottom: 0;
             }
 
-            .masa-stack-components .global-nav .nav .nav-item .m-list-item__title {
-                font-size: 14px;
+            .masa-stack-components .global-nav .nav .nav-item {
+                padding: 0 8px;
+                color: #7681AB;
             }
 
-        .masa-stack-components .global-nav .nav .sub-nav-item {
-            padding: 0 8px 0 16px;
-            color: #7681AB;
+                .masa-stack-components .global-nav .nav .nav-item .m-ripple__container {
+                    border-radius: 8px;
+                }
+
+                .masa-stack-components .global-nav .nav .nav-item .m-list-item__title {
+                    font-size: 14px;
+                }
+
+            .masa-stack-components .global-nav .nav .sub-nav-item {
+                padding: 0 8px 0 16px;
+                color: #7681AB;
+            }
+
+            .masa-stack-components .global-nav .nav .action-item {
+                padding: 0 8px 0 24px;
+                color: #7681AB;
+            }
+
+        .masa-stack-components .global-nav .m-timeline {
+            margin-left: -36px;
+            padding-top: 0;
+            margin-top: 16px;
+            font-size: 12px;
         }
 
-        .masa-stack-components .global-nav .nav .action-item {
-            padding: 0 8px 0 24px;
-            color: #7681AB;
+        .masa-stack-components .global-nav .m-timeline--dense .m-timeline-item__body {
+            min-width: calc(100% - 73px);
         }
 
-    .masa-stack-components .global-nav .m-timeline {
-        margin-left: -36px;
-        padding-top: 0;
-        margin-top: 16px;
-        font-size: 12px;
-    }
-
-    .masa-stack-components .global-nav .m-timeline--dense .m-timeline-item__body {
-        min-width: calc(100% - 73px);
-    }
-
-    .masa-stack-components .global-nav .m-timeline-item {
-        align-items: start;
-    }
-
-    .masa-stack-components .global-nav .m-timeline-item__divider {
-        min-width: 50px;
-    }
-
-    .masa-stack-components .global-nav .m-timeline-item__dot--small {
-        height: 16px;
-        width: 16px;
-    }
-
-    .masa-stack-components .global-nav .m-input--selection-controls__input:hover .mdi-checkbox-blank-outline {
-        color: inherit !important;
-        caret-color: inherit !important;
-    }
-
-    .masa-stack-components .global-nav .toc ul {
-        list-style-type: none;
-        padding-left: 8px;
-    }
-
-    .masa-stack-components .global-nav .toc li {
-        border-left: 1px solid #E2E7F4;
-        height: 40px;
-        line-height: 24px;
-        cursor: pointer;
-        position: relative;
-    }
-
-        .masa-stack-components .global-nav .toc li .dot {
-            position: absolute;
-            left: -10px;
-            top: 11px;
-            display: none;
+        .masa-stack-components .global-nav .m-timeline-item {
+            align-items: start;
         }
 
-    .masa-stack-components .global-nav .toc .category_side_active .dot {
-        display: flex;
-    }
+        .masa-stack-components .global-nav .m-timeline-item__divider {
+            min-width: 50px;
+        }
+
+        .masa-stack-components .global-nav .m-timeline-item__dot--small {
+            height: 16px;
+            width: 16px;
+        }
+
+        .masa-stack-components .global-nav .m-input--selection-controls__input:hover .mdi-checkbox-blank-outline {
+            color: inherit !important;
+            caret-color: inherit !important;
+        }
+
+        .masa-stack-components .global-nav .toc ul {
+            list-style-type: none;
+            padding-left: 8px;
+        }
+
+        .masa-stack-components .global-nav .toc li {
+            border-left: 1px solid #E2E7F4;
+            height: 40px;
+            line-height: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+
+            .masa-stack-components .global-nav .toc li .dot {
+                position: absolute;
+                left: -10px;
+                top: 11px;
+                display: none;
+            }
+
+        .masa-stack-components .global-nav .toc .category_side_active .dot {
+            display: flex;
+        }
 
     .masa-stack-components .global-nav .toc .category_side_active span {
         color: #4318FF !important;
     }
 
-    .masa-stack-components .global-nav .toc li span {
-        margin-left: 4px;
-    }
+        .masa-stack-components .global-nav .toc li span {
+            margin-left: 4px;
+        }
 
     .masa-stack-components .clear-before-opacity:hover::before {
         opacity: 0;
@@ -718,11 +718,11 @@ masa-stack-components .table-border-none.dense thead th {
     padding-top: 0;
 }
 
-.masa-stack-components .m-text-field.m-text-field--solo.m-input--h-40 > .m-input__control {
+.masa-stack-components .m-text-field.m-text-field--solo.m-input--h-40>.m-input__control {
     min-height: 40px;
 }
 
-.masa-stack-components .m-input--h-40:not(.m-input--hide-details) > .m-input__control > .m-input__slot {
+.masa-stack-components .m-input--h-40:not(.m-input--hide-details)>.m-input__control>.m-input__slot {
     margin-bottom: 4px;
 }
 
@@ -740,13 +740,12 @@ masa-stack-components .table-border-none.dense thead th {
 }
 
 /* avatar */
-.masa-stack-components .avatar-overlay-tips {
+.masa-stack-components .avatar-overlay-tips{
     background: rgba(27, 37, 89, 0.5);
 }
-
-    .masa-stack-components .avatar-overlay-tips:active {
-        background: rgba(27, 37, 89, 0.8);
-    }
+.masa-stack-components .avatar-overlay-tips:active{
+    background: rgba(27, 37, 89, 0.8);
+}
 
 .masa-stack-components .s-auto-complete input {
     color: #7681AB;
