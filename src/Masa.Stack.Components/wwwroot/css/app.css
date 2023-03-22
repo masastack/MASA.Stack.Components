@@ -6,7 +6,7 @@ body, .masa-stack-components {
 }
 
     .masa-stack-components .m-app-bar {
-        background-color: transparent !important;
+        background-color: #F0F3FA !important;
     }
 
         .masa-stack-components .m-app-bar .m-toolbar__content {
@@ -753,4 +753,34 @@ masa-stack-components .table-border-none.dense thead th {
 
 .masa-stack-components .rounded-sm-before::before {
     border-radius: 4px;
+}
+
+.masa-stack-components .m-input.name-textfield .m-text-field__slot {
+    padding-bottom: 2px;
+}
+
+.masa-stack-components .m-input.name-textfield .m-input__slot::before {
+    border-color: #E2E7F4 !important;
+}
+
+.masa-stack-components .m-input.name-textfield .m-text-field__slot input {
+    text-align: center;
+    color: #323D6F !important;
+    font-family: Roboto !important;
+    font-size: 1.25rem !important;
+    font-style: normal !important;
+    font-weight: 700 !important;
+    line-height: 1.875rem !important;
+    letter-spacing: 0em !important;
+}
+
+.masa-stack-components .m-input.name-textfield .m-text-field__slot input::placeholder {
+    color: #A3AED0 !important;
+    text-align: center;
+    font-family: Roboto !important;
+    font-size: 1.25rem !important;
+    font-style: normal !important;
+    font-weight: 700 !important;
+    line-height: 1.875rem !important;
+    letter-spacing: 0em !important;
 }
