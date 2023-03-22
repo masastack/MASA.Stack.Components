@@ -750,3 +750,7 @@ masa-stack-components .table-border-none.dense thead th {
 .masa-stack-components .s-auto-complete input {
     color: #7681AB;
 }
+
+.masa-stack-components .rounded-sm-before::before {
+    border-radius: 4px;
+}

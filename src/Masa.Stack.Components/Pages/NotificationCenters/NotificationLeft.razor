@@ -9,7 +9,7 @@
     <MCardText Class="pa-0 overflow-y-auto full-height">
         <MList Subheader
                TwoLine Height=0>
-            <MListItem Link OnClick="()=>HandleOnClick(null)" Class="pl-8">
+            <MListItem Link OnClick="()=>HandleOnClick(null)" Class="pl-8 mx-4 rounded-sm-before">
                 <MListItemAvatar Class="overflow-visible">
                     <NotificationAvatar Dot="_channels.Any(x => !x.IsRead)" />
                 </MListItemAvatar>
@@ -22,7 +22,7 @@
 
             @foreach (var item in _channels)
             {
-                <MListItem Link OnClick="()=>HandleOnClick(item)" Class="pl-8">
+                <MListItem Link OnClick="()=>HandleOnClick(item)" Class="pl-8 mx-4 rounded-sm-before">
                     <MListItemAvatar Class="overflow-visible">
                         @if (item.NoReading == 0)
                         {

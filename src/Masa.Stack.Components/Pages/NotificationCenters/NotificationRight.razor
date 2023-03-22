@@ -42,7 +42,7 @@
                          TValue="WebsiteMessageFilterType?"
                          OnSelectedItemUpdate="RefreshAsync">
                 </SSelect>
-                <MMenu OffsetY>
+                <MMenu OffsetY Left NudgeRight="16">
                     <ActivatorContent>
                         <SButton Outlined Fab Small Icon Color="fill-line" Class="ml-6" @attributes="@context.Attrs">
                             <MIcon Class="ma-auto" Color="emphasis2" Size=20>
@@ -52,21 +52,21 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MList>
-                            <MListItem Link OnClick="HandleMarkAllRead">
+                            <MListItem Link OnClick="HandleMarkAllRead" Class="mx-2 rounded-sm-before body emphasis2--text" >
                                 <MListItemContent>
                                     <MListItemTitle>
-                                        @T("DisplayName.WebsiteMessageAction.MarkAllRead")
+					@T("DisplayName.WebsiteMessageAction.MarkAllRead")
                                     </MListItemTitle>
                                 </MListItemContent>
                             </MListItem>
-                            <MListItem Link OnClick="HandleShowAll">
+                            <MListItem Link OnClick="HandleShowAll" Class="mx-2 rounded-sm-before body emphasis2--text">
                                 <MListItemContent>
                                     <MListItemTitle>
                                         @T("DisplayName.WebsiteMessageAction.ShowAll")
                                     </MListItemTitle>
                                 </MListItemContent>
                             </MListItem>
-                            <MListItem Link OnClick="HandleShowUnread">
+                            <MListItem Link OnClick="HandleShowUnread" Class="mx-2  rounded-sm-before body emphasis2--text">
                                 <MListItemContent>
                                     <MListItemTitle>
                                         @T("DisplayName.WebsiteMessageAction.ShowUnread")
@@ -103,7 +103,7 @@
             </MList>
         </MCardText>
         <MCardActions>
-            <SPagination Class="mt-5 full-width" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+            <SPagination Class="ma-5 full-width" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
         </MCardActions>
     </MCard>
 </div>
