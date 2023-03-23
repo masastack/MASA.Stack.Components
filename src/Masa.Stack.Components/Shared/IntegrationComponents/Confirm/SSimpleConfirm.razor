@@ -1,4 +1,4 @@
-﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
+﻿@inherits Masa.Blazor.Popup.Components.AlertingPopupComponentBase
 
 <MDialog @bind-Value="@Visible"
          Class="pa-6"
@@ -13,9 +13,9 @@
         </div>
     }
     <div class="d-flex justify-center align-center my-3">
-        @if (!string.IsNullOrWhiteSpace(titleIcon))
+        @if (!string.IsNullOrWhiteSpace(ComputedIcon))
         {
-            <MIcon Color="@iconColor" Class="mr-3">@titleIcon</MIcon>
+            <MIcon Color="@ComputedIconColor" Class="mr-3">@ComputedIcon</MIcon>
         }
         <span class="h6 emphasis2--text">
             @(Title ?? T("OperationConfirmation"))
@@ -31,7 +31,7 @@
         {
             <SAutoLoadingButton Color="primary" Large Rounded Outlined Width="150" OnClick="HandleOnCancel">@ComputedCancelText</SAutoLoadingButton>
         }
-        <SAutoLoadingButton Color="@okColor" Class="fill--text" Rounded Large Width="150" OnClick="HandleOnOk">@ComputedOkText</SAutoLoadingButton>
+        <SAutoLoadingButton Color="@ComputedIconColor" Class="fill--text" Rounded Large Width="150" OnClick="HandleOnOk">@ComputedOkText</SAutoLoadingButton>
     </div>
 
 </MDialog>
@@ -43,10 +43,6 @@
         get => _languageProvider ?? throw new Exception("please inject I18n!");
         set => _languageProvider = value;
     }
-
-    [Parameter]
-
-    public AlertTypes Type { get; set; }
 
     [Parameter]
     public string? Title { get; set; }
@@ -79,9 +75,6 @@
     public EventCallback OnOk { get; set; }
 
     private I18n? _languageProvider;
-    private string titleIcon = string.Empty;
-    private string iconColor = string.Empty;
-    private string okColor = "primary";
     private string ComputedCancelText => CancelText ?? T("Cancel");
     private string ComputedOkText => OkText ?? T("Ok");
 
@@ -109,27 +102,43 @@
         await SetResult(true);
     }
 
-    protected override void OnParametersSet()
+    protected override string? ComputedIcon
     {
-        base.OnParametersSet();
-
-        switch (Type)
+        get
         {
-            case AlertTypes.Warning:
-                titleIcon = "mdi-alert";
-                okColor = "red";
-                iconColor = "red";
-                break;
-            case AlertTypes.Error:
-                titleIcon = "mdi-alert";
-                okColor = "red";
-                iconColor = "red";
-                break;
-            default:
-                titleIcon = string.Empty;
-                okColor = "primary";
-                iconColor = string.Empty;
-                break;
+            if (!string.IsNullOrWhiteSpace(Icon))
+            {
+                return Icon;
+            }
+
+            return Type switch
+            {
+                AlertTypes.Success => "mdi-check-circle-outline",
+                AlertTypes.Error => "mdi-close-circle-outline",
+                AlertTypes.Info => "mdi-information-outline",
+                AlertTypes.Warning => "mdi-alert",
+                _ => null
+            };
+        }
+    }
+
+    protected override string? ComputedIconColor
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(IconColor))
+            {
+                return IconColor;
+            }
+
+            return Type switch
+            {
+                AlertTypes.Success => "success",
+                AlertTypes.Info => "info",
+                AlertTypes.Warning => "red",
+                AlertTypes.Error => "error",
+                _ => "primary"
+            };
         }
     }
 
