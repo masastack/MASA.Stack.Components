@@ -30,12 +30,10 @@ public class CookieEventHandler : CookieAuthenticationEvents
         {
             var sub = context.Principal.FindFirst("sub")?.Value;
             var sid = context.Principal.FindFirst("sid")?.Value;
-
             if (sub.IsNullOrEmpty() || sid.IsNullOrEmpty())
             {
                 return;
             }
-            //todo:too many call rework in 2.0
             if (_logoutSessionManager.IsLoggedOut(sub, sid))
             {
                 context.RejectPrincipal();

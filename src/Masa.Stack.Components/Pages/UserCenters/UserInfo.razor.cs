@@ -24,6 +24,10 @@ public partial class UserInfo : MasaComponentBase
 
     private bool VerifyUserEmailDialogVisible { get; set; }
 
+    private SLabeledRadioGroup<GenderTypes> RefLabeledRadioGroup { get; set; }
+
+    private string _i18nName = null!;
+
     private bool UpdateUserNickNameDialogVisible { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -146,6 +150,19 @@ public partial class UserInfo : MasaComponentBase
     private async Task OnUpdateEmailSuccess(string email)
     {
         await GetCurrentUserAsync();
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        _i18nName ??= LanguageProvider.Culture.Name;
+
+        if(_i18nName != LanguageProvider.Culture.Name)
+        {
+            _i18nName = LanguageProvider.Culture.Name;
+            RefLabeledRadioGroup?.CallSlider();
+        }
+        
+        return base.OnParametersSetAsync();
     }
 
     private async Task OnUpdateNickNameSuccess()

@@ -127,6 +127,8 @@ public partial class SLayout
                         new Nav("dateRangePickerExample", "dateRangePicker",default, "/dateRangePickerExample", "father"),
                         new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", default,"/dateTimeRangePickerExample", "father"),
                         new Nav("simpleModalExample", "simpleModal", default,"/simpleModalExample", "father"),
+                        new Nav("simpleConfirmExample", "simpleConfirmExample", default,"/simpleConfirmExample", "father"),
+                        new Nav("empty", "empty", default,"/empty", "father"),
                     }),
                 };
             }

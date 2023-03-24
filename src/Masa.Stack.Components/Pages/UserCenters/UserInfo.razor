@@ -71,7 +71,7 @@
             </MWindowItem>
             <MWindowItem Class="mb-n2">
                 <div class="d-flex mb-4" style="justify-content: space-between;align-items: center;">
-                    <SLabeledRadioGroup @bind-Value="@UpdateUser.Gender" Dense>
+                    <SLabeledRadioGroup @bind-Value="@UpdateUser.Gender" Dense @ref="RefLabeledRadioGroup">
                         <SLabeledRadio Value="GenderTypes.Female" Style="height:36px">@T(GenderTypes.Female.ToString())</SLabeledRadio>
                         <SLabeledRadio Value="GenderTypes.Male" Style="height:36px">@T(GenderTypes.Male.ToString())</SLabeledRadio>
                     </SLabeledRadioGroup>

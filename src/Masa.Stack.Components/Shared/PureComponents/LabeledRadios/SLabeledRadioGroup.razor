@@ -90,6 +90,25 @@
         }
     }
 
+    public async Task CallSlider()
+    {
+        // TODO: merge to one js call
+        foreach (var item in Items)
+        {
+            await UpdateItemClientRect(item);
+        }
+
+        var radio = Items.FirstOrDefault(item => item.Instance?.Value == _selectedKey);
+        if (radio is not null)
+        {
+            CurrentItemHeight = radio.Height;
+            CurrentItemWidth = radio.Width;
+            CurrentItemOffsetLeft = radio.OffsetLeft;
+
+            StateHasChanged();
+        }
+    }
+
     private async Task Intersection()
     {
         var item = Value is null
@@ -101,6 +120,8 @@
             _selectedKey = item.Instance?.Value;
             await SelectedKeyChanged(_selectedKey);
         }
+
+        await CallSlider();
     }
 
     private async Task SelectedKeyChanged(StringNumber? val)
@@ -111,7 +132,7 @@
 
         if (item is not null)
         {
-            await UpdatePosition(item);
+            UpdateSlider(item);
 
             if (ValueChanged.HasDelegate)
             {
@@ -126,13 +147,8 @@
         }
     }
 
-    private async Task UpdatePosition(SLabeledRadio<TValue> radio)
+    private void UpdateSlider(SLabeledRadio<TValue> radio)
     {
-        if (radio.Width == 0)
-        {
-            await UpdateItemClientRect(radio);
-        }
-
         CurrentItemHeight = radio.Height;
         CurrentItemWidth = radio.Width;
         CurrentItemOffsetLeft = radio.OffsetLeft;
