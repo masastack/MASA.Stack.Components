@@ -102,11 +102,11 @@
     {
         if (ValueChanged.HasDelegate)
         {
-            await ValueChanged.InvokeAsync(false);
+            await ValueChanged.InvokeAsync(val);
         }
         else
         {
-            Value = false;
+            Value = val;
         }
         if (!val && OnClosed.HasDelegate)
         {
