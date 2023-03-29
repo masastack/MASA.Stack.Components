@@ -56,7 +56,7 @@ public static class ServiceCollectionExtensions
             return new UserAutoCompleteOptions
             {
                 Index = masaStackConfig.ElasticModel.Index,
-                Nodes = new string[1] { $"{masaStackConfig.ElasticModel.ESNode}:{masaStackConfig.ElasticModel.ESPort}" }
+                Nodes = masaStackConfig.ElasticModel.ElasticNodes.ToArray()
             };
         });
 

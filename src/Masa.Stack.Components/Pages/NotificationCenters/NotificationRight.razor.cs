@@ -11,9 +11,6 @@ public partial class NotificationRight : MasaComponentBase
     [Inject]
     public NoticeState NoticeState { get; set; } = default!;
 
-    [Inject]
-    private IPopupService PopupService { get; set; } = null!;
-
     [Parameter]
     public ChannelModel? Channel { get; set; }
 
