@@ -146,14 +146,14 @@ public partial class UserInfo : MasaComponentBase
 
     protected override Task OnParametersSetAsync()
     {
-        _i18nName ??= LanguageProvider.Culture.Name;
+        _i18nName ??= I18n.Culture.Name;
 
-        if(_i18nName != LanguageProvider.Culture.Name)
+        if (_i18nName != I18n.Culture.Name)
         {
-            _i18nName = LanguageProvider.Culture.Name;
+            _i18nName = I18n.Culture.Name;
             RefLabeledRadioGroup?.CallSlider();
         }
-        
+
         return base.OnParametersSetAsync();
     }
 }

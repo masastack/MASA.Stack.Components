@@ -36,13 +36,7 @@
 
 </MDialog>
 
-@code {
-    [CascadingParameter]
-    public I18n LanguageProvider
-    {
-        get => _languageProvider ?? throw new Exception("please inject I18n!");
-        set => _languageProvider = value;
-    }
+    @code {
 
     [Parameter]
     public string? Title { get; set; }
@@ -144,7 +138,7 @@
 
     private string T(string key)
     {
-        return LanguageProvider.T(key);
+        return I18n.T(key);
     }
 
     private async Task SetResult(bool value)
