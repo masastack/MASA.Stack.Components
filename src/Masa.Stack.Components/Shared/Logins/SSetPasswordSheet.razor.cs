@@ -2,9 +2,6 @@
 
 public partial class SSetPasswordSheet : MasaComponentBase
 {
-    [Inject]
-    private IPopupService PopupService { get; set; } = null!;
-
     [Parameter]
     public string? Account { get; set; }
 
