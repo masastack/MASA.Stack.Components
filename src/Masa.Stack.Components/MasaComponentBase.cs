@@ -6,6 +6,9 @@ public abstract class MasaComponentBase : ComponentBase
     [Inject]
     public I18n I18n { get; set; } = null!;
 
+    [CascadingParameter(Name = "Culture")]
+    private string Culture { get; set; } = null!;
+
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
 
