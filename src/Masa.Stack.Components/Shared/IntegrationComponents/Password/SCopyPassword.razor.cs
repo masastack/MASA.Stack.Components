@@ -7,9 +7,6 @@ public partial class SCopyPassword : STextField<string>
 {
     private const string LETTERS = "ABCDEFGHIJKMLNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz";
     private const string NUMBERS = "0123456789";
-   
-    [Inject]
-    public I18n I18n { get; set; } = default!;
 
     public bool Visible { get; set; }
 

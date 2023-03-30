@@ -1,9 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 public partial class SDatePicker : MDatePicker<DateOnly?>
 {
-    [CascadingParameter]
-    public new I18n I18n { get; set; } = default!;
-
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         await base.SetParametersAsync(parameters);
@@ -51,7 +48,7 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
                 builder2.CloseComponent();
             });
             builder.CloseComponent();
-        };       
+        };
     }
 
     private async Task ToDayAsync(MouseEventArgs args)

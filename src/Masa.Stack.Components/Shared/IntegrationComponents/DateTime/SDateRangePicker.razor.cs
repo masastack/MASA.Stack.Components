@@ -5,9 +5,6 @@ namespace Masa.Stack.Components;
 
 public partial class SDateRangePicker
 {
-    [Inject]
-    public IPopupService PopupService { get; set; } = default!;
-
     [Parameter]
     public string Class { get; set; } = "";
 

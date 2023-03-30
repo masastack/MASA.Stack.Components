@@ -8,9 +8,6 @@ public partial class NotificationDetail
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
-    [Inject]
-    private IPopupService PopupService { get; set; } = null!;
-
     [Parameter]
     public Guid MessageId { get; set; }
 

@@ -4,7 +4,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
-        string? pmHost = null, RedisConfigurationOptions? redisOption = null)
+        string? pmHost = null)
     {
         builder.Services.AddScoped<JsInitVariables>();
         builder.Services.AddAutoInject();
@@ -28,7 +28,7 @@ public static class ServiceCollectionExtensions
         authHost = authHost ?? masaStackConfig.GetAuthServiceDomain();
         mcHost = mcHost ?? masaStackConfig.GetMcServiceDomain();
         pmHost = pmHost ?? masaStackConfig.GetPmServiceDomain();
-        redisOption = new RedisConfigurationOptions
+        var redisOption = new RedisConfigurationOptions
         {
             Servers = new List<RedisServerOptions> {
                     new RedisServerOptions()
@@ -56,7 +56,7 @@ public static class ServiceCollectionExtensions
             return new UserAutoCompleteOptions
             {
                 Index = masaStackConfig.ElasticModel.Index,
-                Nodes = new string[1] { $"{masaStackConfig.ElasticModel.ESNode}:{masaStackConfig.ElasticModel.ESPort}" }
+                Nodes = masaStackConfig.ElasticModel.Nodes.ToArray()
             };
         });
 
