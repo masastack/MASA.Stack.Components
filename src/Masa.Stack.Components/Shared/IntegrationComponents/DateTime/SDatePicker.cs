@@ -1,9 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 public partial class SDatePicker : MDatePicker<DateOnly?>
 {
-    [Inject]
-    public new I18n I18n { get; set; } = default!;
-
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         await base.SetParametersAsync(parameters);
