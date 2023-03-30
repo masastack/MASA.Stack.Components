@@ -13,17 +13,44 @@
                           Value="@UpdateUserAvatar.Avatar"
                           ValueChanged="UpdateAvatarAsync"
                           WhenFileChangeUpload />
-            <PBlockText Primary="@UserDetail.DisplayName"
-                        PrimaryClass="font-20-bold emphasis2--text"
+            @if (!UpdateUserNickNameVisible)
+            {
+                <PBlockText Primary="@UserDetail.DisplayName" PrimaryClass="font-20-bold emphasis2--text"
                         Secondary="@UserDetail.Account"
                         SecondaryClass="regular3--text font-14 full-width"
                         Style="height:40px;flex-wrap: wrap;">
                         <SecondaryContent>
-                            <MButton Icon Small OnClick="OpenUpdateNickNameModal" Style="height:24px">
+                            <MButton Icon Small OnClick="EnableUpdateNickName" Style="height:24px">
                                 <MIcon Size="15" Class="regular--text">mdi-pencil</MIcon>
                             </MButton>
                         </SecondaryContent>
-            </PBlockText>
+                </PBlockText>
+            }
+            else
+            {
+                <PBlockText PrimaryClass="font-20-bold emphasis2--text"
+                        SecondaryClass="regular3--text font-14 full-width"
+                        Style="height:40px;flex-wrap: wrap;">
+                        <SecondaryContent>
+                            <MRow Class="mb-2">
+                                <MCol Cols="8">
+                                    <STextField @bind-Value="@UpdateUser.DisplayName" Label="@T("NickName")" />
+                                </MCol>
+                                <MCol Cols="2">
+                                <MButton Class="mr-4" StopPropagation Icon OnClick="UpdateNickNameCancelAsync">
+                                    <SIcon Tooltip="@T("Cancel")" Color="#323D6F">mdi-close-thick</SIcon>
+                                </MButton>
+                                </MCol>
+                                <MCol Cols="2">
+                                    <MButton Icon StopPropagation OnClick="UpdateNickNameConfirmAsync"> 
+                                        <MIcon Color="success">mdi-check</MIcon>
+                                    </MButton>
+                                </MCol>
+                            </MRow>
+                        </SecondaryContent>
+                </PBlockText>
+                
+            }
             @if (IsStaff)
             {
                 <SButton Text OnClick="NavigateToStaff" Class="mt-6">@T("Switch to staff")</SButton>
@@ -148,4 +175,3 @@
 <UpdatePhoneNumberModal OnSuccess=OnUpdatePhoneNumberSuccess @bind-Visible="UpdateUserPhoneNumberDialogVisible" />
 <VerifyEmailModal OnSuccess=OnVerifyEmailSuccess @bind-Visible="VerifyUserEmailDialogVisible" />
 <UpdateEmailModal OnSuccess=OnVerifyEmailSuccess @bind-Visible="UpdateUserEmailDialogVisible" />
-<UpdateNickNameModal OnSuccess=OnUpdateNickNameSuccess @bind-Visible="UpdateUserNickNameDialogVisible" />
