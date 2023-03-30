@@ -7,7 +7,7 @@
 @inject ILogger<SLayout> Logger
 
 <CascadingValue Value="this" IsFixed>
-    <CascadingValue Value="I18n">
+    <CascadingValue Value="@I18n.Culture.ToString()" Name="Culture">
         <MApp Class="masa masa-stack-components">
             <MErrorHandler ErrorContent=ErrorContent OnHandle=OnErrorHandleAsync>
             <MAppBar App
@@ -31,7 +31,7 @@
                     <SearchMenu Navs="NavItems"/>  
                 }
                 <MSpacer />
-                <Languages OnChange="() => { }" />
+                <Languages OnChange="() => { }" /> 
                 <MSheet class="d-flex align-center justify-space-between rounded-6 pa-1 mr-n3" Width="100">
                     <Notification />
                     <User />

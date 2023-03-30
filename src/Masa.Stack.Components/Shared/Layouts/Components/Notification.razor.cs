@@ -43,9 +43,9 @@ public partial class Notification : MasaComponentBase
         HubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri($"{McApiOptions.BaseAddress}/signalr-hubs/notifications"), options =>
             {
-                options.AccessTokenProvider = async () =>
+                options.AccessTokenProvider = () =>
                 {
-                    return TokenProvider.AccessToken;
+                    return Task.FromResult(TokenProvider.AccessToken);
                 };
             })
             .Build();
