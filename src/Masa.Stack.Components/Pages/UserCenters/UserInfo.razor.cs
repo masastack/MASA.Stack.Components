@@ -35,6 +35,14 @@ public partial class UserInfo : MasaComponentBase
             await GetCurrentUserAsync();
             StateHasChanged();
         }
+
+        _i18nName ??= I18n.Culture.Name;
+
+        if (RefLabeledRadioGroup != null && _i18nName != I18n.Culture.Name)
+        {
+            _i18nName = I18n.Culture.Name;
+            await RefLabeledRadioGroup.CallSlider();
+        }
     }
 
     private async Task GetCurrentUserAsync()
@@ -142,18 +150,5 @@ public partial class UserInfo : MasaComponentBase
     private async Task OnUpdateEmailSuccess(string email)
     {
         await GetCurrentUserAsync();
-    }
-
-    protected override Task OnParametersSetAsync()
-    {
-        _i18nName ??= I18n.Culture.Name;
-
-        if (_i18nName != I18n.Culture.Name)
-        {
-            _i18nName = I18n.Culture.Name;
-            RefLabeledRadioGroup?.CallSlider();
-        }
-
-        return base.OnParametersSetAsync();
     }
 }
