@@ -18,10 +18,11 @@ public partial class ExpansionAppItem
         {
             if (_categoryAppNav is null)
             {
+                Data.ParentCode = ParentCode;
                 if (Data.IsAction)
                 {
-                    Data.ParentCode = ParentCode;
-                    _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, ParentCode, Data.Code, Data);
+                    _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, ParentCode,
+                        Data.Code, Data);
                 }
                 else _categoryAppNav = new CategoryAppNav(ExpansionApp.CategoryCode, ExpansionApp.App.Code, Data.Code, default, Data);
             }
@@ -43,16 +44,23 @@ public partial class ExpansionAppItem
 
     public bool IsQueryNav => Level == 3 && ParentCode is null;
 
-    public string Name => IsQueryNav ? T("Query") : TranslateProvider.DT(Data.Name);
+    public string Name => IsQueryNav ? T("View") : TranslateProvider.DT(Data.Name);
 
     public bool IsChecked
     {
         get
         {
-            if (Data.HasChildren) return false;
-            if (Data.HasActions && Level != 3 && ParentCode is null)
+            if (Data.HasChildren)
+            {
+                return Data.Children.All(children => ExpansionWrapper.Value.Any(can => can.NavModel == children));
+            }
+            else if (Data.HasActions && Level != 3 && ParentCode is null)
             {
                 return ExpansionWrapper.Value.Any(children => children.NavModel == Data) && Data.Children.All(children => ExpansionWrapper.Value.Any(can => can.NavModel == children));
+            }
+            else if (IsQueryNav)
+            {
+                return ExpansionWrapper.Value.Any(children => children.NavModel == Data);
             }
             else
             {
@@ -61,9 +69,9 @@ public partial class ExpansionAppItem
         }
     }
 
-    private bool IsDisabled => InPreview || Data.Disabled || Data.HasChildren;
+    private bool IsDisabled => InPreview || Data.Disabled ;
 
-    public bool Indeterminate => IsQueryNav is false && Data.HasActions && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked is false && item.Data.ParentCode == Data.Code);
+    public bool Indeterminate => IsQueryNav is false && (Data.HasActions || Data.HasChildren) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked is false && item.Data.ParentCode == Data.Code);
 
     private string ActiveClass
     {
@@ -84,7 +92,7 @@ public partial class ExpansionAppItem
 
     protected override void OnInitialized()
     {
-        if ((Data.HasChildren is false && Data.HasActions is false) || IsQueryNav)
+        if (Data.HasActions is false || IsQueryNav)
         {
             ExpansionApp.Register(this);
         }
@@ -127,7 +135,7 @@ public partial class ExpansionAppItem
     {
         if (Checkable)
         {
-            await ExpansionApp.SwitchValue(CategoryAppNav, IsQueryNav);
+            await ExpansionApp.SwitchValue(CategoryAppNav, IsQueryNav, isIndeterminate: Indeterminate);
         }
         if (Favorite && Data.Url is not null)
         {

@@ -33,47 +33,66 @@ public partial class ExpansionApp
         else await UpdateValues(CategoryAppNavs);
     }
 
-    public async Task SwitchValue(CategoryAppNav value, bool isQueryNav = false, bool excuteUpdate = true, List<CategoryAppNav>? values = null)
+    public async Task SwitchValue(CategoryAppNav value, bool isQueryNav = false, bool excuteUpdate = true, List<CategoryAppNav>? values = null, bool isIndeterminate = false)
     {
         values ??= CheckedCategoryAppNavs;
-        if (values.Contains(value))
+        if (values.Contains(value) && isIndeterminate is false)
         {
             values.Remove(value);
-            if (value.NavModel!.HasActions)
+            if (isQueryNav is false && value.NavModel!.HasActions)
             {
-                if (isQueryNav is false)
+                foreach (var item in value.NavModel!.Actions)
                 {
-                    foreach (var item in value.NavModel.Actions)
-                    {
-                        await SwitchValue(new CategoryAppNav(value.Category, value.App, value.Nav, item.Code, item), false, false, values);
-                    }
+                    await SwitchValue(new CategoryAppNav(value.Category, value.App, value.Nav, item.Code, item),
+                        false, false, values);
                 }
-                else
+            }
+            else if (isQueryNav is false && value.NavModel!.HasChildren is true)
+            {
+                foreach (var item in value.NavModel.Children)
                 {
-                    foreach (var item in value.NavModel.Actions)
-                    {
-                        values.Remove(new CategoryAppNav(value.Category, value.App, value.Nav, item.Code, item));
-                    }
+                    await SwitchValue(new CategoryAppNav(value.Category, value.App, item.Code, default, item),
+                        false, false, values);
+                }
+            }
+            else
+            {
+                foreach (var item in value.NavModel!.Actions)
+                {
+                    values.Remove(new CategoryAppNav(value.Category, value.App, value.Nav, item.Code, item));
                 }
             }
         }
         else
         {
-            values.Add(value);
+            if (isIndeterminate is false)
+            {
+                values.Add(value);
+            }
+
             if (isQueryNav is false && value.NavModel!.HasActions)
             {
                 foreach (var item in value.NavModel.Actions)
                 {
-                    values.Add(new CategoryAppNav(value.Category, value.App, value.Nav, item.Code, item));
+                    values.Add(new CategoryAppNav(value.Category, value.App, value.NavModel!.Code, item.Code, item));
                 }
             }
-            else if (value.NavModel!.IsAction)
+            else if (isQueryNav is false && value.NavModel!.HasChildren is true)
+            {
+                foreach (var item in value.NavModel.Children)
+                {
+                    values.Add(new CategoryAppNav(value.Category, value.App, item.Code, default, item));
+                }
+            }
+            else if (value.NavModel!.IsAction || (value.NavModel!.HasChildren is false && isQueryNav is false &&
+                                                  value.NavModel.ParentCode != null))
             {
                 var parent = CategoryAppNavs.First(v => v.Nav == value.NavModel.ParentCode);
                 if (values.Contains(parent) is false) values.Add(parent);
             }
         }
-        if(excuteUpdate)
+
+        if (excuteUpdate)
             await UpdateValues(values);
     }
 

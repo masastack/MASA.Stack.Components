@@ -46,7 +46,7 @@
                                 }
                                 foreach (var subNav in subNavs)
                                 {
-                                    <ExpansionAppItem Data="@subNav" Level="2" />
+                                    <ExpansionAppItem Data="@subNav" Level="2" ParentCode="@nav.Code" />
                                     if (Checkable && subNav.HasActions)
                                     {
                                         <ExpansionAppItem Data="@subNav" Level="3" />
