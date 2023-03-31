@@ -71,7 +71,7 @@ public partial class ExpansionAppItem
 
     private bool IsDisabled => InPreview || Data.Disabled ;
 
-    public bool Indeterminate => IsQueryNav is false && (Data.HasActions || Data.HasChildren) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked is false && item.Data.ParentCode == Data.Code);
+    public bool Indeterminate => !IsQueryNav && (Data.HasActions || Data.HasChildren) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => !item.IsChecked && item.Data.ParentCode == Data.Code);
 
     private string ActiveClass
     {
@@ -92,7 +92,7 @@ public partial class ExpansionAppItem
 
     protected override void OnInitialized()
     {
-        if (Data.HasActions is false || IsQueryNav)
+        if (!Data.HasActions || IsQueryNav)
         {
             ExpansionApp.Register(this);
         }
