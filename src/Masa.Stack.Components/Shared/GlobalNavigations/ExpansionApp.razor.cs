@@ -19,7 +19,7 @@ public partial class ExpansionApp
 
     public bool AppChecked => ExpansionAppItems.Any() && ExpansionAppItems.All(item => item.IsChecked);
 
-    public bool Indeterminate => ExpansionAppItems.Any(item => item.IsChecked) && ExpansionAppItems.Any(item => item.IsChecked is false);
+    public bool Indeterminate => ExpansionAppItems.Any(item => item.IsChecked) && ExpansionAppItems.Any(item => !item.IsChecked);
 
     public List<CategoryAppNav> CategoryAppNavs => ExpansionAppItems.Select(item => item.CategoryAppNav).ToList();
 
@@ -36,10 +36,10 @@ public partial class ExpansionApp
     public async Task SwitchValue(CategoryAppNav value, bool isQueryNav = false, bool excuteUpdate = true, List<CategoryAppNav>? values = null, bool isIndeterminate = false)
     {
         values ??= CheckedCategoryAppNavs;
-        if (values.Contains(value) && isIndeterminate is false)
+        if (values.Contains(value) && !isIndeterminate)
         {
             values.Remove(value);
-            if (isQueryNav is false && value.NavModel!.HasActions)
+            if (!isQueryNav && value.NavModel!.HasActions)
             {
                 foreach (var item in value.NavModel!.Actions)
                 {
@@ -47,7 +47,7 @@ public partial class ExpansionApp
                         false, false, values);
                 }
             }
-            else if (isQueryNav is false && value.NavModel!.HasChildren is true)
+            else if (!isQueryNav && value.NavModel!.HasChildren)
             {
                 foreach (var item in value.NavModel.Children)
                 {
@@ -65,30 +65,30 @@ public partial class ExpansionApp
         }
         else
         {
-            if (isIndeterminate is false)
+            if (!isIndeterminate)
             {
                 values.Add(value);
             }
 
-            if (isQueryNav is false && value.NavModel!.HasActions)
+            if (!isQueryNav && value.NavModel!.HasActions)
             {
                 foreach (var item in value.NavModel.Actions)
                 {
                     values.Add(new CategoryAppNav(value.Category, value.App, value.NavModel!.Code, item.Code, item));
                 }
             }
-            else if (isQueryNav is false && value.NavModel!.HasChildren is true)
+            else if (!isQueryNav && value.NavModel!.HasChildren)
             {
                 foreach (var item in value.NavModel.Children)
                 {
                     values.Add(new CategoryAppNav(value.Category, value.App, item.Code, default, item));
                 }
             }
-            else if (value.NavModel!.IsAction || (value.NavModel!.HasChildren is false && isQueryNav is false &&
+            else if (value.NavModel!.IsAction || (!value.NavModel!.HasChildren && !isQueryNav &&
                                                   value.NavModel.ParentCode != null))
             {
                 var parent = CategoryAppNavs.First(v => v.Nav == value.NavModel.ParentCode);
-                if (values.Contains(parent) is false) values.Add(parent);
+                if (!values.Contains(parent)) values.Add(parent);
             }
         }
 
