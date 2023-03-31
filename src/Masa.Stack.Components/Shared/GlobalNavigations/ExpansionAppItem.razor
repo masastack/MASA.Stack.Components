@@ -7,7 +7,7 @@
     var indeterminate = Indeterminate;
 
     <MHover Disabled="@IsDisabled">
-        @if (Data.IsAction is false)
+        @if (!Data.IsAction)
         {
             <MListItem @attributes="@context.Attrs"
                        Class="@GetClass(context.Hover)"
@@ -35,7 +35,7 @@
                             </SAutoLoadingButton>
                         }
                     </MListItemAction>
-                    @if(context.Hover is false)
+                    @if(!context.Hover)
                     {
                         if (Checkable)
                         {
@@ -43,7 +43,7 @@
                             {
                                 <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
                             }
-                            else if (Data.HasActions is false && Data.Reversed)
+                            else if (!Data.HasActions && Data.Reversed)
                             {
                                 <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
                             }
@@ -79,7 +79,7 @@
                         <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
                             <MCheckbox Dense Value="@IsChecked"></MCheckbox>
                         </MListItemAction>
-                        @if (context.Hover is false)
+                        @if (!context.Hover)
                         {
                             if (IsChecked)
                             {
