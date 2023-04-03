@@ -152,6 +152,7 @@
   "SmsSendTime": "{0}秒后可重发",
   "Does not support gif format avatar": "不支持gif格式头像",
   "Query": "查询",
+  "View": "查看",
   "DeletionNotificationConfirmMessage": "确定要删除消息“{Message}”吗？",
 
   "UploadAvatar": "上传头像",
