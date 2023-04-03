@@ -86,7 +86,7 @@ public class Nav : NavBase
         return string.Equals(tempUrl, url, StringComparison.OrdinalIgnoreCase);
     }
 
-    internal bool Filter(string? search) => string.IsNullOrEmpty(search) ? true : Name.Contains(search, StringComparison.OrdinalIgnoreCase) || Children.Any(children => children.Filter(search));
+    internal bool Filter(DynamicTranslateProvider translateProvider, string? search) => string.IsNullOrEmpty(search) ? true : translateProvider.DT(Name).Contains(search, StringComparison.OrdinalIgnoreCase) || Children.Any(children => children.Filter(translateProvider, search));
 
     public override bool Equals(object? obj)
     {

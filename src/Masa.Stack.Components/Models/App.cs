@@ -31,7 +31,7 @@ public class App
         Navs = navs;
     }
 
-    internal bool Filter(string? search) => string.IsNullOrEmpty(search) ? true : Name.Contains(search, StringComparison.OrdinalIgnoreCase) || Navs.Any(nav => nav.Filter(search));
+    internal bool Filter(DynamicTranslateProvider translateProvider, string? search) => string.IsNullOrEmpty(search) ? true : translateProvider.DT(Name).Contains(search, StringComparison.OrdinalIgnoreCase) || Navs.Any(nav => nav.Filter(translateProvider, search));
 
     public string TagId(string categoryCode, string? prefix) => $"{prefix}category-{categoryCode}-app-{Code}";
 

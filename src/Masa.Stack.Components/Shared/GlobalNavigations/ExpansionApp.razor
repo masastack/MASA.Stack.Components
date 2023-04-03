@@ -30,7 +30,7 @@
         </div>
     </MHover>
     <div Class="mt-4">
-        @foreach (var nav in App.Navs.Where(Filter).Where(nav => nav.Filter(ExpansionWrapper!.Search)))
+        @foreach (var nav in App.Navs.Where(Filter).Where(nav => nav.Filter(TranslateProvider, ExpansionWrapper!.Search)))
         {
             <MCard @key="nav" Class="nav" Outlined>
                 <MList Dense Class="pa-0">
@@ -39,7 +39,7 @@
                             <ExpansionAppItem Data="nav" Level="1" />
                             @if (nav.HasChildren)
                             {
-                                var subNavs = nav.Children.Where(Filter).Where(subNav => subNav.Filter(ExpansionWrapper!.Search));
+                                var subNavs = nav.Children.Where(Filter).Where(subNav => subNav.Filter(TranslateProvider, ExpansionWrapper!.Search));
                                 @if (subNavs.Any())
                                 {
                                     <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
@@ -50,7 +50,7 @@
                                     if (Checkable && subNav.HasActions)
                                     {
                                         <ExpansionAppItem Data="@subNav" Level="3" />
-                                        @foreach (var action in subNav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
+                                        @foreach (var action in subNav.Actions.Where(action => action.Filter(TranslateProvider, ExpansionWrapper!.Search)))
                                         {
                                             <ExpansionAppItem Data="@action" ParentCode="@subNav.Code" Level="3" />
                                         }
@@ -61,7 +61,7 @@
                             {
                                 <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
                                 <ExpansionAppItem Data="@nav" Level="3" />
-                                @foreach (var action in nav.Actions.Where(action => action.Filter(ExpansionWrapper!.Search)))
+                                @foreach (var action in nav.Actions.Where(action => action.Filter(TranslateProvider, ExpansionWrapper!.Search)))
                                 {
                                     <ExpansionAppItem Data="@action" ParentCode="@nav.Code" Level="3" />
                                 }
