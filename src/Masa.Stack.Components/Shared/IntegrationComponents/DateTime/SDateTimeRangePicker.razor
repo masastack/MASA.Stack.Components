@@ -1,13 +1,13 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<div class="d-flex px-6 fill dateRangePicker @Class" style="@Style;">
+<div class="d-flex px-4 fill dateRangePicker @Class" style="@Style;">
     <div class="ma-auto d-flex" style="height:20px;">
         <MIcon Size=20 Color="emphasis2">mdi-calendar-month</MIcon>        
         <MMenu @bind-Value="StartTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
             <ActivatorContent>
-                <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
-                    @(StartTime is null ? T("Please select a start time") : StartTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
+                <div class="body2 datetime--text @_datetimeStartTextCss" @attributes="@context.Attrs">
+                    @(StartTime is null ? T("Start time") : StartTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
                 </div>
             </ActivatorContent>
             <ChildContent>
@@ -16,15 +16,15 @@
                     OutputTimezoneOffset ="ValueTimezoneOffset"
                     DisplayTimezoneOffset="DisplayTimezoneOffset"
                     Max="EndTime">
-                        <MButton Text Color="primary" OnClick="async() => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
+                    <MButton Text Color="primary" OnClick="async() => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
                 </SDateTimePicker>
             </ChildContent>
-        </MMenu>      
-        <div class="ml-4" style="width: 0px;height:24px;border: 1px solid #E2E7F4;"></div>
+        </MMenu>
+        <div class="separator"></div>
         <MMenu @bind-Value="EndTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
             <ActivatorContent>
-                <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
-                    @(EndTime is null ? T("Please select an end time") : EndTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
+                <div class="body2 datetime--text @_datetimeEndTextCss" @attributes="@context.Attrs">
+                    @(EndTime is null ? T("End time") : EndTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
                 </div>
             </ActivatorContent>
             <ChildContent>

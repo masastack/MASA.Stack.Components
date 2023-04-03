@@ -648,15 +648,27 @@ masa-stack-components .table-border-none.dense thead th {
 */
 
 .masa-stack-components .dateRangePicker {
-    border: 1px solid #E2E7F4;
     box-sizing: border-box;
-    border-radius: 8px;
+    width: 350px;
     height: 40px;
-    display: inline-block !important;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    flex-direction: row;
+    border: 1px solid #E4E8F3;
+    border-radius: 8px;
 }
-
+.masa-stack-components .dateRangePicker .separator {
+    width: 1px;
+    height:24px;
+    border: 1px solid #E4E8F3;
+    margin-left: 8px !important;
+}
+.masa-stack-components .dateRangePicker .datetime--text {
+    width:137px;
+    height:20px;
+    cursor: pointer;
+    margin: auto 0 auto 8px !important;
+    text-align: center;
+}
+/* body2 regular--text */
 /*
     RelativeTime
 */

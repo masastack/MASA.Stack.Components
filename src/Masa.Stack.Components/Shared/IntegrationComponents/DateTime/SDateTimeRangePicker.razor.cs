@@ -43,6 +43,10 @@ public partial class SDateTimeRangePicker
 
     private bool EndTimeVisible { get; set; }
 
+    private string _datetimeStartTextCss = "regular3--text";
+
+    private string _datetimeEndTextCss = "regular3--text";
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         DisplayTimezoneOffset = JsInitVariables.TimezoneOffset;
@@ -53,10 +57,12 @@ public partial class SDateTimeRangePicker
 
     private async Task UpdateStartTimeAsync()
     {
-        StartTimeVisible = false;        
+        StartTimeVisible = false;
         if (InternalStartTime > EndTime) await PopupService.EnqueueSnackbarAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
         else
         {
+            _datetimeStartTextCss = InternalStartTime is null ? "regular3--text" : "regular--text";
+
             if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(InternalStartTime);
             else StartTime = InternalStartTime;
             if (OnChange.HasDelegate) await OnChange.InvokeAsync();
@@ -65,10 +71,12 @@ public partial class SDateTimeRangePicker
 
     private async Task UpdateEndTimeAsync()
     {
-        EndTimeVisible = false;    
+        EndTimeVisible = false;
         if (InternalEndTime < StartTime) await PopupService.EnqueueSnackbarAsync(T("End time cannot be less than start time"), AlertTypes.Warning);
         else
         {
+            _datetimeEndTextCss = InternalEndTime is null ? "regular3--text" : "regular--text";
+
             if (EndTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(InternalEndTime);
             else EndTime = InternalEndTime;
             if (OnChange.HasDelegate) await OnChange.InvokeAsync();
