@@ -15,7 +15,7 @@ public class Category
         Apps = apps;
     }
 
-    internal bool Filter(string? search) => string.IsNullOrEmpty(search) ? true : Name.Contains(search, StringComparison.OrdinalIgnoreCase) || Apps.Any(app => app.Filter(search));
+    internal bool Filter(DynamicTranslateProvider translateProvider, string? search) => string.IsNullOrEmpty(search) ? true : translateProvider.DT(Name).Contains(search, StringComparison.OrdinalIgnoreCase) || Apps.Any(app => app.Filter(translateProvider, search));
 
     internal string TagId(string? prefix) => $"{prefix}category-{Code}";
 
