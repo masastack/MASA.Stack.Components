@@ -9,9 +9,7 @@ public class VerifyPhoneNumberValidator : AbstractValidator<VerifyMsgCodeModel>
     {
         RuleFor(user => user.Code)
             .NotEmpty()
-            .WithMessage("captcha cannot be empty")
-            .Length(6)
-            .WithMessage("captcha length is six");
+            .WithMessage("captcha cannot be empty");
     }
 }
 
