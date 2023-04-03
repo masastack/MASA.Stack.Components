@@ -27,12 +27,18 @@ public partial class SDateRangePicker
 
     private bool EndTimeVisible { get; set; }
 
+    private string _datetimeStartTextCss = "regular3--text";
+
+    private string _datetimeEndTextCss = "regular3--text";
+
     private async Task UpdateStartTimeAsync(DateOnly? dateTime)
     {
         if (dateTime > EndTime) await PopupService.EnqueueSnackbarAsync(T("Start time cannot be greater than end time"), AlertTypes.Warning);
         else
         {
             StartTime = dateTime;
+            _datetimeStartTextCss = dateTime is null ? "regular3--text" : "regular--text";
+
             if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(dateTime);
         }
     }
@@ -43,6 +49,8 @@ public partial class SDateRangePicker
         else
         {
             EndTime = dateTime;
+            _datetimeEndTextCss = dateTime is null ? "regular3--text" : "regular--text";
+
             if (StartTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(dateTime);
         }
     }

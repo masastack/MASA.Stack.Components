@@ -6,8 +6,8 @@
         <MIcon Size=20 Color="emphasis2">mdi-calendar-month</MIcon>        
         <MMenu @bind-Value="StartTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
             <ActivatorContent>
-                <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
-                    @(StartTime?.ToString(T("$DateFormat"))??T("Please select a start time"))
+                <div class="body2 datetime--text @_datetimeStartTextCss" @attributes="@context.Attrs">
+                    @(StartTime?.ToString(T("$DateFormat"))??T("Start time"))
                 </div>
             </ActivatorContent>
             <ChildContent>
@@ -17,8 +17,8 @@
         <div class="ml-4" style="width: 0px;height:24px;border: 1px solid #E2E7F4;"></div>
         <MMenu @bind-Value="EndTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
             <ActivatorContent>
-                <div class="ml-5 body2 my-auto hover-pointer" style="min-width:80px;height:20px;" @attributes="@context.Attrs">
-                    @(EndTime?.ToString(T("$DateFormat"))??T("Please select an end time"))
+                <div class="body2 datetime--text @_datetimeEndTextCss" @attributes="@context.Attrs">
+                    @(EndTime?.ToString(T("$DateFormat"))??T("End time"))
                 </div>
             </ActivatorContent>
             <ChildContent>
