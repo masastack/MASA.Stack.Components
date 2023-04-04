@@ -81,7 +81,11 @@ public partial class ExpansionApp
             {
                 foreach (var item in value.NavModel.Children)
                 {
-                    values.Add(new CategoryAppNav(value.Category, value.App, item.Code, default, item));
+                    foreach (var itemAction in item.Actions)
+                    {
+			values.Add(new CategoryAppNav(value.Category, value.App, item.Code, itemAction.Code, itemAction));
+                    }
+		    values.Add(new CategoryAppNav(value.Category, value.App, item.Code, default, item));
                 }
             }
             else if (value.NavModel!.IsAction || (!value.NavModel!.HasChildren && !isQueryNav &&
