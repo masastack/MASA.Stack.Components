@@ -50,11 +50,11 @@ public partial class ExpansionAppItem
     {
         get
         {
-            if (Data.HasChildren)
+            if (Data.HasChildren && Level == 1)
             {
-                return Data.Children.All(children => ExpansionWrapper.Value.Any(can => can.NavModel == children));
+                return Data.Children.All(children => children.HasActions ? children.Actions.All(grandson => ExpansionWrapper.Value.Any(can => can.NavModel == grandson)) : ExpansionWrapper.Value.Any(can => can.NavModel == children));
             }
-            else if (Data.HasActions && Level != 3 && ParentCode is null)
+            else if (Data.HasActions && Level != 3)
             {
                 return ExpansionWrapper.Value.Any(children => children.NavModel == Data) && Data.Children.All(children => ExpansionWrapper.Value.Any(can => can.NavModel == children));
             }
@@ -69,9 +69,9 @@ public partial class ExpansionAppItem
         }
     }
 
-    private bool IsDisabled => InPreview || Data.Disabled ;
+    private bool IsDisabled => InPreview || Data.Disabled;
 
-    public bool Indeterminate => !IsQueryNav && (Data.HasActions || Data.HasChildren) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => !item.IsChecked && item.Data.ParentCode == Data.Code);
+    public bool Indeterminate =>!IsQueryNav && (Data.HasActions || Data.HasChildren) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => !item.IsChecked && item.Data.ParentCode == Data.Code);
 
     private string ActiveClass
     {
