@@ -8,6 +8,9 @@ public class SDataTable<TItem> : MDataTable<TItem>
     [Parameter]
     public bool DisableChippedEnum { get; set; }
 
+    [Parameter]
+    public string Theme { get; set; } = "table-border-head";
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         HideDefaultFooter = true;
@@ -34,8 +37,8 @@ public class SDataTable<TItem> : MDataTable<TItem>
     {
         base.OnParametersSet();
         Class ??= "";
-        if (Class.Contains("table-border-none") is false)
-            Class += " table-border-none";
+        if (Class.Contains(Theme) is false)
+            Class += $" {Theme}";
         if (Dense && Class.Contains("dense") is false)
             Class += " dense";
     }
