@@ -28,6 +28,8 @@ public partial class UserInfo : MasaComponentBase
 
     private string _i18nName = null!;
 
+    private bool UpdateUserNickNameVisible { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -135,6 +137,25 @@ public partial class UserInfo : MasaComponentBase
     private void OnVerifyPhoneNumberSuccess()
     {
         UpdateUserPhoneNumberDialogVisible = true;
+    }
+
+    public Task EnableUpdateNickName(MouseEventArgs _)
+    {
+        UpdateUserNickNameVisible = true;
+        return Task.CompletedTask;
+    }
+
+    private async Task UpdateNickNameCancelAsync()
+    {
+        await GetCurrentUserAsync();
+        UpdateUserNickNameVisible = false;
+    }
+
+    private async Task UpdateNickNameConfirmAsync()
+    {
+        await AuthClient.UserService.UpdateBasicInfoAsync(UpdateUser);
+        await GetCurrentUserAsync();
+        UpdateUserNickNameVisible = false;
     }
 
     private async Task OnUpdatePhoneNumberSuccess(string phoneNumber)
