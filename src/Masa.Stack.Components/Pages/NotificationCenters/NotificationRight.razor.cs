@@ -27,6 +27,7 @@ public partial class NotificationRight : MasaComponentBase
     private PaginatedListModel<WebsiteMessageModel> _entities = new();
     private List<WebsiteMessageFilterType> _filterTypeItems = Enum.GetValues(typeof(WebsiteMessageFilterType)).Cast<WebsiteMessageFilterType>().ToList();
 
+    private AsyncTaskQueue _asyncTaskQueue;
     protected override async void OnParametersSet()
     {
         _queryParam.ChannelId = Channel?.Id;
@@ -37,11 +38,24 @@ public partial class NotificationRight : MasaComponentBase
     protected override void OnInitialized()
     {
         TypeAdapterConfig<GetWebsiteMessageModel, ReadAllWebsiteMessageModel>.NewConfig().MapToConstructor(true);
+        _asyncTaskQueue = new AsyncTaskQueue
+        {
+            AutoCancelPreviousTask = true,
+            UseSingleThread = true
+        };
     }
 
     public async Task LoadData()
     {
-        _entities = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
+        var result = await _asyncTaskQueue.ExecuteAsync(async () =>
+        {
+            var list = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
+            return list;
+        });
+        if (result.isInvalid)
+        {
+            _entities = result.result;
+        }
     }
 
     private async Task HandleOnClick(WebsiteMessageModel item)

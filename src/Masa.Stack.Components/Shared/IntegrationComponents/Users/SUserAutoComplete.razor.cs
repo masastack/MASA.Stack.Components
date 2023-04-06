@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Contrib.StackSdks.Mc;
+
+namespace Masa.Stack.Components;
 
 public partial class SUserAutoComplete
 {
@@ -74,6 +76,18 @@ public partial class SUserAutoComplete
         set => _autocompleteClient = value;
     }
 
+    private AsyncTaskQueue _asyncTaskQueue;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _asyncTaskQueue = new AsyncTaskQueue
+        {
+            AutoCancelPreviousTask = true,
+            UseSingleThread = true
+        };
+    }
+
     public async Task OnSearchChanged(string search)
     {
         search = search.TrimStart(' ').TrimEnd(' ');
@@ -84,13 +98,19 @@ public partial class SUserAutoComplete
         }
         else
         {
-            await Task.Delay(300);
-            var response = await AutoCompleteClient.GetBySpecifyDocumentAsync<UserSelectModel>(search, new AutoCompleteOptions
+            var result = await _asyncTaskQueue.ExecuteAsync(async () =>
             {
-                Page = Page,
-                PageSize = PageSize,
+                var response = await AutoCompleteClient.GetBySpecifyDocumentAsync<UserSelectModel>(search, new AutoCompleteOptions
+                {
+                    Page = Page,
+                    PageSize = PageSize,
+                });
+                return response;
             });
-            UserSelect = response.Data;
+            if (result.isInvalid)
+            {
+                UserSelect = result.result.Data;
+            }
         }
     }
 
