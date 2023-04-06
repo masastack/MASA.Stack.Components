@@ -84,7 +84,7 @@ public partial class UserInfo : MasaComponentBase
         await GetCurrentUserAsync();
     }
 
-    private void Cancel()
+    private async Task CancelAsync()
     {
         UpdateUser = UserDetail.Adapt<UpdateUserBasicInfoModel>();
         _windowValue = default;

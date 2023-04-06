@@ -14,6 +14,8 @@ public partial class StaffInfo : MasaComponentBase
 
     private Dictionary<string, object?>? PreviewItems { get; set; }
 
+    private bool UpdateUserNameVisible { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -74,5 +76,24 @@ public partial class StaffInfo : MasaComponentBase
     private void NavigateToUser()
     {
         NavigationManager.NavigateTo("/user-center");
+    }
+
+    public Task EnableUpdateName(MouseEventArgs _)
+    {
+        UpdateUserNameVisible = true;
+        return Task.CompletedTask;
+    }
+
+    private async Task UpdateNameCancelAsync()
+    {
+        await GetCurrentStaffAsync();
+        UpdateUserNameVisible = false;
+    }
+
+    private async Task UpdateNameConfirmAsync()
+    {
+        await AuthClient.UserService.UpdateStaffBasicInfoAsync(UpdateStaff);
+        await GetCurrentStaffAsync();
+        UpdateUserNameVisible = false;
     }
 }
