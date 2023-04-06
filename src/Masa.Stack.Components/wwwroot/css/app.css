@@ -6,7 +6,7 @@ body, .masa-stack-components {
 }
 
     .masa-stack-components .m-app-bar {
-        background-color: #F0F3FA !important;
+        background-color: transparent !important;
     }
 
         .masa-stack-components .m-app-bar .m-toolbar__content {
