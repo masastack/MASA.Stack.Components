@@ -818,3 +818,15 @@ body, .masa-stack-components {
     min-height: 40px !important;
     height: 40px !important;
 }
+
+    .s-autocomplete-selection .icon-hover {
+        width: 18px !important;
+        transition: 0.5s !important;
+    }
+
+    .s-autocomplete-selection .icon-unhover {
+        opacity: 0 !important;
+        height: 0px !important;
+        margin-left: -24px !important;
+        transition: 0.4s !important;
+    }

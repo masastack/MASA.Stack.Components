@@ -8,7 +8,7 @@
                     <div @onclick="() => Copy(ValueFunc(Value))" @onclick:stopPropagation>
                         <SIcon Tooltip="@I18n.T("Copy value")"
                                Color="@(_copyClicked ? "success" : "gray")"
-                               Style="@(hContext.Hover ? "width: 18px; transition: 0.5s;" : "opacity:0; height: 0px; margin-left: -24px; transition: 0.4s;")">
+                               Class="@(hContext.Hover ? "icon-hover" : "icon-unhover")">
                             @(_copyClicked ? _checkSvg : _copySvg)
                         </SIcon>
                     </div>
