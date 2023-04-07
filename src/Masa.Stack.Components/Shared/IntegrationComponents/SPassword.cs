@@ -18,14 +18,23 @@ public class SPassword : MTextField<string>
         base.OnInitialized();
     }
 
-    public override Task SetParametersAsync(ParameterView parameters)
+    protected override void OnParametersSet()
     {
         Label ??= I18n?.T("Password", true);
-        Type = ShowPassword ? "text" : "password";
-        AppendIcon = ShowPassword ? "mdi-eye" : "mdi-eye-off";
-        return base.SetParametersAsync(parameters);
+        base.OnParametersSet();
     }
 
-    private void SwitchPassword() => ShowPassword = !ShowPassword;
+    public SPassword()
+    {
+        Type = "password";
+        AppendIcon = "mdi-eye-off";
+    }
+
+    private void SwitchPassword()
+    {
+        ShowPassword = !ShowPassword;
+        Type = ShowPassword ? "text" : "password";
+        AppendIcon = ShowPassword ? "mdi-eye" : "mdi-eye-off";
+    }
 }
 
