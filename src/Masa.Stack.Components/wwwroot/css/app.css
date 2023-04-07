@@ -805,7 +805,7 @@ body, .masa-stack-components {
     letter-spacing: 0em !important;
 }
 
-.m-autocomplete .m-list-item {
+.s-autocomplete-selection .m-list-item {
     width: 100% !important;
     padding-right: 0px !important;
     min-height: 40px !important;
