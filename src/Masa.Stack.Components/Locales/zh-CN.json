@@ -159,5 +159,6 @@
   "UploadAvatar": "上传头像",
   "EmptyPlaceholder": "没有数据",
   "NickName": "昵称",
-  "Update NickName": "修改昵称"
+  "Update NickName": "修改昵称",
+  "Copy value": "复制值"
 }
