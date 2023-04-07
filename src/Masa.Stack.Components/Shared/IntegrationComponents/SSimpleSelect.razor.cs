@@ -25,9 +25,9 @@ public partial class SSimpleSelect<TValue>
 
     public string Text
     {
-        get 
-        { 
-            return ValueTexts.FirstOrDefault(vt => vt.value?.Equals(Value) is true).text ?? DefaultText ?? T("Please select"); 
+        get
+        {
+            return ValueTexts.FirstOrDefault(vt => vt.value?.Equals(Value) is true).text ?? DefaultText ?? T("Please select");
         }
         set
         {
@@ -36,15 +36,12 @@ public partial class SSimpleSelect<TValue>
         }
     }
 
-public bool MenuState { get; set; }
+    public bool MenuState { get; set; }
 
     [Parameter]
     public EventCallback OnChange { get; set; }
 
     private string Icon => MenuState ? "mdi-menu-up" : "mdi-menu-down";
-
-    [Parameter]
-    public bool IsDisplayPlsSelect { get; set; } = true;
 
     [Parameter]
     public bool Clearable { get; set; }
@@ -56,5 +53,5 @@ public bool MenuState { get; set; }
         if (OnChange.HasDelegate) await OnChange.InvokeAsync();
     }
 
-    
+
 }

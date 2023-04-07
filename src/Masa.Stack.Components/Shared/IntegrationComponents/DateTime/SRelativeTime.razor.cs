@@ -27,9 +27,6 @@ public partial class SRelativeTime
     public TimeSpan ValueTimezoneOffset { get; set; } = TimeSpan.Zero;
 
     [Parameter]
-    public bool IsDisplayPlsSelect { get; set; } = true;
-
-    [Parameter]
     public bool Clearable { get; set; }
 
     public RelativeTimeTypes RelativeTimeType

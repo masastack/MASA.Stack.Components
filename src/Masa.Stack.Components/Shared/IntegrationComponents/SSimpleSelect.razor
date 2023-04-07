@@ -14,12 +14,6 @@
     </ActivatorContent>
     <ChildContent>
         <div style="overflow:auto;max-height:304px;">
-            @if (IsDisplayPlsSelect)
-            {
-                <div class="px-4 py-3 body2 emphasis--text combox" @onclick="async ()=> await UpdateValueAsync(default)">
-                    @(DefaultText ?? T("Please select"))
-                </div>
-            }
             @foreach(var (value,text) in ValueTexts)
             {
                <div class="px-4 py-3 body2 emphasis--text combox @(value?.Equals(Value) is true ? "hoverBg primary--text":"")" @onclick="async ()=> await UpdateValueAsync(value)">
