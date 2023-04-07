@@ -687,6 +687,7 @@ body, .masa-stack-components {
     border: 1px solid #FFFFFF;
     border-radius: 8px;
     height: 40px;
+    padding-top: 0px !important;
 }
 
 /*
