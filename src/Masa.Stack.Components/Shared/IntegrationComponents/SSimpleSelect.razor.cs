@@ -20,10 +20,21 @@ public partial class SSimpleSelect<TValue>
     [Parameter]
     public string Class { get; set; } = "";
 
-    public string Text => ValueTexts.FirstOrDefault(vt => vt.value?.Equals(Value) is true).text ?? DefaultText ?? T("Please select");
-
     [Parameter]
     public virtual List<(TValue value, string text)> ValueTexts { get; set; } = new();
+
+    public string Text
+    {
+        get
+        {
+            return ValueTexts.FirstOrDefault(vt => vt.value?.Equals(Value) is true).text ?? DefaultText ?? T("Please select");
+        }
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+                Value = default;
+        }
+    }
 
     public bool MenuState { get; set; }
 
@@ -32,10 +43,15 @@ public partial class SSimpleSelect<TValue>
 
     private string Icon => MenuState ? "mdi-menu-up" : "mdi-menu-down";
 
+    [Parameter]
+    public bool Clearable { get; set; }
+
     public async Task UpdateValueAsync(TValue? value)
     {
         if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value);
         else Value = value;
         if (OnChange.HasDelegate) await OnChange.InvokeAsync();
     }
+
+
 }

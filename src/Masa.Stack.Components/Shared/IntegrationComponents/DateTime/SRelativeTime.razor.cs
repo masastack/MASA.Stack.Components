@@ -26,6 +26,9 @@ public partial class SRelativeTime
     [Parameter]
     public TimeSpan ValueTimezoneOffset { get; set; } = TimeSpan.Zero;
 
+    [Parameter]
+    public bool Clearable { get; set; }
+
     public RelativeTimeTypes RelativeTimeType
     {
         get
@@ -98,6 +101,6 @@ public partial class SRelativeTime
 
     public string ConverText(RelativeTimeTypes type)
     {
-        return T(type.ToString() + " Ago");
+        return T($"Last {type}");
     }
 }

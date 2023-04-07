@@ -4,23 +4,16 @@
 
 <MMenu OffsetY Bottom @bind-Value="MenuState">
     <ActivatorContent>
-        <div @attributes="context.Attrs" class="relativeTime px-4 py-2 @Class" style="@Style;">
-            <div class="d-flex">
-                <div class="body2 regular--text">
-                    @Text
-                </div>
-                <div class="ml-8 mr-5" style="border: 0.5px solid #E2E7F4;height: 24px;width: 0px;" />
-                <div class="icon d-flex">
+        <MTextField Readonly Class="@("relativeTime px-4 py-2 " + Class)" Attributes="context.Attrs" Style="Style" @bind-Value="Text" Clearable=Clearable>
+            <AppendContent>
+                 <div class="icon d-flex">
                     <MIcon Class="ma-auto" Color="regular3">@Icon</MIcon>
                 </div>
-            </div>           
-        </div>
+            </AppendContent>
+        </MTextField>
     </ActivatorContent>
     <ChildContent>
         <div style="overflow:auto;max-height:304px;">
-            <div class="px-4 py-3 body2 emphasis--text combox" @onclick="async ()=> await UpdateValueAsync(default)">
-                   @(DefaultText ?? T("Please select"))
-            </div>
             @foreach(var (value,text) in ValueTexts)
             {
                <div class="px-4 py-3 body2 emphasis--text combox @(value?.Equals(Value) is true ? "hoverBg primary--text":"")" @onclick="async ()=> await UpdateValueAsync(value)">
