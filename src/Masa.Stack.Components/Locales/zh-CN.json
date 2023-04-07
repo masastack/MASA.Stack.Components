@@ -88,6 +88,7 @@
   "Member": "成员",
   "Male": "男",
   "Female": "女",
+  "Name": "姓名",
   "Nickname": "昵称",
   "NumberOfPeople": "人数",
   "Change": "更改",
@@ -156,5 +157,7 @@
   "DeletionNotificationConfirmMessage": "确定要删除消息“{Message}”吗？",
 
   "UploadAvatar": "上传头像",
-  "EmptyPlaceholder": "没有数据"
+  "EmptyPlaceholder": "没有数据",
+  "NickName": "昵称",
+  "Update NickName": "修改昵称"
 }
