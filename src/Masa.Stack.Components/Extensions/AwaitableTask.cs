@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Masa.Stack.Components.Extensions
+﻿namespace Masa.Stack.Components.Extensions
 {
     public class AwaitableTask
     {
