@@ -18,9 +18,14 @@ public class SPassword : MTextField<string>
         base.OnInitialized();
     }
 
-    public SPassword()
+    protected override void OnParametersSet()
     {
         Label ??= I18n?.T("Password", true);
+        base.OnParametersSet();
+    }
+
+    public SPassword()
+    {
         Type = "password";
         AppendIcon = "mdi-eye-off";
     }

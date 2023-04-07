@@ -15,9 +15,7 @@ public class UpdateUserPhoneNumberValidator : AbstractValidator<UpdateUserPhoneN
 
         RuleFor(user => user.VerificationCode)
             .NotEmpty()
-            .WithMessage("captcha cannot be empty")
-            .Length(6)
-            .WithMessage("captcha length is six");
+            .WithMessage("captcha cannot be empty");
     }
 }
 

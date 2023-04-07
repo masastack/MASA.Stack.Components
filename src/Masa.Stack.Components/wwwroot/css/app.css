@@ -6,7 +6,7 @@ body, .masa-stack-components {
 }
 
     .masa-stack-components .m-app-bar {
-        background-color: #F0F3FA !important;
+        background-color: transparent !important;
     }
 
         .masa-stack-components .m-app-bar .m-toolbar__content {
@@ -503,8 +503,8 @@ body, .masa-stack-components {
 /*
     default dataTable
 */
-.masa-stack-components .table-border-none thead th {
-    border-bottom: 0px !important;
+.masa-stack-components .table-border-head .m-data-table__wrapper table thead th {
+    border-bottom: solid 0.5px #E4E8F3 !important;
     box-shadow: none !important;
     padding-top: 20px !important;
     padding-bottom: 20px !important;
@@ -515,28 +515,28 @@ body, .masa-stack-components {
     letter-spacing: 0.015625em !important;
 }
 
-.masa-stack-components .table-border-none td {
+.masa-stack-components .table-border-head .m-data-table__wrapper table td {
     border-bottom: 0px !important;
     box-shadow: none;
     padding-top: 9.5px !important;
     padding-bottom: 9.5px !important;
 }
 
-masa-stack-components .table-border-none.dense thead th {
+.masa-stack-components .table-border-head.dense .m-data-table__wrapper table thead th {
     padding-top: 14px !important;
     padding-bottom: 14px !important;
 }
 
-.masa-stack-components .table-border-none.dense td {
+.masa-stack-components .table-border-head.dense .m-data-table__wrapper table td {
     padding-top: 6.6px !important;
     padding-bottom: 6.6px !important;
 }
 
-.masa-stack-components .table-border-none tbody tr:hover {
+.masa-stack-components .table-border-head .m-data-table__wrapper table tbody tr:hover {
     background-color: #F6F8FD !important;
 }
 
-.masa-stack-components .table-border-none tr td:first-child {
+.masa-stack-components .table-border-head .m-data-table__wrapper table tr td:first-child {
     font-style: normal !important;
     font-weight: 500 !important;
     font-size: 1rem !important;
@@ -545,7 +545,7 @@ masa-stack-components .table-border-none.dense thead th {
     letter-spacing: 0em !important;
 }
 
-.masa-stack-components .table-border-none tr td {
+.masa-stack-components .table-border-head .m-data-table__wrapper table tr td {
     font-style: normal !important;
     font-weight: 400 !important;
     font-size: 1rem !important;
@@ -554,18 +554,26 @@ masa-stack-components .table-border-none.dense thead th {
     letter-spacing: 0em !important;
 }
 
-.masa-stack-components .table-border-none tr .m-icon {
+.masa-stack-components .table-border-head .m-data-table__wrapper table tr .m-icon {
     color: #323D6F !important;
 }
 
-.masa-stack-components .table-border-none tr td:first-child, th:first-child {
+.masa-stack-components .table-border-head .m-data-table__wrapper table tr td:first-child {
     border-top-left-radius: 8px !important;
     border-bottom-left-radius: 8px !important;
 }
 
-.masa-stack-components .table-border-none tr td:last-child, th:last-child {
+.masa-stack-components .table-border-head .m-data-table__wrapper table tr td:last-child {
     border-top-right-radius: 8px !important;
     border-bottom-right-radius: 8px !important;
+}
+
+.masa-stack-components .table-border-head .m-data-table__wrapper table tr td:not(:last-child) > *:not(.description) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 300px;
 }
 /*
     uploadImage
