@@ -1,5 +1,6 @@
 ﻿namespace Masa.Stack.Components.TaskHandle
 {
+<<<<<<<< HEAD:src/Masa.Stack.Components/TaskHandle/AsyncTaskQueue.cs
     public class AsyncTaskQueue : IDisposable
     {
         public AsyncTaskQueue()
@@ -121,3 +122,11 @@
         private AutoResetEvent _autoResetEvent;
     }
 }
+========
+
+
+   
+
+  
+}
+>>>>>>>> c2f3ec981ff4683445312895df27b1b923c2b1e8:src/Masa.Stack.Components/Extensions/AwaitableTask.cs
