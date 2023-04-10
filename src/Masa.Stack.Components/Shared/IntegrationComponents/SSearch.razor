@@ -60,7 +60,7 @@
     public Dictionary<string, object> Attributes { get; set; } = new();
 
     [Parameter]
-    public int? MaxWidth { get; set; } = 340;
+    public int MaxWidth { get; set; } = 340;
 
     bool isFocused = false;
 
@@ -86,7 +86,7 @@
 
     protected override Task OnParametersSetAsync()
     {
-        styleMaxWidth = MaxWidth.HasValue && MaxWidth > 0 ? $"max-width:{MaxWidth}px;" : string.Empty;
+        styleMaxWidth = MaxWidth > 0 ? $"max-width:{MaxWidth}px;" : string.Empty;
         return base.OnParametersSetAsync();
     }
 }
