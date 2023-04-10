@@ -137,7 +137,7 @@ public partial class ExpansionAppItem
         {
             await ExpansionApp.SwitchValue(CategoryAppNav, IsQueryNav, isIndeterminate: Indeterminate);
         }
-        if (Favorite && Data.Url is not null)
+        if (Favorite && Data.Url is not null && !Data.HasChildren)
         {
             NavigationManager.NavigateTo(Data.Url, true);
         }
