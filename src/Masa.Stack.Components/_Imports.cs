@@ -37,6 +37,7 @@ global using Masa.Stack.Components.NotificationCenters.Consts;
 global using Masa.Stack.Components.Options;
 global using Masa.Stack.Components.Store;
 global using Masa.Stack.Components.UserCenters.Models;
+global using Masa.Stack.Components.TaskHandle;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authentication.Cookies;
 global using Microsoft.AspNetCore.Authentication.OpenIdConnect;
