@@ -52,7 +52,7 @@ public partial class NotificationRight : MasaComponentBase
             var list = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
             return list;
         });
-        if (result.isInvalid)
+        if (result.IsValid)
         {
             _entities = result.result;
         }

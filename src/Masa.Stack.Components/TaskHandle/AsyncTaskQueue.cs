@@ -1,85 +1,5 @@
-﻿namespace Masa.Stack.Components.Extensions
+﻿namespace Masa.Stack.Components.TaskHandle
 {
-    public class AwaitableTask
-    {
-        public bool NotExecutable { get; private set; }
-
-        public void SetNotExecutable()
-        {
-            NotExecutable = true;
-        }
-
-        public bool IsInvalid { get; private set; } = true;
-
-        public void MarkTaskValid()
-        {
-            IsInvalid = false;
-        }
-
-        private readonly Task _task;
-
-        public AwaitableTask(Task task) => _task = task;
-
-        public bool IsCompleted => _task.IsCompleted;
-
-        public int TaskId => _task.Id;
-
-        public void Start() => _task.Start();
-
-        public void RunSynchronously() => _task.RunSynchronously();
-
-        public TaskAwaiter GetAwaiter() => new(this);
-
-        public readonly struct TaskAwaiter : INotifyCompletion
-        {
-            private readonly AwaitableTask _task;
-
-            public TaskAwaiter(AwaitableTask awaitableTask) => _task = awaitableTask;
-
-            public bool IsCompleted => _task._task.IsCompleted;
-
-            public void OnCompleted(Action continuation)
-            {
-                var This = this;
-                _task._task.ContinueWith(t =>
-                {
-                    if (!This._task.NotExecutable) continuation?.Invoke();
-                });
-            }
-
-            public void GetResult() => _task._task.Wait();
-        }
-    }
-
-    public class AwaitableTask<TResult> : AwaitableTask
-    {
-        private readonly Task<TResult> _task;
-
-        public AwaitableTask(Task<TResult> task) : base(task) => _task = task;
-
-        public new TaskAwaiter GetAwaiter() => new TaskAwaiter(this);
-
-        public new readonly struct TaskAwaiter : INotifyCompletion
-        {
-            private readonly AwaitableTask<TResult> _task;
-
-            public TaskAwaiter(AwaitableTask<TResult> awaitableTask) => _task = awaitableTask;
-
-            public bool IsCompleted => _task._task.IsCompleted;
-
-            public void OnCompleted(Action continuation)
-            {
-                var This = this;
-                _task._task.ContinueWith(t =>
-                {
-                    if (!This._task.NotExecutable) continuation?.Invoke();
-                });
-            }
-
-            public TResult GetResult() => _task._task.Result;
-        }
-    }
-
     public class AsyncTaskQueue : IDisposable
     {
         public AsyncTaskQueue()
@@ -89,22 +9,22 @@
             _thread.Start();
         }
 
-        public async Task<(bool isInvalid, T result)> ExecuteAsync<T>(Func<Task<T>> func)
+        public async Task<(bool IsValid, T result)> ExecuteAsync<T>(Func<Task<T>> func)
         {
             var task = GetExecutableTask(func);
             var result = await await task;
-            if (!task.IsInvalid)
+            if (!task.IsValid)
             {
                 result = default(T);
             }
-            return (task.IsInvalid, result);
+            return (task.IsValid, result);
         }
 
         public async Task<bool> ExecuteAsync<T>(Func<Task> func)
         {
             var task = GetExecutableTask(func);
             await await task;
-            return task.IsInvalid;
+            return task.IsValid;
         }
 
         private AwaitableTask GetExecutableTask(Action action)

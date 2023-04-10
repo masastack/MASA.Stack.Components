@@ -104,7 +104,7 @@ public partial class SUserAutoComplete
                 });
                 return response;
             });
-            if (result.isInvalid)
+            if (result.IsValid)
             {
                 UserSelect = result.result.Data;
             }
