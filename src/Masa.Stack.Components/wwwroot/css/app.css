@@ -567,14 +567,6 @@ body, .masa-stack-components {
     border-top-right-radius: 8px !important;
     border-bottom-right-radius: 8px !important;
 }
-
-.masa-stack-components .table-border-head .m-data-table__wrapper table tr td:not(:last-child) > *:not(.description) {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 300px;
-}
 /*
     uploadImage
 */
