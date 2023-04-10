@@ -13,10 +13,11 @@
             Solo
             DebounceInterval=500
             ClearIcon="mdi-close-circle"
+            Height="Height"
             MinHeight="MinHeight"
             OnFocus="FocusHandler"
             OnBlur="BlurHandler"
-            Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}")"
+            Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}{styleMaxWidth}")"
             @attributes="@Attributes">
     <PrependInnerContent>
         @if (!isFocused)
@@ -51,14 +52,19 @@
 
     [Parameter]
     public StringNumber? Height { get; set; }
-    
+
     [Parameter]
     public StringNumber? MinHeight { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> Attributes { get; set; } = new();
 
+    [Parameter]
+    public int MaxWidth { get; set; } = 340;
+
     bool isFocused = false;
+
+    private string styleMaxWidth = string.Empty;
 
     private async Task HandleOnKeyDown(KeyboardEventArgs args)
     {
@@ -76,5 +82,11 @@
     private void BlurHandler()
     {
         isFocused = false;
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        styleMaxWidth = MaxWidth > 0 ? $"max-width:{MaxWidth}px;" : string.Empty;
+        return base.OnParametersSetAsync();
     }
 }
