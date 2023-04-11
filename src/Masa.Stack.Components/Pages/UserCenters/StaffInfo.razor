@@ -12,13 +12,46 @@
                           Class="mb-6"
                           Value="@UpdateStaffAvatar.Avatar"
                           ValueChanged="UpdateAvatarAsync"
-                          WhenFileChangeUpload />
-            <PBlockText Primary="@StaffDetail.Name"
-                        PrimaryClass="font-20-bold emphasis2--text"
-                        Secondary="@StaffDetail.Account"
+                                    WhenFileChangeUpload />
+            @if(!UpdateUserNameVisible)
+            {
+                <PBlockText Primary="@StaffDetail.Name"
+                            PrimaryClass="font-20-bold emphasis2--text"
+                            Secondary="@StaffDetail.Account"
+                            SecondaryClass="regular3--text font-14 full-width"
+                        Style="height:40px;flex-wrap: wrap;">
+                    <SecondaryContent>
+                        <MButton Icon Small OnClick="EnableUpdateName" Style="height:24px">
+                            <MIcon Size="15" Class="regular--text">mdi-pencil</MIcon>
+                        </MButton>
+                    </SecondaryContent>
+                </PBlockText>
+                <SButton Text OnClick="NavigateToUser" Class="mt-6">@T("Switch to user")</SButton>
+            }
+            else
+            {
+                <PBlockText PrimaryClass="font-20-bold emphasis2--text"
                         SecondaryClass="regular3--text font-14 full-width"
-                        Style="height:40px;" />
-            <SButton Text OnClick="NavigateToUser" Class="mt-6">@T("Switch to user")</SButton>
+                        Style="height:40px;flex-wrap: wrap;">
+                        <SecondaryContent>
+                        <MRow Class="mb-2 align-center">
+                                <MCol Cols="8">
+                                    <STextField @bind-Value="@UpdateStaff.Name" Label="@T("Name")" />
+                                </MCol>
+                                <MCol Cols="2">
+                                <MButton Class="mr-4" StopPropagation Icon OnClick="UpdateNameCancelAsync">
+                                    <SIcon Tooltip="@T("Cancel")" Color="#323D6F">mdi-close-thick</SIcon>
+                                </MButton>
+                                </MCol>
+                                <MCol Cols="2">
+                                    <MButton Icon StopPropagation OnClick="UpdateNameConfirmAsync"> 
+                                        <MIcon Color="success">mdi-check</MIcon>
+                                    </MButton>
+                                </MCol>
+                            </MRow>
+                        </SecondaryContent>
+                </PBlockText>
+            }
         </div>
         <ThirdAuths />
     </div>
