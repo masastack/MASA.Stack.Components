@@ -73,11 +73,10 @@ public partial class SUserAutoComplete
         set => _autocompleteClient = value;
     }
 
-    private AsyncTaskQueue _asyncTaskQueue;
+    private readonly AsyncTaskQueue _asyncTaskQueue;
 
-    protected override void OnInitialized()
+    public SUserAutoComplete()
     {
-        base.OnInitialized();
         _asyncTaskQueue = new AsyncTaskQueue
         {
             AutoCancelPreviousTask = true,

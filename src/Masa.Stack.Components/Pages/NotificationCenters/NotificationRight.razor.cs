@@ -27,7 +27,16 @@ public partial class NotificationRight : MasaComponentBase
     private PaginatedListModel<WebsiteMessageModel> _entities = new();
     private List<WebsiteMessageFilterType> _filterTypeItems = Enum.GetValues(typeof(WebsiteMessageFilterType)).Cast<WebsiteMessageFilterType>().ToList();
 
-    private AsyncTaskQueue _asyncTaskQueue;
+    private readonly AsyncTaskQueue _asyncTaskQueue;
+
+    public NotificationRight()
+    {
+        _asyncTaskQueue = new AsyncTaskQueue
+        {
+            AutoCancelPreviousTask = true,
+            UseSingleThread = true
+        };
+    }
     protected override async void OnParametersSet()
     {
         _queryParam.ChannelId = Channel?.Id;
@@ -38,11 +47,6 @@ public partial class NotificationRight : MasaComponentBase
     protected override void OnInitialized()
     {
         TypeAdapterConfig<GetWebsiteMessageModel, ReadAllWebsiteMessageModel>.NewConfig().MapToConstructor(true);
-        _asyncTaskQueue = new AsyncTaskQueue
-        {
-            AutoCancelPreviousTask = true,
-            UseSingleThread = true
-        };
     }
 
     public async Task LoadData()
