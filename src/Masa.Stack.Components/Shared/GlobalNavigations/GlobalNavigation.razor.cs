@@ -135,6 +135,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task FavoriteChanged(List<CategoryAppNav> favoriteNavs)
     {
+        favoriteNavs = favoriteNavs.Where(a => !a.NavModel!.HasChildren).ToList();
         var removes = _favoriteNavs.Except(favoriteNavs);
         foreach (var remove in removes)
         {
