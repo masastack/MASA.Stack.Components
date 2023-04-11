@@ -30,11 +30,10 @@ public partial class NotificationRight : MasaComponentBase
     private PaginatedListModel<WebsiteMessageModel> _entities = new();
     private List<WebsiteMessageFilterType> _filterTypeItems = Enum.GetValues(typeof(WebsiteMessageFilterType)).Cast<WebsiteMessageFilterType>().ToList();
 
-    protected override async void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         _queryParam.ChannelId = Channel?.Id;
-        await LoadData();
-        StateHasChanged();
+        await RefreshAsync();
     }
 
     protected override void OnInitialized()

@@ -48,7 +48,6 @@ public partial class NotificationCenter : MasaComponentBase
     {
         _channel = channel;
         _detailShow = false;
-        await _messageRightRef.RefreshAsync();
     }
 
     private async Task HandleAllRead()
