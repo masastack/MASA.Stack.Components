@@ -558,15 +558,6 @@ body, .masa-stack-components {
     color: #323D6F !important;
 }
 
-.masa-stack-components .table-border-head .m-data-table__wrapper table tr td:first-child {
-    border-top-left-radius: 8px !important;
-    border-bottom-left-radius: 8px !important;
-}
-
-.masa-stack-components .table-border-head .m-data-table__wrapper table tr td:last-child {
-    border-top-right-radius: 8px !important;
-    border-bottom-right-radius: 8px !important;
-}
 /*
     uploadImage
 */
