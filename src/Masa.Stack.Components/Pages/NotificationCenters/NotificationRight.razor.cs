@@ -40,15 +40,7 @@ public partial class NotificationRight : MasaComponentBase
 
     public async Task LoadData()
     {
-        var result = await _asyncTaskQueue.ExecuteAsync(async () =>
-        {
-            var list = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
-            return list;
-        });
-        if (result.IsValid)
-        {
-            _entities = result.result;
-        }
+        _entities = (await McClient.WebsiteMessageService.GetListAsync(_queryParam));
     }
 
     private async Task HandleOnClick(WebsiteMessageModel item)
