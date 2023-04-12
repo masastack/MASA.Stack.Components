@@ -162,5 +162,14 @@
   "EmptyPlaceholder": "没有数据",
   "NickName": "昵称",
   "Update NickName": "修改昵称",
-  "Copy value": "复制值"
+  "Copy value": "复制值",
+
+  "Edit": "编辑",
+  "Pin": "置顶",
+  "More": "更多",
+  "Copy": "复制",
+  "Expand": "展开",
+  "Remove": "删除",
+  "Relevance": "关联",
+  "Close": "关闭"
 }
