@@ -54,7 +54,6 @@ global using Microsoft.AspNetCore.SignalR.Client;
 global using Microsoft.Extensions.Caching.Memory;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
-global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 global using Microsoft.IdentityModel.Tokens;

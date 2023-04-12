@@ -2,22 +2,31 @@
 
 public partial class SDateTimePicker
 {
-    private static readonly int[] _hours = Enumerable.Range(0, 24).ToArray();
-    private static readonly int[] _minutes = Enumerable.Range(0, 60).ToArray();
-    private static readonly int[] _seconds = Enumerable.Range(0, 60).ToArray();
+    private static readonly int[] ValidHours = Enumerable.Range(0, 24).ToArray();
+    private static readonly int[] ValidMinutes = Enumerable.Range(0, 60).ToArray();
+    private static readonly int[] ValidSeconds = Enumerable.Range(0, 60).ToArray();
 
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
+    /// <summary>
+    /// max time  [utc]
+    /// </summary>
     [Parameter]
     public DateTime? Max { get; set; }
 
+    /// <summary>
+    /// min time  [utc]
+    /// </summary>
     [Parameter]
     public DateTime? Min { get; set; }
 
     [Parameter]
     public bool NoTitle { get; set; }
 
+    /// <summary>
+    /// selected datetime[utc]
+    /// </summary>
     [Parameter]
     public DateTime? Value { get; set; }
 
@@ -33,23 +42,56 @@ public partial class SDateTimePicker
     [Parameter]
     public TimeSpan DisplayTimezoneOffset { get; set; }
 
-    private DateOnly? Date
+    private DateTime MaxOffset
     {
         get
         {
-            if (Value is null) return null;
-            return DateOnly.FromDateTime(Value.Value.Add(DisplayTimezoneOffset));
+            if (Max == null || Max == DateTime.MaxValue) return DateTime.MaxValue;
+            try
+            {
+                return Max.Value.Add(-OutputTimezoneOffset).Add(DisplayTimezoneOffset);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            return DateTime.MaxValue;
         }
     }
 
-    private TimeOnly Time
+    private DateTime MinOffset
     {
         get
         {
-            if (Value is null) return new(GetHours()[0], GetMinutes()[0], GetSeconds()[0]);
-            return TimeOnly.FromDateTime(Value.Value.Add(DisplayTimezoneOffset));
+            if (Min == null || Min == DateTime.MinValue) return DateTime.MinValue;
+            try
+            {
+                return Min.Value.ToUniversalTime().Add(DisplayTimezoneOffset);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            return DateTime.MinValue;
         }
     }
+
+    private DateTime? _internalDateTime = null;
+    private DateOnly? _internalDate = null;
+    private bool _getValidSelectItems = false;
+
+    private TimeOnly InternalTime
+    {
+        get
+        {
+            if (_internalDateTime is null) return new TimeOnly(0, 0, 0);
+            return TimeOnly.FromDateTime(_internalDateTime.Value);
+        }
+    }
+
+    private DateTime ClientNow => DateTime.UtcNow.Add(DisplayTimezoneOffset);
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
@@ -64,126 +106,208 @@ public partial class SDateTimePicker
 
     private int[] GetHours()
     {
-        if (Min is null && Max is null) return _hours;
-        else
+        var validHours = ValidHours;
+        if (!_getValidSelectItems) return validHours;
+        var hours = validHours;
+        if (MaxOffset.Subtract(MinOffset).TotalDays < 1)
         {
-            var hours = _hours;
-            if (Min is not null && Value is not null && Min.Value.Date >= Value.Value.Date) hours = hours.Where(h => h >= Min.Value.Hour).ToArray();
-            else if (Max is not null && Value is not null && Max.Value.Date <= Value.Value.Date) hours = hours.Where(h => h <= Max.Value.Hour).ToArray();
-            return hours;
+            hours = FilterAvailableValues(validHours, MinOffset.Hour, MaxOffset.Hour);
         }
+        else if (_internalDateTime.HasValue)
+        {
+            var sameWithMax = _internalDateTime.Value.Date == MaxOffset.Date;
+            var sameWithMin = _internalDateTime.Value.Date == MinOffset.Date;
+            if (sameWithMin && sameWithMax)
+            {
+                hours = FilterAvailableValues(validHours, MinOffset.Hour, MaxOffset.Hour);
+            }
+            else if (sameWithMax)
+            {
+                hours = FilterAvailableValues(validHours, validHours.First(), MaxOffset.Hour);
+            }
+            else if (sameWithMin)
+            {
+                hours = FilterAvailableValues(validHours, MinOffset.Hour, validHours.Last());
+            }
+        }
+        return hours;
     }
 
     private int[] GetMinutes()
     {
-        if (Min is null && Max is null) return _minutes;
+        var validMinutes = ValidMinutes;
+        if (!_getValidSelectItems) return validMinutes;
+        var minutes = validMinutes;
+        if (MaxOffset.Subtract(MinOffset).TotalHours < 1)
         {
-            if (Min is not null && Value is not null && Min.Value.Date >= Value.Value.Date) return _minutes.Where(h => h >= Min.Value.Minute).ToArray();
-            else if (Max is not null && Value is not null && Max.Value.Date <= Value.Value.Date) return _minutes.Where(h => h <= Max.Value.Minute).ToArray();
-            return _minutes;
+            minutes = FilterAvailableValues(validMinutes, MinOffset.Minute, MaxOffset.Minute);
         }
+        else if (_internalDateTime.HasValue)
+        {
+            var sameWithMax = _internalDateTime.Value.Date == MaxOffset.Date
+                              && _internalDateTime.Value.Hour == MaxOffset.Hour;
+            var sameWithMin = _internalDateTime.Value.Date == MinOffset.Date
+                              && _internalDateTime.Value.Hour == MinOffset.Hour;
+            if (sameWithMin && sameWithMax)
+            {
+                minutes = FilterAvailableValues(validMinutes, MinOffset.Minute, MaxOffset.Minute);
+            }
+            else if (sameWithMax)
+            {
+                minutes = FilterAvailableValues(validMinutes, validMinutes.First(), MaxOffset.Minute);
+            }
+            else if (sameWithMin)
+            {
+                minutes = FilterAvailableValues(validMinutes, MinOffset.Minute, validMinutes.Last());
+            }
+        }
+        return minutes;
     }
+
 
     private int[] GetSeconds()
     {
-        if (Min is null && Max is null) return _seconds;
+        var validSeconds = ValidSeconds;
+        if (!_getValidSelectItems) return validSeconds;
+        var seconds = validSeconds;
+
+        if (MaxOffset.Subtract(MinOffset).TotalMinutes < 1)
         {
-            if (Min is not null && Value is not null && Min.Value.Date >= Value.Value.Date) return _seconds.Where(h => h >= Min.Value.Second).ToArray();
-            else if (Max is not null && Value is not null && Max.Value.Date <= Value.Value.Date) return _seconds.Where(h => h <= Max.Value.Second).ToArray();
-            else return _seconds;
+            seconds = FilterAvailableValues(validSeconds,
+                MinOffset == DateTime.MinValue ? validSeconds.First() : MinOffset.Second,
+                MaxOffset == DateTime.MaxValue ? validSeconds.Last() : MaxOffset.Second);
         }
+        else if (_internalDateTime.HasValue)
+        {
+            var sameWithMax = _internalDateTime.Value.Date == MaxOffset.Date
+                                    && _internalDateTime.Value.Hour == MaxOffset.Hour
+                                    && _internalDateTime.Value.Minute == MaxOffset.Minute;
+            var sameWithMin = _internalDateTime.Value.Date == MinOffset.Date
+                                    && _internalDateTime.Value.Hour == MinOffset.Hour
+                                    && _internalDateTime.Value.Minute == MinOffset.Minute;
+            if (sameWithMin && sameWithMax)
+            {
+                seconds = FilterAvailableValues(validSeconds, MinOffset.Second, MaxOffset.Second);
+            }
+            else if (sameWithMax)
+            {
+                seconds = FilterAvailableValues(validSeconds, validSeconds.First(), MaxOffset.Second);
+            }
+            else if (sameWithMin)
+            {
+                seconds = FilterAvailableValues(validSeconds, MinOffset.Second, validSeconds.Last());
+            }
+        }
+        return seconds;
+    }
+
+    private int[] FilterAvailableValues(int[] validValues, int min, int max)
+    {
+        Func<int, bool> whereFunc = min <= max ? h => h >= min && h <= max : h => h <= min && h >= max;
+        return validValues.Where(whereFunc).ToArray();
     }
 
     private bool GetNowClickState()
     {
-        if (Min is not null) return DateTime.Now < Min;
-        else if (Max is not null) return DateTime.Now > Max;
-        else return false;
+        return ClientNow < MinOffset || ClientNow > MaxOffset;
     }
 
-    private DateOnly? GetMinDateOnly()
+    private DateOnly GetMinDateOnly()
     {
-        if (Min is not null)
-        {
-            if (Value is null) return DateOnly.FromDateTime(Min.Value);
-            else if (Min.Value.TimeOfDay < Value.Value.TimeOfDay) return DateOnly.FromDateTime(Min.Value.AddDays(1));
-            else return DateOnly.FromDateTime(Min.Value);
-        }
-        else return null;
+        return DateOnly.FromDateTime(MinOffset);
     }
 
-    private DateOnly? GetMaxDateOnly()
+    private DateOnly GetMaxDateOnly()
     {
-        if (Max is not null)
-        {
-            if (Value is null) return DateOnly.FromDateTime(Max.Value);
-            else if (Max.Value.TimeOfDay < Value.Value.TimeOfDay) return DateOnly.FromDateTime(Max.Value.AddDays(-1));
-            else return DateOnly.FromDateTime(Max.Value);
-        }
-        return null;
+        return DateOnly.FromDateTime(MaxOffset.Date);
     }
 
     private async Task DateChangedAsync(DateOnly? date)
     {
-        await UpdateValueAsync(date?.ToDateTime(Time));
+        await UpdateValueAsync(date?.ToDateTime(InternalTime));
     }
 
     private async Task HourChangedAsync(int hour)
     {
-        var time = new TimeOnly(hour, Time.Minute, Time.Second);
-        await UpdateValueAsync(time);
+        var time = new TimeOnly(hour, InternalTime.Minute, InternalTime.Second);
+        await UpdateTimeValueAsync(time);
     }
 
     private async Task MinuteChangedAsync(int minute)
     {
-        var time = new TimeOnly(Time.Hour, minute, Time.Second);
-        await UpdateValueAsync(time);
+        var time = new TimeOnly(InternalTime.Hour, minute, InternalTime.Second);
+        await UpdateTimeValueAsync(time);
     }
 
     private async Task SecondChangedAsync(int second)
     {
-        var time = new TimeOnly(Time.Hour, Time.Minute, second);
-        await UpdateValueAsync(time);
+        var time = new TimeOnly(InternalTime.Hour, InternalTime.Minute, second);
+        await UpdateTimeValueAsync(time);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dateTime">accept the time using display time zone</param>
+    /// <returns></returns>
     private async Task UpdateValueAsync(DateTime? dateTime)
     {
-        dateTime = dateTime?.Add(-DisplayTimezoneOffset).Add(OutputTimezoneOffset);
+        dateTime = TryFixDateTime(dateTime);
+        _internalDateTime = dateTime;
+        _internalDate = _internalDateTime is null ? null : DateOnly.FromDateTime(_internalDateTime.Value);
+        dateTime = dateTime?.Add(-DisplayTimezoneOffset).Add(OutputTimezoneOffset); //to utc time
+        Value = dateTime;
         if (ValueChanged.HasDelegate)
         {
             await ValueChanged.InvokeAsync(dateTime);
         }
-        else
-        {
-            Value = dateTime;
-        }
     }
 
-    private async Task UpdateValueAsync(TimeOnly time)
+    private DateTime? TryFixDateTime(DateTime? dateTime)
     {
-        DateTime? dateTime = default;
-        if (Date is null)
+        if (dateTime != null)
         {
-            var now = DateTime.Now;
-            if (Min is not null)
+            if (dateTime > MaxOffset)
             {
-                if (Min < now) dateTime = DateOnly.FromDateTime(now).ToDateTime(time);
-                else dateTime = DateOnly.FromDateTime(Min.Value).ToDateTime(time);
+                dateTime = MaxOffset;
             }
-            else if (Max is not null)
+            else if (dateTime < MinOffset)
             {
-                if (Max < now) dateTime = DateOnly.FromDateTime(Max.Value).ToDateTime(time);
-                else dateTime = DateOnly.FromDateTime(now).ToDateTime(time);
+                dateTime = MinOffset;
             }
         }
-        else dateTime = Date.Value.ToDateTime(time);
+        return dateTime;
+    }
+
+    private async Task UpdateTimeValueAsync(TimeOnly time)
+    {
+        DateTime? dateTime;
+        if (_internalDate is null)
+        {
+            if (MinOffset > ClientNow)
+            {
+                dateTime = DateOnly.FromDateTime(MinOffset).ToDateTime(time);
+            }
+            else if (MaxOffset < ClientNow)
+            {
+                dateTime = DateOnly.FromDateTime(MaxOffset).ToDateTime(time);
+            }
+            else
+            {
+                dateTime = DateOnly.FromDateTime(ClientNow).ToDateTime(time);
+            }
+        }
+        else
+        {
+            dateTime = _internalDate.Value.ToDateTime(time);
+        }
 
         await UpdateValueAsync(dateTime);
     }
 
     private async Task OnNowAsync()
     {
-        await UpdateValueAsync(DateTime.UtcNow);
+        await UpdateValueAsync(ClientNow);
     }
 
     private async Task OnResetAsync()

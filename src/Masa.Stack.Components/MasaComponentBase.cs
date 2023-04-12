@@ -34,6 +34,10 @@ public abstract class MasaComponentBase : ComponentBase
     {
         return I18n.T(key);
     }
+    protected string T(string key, object[] args)
+    {
+        return I18n.T(key, args: args);
+    }
 
     protected string DT(string key)
     {
