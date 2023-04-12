@@ -1,7 +1,12 @@
 ﻿@page "/dateTimeRangePickerExample"
+@using System.Globalization
 
 <div class="pa-12 mb-6">
     <SDateTimePicker Value=StartTime Max=EndTime />
+    <SDateTimePicker Value=StartTime Max="new DateTime(2023,04,13,11,00,0,DateTimeKind.Utc)" />
+    <SDateTimePicker Value=StartTime Max="new DateTime(2023,04,13,23,00,0,DateTimeKind.Utc)" Min="(new DateTime(2023,04,10,13,00,0,DateTimeKind.Utc))" />
+    <SDateTimePicker Value=StartTime Max="new DateTime(2023,04,13,03,00,0,DateTimeKind.Utc)" Min="(new DateTime(2023,04,10,18,00,0,DateTimeKind.Utc))" />
+    <SDateTimePicker Value=StartTime Max="new DateTime(2023,04,13,11,00,0,DateTimeKind.Utc)" Min="(new DateTime(2023,04,10,23,00,0,DateTimeKind.Utc))" />
 </div>
 
 <div class="pa-12 mb-6">
@@ -12,7 +17,7 @@
     <SRelativeTime @bind-StartTime="StartTime" @bind-EndTime="EndTime" Clearable />
 </div>
 
-@code{
+@code {
     public DateTime? StartTime { get; set; }
     public DateTime? EndTime { get; set; }
 }

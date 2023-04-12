@@ -1,7 +1,7 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<MDatePicker Value="Date"
+<MDatePicker Value="_internalDate"
              ValueChanged="DateChangedAsync"
              TValue="DateOnly?"
              NoTitle="NoTitle"
@@ -12,7 +12,7 @@
             <MAutocomplete AutoSelectFirst Dense
                            Label="@T("Hour")"
                            HideDetails="true"
-                           Value="Time.Hour"
+                           Value="InternalTime.Hour"
                            ValueChanged="HourChangedAsync"
                            TValue="int"
                            TItem="int"
@@ -27,7 +27,7 @@
             <MAutocomplete AutoSelectFirst Dense
                            Label="@T("Minute")"
                            HideDetails="true"
-                           Value="Time.Minute"
+                           Value="InternalTime.Minute"
                            ValueChanged="MinuteChangedAsync"
                            TValue="int"
                            TItem="int"
@@ -42,7 +42,7 @@
             <MAutocomplete AutoSelectFirst Dense
                            Label="@T("Second")"
                            HideDetails="true"
-                           Value="Time.Second"
+                           Value="InternalTime.Second"
                            ValueChanged="SecondChangedAsync"
                            TValue="int"
                            TItem="int"
