@@ -11,6 +11,9 @@ public partial class SSearchableExtend
 
     string ChildStyle => IsExpanded ? _displayNone : _displayFlex;
 
+    [Inject]
+    public I18n I18n { get; set; } = null!;
+
     [Parameter]
     public string? Class { get; set; }
 

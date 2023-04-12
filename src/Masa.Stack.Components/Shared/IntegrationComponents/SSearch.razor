@@ -7,7 +7,7 @@
             Dense="@Dense"
             Flat
             Clearable
-            Placeholder="Search"
+            Placeholder="@I18n.T("Search")"
             HideDetails="true"
             OnKeyDown="HandleOnKeyDown"
             Solo
@@ -17,17 +17,14 @@
             MinHeight="MinHeight"
             OnFocus="FocusHandler"
             OnBlur="BlurHandler"
+            PrependInnerIcon="mdi-magnify"
             Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}{styleMaxWidth}")"
             @attributes="@Attributes">
-    <PrependInnerContent>
-        @if (!isFocused)
-        {
-            <MIcon>mdi-magnify</MIcon>
-        }
-    </PrependInnerContent>
 </MTextField>
 
 @code {
+    [Inject]
+    public I18n I18n { get; set; } = null!;
 
     [Parameter]
     public string? Value { get; set; }
@@ -86,7 +83,7 @@
 
     protected override Task OnParametersSetAsync()
     {
-        styleMaxWidth = MaxWidth > 0 ? $"max-width:{MaxWidth}px;" : string.Empty;
+        styleMaxWidth = MaxWidth > 0 ? $"max-width:{MaxWidth}px;width:{MaxWidth}px" : string.Empty;
         return base.OnParametersSetAsync();
     }
 }
