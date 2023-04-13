@@ -24,7 +24,6 @@ public static class ServiceCollectionExtensions
         builder.Services.AddMasaStackConfigAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         var masaStackConfig = builder.Services.GetMasaStackConfig();
 
-        var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
         authHost = authHost ?? masaStackConfig.GetAuthServiceDomain();
         mcHost = mcHost ?? masaStackConfig.GetMcServiceDomain();
         pmHost = pmHost ?? masaStackConfig.GetPmServiceDomain();
@@ -42,22 +41,16 @@ public static class ServiceCollectionExtensions
         };
 
         builder.Services.AddAuthClient(authHost, redisOption);
-        var options = new McServiceOptions(() =>
-        {
-            return mcHost;
-        });
+        var options = new McServiceOptions(() => mcHost);
         builder.Services.AddSingleton(options);
         builder.Services.AddMcClient(mcHost);
         builder.Services.AddPmClient(pmHost);
 
         builder.Services.AddOss();
-        builder.Services.AddElasticsearchAutoComplete(() =>
+        builder.Services.AddElasticsearchAutoComplete(() => new UserAutoCompleteOptions
         {
-            return new UserAutoCompleteOptions
-            {
-                Index = masaStackConfig.ElasticModel.Index,
-                Nodes = masaStackConfig.ElasticModel.Nodes.ToArray()
-            };
+            Index = masaStackConfig.ElasticModel.Index,
+            Nodes = masaStackConfig.ElasticModel.Nodes.ToArray()
         });
 
         builder.Services.AddScoped((serviceProvider) =>
@@ -77,10 +70,10 @@ public static class ServiceCollectionExtensions
                 theme.Themes.Light.Warning = "#FF7D00";
                 theme.Themes.Light.Info = "#37A7FF";
             });
-            options.Defaults = new Dictionary<string, IDictionary<string, object?>?>()
+            options.Defaults = new Dictionary<string, IDictionary<string, object?>?>
             {
                 {
-                    PopupComponents.SNACKBAR, new Dictionary<string, object?>()
+                    PopupComponents.SNACKBAR, new Dictionary<string, object?>
                     {
                         { nameof(PEnqueuedSnackbars.Position), SnackPosition.BottomCenter }
                     }
