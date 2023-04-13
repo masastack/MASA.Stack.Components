@@ -1,4 +1,5 @@
 ﻿@page "/index"
+@using Masa.Auth.Web.Admin.Rcl.Pages.Component
 @using Masa.Stack.Components.Configs
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
@@ -10,9 +11,9 @@
 <h1>Index @JsInitVariables.TimezoneOffset</h1>
 <h2>@DT("User")</h2>
 <h2>Current Team:@_currentTeamId</h2>
-<SForgetPasswordSheet></SForgetPasswordSheet>
 <SButton OnClick="() => JsInitVariables.TimezoneOffset = JsInitVariables.TimezoneOffset.Add(TimeSpan.FromMinutes(-60))">change timezoneOffset</SButton>
 
+<SNameTextField></SNameTextField>
 
 @code{
     Guid _currentTeamId;
