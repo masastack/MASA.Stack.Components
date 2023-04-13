@@ -19,6 +19,7 @@
             OnBlur="BlurHandler"
             PrependInnerIcon="mdi-magnify"
             Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}{styleMaxWidth}")"
+            OnClearClick="OnClearClick"
             @attributes="@Attributes">
 </MTextField>
 
@@ -43,6 +44,9 @@
 
     [Parameter]
     public EventCallback OnEnter { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClearClick { get; set; }
 
     [Parameter]
     public string? Style { get; set; }
