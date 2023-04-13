@@ -23,9 +23,6 @@
         else
         {
             <img width="200" src="@Logo" alt="logo" style="cursor: pointer" @onclick="NavigateToIndex" />
-            <MChip Class="ma-2" Small Color="primary">
-            @MasaStackConfig.Version
-            </MChip>
         }
     </div> 
 
@@ -89,46 +86,53 @@
             }
         }
     </MList>
-    @if (IsShowEnvironmentSwitch && _environments.Count > 1)
-    {
-        <STooltip>
-            <ActivatorContent>
-                <span style="position: absolute; bottom: 24px; left: 50%; transform: translate(-50%, 0)" @attributes="@context.Attrs">
-                    <MMenu OffsetY NudgeLeft="15" NudgeTop="4" Top>
+    <div style="position: absolute; bottom: 24px; left: 50%; transform: translate(-50%, 0)" class="text-center">
+        @if (IsShowEnvironmentSwitch && _environments.Count > 1)
+        {
+            <STooltip>
+                <ActivatorContent>
+                    <span @attributes="@context.Attrs">
+                        <MMenu OffsetY NudgeLeft="15" NudgeTop="4" Top>
                         <ActivatorContent Context="mContext">
                             <MIcon @attributes="@mContext.Attrs" Large Color="@(_environments.FirstOrDefault(e=>e.Name == _currentEnvironment)?.Color??"primary")">
                                 mdi-record-circle
-                            </MIcon>
-                        </ActivatorContent>
-                        <ChildContent>
-                            <MList>
+                                </MIcon>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <MList>
                                 @foreach (var environment in _environments.Where(e => e.Name != _currentEnvironment))
-                                {
-                                    <STooltip>
-                                        <ActivatorContent Context="itemContext">
-                                            <MListItem @attributes="@itemContext.Attrs" OnClick="()=>SwitchEnvironmentAsync(environment.Name)">
-                                                <MListItemContent>
-                                                    <MIcon Large Color="@(environment.Color??"primary")">
-                                                    mdi-record-circle
-                                                    </MIcon>
-                                                    </MListItemContent>
-                                                    </MListItem>
-                                                </ActivatorContent>
-                                                <ChildContent>
-                                                    @environment.Name
-                                                </ChildContent>
-                                                </STooltip>
-                                }
-                            </MList>
-                        </ChildContent>
-                    </MMenu>
-                </span>
-            </ActivatorContent>
-            <ChildContent>
-                @_currentEnvironment
-            </ChildContent>
-        </STooltip>
-    }
+                                    {
+                                        <STooltip>
+                                            <ActivatorContent Context="itemContext">
+                                                <MListItem @attributes="@itemContext.Attrs" OnClick="()=>SwitchEnvironmentAsync(environment.Name)">
+                                                    <MListItemContent>
+                                                        <MIcon Large Color="@(environment.Color??"primary")">
+                                                        mdi-record-circle
+                                                        </MIcon>
+                                                        </MListItemContent>
+                                                        </MListItem>
+                                                    </ActivatorContent>
+                                                    <ChildContent>
+                                                        @environment.Name
+                                                    </ChildContent>
+                                                    </STooltip>
+                                    }
+                                </MList>
+                            </ChildContent>
+                        </MMenu>
+                    </span>
+                </ActivatorContent>
+                <ChildContent>
+                    @_currentEnvironment
+                </ChildContent>
+            </STooltip>
+        }
+        <p>
+            <MChip Class="mt-3" Small Color="regular2--text" Outlined>
+                @MasaStackConfig.Version
+            </MChip>
+        </p>
+    </div>
 </MNavigationDrawer>
 
 <SButton Icon
@@ -142,6 +146,7 @@
 </SButton>
 
 @code {
+     
 
     [Parameter]
     public string? DefaultRoute { get; set; }
