@@ -660,6 +660,7 @@ body, .masa-stack-components {
         cursor: pointer;
         margin: auto 0 auto 8px !important;
         text-align: center;
+        white-space: nowrap;
     }
 /* body2 regular--text */
 /*
