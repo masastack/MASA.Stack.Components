@@ -5,7 +5,7 @@
         <MListItemActionText>
             <MHover Context="hContext">
                 <div @attributes="hContext.Attrs" class="hover-pointer d-flex align-left">
-                    <div @onclick="() => Copy(ValueFunc(Value))" @onclick:stopPropagation>
+                    <div @onclick="() => Copy(ValueFunc?.Invoke(Value) ?? Value?.ToString())" @onclick:stopPropagation>
                         <SIcon Tooltip="@I18n.T("Copy value")"
                                Color="@(_copyClicked ? "success" : "gray")"
                                Class="@(hContext.Hover ? "icon-hover" : "icon-unhover")">
@@ -14,10 +14,10 @@
                     </div>
                     <MTooltip Top>
                         <ActivatorContent>
-                            <div @attributes="@context.Attrs" class="text-truncate text-left masa subtitle2 black--text" style="width:164px">@TextFunc(Value)</div>
+                            <div @attributes="@context.Attrs" class="text-truncate text-left masa subtitle2 black--text" style="width:164px">@TextFunc?.Invoke(Value)</div>
                         </ActivatorContent>
                         <ChildContent>
-                            <span>@TextFunc(Value)</span>
+                            <span>@TextFunc?.Invoke(Value)</span>
                         </ChildContent>
                     </MTooltip>
                 </div>
