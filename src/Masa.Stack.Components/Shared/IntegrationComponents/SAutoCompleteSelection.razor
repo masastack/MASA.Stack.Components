@@ -5,7 +5,7 @@
         <MListItemActionText>
             <MHover Context="hContext">
                 <div @attributes="hContext.Attrs" class="hover-pointer d-flex align-left">
-                    <div @onclick="() => Copy(ValueFunc?.Invoke(Value) ?? Value?.ToString())" @onclick:stopPropagation>
+                    <div @onclick="() => Copy(ValueFunc(Value))" @onclick:stopPropagation>
                         <SIcon Tooltip="@I18n.T("Copy value")"
                                Color="@(_copyClicked ? "success" : "gray")"
                                Class="@(hContext.Hover ? "icon-hover" : "icon-unhover")">
@@ -14,10 +14,10 @@
                     </div>
                     <MTooltip Top>
                         <ActivatorContent>
-                            <div @attributes="@context.Attrs" class="text-truncate text-left masa subtitle2 black--text" style="width:164px">@TextFunc?.Invoke(Value)</div>
+                            <div @attributes="@context.Attrs" class="text-truncate text-left masa subtitle2 black--text" style="width:164px">@TextFunc(Value)</div>
                         </ActivatorContent>
                         <ChildContent>
-                            <span>@TextFunc?.Invoke(Value)</span>
+                            <span>@TextFunc(Value)</span>
                         </ChildContent>
                     </MTooltip>
                 </div>
@@ -31,10 +31,10 @@
     public object Value { get; set; }
 
     [Parameter]
-    public Func<object, string>? TextFunc { get; set; }
+    public Func<object, string> TextFunc { get; set; } = obj => obj?.ToString()!;
 
     [Parameter]
-    public Func<object, string>? ValueFunc { get; set; }
+    public Func<object, string> ValueFunc { get; set; } = obj => obj?.ToString()!;
 
     [Inject]
     public IJSRuntime Js { get; set; }
