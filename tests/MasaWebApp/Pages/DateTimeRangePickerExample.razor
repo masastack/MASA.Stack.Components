@@ -1,6 +1,11 @@
 ﻿@page "/dateTimeRangePickerExample"
-@using System.Globalization
 
+<MRow>
+    <MCol Cols="3">
+        <SDateTimeRangeToolbar OnUpdate="OnUpdate" OnAutoUpdate="OnUpdate" 
+                                          ShowTimeZoneSelector Clearable></SDateTimeRangeToolbar>
+    </MCol>
+</MRow>
 <div class="pa-12 mb-6">
     <SDateTimePicker Value=StartTime Max=EndTime />
     <SDateTimePicker Value=StartTime Max="new DateTime(2023,04,13,11,00,0,DateTimeKind.Utc)" />
@@ -9,15 +14,26 @@
     <SDateTimePicker Value=StartTime Max="new DateTime(2023,04,13,11,00,0,DateTimeKind.Utc)" Min="(new DateTime(2023,04,10,23,00,0,DateTimeKind.Utc))" />
 </div>
 
-<div class="pa-12 mb-6">
-    <SDateTimeRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
-</div>
 
-<div class="pa-12 mb-6">
-    <SRelativeTime @bind-StartTime="StartTime" @bind-EndTime="EndTime" Clearable />
-</div>
+<MRow>
+    <MCol Cols="3">
+        <SDateTimeRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
+    </MCol>
+    <MCol Cols="6">
+        <SDateTimeRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
+    </MCol>
+    <MCol Cols="3">
+        <SDateTimeRangePicker @bind-StartTime=StartTime @bind-EndTime=EndTime />
+    </MCol>
+</MRow>
 
 @code {
     public DateTime? StartTime { get; set; }
     public DateTime? EndTime { get; set; }
+
+    private async Task OnUpdate((DateTimeOffset? start, DateTimeOffset? end) abc)
+    {
+       System.Console.WriteLine("{0}\t{1}",abc.start?.ToString(), abc.end?.ToString());
+    }
+
 }

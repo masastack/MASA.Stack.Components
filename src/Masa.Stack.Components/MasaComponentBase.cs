@@ -34,15 +34,23 @@ public abstract class MasaComponentBase : ComponentBase
     {
         return I18n.T(key);
     }
-    protected string T(string key, object[] args)
+
+    protected string T(string key, params object[] args)
     {
         return I18n.T(key, args: args);
+    }
+
+    protected string T(string scope, string key, params object[] args)
+    {
+        return I18n.T(scope, key, args: args);
     }
 
     protected string DT(string key)
     {
         return TranslateProvider.DT(key);
     }
+
+    protected const string DateTimeRangeScope= "DateTimeRange";
 
     protected string GetIsDisplayStyle(bool show)
     {

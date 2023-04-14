@@ -18,6 +18,12 @@ public partial class SDateTimeRangePicker
     public DateTime? StartTime { get; set; }
 
     [Parameter]
+    public StringNumber PickerContentMinWidth { get; set; } = 290;
+
+    [Parameter]
+    public string IconClass { get; set; } = default!;
+
+    [Parameter]
     public EventCallback<DateTime?> StartTimeChanged { get; set; }
 
     private DateTime? InternalStartTime { get; set; }
@@ -83,4 +89,3 @@ public partial class SDateTimeRangePicker
         }
     }
 }
-

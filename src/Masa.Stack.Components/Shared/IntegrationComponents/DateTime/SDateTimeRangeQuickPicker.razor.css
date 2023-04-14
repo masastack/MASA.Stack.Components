@@ -1,0 +1,23 @@
+﻿.date-time-range-picker__content ::deep .m-date-picker-table {
+    height: unset;
+    padding: 0;
+}
+
+    .date-time-range-picker__content ::deep .m-date-picker-table tr {
+        height: unset;
+    }
+
+.date-time-range-picker__content ::deep .m-card__actions {
+    padding-bottom: 0;
+}
+
+::deep .d-flex table tr {
+    height: unset;
+}
+
+.datetimetext {
+    min-width: 137px;
+    display: inline-flex;
+    justify-content: center;
+    text-align: center;
+}
