@@ -1,0 +1,76 @@
+﻿@namespace Masa.Stack.Components
+@inherits MasaComponentBase
+
+<MMenu Value="_menuValue" ValueChanged="MenuValueChanged"
+       OffsetY NudgeBottom="8" OpenOnClick CloseOnContentClick="false"
+       ContentClass="px-6 py-4 white" ContentStyle="border-radius:16px">
+    <ActivatorContent>
+        <div class="d-inline-flex align-center">
+            <MButton Text Small Class="d-flex align-center mr-1"
+                     Style="font-size: 14px;"
+                     @attributes="@context.Attrs">
+                <MIcon Size="20" Class="mr-2">mdi-calendar-month</MIcon>
+                <div class="datetimetext">@FormatDateTime(StartDateTime,T("Start time"))</div>
+                <MDivider Vertical Class="mx-2" Style="align-self: auto; height: 14px;" />
+                <div class="datetimetext">@FormatDateTime(EndDateTime,T("End time"))</div>
+            </MButton>
+            @if (Clearable&&(StartDateTime.HasValue||EndDateTime.HasValue))
+            {
+                <MButton Icon XSmall OnClick="ClearClick" OnClickPreventDefault Class="ml-1" Color="grey lighten-2">
+                    <MIcon>mdi-close-circle</MIcon>
+                </MButton>
+            }
+            @if (ShowTimeZoneSelector)
+            {
+                <STimeZoneDisplay Offset="@_offset" />
+            }
+        </div>
+    </ActivatorContent>
+    <ChildContent>
+        <div class="date-time-offset-picker__content mb-4 d-flex" style="width: 580px">
+            <MDatePicker Value="@_internalStartDate"
+                         TValue="DateOnly?"
+                         ValueChanged="InternalStartDateChanged"
+                                  NoTitle FullWidth Class="mr-1 ml-n2"
+                         AllowedDates="val => StartTimeLimit?.Invoke(val, _internalEndDate) ?? (_internalEndDate is null || val <= _internalEndDate)">
+                <STimeSelector Value="@_internalStartTime" ValueChanged="InternalStartTimeChanged"></STimeSelector>
+            </MDatePicker>
+            <MDatePicker Value="@_internalEndDate"
+                         ValueChanged="InternalEndDateChanged"
+                         TValue="DateOnly?"
+                                  NoTitle FullWidth
+                         Class="ml-1 mr-n2"
+                         AllowedDates="val => EndTimeLimit?.Invoke(val, _internalStartDate) ??(_internalStartDate is null ||  val >= _internalStartDate)">
+                <STimeSelector Value="@_internalEndTime" ValueChanged="InternalEndTimeChanged"></STimeSelector>
+            </MDatePicker>
+        </div>
+        @if (ShowTimeZoneSelector)
+        {
+            <div class="text-right mb-4">
+                <MAutocomplete @bind-Value="@_internalOffset"
+                           Items="_systemTimeZones"
+                           ItemText='item => item.DisplayName'
+                           ItemValue="item => item.BaseUtcOffset"
+                           TValue="TimeSpan"
+                           TItem="TimeZoneInfo"
+                           TItemValue="TimeSpan"
+                                          Dense
+                                          Outlined
+                           HideDetails="true"
+                           Class="d-inline-block"
+                           Style="width: 316px"
+                           OnSelectedItemUpdate="OnInternalOffsetUpdated" />
+            </div>
+        }
+        <MDivider />
+        <div class="d-flex justify-space-between align-center pt-4">
+            <div>
+                @GetSelectTimeString()
+            </div>
+            <div>
+                <MButton Color="primary" Outlined OnClick="CancelClick">@T("Cancel")</MButton>
+                <MButton Color="primary" OnClick="HandleOnConfirm">@T("Confirm")</MButton>
+            </div>
+        </div>
+    </ChildContent>
+</MMenu>

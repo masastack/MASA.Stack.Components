@@ -1,0 +1,13 @@
+﻿﻿.datetimerangepicker {
+     min-width: 350px;
+     height: 40px;
+ }
+
+.datetimerangepicker .regular--text {
+    white-space: nowrap;
+}
+
+.datetimerangepicker .m-divider__wrapper {
+    margin: 8px 4px;
+    display: block !important;
+}

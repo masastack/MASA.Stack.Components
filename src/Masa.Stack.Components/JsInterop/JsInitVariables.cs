@@ -2,19 +2,19 @@
 
 public class JsInitVariables : IAsyncDisposable
 {
-    static readonly string _timezoneOffsetKey = "timezoneOffset";   
+    private const string TimezoneOffsetKey = "timezoneOffset";
     readonly IJSRuntime _jsRuntime;   
     readonly CookieStorage _storage;
     TimeSpan _timezoneOffset;
     IJSObjectReference? _helper;
-    public event Action TimezoneOffsetChanged;
+    public event Action? TimezoneOffsetChanged;
 
     public TimeSpan TimezoneOffset
     {
         get => _timezoneOffset;
         set
         {
-            _storage.SetItemAsync(_timezoneOffsetKey, value.TotalMinutes);
+            _storage.SetItemAsync(TimezoneOffsetKey, value.TotalMinutes);
             _timezoneOffset = value;
             TimezoneOffsetChanged?.Invoke();
         }
@@ -27,14 +27,14 @@ public class JsInitVariables : IAsyncDisposable
         var httpContext = httpContextAccessor.HttpContext;
         if(httpContext is not null)
         {
-            var timezoneOffsetResult = httpContext.Request.Cookies[_timezoneOffsetKey];
+            var timezoneOffsetResult = httpContext.Request.Cookies[TimezoneOffsetKey];
             _timezoneOffset = TimeSpan.FromMinutes(Convert.ToDouble(timezoneOffsetResult));
         }
     }
 
     public async Task SetTimezoneOffset()
     {
-        var timezoneOffsetResult = await _storage.GetCookieAsync(_timezoneOffsetKey);
+        var timezoneOffsetResult = await _storage.GetCookieAsync(TimezoneOffsetKey);
         if(string.IsNullOrEmpty(timezoneOffsetResult) is false)
         {
             TimezoneOffset = TimeSpan.FromMinutes(Convert.ToDouble(timezoneOffsetResult));

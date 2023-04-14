@@ -1,41 +1,37 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<div class="d-flex px-4 fill dateRangePicker @Class" style="@Style;">
-    <div class="ma-auto d-flex" style="height:20px;">
-        <MIcon Size=20 Color="emphasis2">mdi-calendar-month</MIcon>        
-        <MMenu @bind-Value="StartTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
-            <ActivatorContent>
-                <div class="body2 datetime--text @_datetimeStartTextCss" @attributes="@context.Attrs">
-                    @(StartTime is null ? T("Start time") : StartTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
-                </div>
-            </ActivatorContent>
-            <ChildContent>
-                <SDateTimePicker
-                    @bind-Value=InternalStartTime
-                    OutputTimezoneOffset ="ValueTimezoneOffset"
-                    DisplayTimezoneOffset="DisplayTimezoneOffset"
-                    Max="EndTime">
-                    <MButton Text Color="primary" OnClick="async() => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
+<div class="d-flex fill rounded-lg datetimerangepicker @Class" style="@Style">
+    <MIcon Size=20 Color="emphasis2--text" Class="@($"pl-2 {IconClass}")">mdi-calendar-month</MIcon>
+    <MMenu @bind-Value="StartTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition" MinWidth="@PickerContentMinWidth">
+        <ActivatorContent>
+            <div class="text-btn ml-1 my-auto hover-pointer text-center @_datetimeStartTextCss" style="height: 20px; width: calc(50% - 23px)" @attributes="@context.Attrs">
+                @(StartTime is null ? T("Start time") : StartTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
+            </div>
+        </ActivatorContent>
+        <ChildContent>
+            <SDateTimePicker @bind-Value=InternalStartTime
+                             OutputTimezoneOffset="ValueTimezoneOffset"
+                             DisplayTimezoneOffset="DisplayTimezoneOffset"
+                             Max="EndTime">
+                <MButton Text Color="primary" OnClick="async () => await UpdateStartTimeAsync()">@T("Confirm")</MButton>
                 </SDateTimePicker>
             </ChildContent>
-        </MMenu>
-        <div class="separator"></div>
-        <MMenu @bind-Value="EndTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition">
-            <ActivatorContent>
-                <div class="body2 datetime--text @_datetimeEndTextCss" @attributes="@context.Attrs">
-                    @(EndTime is null ? T("End time") : EndTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
-                </div>
-            </ActivatorContent>
-            <ChildContent>
-                <SDateTimePicker
-                    @bind-Value=InternalEndTime
-                    OutputTimezoneOffset ="ValueTimezoneOffset"
-                    DisplayTimezoneOffset="DisplayTimezoneOffset"
-                    Min="StartTime">
-                    <MButton Text Color="primary" OnClick="async() => await UpdateEndTimeAsync()">@T("Confirm")</MButton>
-                </SDateTimePicker>
-            </ChildContent>
-        </MMenu>
-    </div>
-</div>
+            </MMenu>
+            <MDivider Vertical></MDivider>
+    <MMenu @bind-Value="EndTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition" MinWidth="@PickerContentMinWidth">
+        <ActivatorContent>
+            <div class="text-btn my-auto hover-pointer text-center @_datetimeEndTextCss" style="height: 20px; width: calc(50% - 23px)" @attributes="@context.Attrs">
+                @(EndTime is null ? T("End time") : EndTime?.Add(DisplayTimezoneOffset).ToString(T("$DateTimeFormat")))
+            </div>
+        </ActivatorContent>
+        <ChildContent>
+            <SDateTimePicker @bind-Value=InternalEndTime
+                             OutputTimezoneOffset="ValueTimezoneOffset"
+                             DisplayTimezoneOffset="DisplayTimezoneOffset"
+                             Min="StartTime">
+                <MButton Text Color="primary" OnClick="async () => await UpdateEndTimeAsync()">@T("Confirm")</MButton>
+            </SDateTimePicker>
+        </ChildContent>
+    </MMenu>
+ </div>
