@@ -256,7 +256,6 @@
         await UpdateRangeDateTimeToLatest();
         if (DefaultQuickRangeChanged.HasDelegate)
             await DefaultQuickRangeChanged.InvokeAsync(item.Key);
-        StateHasChanged();
     }
 
     private async Task OnIntervalSelected(IntervalItem item)
