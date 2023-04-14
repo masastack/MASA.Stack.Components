@@ -31,10 +31,10 @@
     public object Value { get; set; }
 
     [Parameter]
-    public Func<object, string>? TextFunc { get; set; }
+    public Func<object, string> TextFunc { get; set; } = obj => obj?.ToString()!;
 
     [Parameter]
-    public Func<object, string>? ValueFunc { get; set; }
+    public Func<object, string> ValueFunc { get; set; } = obj => obj?.ToString()!;
 
     [Inject]
     public IJSRuntime Js { get; set; }
