@@ -822,3 +822,7 @@ body, .masa-stack-components {
         margin-left: -24px !important;
         transition: 0.4s !important;
     }
+
+.masa-stack-components .s-search .m-input__control {
+    min-height: 40px;
+}
