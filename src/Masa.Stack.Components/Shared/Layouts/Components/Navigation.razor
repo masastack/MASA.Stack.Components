@@ -55,30 +55,28 @@
             }
             else
             {
-                <MMenu Disabled="!GlobalConfig.Mini" OffsetY OpenOnHover CloseOnContentClick="false"
-               ContentClass="white pa-2 subtitle2"
-               MinWidth="250">
-                <ActivatorContent Context="menuContext">
-                    <MListGroup Group="@GenGroup(nav.Children)"
-                                        NoAction
-                            ActiveClass="primary--text"
-                            AppendIcon="mdi-menu-down"
-                            @attributes="@menuContext.Attrs">
-                        <ActivatorContent>
-                            <MListItemContent>
-                            <div class="ml-1 text-truncate regular2--text">@DT(nav.Name)</div>
-                            </MListItemContent>
-                        </ActivatorContent>
-                        <PrependIconContent>
-                            <MIcon Dense Style="margin-left: 6px">@nav.Icon</MIcon>
+                <MMenu OffsetY OpenOnHover CloseOnContentClick="false" ContentClass="@(GlobalConfig.Mini ? "white pa-2 subtitle2": "hide")" MinWidth="250">
+                    <ActivatorContent Context="menuContext">
+                        <MListGroup Group="@GenGroup(nav.Children)"
+                                            NoAction
+                                ActiveClass="primary--text"
+                                AppendIcon="mdi-menu-down"
+                                @attributes="@menuContext.Attrs">
+                            <ActivatorContent>
+                                <MListItemContent>
+                                <div class="ml-1 text-truncate regular2--text">@DT(nav.Name)</div>
+                                </MListItemContent>
+                            </ActivatorContent>
+                            <PrependIconContent>
+                                <MIcon Dense Style="margin-left: 6px">@nav.Icon</MIcon>
                             </PrependIconContent>
                             <ChildContent>
                                 <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
                             </ChildContent>
-                            </MListGroup>
-                        </ActivatorContent>
-                        <ChildContent>
-                            <MList Nav Linkage>
+                        </MListGroup>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MList Nav Linkage>
                             <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
                         </MList>
                     </ChildContent>
