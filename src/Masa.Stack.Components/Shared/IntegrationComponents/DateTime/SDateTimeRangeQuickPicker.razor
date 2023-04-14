@@ -6,7 +6,7 @@
        ContentClass="px-6 py-4 white" ContentStyle="border-radius:16px">
     <ActivatorContent>
         <div class="d-inline-flex align-center">
-            <MButton Text Small Class="d-flex align-center mr-1"
+            <MButton Text Small Class="d-flex align-center mr-1 pa-0"
                      Style="font-size: 14px;"
                      @attributes="@context.Attrs">
                 <MIcon Size="20" Class="mr-2">mdi-calendar-month</MIcon>
@@ -16,7 +16,7 @@
             </MButton>
             @if (Clearable&&(StartDateTime.HasValue||EndDateTime.HasValue))
             {
-                <MButton Icon XSmall OnClick="ClearClick" OnClickPreventDefault Class="ml-1" Color="grey lighten-2">
+                <MButton Icon XSmall OnClick="ClearClick" OnClickPreventDefault Class="mr-1" Color="grey lighten-2">
                     <MIcon>mdi-close-circle</MIcon>
                 </MButton>
             }
@@ -31,14 +31,16 @@
             <MDatePicker Value="@_internalStartDate"
                          TValue="DateOnly?"
                          ValueChanged="InternalStartDateChanged"
-                                  NoTitle FullWidth Class="mr-1 ml-n2"
+                         NoTitle FullWidth
+                         Class="mr-1 ml-n2"
                          AllowedDates="val => StartTimeLimit?.Invoke(val, _internalEndDate) ?? (_internalEndDate is null || val <= _internalEndDate)">
                 <STimeSelector Value="@_internalStartTime" ValueChanged="InternalStartTimeChanged"></STimeSelector>
             </MDatePicker>
             <MDatePicker Value="@_internalEndDate"
                          ValueChanged="InternalEndDateChanged"
                          TValue="DateOnly?"
-                                  NoTitle FullWidth
+                         NoTitle
+                         FullWidth
                          Class="ml-1 mr-n2"
                          AllowedDates="val => EndTimeLimit?.Invoke(val, _internalStartDate) ??(_internalStartDate is null ||  val >= _internalStartDate)">
                 <STimeSelector Value="@_internalEndTime" ValueChanged="InternalEndTimeChanged"></STimeSelector>
@@ -54,8 +56,7 @@
                            TValue="TimeSpan"
                            TItem="TimeZoneInfo"
                            TItemValue="TimeSpan"
-                                          Dense
-                                          Outlined
+                           Dense Outlined
                            HideDetails="true"
                            Class="d-inline-block"
                            Style="width: 316px"
