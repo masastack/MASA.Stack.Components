@@ -838,3 +838,6 @@ body, .masa-stack-components {
     left: 50%;
     transform: translate(-50%, 0);
 }
+.masa-stack-components .navigation.m-navigation-drawer--mini-variant .isolation p {
+    visibility: hidden;
+}
