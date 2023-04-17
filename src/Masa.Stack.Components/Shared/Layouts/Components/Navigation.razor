@@ -84,7 +84,7 @@
             }
         }
     </MList>
-    <div style="position: absolute; bottom: 24px; left: 50%; transform: translate(-50%, 0)" class="text-center">
+    <div class="isolation text-center">
         @if (IsShowEnvironmentSwitch && _environments.Count > 1)
         {
             <STooltip>
@@ -105,15 +105,15 @@
                                                 <MListItem @attributes="@itemContext.Attrs" OnClick="()=>SwitchEnvironmentAsync(environment.Name)">
                                                     <MListItemContent>
                                                         <MIcon Large Color="@(environment.Color??"primary")">
-                                                        mdi-record-circle
+                                                            mdi-record-circle
                                                         </MIcon>
-                                                        </MListItemContent>
-                                                        </MListItem>
-                                                    </ActivatorContent>
-                                                    <ChildContent>
-                                                        @environment.Name
-                                                    </ChildContent>
-                                                    </STooltip>
+                                                    </MListItemContent>
+                                                </MListItem>
+                                            </ActivatorContent>
+                                            <ChildContent>
+                                                @environment.Name
+                                            </ChildContent>
+                                        </STooltip>
                                     }
                                 </MList>
                             </ChildContent>
@@ -144,8 +144,6 @@
 </SButton>
 
 @code {
-     
-
     [Parameter]
     public string? DefaultRoute { get; set; }
 
