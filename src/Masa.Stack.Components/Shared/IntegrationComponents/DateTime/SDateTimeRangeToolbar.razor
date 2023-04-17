@@ -153,10 +153,15 @@
     protected override async Task OnInitializedAsync()
     {
         await GetOffset();
-
-        _quickRange = _quickRangeItems.FirstOrDefault(item => item.Key == DefaultQuickRange) ?? QuickRange.DefaultQuickRange;
-
-        _selectedQuickRangeKey = _quickRange.Key;
+        if (ShowQuickChange)
+        {
+            _quickRange = _quickRangeItems.FirstOrDefault(item => item.Key == DefaultQuickRange) ?? QuickRange.DefaultQuickRange;
+            _selectedQuickRangeKey = _quickRange.Key;
+        }
+        else
+        {
+            _selectedQuickRangeKey = QuickRangeKey.Off;
+        }
         await base.OnInitializedAsync();
     }
 
@@ -164,24 +169,17 @@
     {
         if (firstRender)
         {
-            _quickRange = _quickRangeItems.FirstOrDefault(item => item.Key == DefaultQuickRange) ?? QuickRange.DefaultQuickRange;
-            _selectedQuickRangeKey = _quickRange.Key;
-
             if (UseAbsoluteTime && _startDateTime != DateTimeOffset.MinValue && _endDateTime != DateTimeOffset.MinValue)
             {
                 await OnAbsoluteDateTimeUpdated();
             }
             else
             {
-                if (_quickRange.TryGetRange(Offset, out var value))
-                {
-                    _startDateTime = value.start;
-                    _endDateTime = value.end;
-                }
-
-                await UpdateRangeDateTimeToLatest();
+                if (ShowQuickChange && (StartDateTime is not null && EndDateTime is not null))
+                    await UpdateRangeDateTimeToLatest();
             }
-            if (ShowInterval) HandleIntervalUpdate(Interval);
+            if (ShowInterval)
+                HandleIntervalUpdate(Interval);
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -191,15 +189,17 @@
     {
         JsInitVariables.TimezoneOffset = timeZoneInfo.BaseUtcOffset;
         Offset = JsInitVariables.TimezoneOffset;
-        _quickRange = _quickRangeItems.FirstOrDefault(item => item.Key == DefaultQuickRange) ?? QuickRange.DefaultQuickRange;
-        _selectedQuickRangeKey = _quickRange.Key;
-
-        if (_quickRange.TryGetRange(Offset, out var value))
+        if (ShowQuickChange)
         {
-            _startDateTime = value.start;
-            _endDateTime = value.end;
-        }
+            _quickRange = _quickRangeItems.FirstOrDefault(item => item.Key == DefaultQuickRange) ?? QuickRange.DefaultQuickRange;
+            _selectedQuickRangeKey = _quickRange.Key;
 
+            if (_quickRange.TryGetRange(Offset, out var value))
+            {
+                _startDateTime = value.start;
+                _endDateTime = value.end;
+            }
+        }
         if (OnTimeZoneUpdate.HasDelegate)
             await OnTimeZoneUpdate.InvokeAsync(timeZoneInfo);
         StateHasChanged();
@@ -227,7 +227,6 @@
     private async Task OnAbsoluteDateTimeUpdated(bool autoUpdate = false)
     {
         await UpdateUseAbsoluteTimeState(true);
-
 
         if (OnUpdate.HasDelegate)
         {
