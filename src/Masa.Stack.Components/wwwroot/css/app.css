@@ -827,7 +827,7 @@ body, .masa-stack-components {
     min-height: 40px;
 }
 
-.masa-stack-components .navigation .navlist {
+.masa-stack-components .navigation .m-list {
     height: calc(100vh - 220px);
     overflow-y: auto;
 }
