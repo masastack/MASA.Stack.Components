@@ -12,7 +12,7 @@
 }
 
 .datetimetext {
-    width: 156px;
+    width: calc(50% - 20px);
     padding: 0;
     font-family: 'Roboto';
     line-height: 21px;

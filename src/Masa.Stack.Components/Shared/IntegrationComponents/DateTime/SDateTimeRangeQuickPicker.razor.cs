@@ -38,6 +38,12 @@ public partial class SDateTimeRangeQuickPicker
     [Parameter]
     public bool Clearable { get; set; } = false;
 
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
+
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
@@ -69,6 +75,8 @@ public partial class SDateTimeRangeQuickPicker
 
 
     private bool HasTimeZoneChange => _offset != _internalOffset;
+
+    private string MinWidth => ShowTimeZoneSelector ? "447px" : "405px";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

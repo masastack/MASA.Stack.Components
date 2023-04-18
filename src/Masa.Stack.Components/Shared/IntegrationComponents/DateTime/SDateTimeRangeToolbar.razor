@@ -1,9 +1,10 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<div class="d-inline-flex align-center rounded-lg px-4 @Class"
-     style="border:1px solid #E4E8F3; height: 40px; background-color:white;">
+<div class="d-inline-flex align-center rounded-lg pl-2 pr-4 @Class"
+     style="border:1px solid #E4E8F3; height: 40px; background-color:white; min-width: min-content">
     <SDateTimeRangeQuickPicker @bind-StartDateTime="_startDateTime"
+			       Style="@_quickPickerStyle"
                                StartTimeLimit="StartTimeLimit"
                                EndTimeLimit="EndTimeLimit"
                                @bind-EndDateTime="_endDateTime"
@@ -15,50 +16,52 @@
     @if (ShowQuickChange)
     {
         <MDivider Vertical Class="mx-2"></MDivider>
-
-        <SDropdown @bind-Value="_selectedQuickRangeKey"
-               Items="QuickRangeItems"
-               ItemText="item => T(scope: DateTimeRangeScope, item.Key.ToString())"
-               ItemValue="item => item.Key"
-               ItemDisabled="item => item.Disabled"
-               TItem="QuickRange"
-               TValue="QuickRangeKey"
-               OnItemClick="OnRelatedTimeSpanSelected">
-            <ActivatorContent>
-                <MButton Small @attributes="@context.Attrs" Text Class="text-capitalize">
-                @T(scope: DateTimeRangeScope, _selectedQuickRangeKey.ToString())
-                <MIcon Right>mdi-menu-down</MIcon>
-            </MButton>
-        </ActivatorContent>
-    </SDropdown>
+	
+	<div style="min-width: 85px;">
+            <SDropdown @bind-Value="_selectedQuickRangeKey"
+                Items="QuickRangeItems"
+		ItemText="item => T(scope: DateTimeRangeScope, item.Key.ToString())"
+		ItemValue="item => item.Key"
+		ItemDisabled="item => item.Disabled"
+		TItem="QuickRange"
+		TValue="QuickRangeKey"
+		OnItemClick="OnRelatedTimeSpanSelected"	>
+		<ActivatorContent>
+		    <MButton Small Text Class="text-capitalize">
+			@T(scope: DateTimeRangeScope, _selectedQuickRangeKey.ToString())
+			<MIcon Right>mdi-menu-down</MIcon>
+		    </MButton>
+		</ActivatorContent>
+	    </SDropdown>
+	</div>
     }
     @if (ShowInterval)
     {
         <MDivider Vertical Class="mx-2" />
 
-        <SDropdown Items="IntervalItem.Items"
-               ItemValue="item => item"
-               ItemText="item => T(scope: DateTimeRangeScope, item.Text)"
-               @bind-Value="Interval"
-               TItem="IntervalItem"
-               TValue="IntervalItem"
-               OnItemClick="OnIntervalSelected">
-            <PrependContent>
-                <MButton Icon Small OnClick="Refresh">
-                <MIcon Small>mdi-refresh</MIcon>
-            </MButton>
-        </PrependContent>
-        <ActivatorContent>
-            @{
+	<div style="width: 115px;">
+            <SDropdown Items="IntervalItem.Items"
+		       ItemValue="item => item"
+		       ItemText="item => T(scope: DateTimeRangeScope, item.Text)"
+		       @bind-Value="Interval"
+		       TItem="IntervalItem"
+		       TValue="IntervalItem"
+		       OnItemClick="OnIntervalSelected">
+		<PrependContent>
+                    <MButton Icon Small OnClick="Refresh">
+			<MIcon Small>mdi-refresh</MIcon>
+		    </MButton>
+		</PrependContent>
+		<ActivatorContent>
                     <MButton Text Small Icon="false"
-                         @attributes="@context.Attrs">
-                    <span class="mr-1">@T(scope: DateTimeRangeScope, Interval.Text)</span>
-                    <MIcon Small Right="@false">mdi-menu-down</MIcon>
-                        </MButton>
-                }
-            </ActivatorContent>
-        </SDropdown>
-    }
+                        @attributes="@context.Attrs">
+                        <span class="mr-1">@T(scope: DateTimeRangeScope, Interval.Text)</span>
+                        <MIcon Small Right="@false">mdi-menu-down</MIcon>
+                    </MButton>                    
+		</ActivatorContent>
+            </SDropdown>
+	</div>
+	}
 </div>
 
 @code
@@ -149,6 +152,7 @@
     private QuickRange _quickRange = QuickRange.DefaultQuickRange;
 
     private List<QuickRange> _quickRangeItems = QuickRange.DefaultQuickRanges;
+    private string _quickPickerStyle = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -169,6 +173,8 @@
     {
         if (firstRender)
         {
+	    setQuickPickerStyle();
+	    
             if (UseAbsoluteTime && _startDateTime != DateTimeOffset.MinValue && _endDateTime != DateTimeOffset.MinValue)
             {
                 await OnAbsoluteDateTimeUpdated();
@@ -176,13 +182,30 @@
             else
             {
                 if (ShowQuickChange && (StartDateTime is not null && EndDateTime is not null))
-                    await UpdateRangeDateTimeToLatest();
+                await UpdateRangeDateTimeToLatest();
             }
             if (ShowInterval)
-                HandleIntervalUpdate(Interval);
+            HandleIntervalUpdate(Interval);
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void setQuickPickerStyle()
+    {
+	_quickPickerStyle = "width: calc(100% - 200px)";
+	if (ShowQuickChange && !ShowInterval)
+	{
+	    _quickPickerStyle = "width: calc(100% - 85x)";
+	}
+	if (!ShowQuickChange && ShowInterval)
+	{
+	    _quickPickerStyle = "width: calc(100% - 115px)";
+	}
+	if (!ShowQuickChange && !ShowInterval)
+	{
+	    _quickPickerStyle = "width: 100%";
+	}
     }
 
     private async Task OnTimeZoneInfoChange(TimeZoneInfo timeZoneInfo)
@@ -201,14 +224,14 @@
             }
         }
         if (OnTimeZoneUpdate.HasDelegate)
-            await OnTimeZoneUpdate.InvokeAsync(timeZoneInfo);
+        await OnTimeZoneUpdate.InvokeAsync(timeZoneInfo);
         StateHasChanged();
     }
 
     private async Task GetOffset()
     {
         if (Math.Floor(JsInitVariables.TimezoneOffset.TotalMinutes) == 0)
-            await JsInitVariables.SetTimezoneOffset();
+        await JsInitVariables.SetTimezoneOffset();
         Offset = JsInitVariables.TimezoneOffset;
     }
 
@@ -239,7 +262,7 @@
 
                 await OnUpdate.InvokeAsync((_startDateTime, _endDateTime));
             }
-        }
+}
     }
 
 
