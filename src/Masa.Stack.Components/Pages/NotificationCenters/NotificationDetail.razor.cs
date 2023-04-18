@@ -51,7 +51,7 @@ public partial class NotificationDetail
 
     private async Task HandleDelAsync()
     {
-        if (await PopupService.ConfirmAsync(T("OperationConfirmation"), T("DeletionNotificationConfirmMessage").Replace("{Message}", _entity.Title), AlertTypes.Warning)) await DeleteAsync();
+        if (await PopupService.SimpleConfirmAsync(T("OperationConfirmation"), T("DeletionNotificationConfirmMessage").Replace("{Message}", _entity.Title), AlertTypes.Warning)) await DeleteAsync();
     }
 
     private async Task DeleteAsync()

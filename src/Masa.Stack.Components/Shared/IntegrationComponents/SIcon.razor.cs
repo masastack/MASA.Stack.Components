@@ -24,6 +24,9 @@ public partial class SIcon : MIcon
         { "mdi-close" , "Close" },
     };
 
+    [Parameter]
+    public bool IsDefaultToolTip { get; set; } = true;
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Size = 20;
@@ -32,7 +35,7 @@ public partial class SIcon : MIcon
 
     private void InitDefaultToolTip()
     {
-        if (Tooltip is null && Icon is not null)
+        if (IsDefaultToolTip && Tooltip is null && Icon is not null)
         {
             Icon = Icon.Trim();
             if (_iconI18N.TryGetValue(Icon, out string? value))
