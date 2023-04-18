@@ -30,4 +30,8 @@
 	<ItemGroup>
 		<EmbeddedResource Include="Locales\*.json" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\MASA.Auth\src\Services\Isolation\Isolation.csproj" />
+	</ItemGroup>
 </Project>
