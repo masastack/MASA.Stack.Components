@@ -96,7 +96,7 @@ public class SSimpleModal : PModal
             {
                 RenderFragment content = builder =>
                 {
-                    builder.OpenComponent<MIcon>(0);
+                    builder.OpenComponent<SIcon>(0);
                     builder.AddAttribute(1, "Size", (StringNumber)24);
                     builder.AddAttribute(2, "Color", "error");
                     builder.AddAttribute(3, "Class", "align-self-center");

@@ -92,6 +92,9 @@
   "DeletionNotificationConfirmMessage": "Are you sure you want to delete message \"{Message}\"?",
   "UploadAvatar": "Upload avatar",
   "EmptyPlaceholder": "No Data",
+  "PreviousStep": "Previous Step",
+  "NextStep": "Next Step",
+  "CancelFavorite": "Cancel Favorite",
   "DateTimeRange": {
     "FromTo": "From {0} to {1}",
     "Until": "Until {0}",

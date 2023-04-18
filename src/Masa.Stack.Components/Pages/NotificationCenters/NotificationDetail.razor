@@ -28,9 +28,9 @@
             </MListItem>
             <MSpacer />
 
-            <MIcon Class="mr-2" Color="neutral-lighten-1" Size=20 OnClick="HandleDelAsync">
+            <SIcon Class="mr-2" Color="neutral-lighten-1" Size=20 OnClick="HandleDelAsync">
                 mdi-delete-outline
-            </MIcon>
+            </SIcon>
         </div>
     </MCardTitle>
     <MCardText Class="d-flex align-end flex-column" Style="height: calc(100% - 72px) !important">
@@ -45,10 +45,10 @@
         </div>
         <div class="mt-auto">
             <span @onclick="()=>HandlePrevAndNext(_entity.PrevId)">
-                <MIcon Class="hover-pointer" Disabled="_entity.PrevId==default" Size=24>mdi-chevron-left</MIcon>
+                <SIcon Class="hover-pointer" Disabled="_entity.PrevId==default" Size=24>mdi-chevron-left</SIcon>
             </span>
             <span @onclick="()=>HandlePrevAndNext(_entity.NextId)">
-                <MIcon Class="hover-pointer" Disabled="_entity.NextId==default" Size=24>mdi-chevron-right</MIcon>
+                <SIcon Class="hover-pointer" Disabled="_entity.NextId==default" Size=24>mdi-chevron-right</SIcon>
             </span>
         </div>
     </MCardText>
