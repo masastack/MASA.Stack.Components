@@ -43,7 +43,7 @@ public partial class SDateRangePicker
             _datetimeStartTextCss = dateTime is null ? "regular3--text" : "regular--text";
 
             if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(dateTime);
-            if (DateRangeChanged.HasDelegate) await DateRangeChanged.InvokeAsync(StartTime, EndTime);
+            if (DateRangeChanged.HasDelegate) await DateRangeChanged.InvokeAsync((StartTime, EndTime));
         }
     }
 
