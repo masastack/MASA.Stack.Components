@@ -22,6 +22,11 @@ public partial class SIcon : MIcon
         { "mdi-delete" , "Remove" },
         { "mdi-link-variant" , "Relevance" },
         { "mdi-close" , "Close" },
+        { "mdi-keyboard-backspace", "PreviousStep" },
+        { "mdi-chevron-left", "PreviousStep"},
+        { "mdi-chevron-right", "NextStep"},
+        { "mdi-star","Favorite" },
+        { "mdi-star-outline","CancelFavorite" },
     };
 
     [Parameter]
