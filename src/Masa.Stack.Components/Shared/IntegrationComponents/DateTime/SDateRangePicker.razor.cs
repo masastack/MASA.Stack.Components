@@ -24,7 +24,7 @@ public partial class SDateRangePicker
     public EventCallback<DateOnly?> EndTimeChanged { get; set; }
 
     [Parameter]
-    public EventCallback DateRangeChanged { get; set; }
+    public EventCallback<(DateOnly?, DateOnly?)> DateRangeChanged { get; set; }
 
     private bool StartTimeVisible { get; set; }
 
@@ -56,7 +56,7 @@ public partial class SDateRangePicker
             _datetimeEndTextCss = dateTime is null ? "regular3--text" : "regular--text";
 
             if (StartTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(dateTime);
-            if (DateRangeChanged.HasDelegate) await DateRangeChanged.InvokeAsync(StartTime, EndTime);
+            if (DateRangeChanged.HasDelegate) await DateRangeChanged.InvokeAsync((StartTime, EndTime));
         }
     }
 }
