@@ -64,7 +64,7 @@
 @code
 {
     [Parameter]
-    public QuickRangeKey DefaultQuickRange { get; set; } = QuickRangeKey.Last12Hours;
+    public QuickRangeKey? DefaultQuickRange { get; set; } = QuickRangeKey.Last12Hours;
 
     [Parameter]
     public EventCallback<QuickRangeKey?> DefaultQuickRangeChanged { get; set; }
