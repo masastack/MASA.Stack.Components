@@ -826,3 +826,18 @@ body, .masa-stack-components {
 .masa-stack-components .s-search .m-input__control {
     min-height: 40px;
 }
+
+.masa-stack-components .navigation .m-list {
+    height: calc(100vh - 220px);
+    overflow-y: auto;
+}
+
+.masa-stack-components .navigation .isolation {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.masa-stack-components .navigation.m-navigation-drawer--mini-variant .isolation p {
+    visibility: hidden;
+}
