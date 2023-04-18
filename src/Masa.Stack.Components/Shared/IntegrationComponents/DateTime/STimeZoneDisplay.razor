@@ -3,7 +3,7 @@
 
 <MTooltip Top>
     <ActivatorContent>
-        <span class="m-chip m-size--small m-chip--label theme--light secondary" @attributes="@context.Attrs">@(Offset.Hours > 0 ? $"+{Offset.Hours}" : Offset.Hours.ToString())</span>
+        <span class="m-chip m-size--small m-chip--label theme--light secondary @Class" @attributes="@context.Attrs">@(Offset.Hours > 0 ? $"+{Offset.Hours}" : Offset.Hours.ToString())</span>
     </ActivatorContent>
     <ChildContent>
         <span>@(T(scope: DateTimeRangeScope, "Current Selected TimeZone"))</span>
@@ -14,4 +14,7 @@
 
     [Parameter]
     public TimeSpan Offset { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
 }
