@@ -24,7 +24,7 @@ public partial class SDateRangePicker
     public EventCallback<DateOnly?> EndTimeChanged { get; set; }
 
     [Parameter]
-    public EventCallback<DateOnly?, DateOnly?> DateRangeChanged { get; set; }
+    public EventCallback DateRangeChanged { get; set; }
 
     private bool StartTimeVisible { get; set; }
 
