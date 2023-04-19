@@ -133,7 +133,6 @@
   "Ago": "前",
   "Please select a time": "请选择时间",
   "Please select": "请选择",
-  //"$DateTimeFormat": "yyyy年MM月dd日 HH:mm:ss",
   "$MonthDayFormat": "MM月dd日",
   "DisplayName.Notice.Title": "站内消息通知",
   "Description.Notice.MoreTips": "查看更多消息",
@@ -201,7 +200,8 @@
     "1h": "1小时",
     "2h": "2小时",
     "1d": "1天",
-    "Current Selected TimeZone": "当前时区"
+    "Current Selected TimeZone": "当前时区",
+    "Clear": "清除"
   },
   "Copy value": "复制值",
   "Edit": "编辑",
