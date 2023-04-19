@@ -3,7 +3,9 @@
 
 <MMenu Value="_menuValue" ValueChanged="MenuValueChanged"
        OffsetY NudgeBottom="8" OpenOnClick CloseOnContentClick="false"
-       ContentClass="px-6 py-4 white" ContentStyle="border-radius:16px">
+       ContentClass="px-6 py-4 white" ContentStyle="border-radius:16px;"
+       @*MaxWidth="580"*@
+       >
     <ActivatorContent>
         <div class="date-time-offset-picker__range d-inline-flex align-center @Class" style="min-width: @MinWidth; @Style">
             <MButton Text Small Class="mr-1 pa-0"
@@ -27,7 +29,7 @@
         </div>
     </ActivatorContent>
     <ChildContent>
-        <div class="date-time-offset-picker__content mb-4 d-flex" style="width: 580px">
+        <div class="date-time-offset-picker__content mb-4 d-flex">
             <MDatePicker Value="@_internalStartDate"
                          TValue="DateOnly?"
                          ValueChanged="InternalStartDateChanged"
