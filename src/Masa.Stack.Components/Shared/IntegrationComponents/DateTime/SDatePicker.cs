@@ -29,7 +29,7 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
                         builder3.AddAttribute(2, "Color", "primary");
                         builder3.AddAttribute(3, "ChildContent", (RenderFragment)delegate (RenderTreeBuilder builder4)
                         {
-                            builder4.AddContent(1, I18n.T("ToDay"));
+                            builder4.AddContent(1, I18n.T("Today"));
                         });
                         builder3.AddAttribute(4, "OnClick", EventCallback.Factory.Create(this, ToDayAsync));
                         builder3.CloseComponent();
