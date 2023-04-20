@@ -11,11 +11,14 @@ public class SDataTable<TItem> : MDataTable<TItem>
     [Parameter]
     public string Theme { get; set; } = "table-border-head";
 
-    public override async Task SetParametersAsync(ParameterView parameters)
+    public SDataTable()
     {
         HideDefaultFooter = true;
         FixedHeader = true;
+    }
 
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
         ItemColContent = item =>
         {
             void Content(RenderTreeBuilder builder)
