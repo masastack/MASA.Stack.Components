@@ -503,7 +503,7 @@ body, .masa-stack-components {
 /*
     default dataTable
 */
-.masa-stack-components .table-border-head .m-data-table__wrapper table thead th {
+.masa-stack-components .table-border-head .m-data-table__wrapper table thead tr:not(.m-data-table__progress) th {
     border-bottom: solid 0.5px #E4E8F3 !important;
     box-shadow: none !important;
     padding-top: 20px !important;
@@ -522,7 +522,7 @@ body, .masa-stack-components {
     padding-bottom: 9.5px !important;
 }
 
-.masa-stack-components .table-border-head.dense .m-data-table__wrapper table thead th {
+.masa-stack-components .table-border-head.dense .m-data-table__wrapper table thead tr:not(.m-data-table__progress) th {
     padding-top: 14px !important;
     padding-bottom: 14px !important;
 }
