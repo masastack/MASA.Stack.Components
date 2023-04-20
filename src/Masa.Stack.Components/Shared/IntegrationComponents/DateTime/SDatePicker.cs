@@ -18,10 +18,10 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
                 builder2.AddAttribute(4, "ChildContent", (RenderFragment)delegate (RenderTreeBuilder builder3)
                 {
                     var hasToday = true;
-                    var toDay = DateOnly.FromDateTime(DateTime.Now);
-                    if (Max is not null && Min is not null) hasToday = (Min.Value <= toDay && toDay <= Max.Value);
-                    else if (Max is not null) hasToday = toDay <= Max.Value;
-                    else if (Min is not null) hasToday = toDay >= Min.Value;
+                    var today = DateOnly.FromDateTime(DateTime.Now);
+                    if (Max is not null && Min is not null) hasToday = (Min.Value <= today && today <= Max.Value);
+                    else if (Max is not null) hasToday = today <= Max.Value;
+                    else if (Min is not null) hasToday = today >= Min.Value;
                     if (hasToday)
                     {
                         builder3.OpenComponent<MButton>(0);
@@ -31,7 +31,7 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
                         {
                             builder4.AddContent(1, I18n.T("Today"));
                         });
-                        builder3.AddAttribute(4, "OnClick", EventCallback.Factory.Create(this, ToDayAsync));
+                        builder3.AddAttribute(4, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, TodayAsync));
                         builder3.CloseComponent();
                     }
                     builder3.OpenComponent<MSpacer>(5);
@@ -42,7 +42,7 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
                     {
                         builder5.AddContent(1, I18n.T("Reset"));
                     });
-                    builder3.AddAttribute(9, "OnClick", EventCallback.Factory.Create(this, Reset));
+                    builder3.AddAttribute(9, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, Reset));
                     builder3.CloseComponent();
                 });
                 builder2.CloseComponent();
@@ -51,7 +51,7 @@ public partial class SDatePicker : MDatePicker<DateOnly?>
         };
     }
 
-    private async Task ToDayAsync(MouseEventArgs args)
+    private async Task TodayAsync(MouseEventArgs args)
     {
         if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(DateOnly.FromDateTime(DateTime.Now));
         else Value = DateOnly.FromDateTime(DateTime.Now);
