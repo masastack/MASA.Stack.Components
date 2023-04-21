@@ -1,9 +1,10 @@
 ﻿@namespace Masa.Stack.Components.Layouts
+@using Masa.BuildingBlocks.Isolation;
 @using Masa.BuildingBlocks.StackSdks.Pm.Model
 @using Masa.Stack.Components.Extensions
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
-@inject IEnvironmentProvider EnvironmentProvider
+@inject IMultiEnvironmentContext MultiEnvironmentContext
 @inject ILogger<Navigation> Logger
 
 <MNavigationDrawer App
@@ -188,7 +189,7 @@
                 Logger.LogError(e, "PmClient.EnvironmentService.GetListAsync");
             }
 
-            _currentEnvironment = EnvironmentProvider.GetEnvironment();
+            _currentEnvironment = MultiEnvironmentContext.CurrentEnvironment;
         }
         await base.OnAfterRenderAsync(firstRender);
     }
