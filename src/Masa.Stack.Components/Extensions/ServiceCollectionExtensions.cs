@@ -41,7 +41,7 @@ public static class ServiceCollectionExtensions
         };
 
         builder.Services.AddAuthClient(authHost, redisOption);
-        var options = new McServiceOptions(() => mcHost);
+        var options = new McServiceOptions(mcHost);
         builder.Services.AddSingleton(options);
         builder.Services.AddMcClient(mcHost);
         builder.Services.AddPmClient(pmHost);
