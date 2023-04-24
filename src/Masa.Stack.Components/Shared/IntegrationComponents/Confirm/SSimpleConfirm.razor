@@ -4,25 +4,26 @@
          Class="pa-6"
          ContentClass="pa-6 white rounded-5"
          Width="400">
-    @if (!HideCloseIcon)
-    {
-        <div class="d-flex justify-end">
-            <MButton Small Icon Color="emphasis" OnClick="HandleOnCancel">
-            <SIcon>mdi-close</SIcon>
-            </MButton>
+    <div class="d-flex" style="justify-content:space-between">
+        <div class="d-flex">
+            @if (!string.IsNullOrWhiteSpace(ComputedIcon))
+            {
+                <MIcon Color="@ComputedIconColor" Class="mr-3">@ComputedIcon</MIcon>
+            }
+            <span class="h6 emphasis2--text">
+                @(Title ?? T("OperationConfirmation"))
+            </span>
         </div>
-    }
-    <div class="d-flex justify-center align-center my-3">
-        @if (!string.IsNullOrWhiteSpace(ComputedIcon))
+        @if (!HideCloseIcon)
         {
-            <MIcon Color="@ComputedIconColor" Class="mr-3">@ComputedIcon</MIcon>
-        }
-        <span class="h6 emphasis2--text">
-            @(Title ?? T("OperationConfirmation"))
-        </span>
+            <div class="d-flex">
+                <MButton Small Icon Color="emphasis" OnClick="HandleOnCancel">
+                    <SIcon>mdi-close</SIcon>
+                </MButton>
+            </div>
+        } 
     </div>
-
-    <div class="regular2--text btn text-center my-3 @ContentClass">
+    <div class="regular2--text btn text-start my-3 px-9 @ContentClass">
         @Content
     </div>
 
@@ -110,7 +111,7 @@
                 AlertTypes.Success => "mdi-check-circle-outline",
                 AlertTypes.Error => "mdi-close-circle-outline",
                 AlertTypes.Info => "mdi-information-outline",
-                AlertTypes.Warning => "mdi-alert",
+                AlertTypes.Warning => "mdi-alert-outline",
                 _ => null
             };
         }
