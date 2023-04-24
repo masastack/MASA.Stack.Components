@@ -9,6 +9,9 @@ public partial class SDateTimeRangePicker
     public DateTimeOffset? StartDateTime { get; set; }
 
     [Parameter]
+    public StringNumber? MaxPickerWidth { get; set; }
+
+    [Parameter]
     public EventCallback<DateTimeOffset?> StartDateTimeChanged { get; set; }
 
     [Parameter, EditorRequired]

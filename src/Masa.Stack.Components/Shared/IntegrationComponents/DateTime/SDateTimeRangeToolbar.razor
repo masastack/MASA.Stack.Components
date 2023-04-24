@@ -10,6 +10,7 @@
                           @bind-EndDateTime="_endDateTime"
                           OnConfirm="() => OnAbsoluteDateTimeUpdated()"
                           OnClear="OnClear"
+                          MaxPickerWidth="MaxPickerWidth"
                           OnTimeZoneInfoChange="OnTimeZoneInfoChange"
                           ShowTimeZoneSelector="ShowTimeZoneSelector"
                           Clearable="Clearable"/>
@@ -65,6 +66,9 @@
 
 @code
 {
+    [Parameter]
+    public StringNumber? MaxPickerWidth { get; set; }
+
     [Parameter]
     public QuickRangeKey? DefaultQuickRange { get; set; } = QuickRangeKey.Last12Hours;
 
