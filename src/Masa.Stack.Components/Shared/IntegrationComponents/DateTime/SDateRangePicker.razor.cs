@@ -26,6 +26,9 @@ public partial class SDateRangePicker
     [Parameter]
     public EventCallback<(DateOnly?, DateOnly?)> DateRangeChanged { get; set; }
 
+    [Parameter]
+    public StringBoolean? Attach { get; set; }
+
     private bool StartTimeVisible { get; set; }
 
     private bool EndTimeVisible { get; set; }
