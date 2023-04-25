@@ -24,21 +24,47 @@
     </MHover>
     <MSheet Class="@($"m-sheet-dialog-content flex-grow-1 rounded-5 rounded-b-0 {ContentClass}")"
             Style="@($"position: absolute;top: 0;left: {Padding}px;right: {Padding}px;top: {HeaderHeight}px;height: calc(100% - {HeaderHeight}px);width: calc(100% - {2*Padding}px); {ContentStyle}")">
-        @if (EnableDomReload)
+        @if (ContentLoading.Loading)
         {
-            if (Value)
-            {
-                @ChildContent
-            }
+            <div class="d-flex align-center justify-center" style="height: 100%">
+                    <MProgressCircular Indeterminate="@ContentLoading.Indeterminate"
+                                   Size="@ContentLoading.Size"
+                                   Width="@ContentLoading.Width"
+                                   Color="@ContentLoading.Color">
+                    </MProgressCircular>
+            </div>
         }
         else
         {
-            @ChildContent
+            if (EnableDomReload)
+            {
+                if (Value)
+                {
+                    @ChildContent
+                }
+            }
+            else
+            {
+                @ChildContent
+            }
         }
     </MSheet>
 </MBottomSheet>
 
 @code {
+
+    public class MProgressInfo
+    {
+        public bool Loading { get; set; } = false;
+        public int Width { get; set; } = 8;
+        public int Size { get; set; } = 80;
+        public bool Indeterminate { get; set; } = true;
+        public string Color { get; set; } = "primary";
+    }
+
+    [Parameter]
+    public MProgressInfo ContentLoading { get; set; } = new();
+
     [Parameter]
     public string? ContentClass { get; set; }
 
