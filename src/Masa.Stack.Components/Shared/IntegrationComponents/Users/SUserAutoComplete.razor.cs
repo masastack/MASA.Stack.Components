@@ -86,12 +86,12 @@ public partial class SUserAutoComplete
 
     protected override async Task OnParametersSetAsync()
     {
+        await base.OnParametersSetAsync();
+
         if (!UserSelect.Any() && Value != default)
         {
             await InitUserSelect();
         }
-
-        base.OnParametersSet();
     }
 
     private async Task InitUserSelect()
