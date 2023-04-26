@@ -101,8 +101,6 @@ public partial class SUserAutoComplete
             return;
 
         UserSelect = new List<UserSelectModel>() { new UserSelectModel(user.Id, user.Name ?? string.Empty, user.DisplayName, user.Account, user.PhoneNumber ?? string.Empty, user.Email ?? string.Empty, user.Avatar) };
-
-        StateHasChanged();
     }
 
     public async Task OnSearchChanged(string search)
