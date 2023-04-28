@@ -17,8 +17,7 @@
     @if (ShowQuickChange)
     {
         <MDivider Vertical Class="mx-2"></MDivider>
-
-        <div style="min-width: 85px;">
+        <div style="min-width:min-content;margin:0 auto" class="d-flex align-center">
             <SDropdown @bind-Value="_selectedQuickRangeKey"
                        Items="QuickRangeItems"
                        ItemText="item => T(scope: DateTimeRangeScope, item.Key.ToString())"
@@ -28,7 +27,7 @@
                        TValue="QuickRangeKey"
                        OnItemClick="OnRelatedTimeSpanSelected">
                 <ActivatorContent>
-                    <MButton Small Text Class="text-capitalize" @attributes="@context.Attrs">
+                    <MButton Small Text Class="text-capitalize quickchange" @attributes="@context.Attrs">
                         @T(scope: DateTimeRangeScope, _selectedQuickRangeKey.ToString())
                         <MIcon Right>mdi-menu-down</MIcon>
                     </MButton>
@@ -38,7 +37,7 @@
     }
     @if (ShowInterval)
     {
-        <MDivider Vertical Class="mx-2"/>
+        <MDivider Vertical Class="mx-2" />
         <div style="width: 115px;">
             <SDropdown Items="IntervalItem.Items"
                        ItemValue="item => item"
