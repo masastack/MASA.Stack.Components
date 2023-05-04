@@ -246,8 +246,6 @@
 
     private async Task OnAbsoluteDateTimeUpdated(bool autoUpdate = false)
     {
-        await UpdateUseAbsoluteTimeState(true);
-
         if (OnUpdate.HasDelegate)
         {
             if (autoUpdate)
