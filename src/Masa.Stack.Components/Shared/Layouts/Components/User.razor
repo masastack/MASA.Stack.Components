@@ -43,33 +43,39 @@
             {
                 <MDivider></MDivider>
                 <MListGroup @bind-Value="_showChangeTeam" NoAction Style="">
-                    <PrependIconContent>
-                        <MAvatar Width="24" Height="24" MinHeight="24" MinWidth="24" Style="margin-right: 10px;">
-                            <MImage Src="@CurrentTeam.Avatar"></MImage>
-                        </MAvatar>
-                    </PrependIconContent>
-                    <ActivatorContent>
-                        <MListItemContent>
-                            <MListItemTitle>@CurrentTeam.Name</MListItemTitle>
-                        </MListItemContent>
-                    </ActivatorContent>
-                    <ChildContent>
-                        @if (_teams.Count > 5)
+                <PrependIconContent>
+                    <MAvatar Width="24" Height="24" MinHeight="24" MinWidth="24" Style="margin-right: 10px;">
+                        <MImage Src="@CurrentTeam.Avatar"></MImage>
+                    </MAvatar>
+                </PrependIconContent>
+                <ActivatorContent>
+                    <MListItemContent>
+                        <MListItemTitle>@CurrentTeam.Name</MListItemTitle>
+                    </MListItemContent>
+                </ActivatorContent>
+                <ChildContent>
+                    @if (_teams.Count > 5)
                         {
-                            <SSearch @bind-Value="@_teamSearchKey" />
+                            <SSearch @bind-Value="@_teamSearchKey" MaxWidth="250" Class="py-2" />
                         }
                         <MVirtualScroll Items="_teams.Where(t => t.Name.Contains(_teamSearchKey)).ToList()"
-                                        ItemSize="48"
-                                        Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))
-                                        OverscanCount="0">
+                                    ItemSize="48"
+                                    Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))
+                                    OverscanCount="0">
                             <ItemContent>
-                                <MListItem IsActive="@(_currentTeamId == context.Id)" OnClick="() => CurrentTeamChanged(context.Id)">
+                                <MListItem IsActive="@(MasaUser.CurrentTeamId == context.Id)" OnClick="() => CurrentTeamChanged(context.Id)">
                                     <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
                                         <MImage Src="@context.Avatar"></MImage>
                                     </MListItemAvatar>
                                     <MListItemContent>
                                         <MListItemTitle>@context.Name</MListItemTitle>
                                     </MListItemContent>
+                                    @if (MasaUser.CurrentTeamId == context.Id)
+                                    {
+                                        <MListItemAction>
+                                            <MIcon>mdi-checkbox-marked-circle-outline</MIcon>
+                                        </MListItemAction>
+                                    }
                                 </MListItem>
                             </ItemContent>
                         </MVirtualScroll>
@@ -87,11 +93,11 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-        </MList>
-    </ChildContent>
-</MMenu>
+            </MList>
+        </ChildContent>
+        </MMenu>
 
-<UpdatePasswordModal @bind-value="UpdatePasswordDialogVisible" />
+        <UpdatePasswordModal @bind-value="UpdatePasswordDialogVisible" />
 
         @code {
 
@@ -102,7 +108,6 @@
     string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
     string _teamSearchKey = string.Empty;
     bool _menuVisible = false, _showChangeTeam;
-    Guid _currentTeamId;
     List<TeamModel> _teams = new();
     IJSObjectReference _module;
 
@@ -120,7 +125,7 @@
         }
     }
 
-    public TeamModel CurrentTeam => _teams.FirstOrDefault(t => t.Id == _currentTeamId) ?? new();
+    public TeamModel CurrentTeam => _teams.FirstOrDefault(t => t.Id == MasaUser.CurrentTeamId) ?? new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -135,7 +140,8 @@
                 {
                     avatar = user.Avatar;
                 }
-                _currentTeamId = user?.CurrentTeamId?.ToString();
+                //TODO remove current team id in token,otherwise every time current team changed should revoked token
+                MasaUser.CurrentTeamId = user?.CurrentTeamId ?? Guid.Empty;
             }
             catch (Exception e)
             {
@@ -147,9 +153,8 @@
                 _teams = await AuthClient.TeamService.GetUserTeamsAsync();
                 if (MasaUser.CurrentTeamId == Guid.Empty && _teams.Any())
                 {
-                    await CurrentTeamChanged(_teams.First().Id.ToString());
+                    await CurrentTeamChanged(_teams.First().Id);
                 }
-                _currentTeamId = MasaUser.CurrentTeamId;
             }
             catch (Exception e)
             {
@@ -179,7 +184,7 @@
         }
         await _module.InvokeVoidAsync("upsertClaim", IdentityClaimConsts.CURRENT_TEAM, teamId);
         GlobalConfig.CurrentTeamId = teamId;
-        _currentTeamId = teamId;
+        MasaUser.CurrentTeamId = teamId;
         _showChangeTeam = false;
     }
 
