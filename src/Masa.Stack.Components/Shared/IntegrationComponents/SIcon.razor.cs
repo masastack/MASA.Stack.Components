@@ -19,7 +19,7 @@ public partial class SIcon : MIcon
         { "far fa-copy" , "Copy" },
         { "mdi-chevron-down" , "Expand" },
         { "mdi-plus" , "Add" },
-        { "mdi-delete" , "Remove" },
+        { "mdi-delete" , "Delete" },
         { "mdi-link-variant" , "Relevance" },
         { "mdi-close" , "Close" },
         { "mdi-keyboard-backspace", "PreviousStep" },
