@@ -1,12 +1,13 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
+@using SearchMenuInfo = Masa.Stack.Components.Models.Menu
 
 <div style="min-width:340px;">
     <SAutoComplete
         @bind-Value="Url"
         Items="_menus"
-        TItem="Menu"
+        TItem="SearchMenuInfo"
         AutoLabel=false
         TItemValue="string"
         TValue="string"
