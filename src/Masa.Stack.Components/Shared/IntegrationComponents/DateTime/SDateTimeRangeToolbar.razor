@@ -6,61 +6,60 @@
     <SDateTimeRangePicker Style="@_quickPickerStyle"
                           StartTimeLimit="StartTimeLimit"
                           EndTimeLimit="EndTimeLimit"
-                          @bind-StartDateTime="_startDateTime"
-                          @bind-EndDateTime="_endDateTime"
+                          @bind-StartDateTime="StartDateTime"
+                          @bind-EndDateTime="EndDateTime"
                           OnConfirm="() => OnAbsoluteDateTimeUpdated()"
                           OnClear="OnClear"
                           MaxPickerWidth="MaxPickerWidth"
                           OnTimeZoneInfoChange="OnTimeZoneInfoChange"
                           ShowTimeZoneSelector="ShowTimeZoneSelector"
-                          Clearable="Clearable"/>
+                          Clearable="Clearable" />
     @if (ShowQuickChange)
     {
         <MDivider Vertical Class="mx-2"></MDivider>
-
-        <div style="min-width: 85px;">
+        <div style="min-width:min-content;margin:0 auto" class="d-flex align-center">
             <SDropdown @bind-Value="_selectedQuickRangeKey"
-                       Items="QuickRangeItems"
-                       ItemText="item => T(scope: DateTimeRangeScope, item.Key.ToString())"
-                       ItemValue="item => item.Key"
-                       ItemDisabled="item => item.Disabled"
-                       TItem="QuickRange"
-                       TValue="QuickRangeKey"
-                       OnItemClick="OnRelatedTimeSpanSelected">
+                   Items="QuickRangeItems"
+                   ItemText="item => T(scope: DateTimeRangeScope, item.Key.ToString())"
+                   ItemValue="item => item.Key"
+                   ItemDisabled="item => item.Disabled"
+                   TItem="QuickRange"
+                   TValue="QuickRangeKey"
+                   OnItemClick="OnRelatedTimeSpanSelected">
                 <ActivatorContent>
-                    <MButton Small Text Class="text-capitalize" @attributes="@context.Attrs">
-                        @T(scope: DateTimeRangeScope, _selectedQuickRangeKey.ToString())
-                        <MIcon Right>mdi-menu-down</MIcon>
-                    </MButton>
-                </ActivatorContent>
-            </SDropdown>
-        </div>
+                    <MButton Small Text Class="text-capitalize quickchange" @attributes="@context.Attrs">
+                    @T(scope: DateTimeRangeScope, _selectedQuickRangeKey.ToString())
+                    <MIcon Right>mdi-menu-down</MIcon>
+                </MButton>
+            </ActivatorContent>
+        </SDropdown>
+    </div>
     }
     @if (ShowInterval)
     {
-        <MDivider Vertical Class="mx-2"/>
+        <MDivider Vertical Class="mx-2" />
         <div style="width: 115px;">
             <SDropdown Items="IntervalItem.Items"
-                       ItemValue="item => item"
-                       ItemText="item => T(scope: DateTimeRangeScope, item.Text)"
-                       @bind-Value="Interval"
-                       TItem="IntervalItem"
-                       TValue="IntervalItem"
-                       OnItemClick="OnIntervalSelected">
+                   ItemValue="item => item"
+                   ItemText="item => T(scope: DateTimeRangeScope, item.Text)"
+                   @bind-Value="Interval"
+                   TItem="IntervalItem"
+                   TValue="IntervalItem"
+                   OnItemClick="OnIntervalSelected">
                 <PrependContent>
                     <MButton Icon Small OnClick="Refresh">
-                        <MIcon Small>mdi-refresh</MIcon>
-                    </MButton>
-                </PrependContent>
-                <ActivatorContent>
-                    <MButton Text Small Icon="false"
-                             @attributes="@context.Attrs">
-                        <span class="mr-1">@T(scope: DateTimeRangeScope, Interval.Text)</span>
-                        <MIcon Small Right="@false">mdi-menu-down</MIcon>
-                    </MButton>
-                </ActivatorContent>
-            </SDropdown>
-        </div>
+                    <MIcon Small>mdi-refresh</MIcon>
+                </MButton>
+            </PrependContent>
+            <ActivatorContent>
+                <MButton Text Small Icon="false"
+                         @attributes="@context.Attrs">
+                    <span class="mr-1">@T(scope: DateTimeRangeScope, Interval.Text)</span>
+                    <MIcon Small Right="@false">mdi-menu-down</MIcon>
+                        </MButton>
+                    </ActivatorContent>
+                    </SDropdown>
+                </div>
     }
 </div>
 
@@ -103,18 +102,16 @@
     public string Class { get; set; } = "";
 
     [Parameter]
-    public DateTimeOffset? StartDateTime
-    {
-        get => _startDateTime;
-        set => _startDateTime = value;
-    }
+    public DateTimeOffset? StartDateTime { get; set; }
 
     [Parameter]
-    public DateTimeOffset? EndDateTime
-    {
-        get => _endDateTime;
-        set => _endDateTime = value;
-    }
+    public EventCallback<DateTimeOffset?> StartDateTimeChanged { get; set; }
+
+    [Parameter]
+    public DateTimeOffset? EndDateTime { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTimeOffset?> EndDateTimeChanged { get; set; }
 
     [Parameter]
     public bool UseAbsoluteTime { get; set; } = false;
@@ -148,8 +145,6 @@
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
     private Timer? _timer;
-    private DateTimeOffset? _startDateTime;
-    private DateTimeOffset? _endDateTime;
     private QuickRangeKey _selectedQuickRangeKey = QuickRangeKey.Off;
 
     private QuickRange _quickRange = QuickRange.DefaultQuickRange;
@@ -177,7 +172,7 @@
         if (firstRender)
         {
             SetQuickPickerStyle();
-            if (UseAbsoluteTime && _startDateTime != DateTimeOffset.MinValue && _endDateTime != DateTimeOffset.MinValue)
+            if (UseAbsoluteTime && StartDateTime != DateTimeOffset.MinValue && EndDateTime != DateTimeOffset.MinValue)
             {
                 await OnAbsoluteDateTimeUpdated();
             }
@@ -221,8 +216,8 @@
 
             if (_quickRange.TryGetRange(Offset, out var value))
             {
-                _startDateTime = value.start;
-                _endDateTime = value.end;
+                StartDateTime = value.start;
+                EndDateTime = value.end;
             }
         }
         if (OnTimeZoneUpdate.HasDelegate)
@@ -239,11 +234,11 @@
 
     private async Task UpdateRangeDateTimeToLatest(bool autoUpdate = false)
     {
-        var offset = _endDateTime?.Offset ?? Offset;
+        var offset = EndDateTime?.Offset ?? Offset;
         if (_quickRange.TryGetRange(offset, out var value))
         {
-            _startDateTime = value.start;
-            _endDateTime = value.end;
+            StartDateTime = value.start;
+            EndDateTime = value.end;
 
         }
         await OnAbsoluteDateTimeUpdated(autoUpdate);
@@ -251,18 +246,16 @@
 
     private async Task OnAbsoluteDateTimeUpdated(bool autoUpdate = false)
     {
-        await UpdateUseAbsoluteTimeState(true);
-
         if (OnUpdate.HasDelegate)
         {
             if (autoUpdate)
             {
-                await OnAutoUpdate.InvokeAsync((_startDateTime, _endDateTime));
+                await OnAutoUpdate.InvokeAsync((StartDateTime, EndDateTime));
             }
             else
             {
 
-                await OnUpdate.InvokeAsync((_startDateTime, _endDateTime));
+                await OnUpdate.InvokeAsync((StartDateTime, EndDateTime));
             }
         }
     }

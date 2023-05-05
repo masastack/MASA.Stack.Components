@@ -21,7 +21,7 @@
         <MList>
             <SListItem Medium Href="/user-center" OnClick="() => { MenuVisible = false; }">
                 <MListItemIcon Class="mr-4">
-                    <SIcon Color="emphasis2">mdi-account-circle</SIcon>
+                    <SIcon Color="emphasis2" IsDefaultToolTip="false">mdi-account-circle</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
@@ -31,7 +31,7 @@
             </SListItem>
             <SListItem Medium OnClick="() => { UpdatePasswordDialogVisible = true; MenuVisible = false; }">
                 <MListItemIcon Class="mr-4">
-                    <SIcon Color="emphasis2">mdi-pencil</SIcon>
+                    <SIcon Color="emphasis2" IsDefaultToolTip="false">mdi-pencil</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
@@ -54,32 +54,32 @@
                         </MListItemContent>
                     </ActivatorContent>
                     <ChildContent>
-                        <MListItemGroup Value="_currentTeamId" ValueChanged="CurrentTeamChanged">
-                            @if (_teams.Count > 5)
-                            {
-                                <SSearch @bind-Value="@_teamSearchKey" />
-                            }
-                            <MVirtualScroll Items="_teams.Where(t=>t.Name.Contains(_teamSearchKey)).ToList()"
-                                        ItemSize=48 Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))>
-                                <ItemContent>
-                                    <MListItem Value="@context.Id.ToString()">
-                                        <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
-                                            <MImage Src="@context.Avatar"></MImage>
-                                        </MListItemAvatar>
-                                        <MListItemContent>
-                                            <MListItemTitle>@context.Name</MListItemTitle>
-                                        </MListItemContent>
-                                    </MListItem>
-                                </ItemContent>
-                            </MVirtualScroll>
-                        </MListItemGroup>
+                        @if (_teams.Count > 5)
+                        {
+                            <SSearch @bind-Value="@_teamSearchKey" />
+                        }
+                        <MVirtualScroll Items="_teams.Where(t => t.Name.Contains(_teamSearchKey)).ToList()"
+                                        ItemSize="48"
+                                        Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))
+                                        OverscanCount="0">
+                            <ItemContent>
+                                <MListItem IsActive="@(_currentTeamId == context.Id)" OnClick="() => CurrentTeamChanged(context.Id)">
+                                    <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
+                                        <MImage Src="@context.Avatar"></MImage>
+                                    </MListItemAvatar>
+                                    <MListItemContent>
+                                        <MListItemTitle>@context.Name</MListItemTitle>
+                                    </MListItemContent>
+                                </MListItem>
+                            </ItemContent>
+                        </MVirtualScroll>
                     </ChildContent>
                 </MListGroup>
             }
             <MDivider></MDivider>
             <SListItem Medium OnClick="HandleSignOut">
                 <MListItemIcon Class="mr-4">
-                    <SIcon Color="emphasis2">mdi-logout</SIcon>
+                    <SIcon Color="emphasis2" IsDefaultToolTip="false">mdi-logout</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
@@ -102,14 +102,13 @@
     string avatar = "https://cdn.masastack.com/stack/images/avatar/mr.gu.svg";
     string _teamSearchKey = string.Empty;
     bool _menuVisible = false, _showChangeTeam;
-    StringNumber _currentTeamId = string.Empty;
+    Guid _currentTeamId;
     List<TeamModel> _teams = new();
     IJSObjectReference _module;
 
-    public bool MenuVisible {
-        get {
-            return _menuVisible;
-        }
+    public bool MenuVisible
+    {
+        get { return _menuVisible; }
         set
         {
             _menuVisible = value;
@@ -121,7 +120,7 @@
         }
     }
 
-    public TeamModel CurrentTeam => _teams.FirstOrDefault(t => t.Id.ToString() == _currentTeamId) ?? new();
+    public TeamModel CurrentTeam => _teams.FirstOrDefault(t => t.Id == _currentTeamId) ?? new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -150,7 +149,7 @@
                 {
                     await CurrentTeamChanged(_teams.First().Id.ToString());
                 }
-                _currentTeamId = MasaUser.CurrentTeamId.ToString();
+                _currentTeamId = MasaUser.CurrentTeamId;
             }
             catch (Exception e)
             {
@@ -171,22 +170,17 @@
         Layout.NavigationManager.NavigateTo("/Account/Logout", true);
     }
 
-    private async Task CurrentTeamChanged(StringNumber teamId)
+    private async Task CurrentTeamChanged(Guid teamId)
     {
-        if (teamId != null)
+        //guest account change current team not persist to db
+        if (MasaUser.Account?.ToLower() != "guest")
         {
-            var gTeamId = Guid.Parse(teamId.AsT0);
-            //guest accout change current team not persist to db
-            if (MasaUser.Account?.ToLower() != "guest")
-            {
-                await AuthClient.UserService.SetCurrentTeamAsync(gTeamId);
-            }
-            await _module.InvokeVoidAsync("upsertClaim", IdentityClaimConsts.CURRENT_TEAM, teamId.AsT0);
-            GlobalConfig.CurrentTeamId = gTeamId;
-            _currentTeamId = teamId;
+            await AuthClient.UserService.SetCurrentTeamAsync(teamId);
         }
+        await _module.InvokeVoidAsync("upsertClaim", IdentityClaimConsts.CURRENT_TEAM, teamId);
+        GlobalConfig.CurrentTeamId = teamId;
+        _currentTeamId = teamId;
         _showChangeTeam = false;
-        StateHasChanged();
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -204,4 +198,5 @@
             //https://github.com/dotnet/aspnetcore/issues/33336
         }
     }
+
 }
