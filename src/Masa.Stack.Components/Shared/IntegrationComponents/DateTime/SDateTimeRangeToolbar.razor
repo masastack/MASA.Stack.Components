@@ -28,12 +28,12 @@
                    OnItemClick="OnRelatedTimeSpanSelected">
                 <ActivatorContent>
                     <MButton Small Text Class="text-capitalize quickchange" @attributes="@context.Attrs">
-                    @T(scope: DateTimeRangeScope, _selectedQuickRangeKey.ToString())
-                    <MIcon Right>mdi-menu-down</MIcon>
-                </MButton>
-            </ActivatorContent>
-        </SDropdown>
-    </div>
+                        @T(scope: DateTimeRangeScope, _selectedQuickRangeKey.ToString())
+                        <MIcon Right>mdi-menu-down</MIcon>
+                    </MButton>
+                </ActivatorContent>
+            </SDropdown>
+        </div>
     }
     @if (ShowInterval)
     {
@@ -48,18 +48,18 @@
                    OnItemClick="OnIntervalSelected">
                 <PrependContent>
                     <MButton Icon Small OnClick="Refresh">
-                    <MIcon Small>mdi-refresh</MIcon>
-                </MButton>
-            </PrependContent>
-            <ActivatorContent>
-                <MButton Text Small Icon="false"
+                        <MIcon Small>mdi-refresh</MIcon>
+                    </MButton>
+                </PrependContent>
+                <ActivatorContent>
+                    <MButton Text Small Icon="false"
                          @attributes="@context.Attrs">
-                    <span class="mr-1">@T(scope: DateTimeRangeScope, Interval.Text)</span>
-                    <MIcon Small Right="@false">mdi-menu-down</MIcon>
-                        </MButton>
-                    </ActivatorContent>
-                    </SDropdown>
-                </div>
+                        <span class="mr-1">@T(scope: DateTimeRangeScope, Interval.Text)</span>
+                        <MIcon Small Right="@false">mdi-menu-down</MIcon>
+                    </MButton>
+                </ActivatorContent>
+            </SDropdown>
+        </div>
     }
 </div>
 
@@ -172,13 +172,17 @@
         if (firstRender)
         {
             SetQuickPickerStyle();
-            if (UseAbsoluteTime && StartDateTime != DateTimeOffset.MinValue && EndDateTime != DateTimeOffset.MinValue)
+            if (StartDateTime.HasValue && StartDateTime != DateTimeOffset.MinValue
+                && EndDateTime.HasValue && EndDateTime != DateTimeOffset.MinValue)
             {
-                await OnAbsoluteDateTimeUpdated();
+                if (UseAbsoluteTime)
+                    await OnAbsoluteDateTimeUpdated();
             }
             else
             {
                 if (ShowQuickChange)
+                    await OnRelatedTimeSpanSelected(_quickRange);
+                else
                     await UpdateRangeDateTimeToLatest();
             }
             if (ShowInterval)
@@ -234,12 +238,11 @@
 
     private async Task UpdateRangeDateTimeToLatest(bool autoUpdate = false)
     {
-        var offset = EndDateTime?.Offset ?? Offset;
+        var offset = Offset;
         if (_quickRange.TryGetRange(offset, out var value))
         {
             StartDateTime = value.start;
             EndDateTime = value.end;
-
         }
         await OnAbsoluteDateTimeUpdated(autoUpdate);
     }
@@ -254,12 +257,10 @@
             }
             else
             {
-
                 await OnUpdate.InvokeAsync((StartDateTime, EndDateTime));
             }
         }
     }
-
 
     private Task OnClear()
     {

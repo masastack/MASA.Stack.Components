@@ -89,23 +89,12 @@ public partial class SDateTimeRangePicker
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            if (StartDateTime != default)
-            {
-                UpdateInternalStartDateTime(StartDateTime);
-            }
+            UpdateInternalStartDateTime(StartDateTime);
+            UpdateInternalEndDateTime(EndDateTime);
 
-            if (EndDateTime != default)
-            {
-                UpdateInternalEndDateTime(EndDateTime);
-            }
-
-            _offset = StartDateTime?.Offset ?? JsInitVariables.TimezoneOffset;
+            _offset = JsInitVariables.TimezoneOffset;
             _internalOffset = _offset;
             _timeZone = GetSelectTimeZone();
-            if (OnTimeZoneInfoChange.HasDelegate)
-            {
-                await OnTimeZoneInfoChange.InvokeAsync(_timeZone);
-            }
             StateHasChanged();
         }
     }
