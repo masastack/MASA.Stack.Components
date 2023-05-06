@@ -1,9 +1,9 @@
 ﻿namespace Masa.Stack.Components;
-using Masa.Stack.Components.GlobalNavigations;
 
 public partial class GlobalNavigation : MasaComponentBase
 {
     public const string MENU_URL_NAME = "url"; 
+    
     [Parameter]
     public RenderFragment<ActivatorProps> ActivatorContent { get; set; } = null!;
 
@@ -16,16 +16,15 @@ public partial class GlobalNavigation : MasaComponentBase
     string _searchMenu = string.Empty;
     bool _visible;
     List<(string name, string url)> _recentVisits = new();
-    List<Category> _categories { get; set; } = new();
     List<KeyValuePair<string, string>> _recommendApps = new();
-    List<Menu> _favorites = new();
-    Menu _menu;
+    List<ExpansionMenu> _favorites = new();
+    ExpansionMenu _menu;
 
     async Task IniDataAsync()
     {
         _searchMenu = string.Empty;
-        (_menu, _categories) = await FetchCategories();
-        _favorites = _menu.GetMenusByState(MenuState.Favorite);
+        _menu = await GenerateMenuAsync();
+        _favorites = _menu.GetMenusByState(ExpansionMenuState.Favorite);
         await GetRecommendApps();
         await GetRecentVisits();
     }
@@ -48,27 +47,58 @@ public partial class GlobalNavigation : MasaComponentBase
         _visible = visible;
     }
 
-    private async Task<(Menu Menu, List<Category> Categories)> FetchCategories()
+    private void SearchChanged(string? search)
     {
-        var config = new TypeAdapterConfig();
-        config.NewConfig<AppModel, App>()
-            .Map(dest => dest.Code, src => src.Identity);
+        Console.WriteLine(search);
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            return;
+        }
 
-        var menuMetadata = new MenuMetadata(MenuSituation.Favorite);
-        var menu = new Menu("root", "root", MenuType.Root, MenuState.Normal, menuMetadata);
+        var s = _menu.Childrens.First();
+        _menu.Childrens.Remove(s);
+	
+    }
+
+    private void MenuItemClickAsync(ExpansionMenu menu)
+    {
+        var url = menu.GetData(MENU_URL_NAME);
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return;
+        }
+
+        NavigationManager.NavigateTo(url, true);
+    }
+
+    private async Task MenuItemOperClickAsync(ExpansionMenu menu)
+    {
+        if (menu.State == ExpansionMenuState.Normal)
+        {
+            await FavoriteRemoveAsync(menu);
+        }
+        else if (menu.State == ExpansionMenuState.Favorite)
+        {
+            await FavoriteAddAsync(menu);
+        }
+    }
+
+    private async Task<ExpansionMenu> GenerateMenuAsync()
+    {
+        var menuMetadata = new ExpansionMenuMetadata(ExpansionMenuSituation.Favorite);
+        var menu = new ExpansionMenu("root", "root", ExpansionMenuType.Root, ExpansionMenuState.Normal, menuMetadata);
         try
         {
             var apps = (await AuthClient.ProjectService.GetGlobalNavigations()).SelectMany(p => p.Apps).ToList();
-            var categories = apps.GroupBy(a => a.Tag).Select(ag => new Category(ag.Key, ag.Key, ag.Select(a => a.Adapt<App>(config)).Where(a => a.Navs.Any()).ToList())).ToList();
-            var categorie = apps.GroupBy(a => a.Tag).ToList();
+            var categories = apps.GroupBy(a => a.Tag).ToList();
             var favorites = await FetchFavorites();
 
-            foreach (var category in categorie)
+            foreach (var category in categories)
             {
-                var categoryMenu = new Menu(category.Key, category.Key, MenuType.Category, MenuState.Normal, menu.Metadata, parent: menu);
-                foreach (var app in category)
+                var categoryMenu = new ExpansionMenu(category.Key, category.Key, ExpansionMenuType.Category, ExpansionMenuState.Normal, menu.Metadata, parent: menu);
+                foreach (var app in category.Where(a => a.Navs.Any()))
                 {
-                    var appMenu = new Menu(app.Id.ToString(), app.Name, MenuType.App, MenuState.Normal, menu.Metadata, parent: categoryMenu);
+                    var appMenu = new ExpansionMenu(app.Id.ToString(), app.Name, ExpansionMenuType.App, ExpansionMenuState.Normal, menu.Metadata, parent: categoryMenu);
                     foreach (var nav in app.Navs)
                     {
                         appMenu.Childrens.Add(ConvertForNav(nav, appMenu.Deep + 1, appMenu, favorites));
@@ -77,20 +107,18 @@ public partial class GlobalNavigation : MasaComponentBase
                 }
                 menu.Childrens.Add(categoryMenu);
             }
-            
-            return (menu, categories);
         }
         catch
         {
-
         }
-        return (menu, new());
+
+        return menu;
     }
 
-    private Menu ConvertForNav(NavModel navModel, int deep, Menu parent, List<string> favorites)
+    private ExpansionMenu ConvertForNav(NavModel navModel, int deep, ExpansionMenu parent, List<string> favorites)
     {
-        var state = favorites.Any(favorite => favorite == navModel.Code) ? MenuState.Favorite : MenuState.Normal;
-        var menu = new Menu(navModel.Code, navModel.Name, MenuType.Nav, state, parent.Metadata, parent: parent)
+        var state = favorites.Any(favorite => favorite == navModel.Code) ? ExpansionMenuState.Favorite : ExpansionMenuState.Normal;
+        var menu = new ExpansionMenu(navModel.Code, navModel.Name, ExpansionMenuType.Nav, state, parent.Metadata, parent: parent)
             .AddData(MENU_URL_NAME, navModel.Url);
         foreach (var childrenNav in navModel.Children)
         {
@@ -122,28 +150,32 @@ public partial class GlobalNavigation : MasaComponentBase
         NavigationManager.NavigateTo(url, forceLoad: true);
     }
 
-    private Task FavoriteRemove(Menu nav)
+    private async Task FavoriteRemoveAsync(ExpansionMenu nav)
     {
-        // var favoriteNav = _favoriteNavs.FirstOrDefault(e => e.Nav == nav);
-        // _favoriteNavs.Remove(favoriteNav);
-        // await OnFavoriteRemove.Invoke(favoriteNav.Nav);
-        return Task.CompletedTask;
+        var favoriteNav = _favorites.FirstOrDefault(e => e.Id == nav.Id);
+        if (favoriteNav == null)
+        {
+            return;
+        }
+
+        _favorites.Remove(favoriteNav);
+        if (OnFavoriteRemove != null)
+        {
+            await OnFavoriteRemove.Invoke(favoriteNav.Id);
+        }
     }
 
-    private Task FavoriteChanged(List<CategoryAppNav> favoriteNavs)
+    private async Task FavoriteAddAsync(ExpansionMenu nav)
     {
-        return Task.CompletedTask;
-        // favoriteNavs = favoriteNavs.Where(a => !a.NavModel!.HasChildren).ToList();
-        // var removes = _favoriteNavs.Except(favoriteNavs);
-        // foreach (var remove in removes)
-        // {
-        //     await OnFavoriteRemove.Invoke(remove.Nav);
-        // }
-        // var adds = favoriteNavs.Except(_favoriteNavs);
-        // foreach (var add in adds)
-        // {
-        //     await OnFavoriteAdd.Invoke(add.Nav);
-        // }
-        // _favoriteNavs = favoriteNavs;
+        if (_favorites.Any(e => e.Id == nav.Id))
+        {
+            return;
+        }
+
+        _favorites.Add(nav);
+        if (OnFavoriteAdd != null)
+        {
+            await OnFavoriteAdd.Invoke(nav.Id);
+        }
     }
 }

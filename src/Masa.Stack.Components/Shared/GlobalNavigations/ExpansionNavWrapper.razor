@@ -2,29 +2,30 @@
 @inherits MasaComponentBase
 
 @{
-    var indeterminate = Value.State == MenuState.Indeterminate;
-    var selected = Value.State == MenuState.Selected;
-    var isFavorited = Value.State == MenuState.Favorite;
+    var indeterminate = Value.State == ExpansionMenuState.Indeterminate;
+    var selected = Value.State == ExpansionMenuState.Selected;
+    var isFavorited = Value.State == ExpansionMenuState.Favorite;
 }
 
+<div style="@Value.GetHiddenStyle()">
 <MHover Disabled="Value.Disabled">
-    @if (Value.Type == MenuType.Nav)
+    @if (Value.Type == ExpansionMenuType.Nav)
     {
-        <MListItem @attributes="@context.Attrs" Class="@GetClass(context.Hover)" Value="Value.ID" Disabled="Value.Disabled"
-                   OnClick="SelectItem" ActiveClass="GetActiveClass()">
+        <MListItem @attributes="@context.Attrs" Class="@GetClass(context.Hover)" Value="Value.Id" Disabled="Value.Disabled"
+                   OnClick="ItemClick" ActiveClass="GetActiveClass()">
             <ItemContent Context="item">
                 <MListItemContent>
-                    <MListItemTitle Style="@(Value.State == MenuState.Selected?"color: #323D6F;":"")">@Value.Name
+                    <MListItemTitle Style="@(Value.State == ExpansionMenuState.Selected?"color: #323D6F;":"")">@I18n.T(Value.Name)
                     </MListItemTitle>
                 </MListItemContent>
                 <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
-                    @if (Value.Metadata.Situation == MenuSituation.Authorization)
+                    @if (Value.Metadata.Situation == ExpansionMenuSituation.Authorization)
                     {
-                        <MCheckbox Color="primary" Indeterminate=indeterminate Dense Value="@(indeterminate || selected)" />
+                        <MCheckbox Color="primary" Indeterminate=indeterminate Dense Value="@(indeterminate || selected)" OnClick="ItemOperClick" />
                     }
-                    else if (Value.Metadata.Situation == MenuSituation.Favorite)
+                    else if (Value.Metadata.Situation == ExpansionMenuSituation.Favorite)
                     {
-                        <SAutoLoadingButton Icon XSmall Color="@(isFavorited ? "#FFB547" : "")" OnClick="AddFavorite"
+                        <SAutoLoadingButton Icon XSmall Color="@(isFavorited ? "#FFB547" : "")" OnClick="ItemOperClick"
                                             StopPropagation>
                             <SIcon Small Tooltip="@T(isFavorited ? "CancelFavorite" :"Favorite")">mdi-star</SIcon>
                         </SAutoLoadingButton>
@@ -34,16 +35,16 @@
                 {
                     switch (Value.State)
                     {
-                        case MenuState.Selected:
+                        case ExpansionMenuState.Selected:
                             <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
                             break;
-                        case MenuState.Impersonal:
+                        case ExpansionMenuState.Impersonal:
                             <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
                             break;
-                        case MenuState.Indeterminate:
+                        case ExpansionMenuState.Indeterminate:
                             <MIcon Small Class="mr-1" Color="primary">mdi-minus-box</MIcon>
                             break;
-                        case MenuState.Favorite:
+                        case ExpansionMenuState.Favorite:
                             <SIcon Small Style="margin-right: 6px" Color="#FFB547" Tooltip="@T("CancelFavorite")">mdi-star</SIcon>
                             break;
                     }
@@ -52,13 +53,13 @@
             </ItemContent>
         </MListItem>
     }
-    else if (Value.Type == MenuType.Element && Value.Metadata.Situation == MenuSituation.Authorization)
+    else if (Value.Type == ExpansionMenuType.Element && Value.Metadata.Situation == ExpansionMenuSituation.Authorization)
     {
         <MListItem @attributes="@context.Attrs" Class="@GetClass(context.Hover)" Disabled="Value.Disabled"
-                   OnClick="SelectItem" Value="Value.ID" ActiveClass="GetActiveClass()">
+                   OnClick="ItemClick" Value="Value.Id" ActiveClass="GetActiveClass()">
             <ItemContent Context="item">
                 <MListItemContent>
-                    <MListItemTitle Style="@(selected ? "color: #323D6F;" : "")">@Value.Name</MListItemTitle>
+                    <MListItemTitle Style="@(selected ? "color: #323D6F;" : "")">@I18n.T(Value.Name)</MListItemTitle>
                 </MListItemContent>
 
                 @if (!Value.Disabled)
@@ -70,10 +71,10 @@
                     {
                         switch (Value.State)
                         {
-                            case MenuState.Selected:
+                            case ExpansionMenuState.Selected:
                                 <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
                                 break;
-                            case MenuState.Impersonal:
+                            case ExpansionMenuState.Impersonal:
                                 <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
                                 break;
                         }
@@ -89,7 +90,9 @@
     <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
 }
 
+</div>
+
 @foreach(var nav in Value.Childrens)
 {
-    <NavWrapper Value="nav" />
+    <ExpansionNavWrapper Value="nav" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick" />
 }

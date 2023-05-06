@@ -1,9 +1,41 @@
 namespace Masa.Stack.Components.GlobalNavigations;
 
-public partial class MenuWrapper : MasaComponentBase
+public partial class ExpansionMenuWrapper : MasaComponentBase
 {
     [Parameter]
-    public Menu Value { get; set; } = null!;
+    public ExpansionMenu Value { get; set; } = null!;
+
+    [Parameter]
+    public string Search { get; set; } = string.Empty;
+
+    [Parameter] 
+    public EventCallback<ExpansionMenu> OnItemClick { get; set; }
+
+    [Parameter] 
+    public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
+
+    protected virtual async Task ItemClick(ExpansionMenu menu)
+    {
+        if (Value.Metadata.Situation == ExpansionMenuSituation.Authorization)
+        {
+            await menu.ChangeStateAsync();
+        }
+
+        if (OnItemClick.HasDelegate)
+        {
+            await OnItemClick.InvokeAsync(menu);
+        }
+    }
+
+    protected virtual async Task ItemOperClick(ExpansionMenu menu)
+    {
+        await menu.ChangeStateAsync();
+
+        if (OnItemOperClick.HasDelegate)
+        {
+            await OnItemOperClick.InvokeAsync(menu);
+        }
+    }
 
     // private Menu ConvertForNav(NavModel navModel, int deep, Menu? parent = null)
     // {

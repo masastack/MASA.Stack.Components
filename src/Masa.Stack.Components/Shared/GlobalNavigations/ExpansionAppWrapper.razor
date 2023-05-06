@@ -2,20 +2,20 @@
 @inherits MasaComponentBase
 
 @{
-    var disableAppOper = Value.Metadata.Situation == MenuSituation.Preview || Value.Metadata.Situation == MenuSituation.Favorite;
+    var disableAppOper = Value.Metadata.Situation == ExpansionMenuSituation.Preview || Value.Metadata.Situation == ExpansionMenuSituation.Favorite;
 }
-<div class="app">@*  id="@App.TagID(CategoryCode, TagIDPrefix)"> *@
+<div class="app" style="@Value.GetHiddenStyle()">@*  id="@App.TagID(CategoryCode, TagIDPrefix)"> *@
     <MHover Disabled="disableAppOper" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">
         <div @attributes="@context.Attrs" class="d-flex">
             <span class="masa-text-2-2 d-inline-block text-truncate">
-                @TranslateProvider.DT(Value.Name)
+                @I18n.T(Value.Name)
             </span>
             @if (!disableAppOper)
             {
                 <MSpacer />
 
-                var indeterminate = Value.State == MenuState.Indeterminate;
-                var appSelected = Value.State == MenuState.Selected;
+                var indeterminate = Value.State == ExpansionMenuState.Indeterminate;
+                var appSelected = Value.State == ExpansionMenuState.Selected;
                 if (context.Hover is false && indeterminate)
                 {
                     <MIcon Small Class="mr-1" Color="primary">mdi-minus-box</MIcon>
@@ -39,7 +39,7 @@
         <MCard @key="nav" Class="nav" Outlined>
             <MList Dense Class="pa-0">
                 <MListItemGroup Multiple>
-                    <NavWrapper Value="nav" />
+                    <ExpansionNavWrapper Value="nav" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick" />
                 </MListItemGroup>
             </MList>
         </MCard>

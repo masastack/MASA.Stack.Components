@@ -1,9 +1,18 @@
+using BlazorComponent.Web;
+using Humanizer;
+
 namespace Masa.Stack.Components.GlobalNavigations;
 
-public partial class NavWrapper : MasaComponentBase
+public partial class ExpansionNavWrapper : MasaComponentBase
 {
     [Parameter]
-    public Menu Value { get; set; } = null!;
+    public ExpansionMenu Value { get; set; } = null!;
+
+    [Parameter] 
+    public EventCallback<ExpansionMenu> OnItemClick { get; set; }
+
+    [Parameter] 
+    public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
 
     private string GetClass(bool hover)
     {
@@ -46,22 +55,19 @@ public partial class NavWrapper : MasaComponentBase
         }
     }
 
-    private Task SelectItem()
+    private async Task ItemClick()
     {
-        return Task.CompletedTask;
-        // if (Checkable)
-        // {
-        //     await ExpansionApp.SwitchValue(CategoryAppNav, IsQueryNav, isIndeterminate: Indeterminate);
-        // }
-        // if (Favorite && Data.Url is not null && !Data.HasChildren)
-        // {
-        //     NavigationManager.NavigateTo(Data.Url, true);
-        // }
+        if (OnItemClick.HasDelegate)
+        {
+            await OnItemClick.InvokeAsync(Value);
+        }
     }
 
-    private Task AddFavorite()
+    private async Task ItemOperClick()
     {
-        // await ExpansionApp.SwitchValue(CategoryAppNav);
-        return Task.CompletedTask;
+        if (OnItemOperClick.HasDelegate)
+        {
+            await OnItemOperClick.InvokeAsync(Value);
+        }
     }
 }

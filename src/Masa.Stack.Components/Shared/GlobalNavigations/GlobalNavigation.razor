@@ -29,7 +29,7 @@
                                                 <MListItemTitle>@DT(item.Name)</MListItemTitle>
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
-                                                <SAutoLoadingButton Icon XSmall Color="#FFB547" OnClick="async () => await FavoriteRemove(item)" StopPropagation>
+                                                <SAutoLoadingButton Icon XSmall Color="#FFB547" OnClick="async () => await FavoriteRemoveAsync(item)" StopPropagation>
                                                     <SIcon Small Tooltip="@T("CancelFavorite")">mdi-star</SIcon>
                                                 </SAutoLoadingButton>
                                             </MListItemAction>
@@ -69,14 +69,9 @@
                         </div>
                     </div>
                     <div class="global-nav-content">
-                        @* <CascadingValue Value="this"> *@
-                            @* <ExpansionWrapper Value="_favoriteNavs"
-                                              ValueChanged="FavoriteChanged"
-                                              Categories="@_categories"
-                                              Search="@_searchMenu"
-                                              Favorite /> *@
-                        @* </CascadingValue> *@
-                        <MenuWrapper Value="_menu" />
+                        <CascadingValue Value="_searchMenu">
+                            <ExpansionMenuWrapper Value="_menu" Search="@_searchMenu"  OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
+                        </CascadingValue>    
                     </div>
                 </div>
             </div>

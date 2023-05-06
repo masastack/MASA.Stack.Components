@@ -1,0 +1,22 @@
+@namespace Masa.Stack.Components.GlobalNavigations
+@inherits MasaComponentBase
+@inject DynamicTranslateProvider translateProvider
+
+@if (Value != null)
+{
+    Value.SetHiddenBySearch(Search, translateProvider);
+    <div class="global-nav-content__main " style="@Value.GetHiddenStyle()">
+	@foreach (var category in Value.Childrens)
+        {
+            <div class="apps">
+                <div class="category_title_app">
+                    <div class="masa-text-1-2__title title_category py-4" id="">@I18n.T(category.Name)</div>
+                    @foreach (var app in category.Childrens)
+                    {
+                        <ExpansionAppWrapper Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
