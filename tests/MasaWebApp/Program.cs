@@ -11,7 +11,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenProvider>();
-builder.AddMasaStackComponentsForServer(default);
+await builder.Services.AddMasaStackComponentsAsync();
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
 builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC").Get<MasaOpenIdConnectOptions>());
 
