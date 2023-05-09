@@ -841,3 +841,10 @@ body, .masa-stack-components {
 .masa-stack-components .navigation.m-navigation-drawer--mini-variant .isolation p {
     visibility: hidden;
 }
+
+.masa-stack-components .m-input__append-outer .mdi-help-circle-outline {
+    width: 24px;
+    height: 24px;
+    padding-left: 22px;
+    padding-right: 24px;
+}
