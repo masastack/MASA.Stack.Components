@@ -1,4 +1,4 @@
-namespace Masa.Stack.Components.GlobalNavigations;
+namespace Masa.Stack.Components.Shared.GlobalNavigations;
 
 public enum ExpansionMenuType
 {
@@ -59,7 +59,10 @@ public record ExpansionMenuMetadata
 
 public class ExpansionMenu
 {
-    public ExpansionMenu(string id, string name, ExpansionMenuType type, ExpansionMenuState state, ExpansionMenuMetadata? metadata = null, bool impersonal = false, bool disabled = false, ExpansionMenu? parent = null, List<ExpansionMenu>? childrens = null, Func<Task>? stateChangedAsync = null)
+    private const string VIEW_ELEMENT_NAME = "view";
+    private readonly List<ExpansionMenu> _children;
+    
+    public ExpansionMenu(string id, string name, ExpansionMenuType type, ExpansionMenuState state, ExpansionMenuMetadata? metadata = null, bool impersonal = false, bool disabled = false, ExpansionMenu? parent = null, List<ExpansionMenu>? children = null, Func<ExpansionMenu, Task>? stateChangedAsync = null)
     {
         Id = id;
         Name = name;
@@ -69,23 +72,20 @@ public class ExpansionMenu
         Impersonal = impersonal;
         Deep = parent != null ? parent.Deep + 1 : 0;
         Parent = parent;
-        Childrens = childrens ?? new List<ExpansionMenu>();
+        _children = children ?? new List<ExpansionMenu>();
+        Children = _children.AsReadOnly();
         StateChangedAsync = stateChangedAsync;
         Data = new Dictionary<string, string>();
 
-        ChildrenHasElement = Childrens.Any(children => children.Type == ExpansionMenuType.Element);
-        if (ChildrenHasElement)
-        {
-            Childrens.Add(CreateViewElement());
-        }
-        
         SetTypeDeepRange();
     }
 
-    public ExpansionMenu CreateViewElement()
+    private ExpansionMenu CreateViewElement()
     {
-        return new ExpansionMenu(Guid.NewGuid().ToString(), "view", ExpansionMenuType.Element, State, Metadata, Impersonal, Disabled,this);
+        return new ExpansionMenu(GetViewElementId(), VIEW_ELEMENT_NAME, ExpansionMenuType.Element, State, Metadata, Impersonal, Disabled,this);
     }
+
+    private string GetViewElementId() => $"{Id}-{VIEW_ELEMENT_NAME}";
 
     public string Id { get; private set; }
 
@@ -109,22 +109,30 @@ public class ExpansionMenu
 
     public ExpansionMenu? Parent { get; private set; }
 
-    public bool ChildrenHasElement { get; private set; }
+    public IReadOnlyList<ExpansionMenu> Children { get; set; }
 
-    public List<ExpansionMenu> Childrens { get; set; }
+    public Func<ExpansionMenu, Task>? StateChangedAsync { get; set; }
 
-    public Func<Task>? StateChangedAsync { get; set; }
+    public ExpansionMenu AddChild(ExpansionMenu child)
+    {
+        if (child.Type == ExpansionMenuType.Element && !(Children.Any(c => c.Name == VIEW_ELEMENT_NAME)))
+        {
+            _children.Add(CreateViewElement());
+        }
+        
+        _children.Add(child);
+        Children = _children.AsReadOnly();
+        return this;
+    }
 
-    public string GetHiddenStyle() => Hidden ? "display: none;" : "";
-
-    public void SetHiddenBySearch(string search, DynamicTranslateProvider translateProvider)
+    public void SetHiddenBySearch(string? search, DynamicTranslateProvider translateProvider)
     {
         Hidden = false;
         
-        if (Childrens.Count == 0 && Parent != null)
+        if (Children.Count == 0 && Parent != null)
         {
-            var searchChildren= Parent.Childrens.Where(children => children.Filter(translateProvider, search));
-            var hiddenChildren = Parent.Childrens.ExceptBy(searchChildren.Select(child => child.Id), child => child.Id);
+            var searchChildren= Parent.Children.Where(children => children.Filter(translateProvider, search));
+            var hiddenChildren = Parent.Children.ExceptBy(searchChildren.Select(child => child.Id), child => child.Id);
             foreach (var child in hiddenChildren)
             {
                 child.Hidden = true;
@@ -132,18 +140,49 @@ public class ExpansionMenu
             return;
         }
 
-        foreach (var child in Childrens)
+        foreach (var child in Children)
         {
             child.SetHiddenBySearch(search, translateProvider);
         }
 
-        if (Childrens.All(child => child.Hidden))
+        if (Children.All(child => child.Hidden))
         {
             Hidden = true;
         }
     }
 
-    private bool Filter(DynamicTranslateProvider translateProvider, string? search) => string.IsNullOrEmpty(search) ? true : translateProvider.DT(Name).Contains(search, StringComparison.OrdinalIgnoreCase);
+    public void SetHiddenByPreview(bool preview)
+    {
+        Hidden = false;
+        var hasLastNav = (Children.Count == 0 || Children.First().Type == ExpansionMenuType.Element);
+        if(Type == ExpansionMenuType.Nav && hasLastNav && State != ExpansionMenuState.Selected && State != ExpansionMenuState.Indeterminate)
+        {
+            Hidden = preview;
+            return;
+        }
+        
+        if (hasLastNav)
+        {
+            return;
+        }
+        
+        foreach (var child in Children)
+        {
+            child.SetHiddenByPreview(preview);
+        }
+
+        Hidden = Children.All(child => child.Hidden);
+    }
+
+    private bool Filter(DynamicTranslateProvider translateProvider, string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            return true;
+        }
+
+        return translateProvider.DT(Name).Contains(search, StringComparison.OrdinalIgnoreCase);
+    }
 
     public ExpansionMenu AddData(string key, string value)
     {
@@ -187,18 +226,18 @@ public class ExpansionMenu
         return Deep - start;
     }
 
-    public List<ExpansionMenu> GetMenusByState(ExpansionMenuState state)
+    public List<ExpansionMenu> GetMenusByStates(params ExpansionMenuState[] states)
     {
         return GetMenusByStateInternal(this, new List<ExpansionMenu>());
         
         List<ExpansionMenu> GetMenusByStateInternal(ExpansionMenu menu, List<ExpansionMenu> stateMenus)
         {
-            if (menu.State == state)
+            if (states.Contains(menu.State))
             {
                 stateMenus.Add(menu);
             }
             
-            foreach (var stateMenu in menu.Childrens)
+            foreach (var stateMenu in menu.Children)
             {
                 stateMenus = GetMenusByStateInternal(stateMenu, stateMenus);
             }
@@ -207,7 +246,45 @@ public class ExpansionMenu
         }
     }
 
-    public Task ChangeStateAsync()
+    public async Task ChangeStateAsync()
+    {
+        var newState = CalcState();
+        await ChangeStateWithViewElementAsync(newState);
+        await PopStateAsync(newState);
+    }
+
+    private async Task ChangeStateWithViewElementAsync(ExpansionMenuState newState)
+    {
+        if (Type != ExpansionMenuType.Element || Metadata.Situation != ExpansionMenuSituation.Authorization || Parent == null)
+        {
+            return;
+        }
+
+        if (newState != ExpansionMenuState.Selected && newState != ExpansionMenuState.Normal && newState != ExpansionMenuState.Impersonal)
+        {
+            return;
+        }
+        
+        var viewElementId = Parent.GetViewElementId();
+        if (Id == viewElementId && (newState == ExpansionMenuState.Normal || newState == ExpansionMenuState.Impersonal))
+        {
+            foreach (var child in Parent.Children)
+            {
+                await child.PopStateAsync(newState, ExpansionMenuStatePopDirection.Children);
+            }
+        }
+
+        if (Id != viewElementId && newState == ExpansionMenuState.Selected)
+        {
+            var viewElementMenu = Parent.Children.FirstOrDefault(child => child.Id == viewElementId);
+            if (viewElementMenu != null)
+            {
+                await viewElementMenu.PopStateAsync(newState, ExpansionMenuStatePopDirection.Children);
+            }
+        }
+    }
+
+    private ExpansionMenuState CalcState()
     {
         var newState = State;
         switch (Metadata.Situation)
@@ -223,7 +300,7 @@ public class ExpansionMenu
                 break;
         }
 
-        return PopStateAsync(newState);
+        return newState;
     }
 
     private ExpansionMenuState CalcNewStateForPreview()
@@ -238,7 +315,7 @@ public class ExpansionMenu
 
     private ExpansionMenuState CalcNewStateForAuthorization()
     {
-        if (State == ExpansionMenuState.Normal || State == ExpansionMenuState.Impersonal)
+        if (State == ExpansionMenuState.Normal || State == ExpansionMenuState.Impersonal || State == ExpansionMenuState.Indeterminate)
         {
             return ExpansionMenuState.Selected;
         }
@@ -252,20 +329,20 @@ public class ExpansionMenu
     private async Task PopStateAsync(ExpansionMenuState newState, ExpansionMenuStatePopDirection popDirection = ExpansionMenuStatePopDirection.UnSet)
     {
         var oldState = State;
-        State = newState;
+        State = Impersonal && newState == ExpansionMenuState.Normal ? ExpansionMenuState.Impersonal : newState;
 
-        if (oldState != newState && StateChangedAsync != null)
+        if (oldState != newState && StateChangedAsync != null && Id != GetViewElementId())
         {
-            await StateChangedAsync.Invoke();
+            await StateChangedAsync.Invoke(this);
         }
-
-        if (popDirection == ExpansionMenuStatePopDirection.UnSet || popDirection == ExpansionMenuStatePopDirection.Parent)
-        {
-            await PopParentStateAsync();
-        }
+        
         if (popDirection == ExpansionMenuStatePopDirection.UnSet || popDirection == ExpansionMenuStatePopDirection.Children)
         {
             await PopChildrenStateAsync();
+        }
+        if (popDirection == ExpansionMenuStatePopDirection.UnSet || popDirection == ExpansionMenuStatePopDirection.Parent)
+        {
+            await PopParentStateAsync();
         }
     }
 
@@ -276,51 +353,87 @@ public class ExpansionMenu
             return Task.CompletedTask;
         }
 
-        var childrenAllSelected = Parent.Childrens.All(children => children.State == ExpansionMenuState.Selected);
-        if (childrenAllSelected)
+        switch (Metadata.Situation)
         {
-            return Parent.PopStateAsync(ExpansionMenuState.Selected, ExpansionMenuStatePopDirection.Parent);
+            case ExpansionMenuSituation.Authorization:
+                return PopParentStateWithAuthorizationAsync(Parent);
+            case ExpansionMenuSituation.Favorite:
+                return PopParentStateWithFavoriteAsync(Parent);
+            default:
+                return Task.CompletedTask;
         }
-
-        var childrenPartialSelected = Parent.Childrens.Any(
-        children => children.State == ExpansionMenuState.Selected ||
-        children.State == ExpansionMenuState.Indeterminate);
-        if (childrenPartialSelected)
-        {
-            return Parent.PopStateAsync(ExpansionMenuState.Indeterminate, ExpansionMenuStatePopDirection.Parent);
-        }
-        
-        var childrenPartialFavorite = Parent.Childrens.Any(children => children.State == ExpansionMenuState.Normal) &&
-                                      Parent.Childrens.Any(children => children.State == ExpansionMenuState.Favorite);
-        if (childrenPartialFavorite)
-        {
-            return Parent.PopStateAsync(ExpansionMenuState.Normal, ExpansionMenuStatePopDirection.Parent);
-        }
-
-        var childrenAllFavorite = Parent.Childrens.All(children => children.State == ExpansionMenuState.Favorite);
-        if (childrenAllFavorite)
-        {
-            return Parent.PopStateAsync(ExpansionMenuState.Favorite, ExpansionMenuStatePopDirection.Parent);
-        }
-
-        return Task.CompletedTask;
     }
-
+    
     private async Task PopChildrenStateAsync()
     {
-        if (Childrens.Count == 0 || State == ExpansionMenuState.Impersonal || State == ExpansionMenuState.Indeterminate)
+        if (Children.Count == 0 || State == ExpansionMenuState.Indeterminate)
         {
             return;
         }
 
-        foreach (var children in Childrens)
+        foreach (var children in Children)
         {
             await children.PopStateAsync(State, ExpansionMenuStatePopDirection.Children);
         }
     }
 
+    private Task PopParentStateWithAuthorizationAsync(ExpansionMenu parent)
+    {
+        var childrenAllSelected = parent.Children.All(children => children.State == ExpansionMenuState.Selected);
+        if (childrenAllSelected)
+        {
+            return parent.PopStateAsync(ExpansionMenuState.Selected, ExpansionMenuStatePopDirection.Parent);
+        }
+
+        var childrenPartialSelected = parent.Children.Any(
+            children => children.State == ExpansionMenuState.Selected ||
+                        children.State == ExpansionMenuState.Indeterminate);
+        if (childrenPartialSelected)
+        {
+            return parent.PopStateAsync(ExpansionMenuState.Indeterminate, ExpansionMenuStatePopDirection.Parent);
+        }
+        
+        var childrenAllImpersonal = parent.Children.Any(child => child.State == ExpansionMenuState.Impersonal);
+        if (childrenAllImpersonal)
+        {
+            return parent.PopStateAsync(ExpansionMenuState.Impersonal, ExpansionMenuStatePopDirection.Parent);
+        }
+
+        var childrenAllNormal = parent.Children.Any(child => child.State == ExpansionMenuState.Normal);
+        if (childrenAllNormal)
+        {
+            return parent.PopStateAsync(ExpansionMenuState.Normal, ExpansionMenuStatePopDirection.Parent);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private Task PopParentStateWithFavoriteAsync(ExpansionMenu parent)
+    {
+        var childrenPartialFavorite = parent.Children.Any(children => children.State == ExpansionMenuState.Normal) &&
+                                      parent.Children.Any(children => children.State == ExpansionMenuState.Favorite);
+        if (childrenPartialFavorite)
+        {
+            return parent.PopStateAsync(ExpansionMenuState.Normal, ExpansionMenuStatePopDirection.Parent);
+        }
+
+        var childrenAllFavorite = parent.Children.All(children => children.State == ExpansionMenuState.Favorite);
+        if (childrenAllFavorite)
+        {
+            return parent.PopStateAsync(ExpansionMenuState.Favorite, ExpansionMenuStatePopDirection.Parent);
+        }
+
+        return Task.CompletedTask;
+    }
+    
     private ExpansionMenu Clone()
     {
-        return new ExpansionMenu(Id, Name, Type, State, Metadata, Impersonal, Disabled);
+        return new ExpansionMenu(Id, Name, Type, State, Metadata, Disabled);
+    }
+
+    public static ExpansionMenu CreateRootMenu(ExpansionMenuSituation situation)
+    {
+        var metaData = new ExpansionMenuMetadata() {Situation = situation};
+        return new ExpansionMenu("root", "root", ExpansionMenuType.Root, ExpansionMenuState.Normal, metaData);
     }
 }

@@ -55,7 +55,7 @@
                         <div class="d-flex">
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
                             <MSpacer />
-                            <SSearch Dense Class="mr-6" @bind-Value="_searchMenu" />
+                            <SSearch Dense Class="mr-6" ValueChanged="SearchChanged" />
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>
                             </MButton>
@@ -69,9 +69,7 @@
                         </div>
                     </div>
                     <div class="global-nav-content">
-                        <CascadingValue Value="_searchMenu">
-                            <ExpansionMenuWrapper Value="_menu" Search="@_searchMenu"  OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
-                        </CascadingValue>    
+                        <ExpansionMenuWrapper Value="_menu" OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
                     </div>
                 </div>
             </div>

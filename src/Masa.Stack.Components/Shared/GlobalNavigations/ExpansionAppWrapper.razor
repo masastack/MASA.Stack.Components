@@ -1,14 +1,14 @@
-@namespace Masa.Stack.Components.GlobalNavigations
+@namespace Masa.Stack.Components.Shared.GlobalNavigations
 @inherits MasaComponentBase
 
 @{
     var disableAppOper = Value.Metadata.Situation == ExpansionMenuSituation.Preview || Value.Metadata.Situation == ExpansionMenuSituation.Favorite;
 }
-<div class="app" style="@Value.GetHiddenStyle()">@*  id="@App.TagID(CategoryCode, TagIDPrefix)"> *@
+<div class="app" style="@GetIsDisplayStyle(!Value.Hidden)">@*  id="@App.TagID(CategoryCode, TagIDPrefix)"> *@
     <MHover Disabled="disableAppOper" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">
         <div @attributes="@context.Attrs" class="d-flex">
             <span class="masa-text-2-2 d-inline-block text-truncate">
-                @I18n.T(Value.Name)
+                @Value.Name
             </span>
             @if (!disableAppOper)
             {
@@ -16,7 +16,7 @@
 
                 var indeterminate = Value.State == ExpansionMenuState.Indeterminate;
                 var appSelected = Value.State == ExpansionMenuState.Selected;
-                if (context.Hover is false && indeterminate)
+                if (!context.Hover && indeterminate)
                 {
                     <MIcon Small Class="mr-1" Color="primary">mdi-minus-box</MIcon>
                 }
@@ -25,7 +25,7 @@
                     <MSimpleCheckbox Color="primary"
                                      Ripple="false"
                                      Value="@(indeterminate || appSelected)"
-                                     ValueChanged="@AppCheckedChanged"
+                                     ValueChanged="() => { OnItemOperClick.InvokeAsync(Value); }"
                                      Indeterminate=indeterminate
                                      Class="masa-icon-size-20"
                                      Style="flex: none;margin-right: -4px;" />
@@ -34,9 +34,9 @@
         </div>
     </MHover>
     <div Class="mt-4">
-    @foreach (var nav in Value.Childrens)
+    @foreach (var nav in Value.Children)
     {
-        <MCard @key="nav" Class="nav" Outlined>
+        <MCard @key="nav" Class="nav" Outlined Style="@GetIsDisplayStyle(!nav.Hidden)">
             <MList Dense Class="pa-0">
                 <MListItemGroup Multiple>
                     <ExpansionNavWrapper Value="nav" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick" />

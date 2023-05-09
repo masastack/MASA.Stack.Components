@@ -2,7 +2,7 @@
 
 public partial class GlobalNavigation : MasaComponentBase
 {
-    public const string MENU_URL_NAME = "url"; 
+    private const string MENU_URL_NAME = "url"; 
     
     [Parameter]
     public RenderFragment<ActivatorProps> ActivatorContent { get; set; } = null!;
@@ -13,18 +13,16 @@ public partial class GlobalNavigation : MasaComponentBase
     [Parameter]
     public Func<string, Task>? OnFavoriteRemove { get; set; }
 
-    string _searchMenu = string.Empty;
     bool _visible;
     List<(string name, string url)> _recentVisits = new();
     List<KeyValuePair<string, string>> _recommendApps = new();
     List<ExpansionMenu> _favorites = new();
-    ExpansionMenu _menu;
+    ExpansionMenu? _menu;
 
     async Task IniDataAsync()
     {
-        _searchMenu = string.Empty;
         _menu = await GenerateMenuAsync();
-        _favorites = _menu.GetMenusByState(ExpansionMenuState.Favorite);
+        _favorites = _menu.GetMenusByStates(ExpansionMenuState.Favorite);
         await GetRecommendApps();
         await GetRecentVisits();
     }
@@ -38,7 +36,7 @@ public partial class GlobalNavigation : MasaComponentBase
             .Select(a => new KeyValuePair<string, string>(a.Name, a.Url)).ToList();
     }
 
-    public async Task VisibleChanged(bool visible)
+    private async Task VisibleChanged(bool visible)
     {
         if (visible)
         {
@@ -49,15 +47,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private void SearchChanged(string? search)
     {
-        Console.WriteLine(search);
-        if (string.IsNullOrWhiteSpace(search))
-        {
-            return;
-        }
-
-        var s = _menu.Childrens.First();
-        _menu.Childrens.Remove(s);
-	
+        _menu?.SetHiddenBySearch(search, TranslateProvider);
     }
 
     private void MenuItemClickAsync(ExpansionMenu menu)
@@ -68,7 +58,7 @@ public partial class GlobalNavigation : MasaComponentBase
             return;
         }
 
-        NavigationManager.NavigateTo(url, true);
+        NavigateTo(url);
     }
 
     private async Task MenuItemOperClickAsync(ExpansionMenu menu)
@@ -85,8 +75,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task<ExpansionMenu> GenerateMenuAsync()
     {
-        var menuMetadata = new ExpansionMenuMetadata(ExpansionMenuSituation.Favorite);
-        var menu = new ExpansionMenu("root", "root", ExpansionMenuType.Root, ExpansionMenuState.Normal, menuMetadata);
+        var menu = ExpansionMenu.CreateRootMenu(ExpansionMenuSituation.Favorite);
         try
         {
             var apps = (await AuthClient.ProjectService.GetGlobalNavigations()).SelectMany(p => p.Apps).ToList();
@@ -101,11 +90,11 @@ public partial class GlobalNavigation : MasaComponentBase
                     var appMenu = new ExpansionMenu(app.Id.ToString(), app.Name, ExpansionMenuType.App, ExpansionMenuState.Normal, menu.Metadata, parent: categoryMenu);
                     foreach (var nav in app.Navs)
                     {
-                        appMenu.Childrens.Add(ConvertForNav(nav, appMenu.Deep + 1, appMenu, favorites));
+                        appMenu.AddChild(ConvertForNav(nav, appMenu.Deep + 1, appMenu, favorites));
                     }
-                    categoryMenu.Childrens.Add(appMenu); 
+                    categoryMenu.AddChild(appMenu); 
                 }
-                menu.Childrens.Add(categoryMenu);
+                menu.AddChild(categoryMenu);
             }
         }
         catch
@@ -122,9 +111,9 @@ public partial class GlobalNavigation : MasaComponentBase
             .AddData(MENU_URL_NAME, navModel.Url);
         foreach (var childrenNav in navModel.Children)
         {
-            menu.Childrens.Add(ConvertForNav(childrenNav, deep++, menu, favorites));
+            menu.AddChild(ConvertForNav(childrenNav, deep++, menu, favorites));
         }
-        menu.Disabled = menu.Childrens.Count > 0;
+        menu.Disabled = menu.Children.Count > 0;
         return menu;
     }
 

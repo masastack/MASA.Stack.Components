@@ -1,4 +1,4 @@
-namespace Masa.Stack.Components.GlobalNavigations;
+namespace Masa.Stack.Components.Shared.GlobalNavigations;
 
 public partial class ExpansionAppWrapper
 {
@@ -10,11 +10,4 @@ public partial class ExpansionAppWrapper
 
     [Parameter] 
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
-
-    private Task AppCheckedChanged(bool v)
-    {
-        return Task.CompletedTask;
-        // if (AppChecked) await UpdateValues(new List<CategoryAppNav>());
-        // else await UpdateValues(CategoryAppNavs);
-    }
 }

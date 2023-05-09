@@ -1,18 +1,24 @@
-namespace Masa.Stack.Components.GlobalNavigations;
+namespace Masa.Stack.Components.Shared.GlobalNavigations;
 
 public partial class ExpansionMenuWrapper : MasaComponentBase
 {
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+    
     [Parameter]
-    public ExpansionMenu Value { get; set; } = null!;
-
-    [Parameter]
-    public string Search { get; set; } = string.Empty;
+    public ExpansionMenu? Value { get; set; }
 
     [Parameter] 
     public EventCallback<ExpansionMenu> OnItemClick { get; set; }
 
     [Parameter] 
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
+    
+    [Parameter]
+    public string SideStyle { get; set; } = "";
+
+    [Parameter]
+    public string SideClass { get; set; } = "";
 
     protected virtual async Task ItemClick(ExpansionMenu menu)
     {
@@ -37,41 +43,8 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
         }
     }
 
-    // private Menu ConvertForNav(NavModel navModel, int deep, Menu? parent = null)
-    // {
-    //     var menu = new Menu(navModel.Code, navModel.Name, MenuType.Nav, MenuState.Normal, MenuSituation.Preview, false, false, deep, parent);
-        
-    //     foreach(var childrenNav in navModel.Children)
-    //     {
-    //         menu.Childrens.Add(ConvertForNav(childrenNav, deep++, menu));
-    //     }
-    //     return menu;
-    // }
-
-    // private Menu ConvertForPermission( navModel, int deep, Menu? parent = null)
-    // {
-    //     var menu = new Menu(navModel.Code, navModel.Name, MenuType.Nav, MenuState.Normal, Situation, false, false, deep, parent);
-        
-    //     foreach(var childrenNav in navModel.Children)
-    //     {
-    //         menu.Childrens.Add(ConvertForNav(childrenNav, deep++, menu));
-    //     }
-    //     return menu;
-    // }
-
-    // private async Task GetMenus()
-    // {
-    //     var menus = new List<Menu>();
-    //     var deep = 0;
-    //     foreach(var category in Categories)
-    //     {   
-    //         foreach(var app in category.Apps)
-    //         {
-    //             foreach(var a in app.Menus)
-    //         }
-    //         menus.Add(new Menu(category.Code, category.Name, MenuType.Category, MenuState.Normal, Situation, false, false, deep, null,,));
-    //     }
-
-    // }
-
+    private async Task ScrollTo(string tagId, string insideSelector)
+    {
+        await JsRuntime.InvokeVoidAsync("MasaStackComponents.scrollTo", $"#{tagId}", insideSelector);
+    }
 }

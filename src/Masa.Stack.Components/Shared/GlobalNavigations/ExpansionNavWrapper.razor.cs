@@ -1,7 +1,4 @@
-using BlazorComponent.Web;
-using Humanizer;
-
-namespace Masa.Stack.Components.GlobalNavigations;
+namespace Masa.Stack.Components.Shared.GlobalNavigations;
 
 public partial class ExpansionNavWrapper : MasaComponentBase
 {
@@ -19,14 +16,14 @@ public partial class ExpansionNavWrapper : MasaComponentBase
         var css = new string[4];
         css[0] = "clear-before-opacity";
 
-        switch (Value.Deep)
+        switch (Value.GetNavDeep())
         {
-            case 1:
+            case 0:
                 css[1] = "neutral-text-regular-secondary font-14-bold";
                 css[2] = "nav-item";
                 css[3] = hover ? "font-14-bold neutral-text-hell fill-hover" : "";
                 break;
-            case 2:
+            case 1:
                 css[1] = "neutral-text-secondary font-14";
                 css[2] = "sub-nav-item";
                 css[3] = hover ? "btn neutral-text-emphasis fill-hover" : "";
