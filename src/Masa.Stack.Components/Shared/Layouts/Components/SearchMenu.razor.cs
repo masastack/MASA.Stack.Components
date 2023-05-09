@@ -23,15 +23,14 @@ public partial class SearchMenu
         }
     }
 
-    // public override Task SetParametersAsync(ParameterView parameters)
-    // {
-    //     // if (parameters.TryGetValue<List<Nav>>(nameof(Navs), out var navs) && !_navs.SequenceEqual(navs))
-    //     // {
-    //     //     _menus = BuildMenus(GlobalConfig.Menus);
-    //     // }
-    //     // return base.SetParametersAsync(parameters);
-    //     
-    // }
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<List<Nav>>(nameof(Navs), out var navs) && !_navs.SequenceEqual(navs))
+        {
+            _menus = BuildMenus(GlobalConfig.Menus);
+        }
+        return base.SetParametersAsync(parameters);     
+    }
 
     List<Menu> BuildMenus(List<Nav> navs, Menu? parent = null)
     {
