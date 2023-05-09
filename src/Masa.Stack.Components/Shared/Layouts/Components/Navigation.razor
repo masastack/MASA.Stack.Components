@@ -4,7 +4,7 @@
 @using Masa.Stack.Components.Extensions
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
-@inject IMultiEnvironmentContext MultiEnvironmentContext
+@inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
 @inject ILogger<Navigation> Logger
 
 <MNavigationDrawer App
@@ -188,8 +188,7 @@
             {
                 Logger.LogError(e, "PmClient.EnvironmentService.GetListAsync");
             }
-
-            _currentEnvironment = MultiEnvironmentContext.CurrentEnvironment;
+            _currentEnvironment = MultiEnvironmentUserContext.Environment??"";
         }
         await base.OnAfterRenderAsync(firstRender);
     }
