@@ -74,7 +74,7 @@ public partial class SDateTimeRangePicker
 
     private static readonly TimeOnly DefaultTimeOnly = new(0, 0, 0);
 
-    private bool HasTimeChange => _lastStartDateTime != _internalStartDateTime;
+    private bool HasTimeChange => _lastStartDateTime != _internalStartDateTime || _lastEndDateTime != _internalEndDateTime;
 
 
     private bool HasTimeZoneChange => _offset != _internalOffset;
