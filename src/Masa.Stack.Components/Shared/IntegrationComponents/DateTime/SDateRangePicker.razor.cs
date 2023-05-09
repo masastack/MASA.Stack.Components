@@ -26,13 +26,16 @@ public partial class SDateRangePicker
     [Parameter]
     public EventCallback<(DateOnly?, DateOnly?)> DateRangeChanged { get; set; }
 
+    [Parameter]
+    public StringBoolean? Attach { get; set; }
+
     private bool StartTimeVisible { get; set; }
 
     private bool EndTimeVisible { get; set; }
 
-    private string _datetimeStartTextCss = "regular3--text";
+    private string _datetimeStartTextCss = "body2 regular3--text";
 
-    private string _datetimeEndTextCss = "regular3--text";
+    private string _datetimeEndTextCss = "body2 regular3--text";
 
     private async Task UpdateStartTimeAsync(DateOnly? dateTime)
     {
@@ -40,7 +43,7 @@ public partial class SDateRangePicker
         else
         {
             StartTime = dateTime;
-            _datetimeStartTextCss = dateTime is null ? "regular3--text" : "regular--text";
+            _datetimeStartTextCss = $"body2 {(dateTime is null ? "regular3--text" : "regular--text")}";
 
             if (StartTimeChanged.HasDelegate) await StartTimeChanged.InvokeAsync(dateTime);
             if (DateRangeChanged.HasDelegate) await DateRangeChanged.InvokeAsync((StartTime, EndTime));
@@ -53,7 +56,7 @@ public partial class SDateRangePicker
         else
         {
             EndTime = dateTime;
-            _datetimeEndTextCss = dateTime is null ? "regular3--text" : "regular--text";
+            _datetimeEndTextCss = $"body2 {(dateTime is null ? "regular3--text" : "regular--text")}";
 
             if (StartTimeChanged.HasDelegate) await EndTimeChanged.InvokeAsync(dateTime);
             if (DateRangeChanged.HasDelegate) await DateRangeChanged.InvokeAsync((StartTime, EndTime));

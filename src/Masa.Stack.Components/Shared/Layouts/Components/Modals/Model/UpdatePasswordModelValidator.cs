@@ -4,10 +4,6 @@ public class UpdatePasswordModelValidator : AbstractValidator<UpdatePasswordMode
 {
     public UpdatePasswordModelValidator(I18n i18N)
     {
-        RuleFor(m => m.OldPassword)
-            .Matches(@"^\s{0}$|^\S*(?=\S{6,})(?=\S*\d)(?=\S*[A-Za-z])\S*$")
-            .WithMessage(i18N.T("PasswordFormatVerificationPrompt"))
-            .WithName(i18N.T("OldPassword"));
         RuleFor(m => m.NewPassword)
             .NotEmpty()
             .Matches(@"^\S*(?=\S{6,})(?=\S*\d)(?=\S*[A-Za-z])\S*$")

@@ -69,6 +69,25 @@ public partial class SUserAutoComplete
         };
     }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (!UserSelect.Any() && Value != default)
+        {
+            await InitUserSelect();
+        }
+    }
+
+    private async Task InitUserSelect()
+    {
+        var user = await AuthClient.UserService.GetByIdAsync(Value);
+        if (user == null)
+            return;
+
+        UserSelect = new List<UserSelectModel>() { new UserSelectModel(user.Id, user.Name ?? string.Empty, user.DisplayName, user.Account, user.PhoneNumber ?? string.Empty, user.Email ?? string.Empty, user.Avatar) };
+    }
+
     public async Task OnSearchChanged(string search)
     {
         Search = search.TrimStart(' ').TrimEnd(' ');

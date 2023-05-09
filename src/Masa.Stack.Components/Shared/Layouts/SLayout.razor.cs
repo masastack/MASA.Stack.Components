@@ -64,7 +64,6 @@ public partial class SLayout
     List<string> _preWhiteUris = new();
     List<Nav> FlattenedNavs { get; set; } = new();
     List<Nav> FlattenedAllNavs { get; set; } = new();
-    bool _noUserLogoutConfirm;
     List<string> _whiteUriList = new List<string> { "403", "404", "user-center",
         "notification-center", "notification-center/*" };
 
@@ -273,12 +272,6 @@ public partial class SLayout
 
     private async Task<bool> OnErrorHandleAsync(Exception exception)
     {
-        if (exception is UserStatusException)
-        {
-            _noUserLogoutConfirm = true;
-            return true;
-        }
-
         if (OnErrorAsync != null)
         {
             await OnErrorAsync.Invoke(exception);

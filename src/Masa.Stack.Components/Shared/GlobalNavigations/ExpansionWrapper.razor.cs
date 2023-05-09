@@ -54,7 +54,7 @@
                 await JsRuntime.InvokeVoidAsync("MasaStackComponents.listenScroll", ".global-nav-content__main", ".category", _objRef);
             }
 
-            await NextTickWhile(async () =>
+            NextTickWhile(async () =>
             {
                 await JsRuntime.InvokeVoidAsync("MasaStackComponents.setAppBorder");
             }, () => Categories == null || Categories.Any() is false);

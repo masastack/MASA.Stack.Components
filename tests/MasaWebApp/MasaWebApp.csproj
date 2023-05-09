@@ -5,10 +5,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="1.0.0-preview.29" />
-		<PackageReference Include="Masa.Contrib.StackSdks.Caller" Version="1.0.0-preview.29" />
-		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="1.0.0-preview.29" />
-		<PackageReference Include="Masa.Contrib.Configuration" Version="1.0.0-preview.29" />
+		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="1.0.0-rc.1" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Caller" Version="1.0.0-rc.1" />
+		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="1.0.0-rc.1" />
+		<PackageReference Include="Masa.Contrib.Configuration" Version="1.0.0-rc.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />

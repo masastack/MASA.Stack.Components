@@ -6,9 +6,9 @@ public partial class SIcon : MIcon
     public string? Tooltip { get; set; }
 
     [Inject]
-    private I18n? _i18N { get; set; }
+    private I18n? I18N { get; set; }
 
-    private readonly static Dictionary<string, string> _iconI18N = new()
+    private static readonly Dictionary<string, string> IconI18N = new()
     {
         { "mdi-pencil" , "Edit" },
         { "mdi-check" , "Save" },
@@ -19,9 +19,14 @@ public partial class SIcon : MIcon
         { "far fa-copy" , "Copy" },
         { "mdi-chevron-down" , "Expand" },
         { "mdi-plus" , "Add" },
-        { "mdi-delete" , "Remove" },
+        { "mdi-delete" , "Delete" },
         { "mdi-link-variant" , "Relevance" },
         { "mdi-close" , "Close" },
+        { "mdi-keyboard-backspace", "PreviousStep" },
+        { "mdi-chevron-left", "PreviousStep"},
+        { "mdi-chevron-right", "NextStep"},
+        { "mdi-star","Favorite" },
+        { "mdi-star-outline","CancelFavorite" },
     };
 
     [Parameter]
@@ -38,16 +43,16 @@ public partial class SIcon : MIcon
         if (IsDefaultToolTip && Tooltip is null && Icon is not null)
         {
             Icon = Icon.Trim();
-            if (_iconI18N.TryGetValue(Icon, out string? value))
+            if (IconI18N.TryGetValue(Icon, out string? value))
             {
-                Tooltip = _i18N?.T(value);
+                Tooltip = I18N?.T(value);
             }
             else
             {
-                value = _iconI18N.FirstOrDefault(x => Icon.Contains(x.Key)).Value;
+                value = IconI18N.FirstOrDefault(x => Icon.Contains(x.Key)).Value;
                 if (value is not null)
                 {
-                    Tooltip = _i18N?.T(value);
+                    Tooltip = I18N?.T(value);
                 }
             }
         }

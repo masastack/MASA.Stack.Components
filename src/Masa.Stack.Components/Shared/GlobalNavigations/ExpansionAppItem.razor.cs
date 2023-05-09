@@ -71,7 +71,35 @@ public partial class ExpansionAppItem
 
     private bool IsDisabled => InPreview || Data.Disabled;
 
-    public bool Indeterminate => !IsQueryNav && (Data.HasActions || Data.HasChildren) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => !item.IsChecked && item.Data.ParentCode == Data.Code);
+    public bool Indeterminate
+    {
+        get
+        {
+            if (Level == 1)
+            {
+                var childrens = ExpansionApp.CategoryAppNavs.IntersectBy(Data.Children, item => item.NavModel!).Select(item => item.Nav);
+                var items = ExpansionApp.ExpansionAppItems.Where(p => childrens.Contains(p.Data.Code) || childrens.Contains(p.Data.ParentCode));
+		return items.Any(item => item.IsChecked) && items.Any(item => !item.IsChecked);
+            }
+
+            return !IsQueryNav && (Data.HasActions || Data.HasChildren) && ExpansionApp.ExpansionAppItems.Any(item => item.IsChecked && (Data.Code == item.Data.ParentCode || Data.Code == item.Data.Code)) && ExpansionApp.ExpansionAppItems.Any(item => !item.IsChecked && item.Data.ParentCode == Data.Code);
+        }
+    }
+
+    public bool Reversed
+    {
+        get
+	{
+            if (Data.HasChildren)
+            {
+                return Data.Children.All(children => children.Reversed);
+            }
+            else
+            {
+                return Data.Reversed;
+            }
+        }
+    }
 
     private string ActiveClass
     {

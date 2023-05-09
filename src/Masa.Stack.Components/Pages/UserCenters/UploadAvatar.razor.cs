@@ -10,9 +10,6 @@ public partial class UploadAvatar : SUploadImage
 
     [Inject]
     public IConfiguration Configuration { get; set; } = default!;
-
-    [Inject]
-    public I18n I18n { get; set; } = default!;
     
     public OssOptions OssOptions
     {
