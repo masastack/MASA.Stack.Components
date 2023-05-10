@@ -1,0 +1,48 @@
+@namespace Masa.Stack.Components.Shared.GlobalNavigations
+@inherits MasaComponentBase
+
+@{
+    var disableAppOper = Value.Metadata.Situation == ExpansionMenuSituation.Preview || Value.Metadata.Situation == ExpansionMenuSituation.Favorite;
+}
+<div class="app" style="@GetIsDisplayStyle(!Value.Hidden)">@*  id="@App.TagID(CategoryCode, TagIDPrefix)"> *@
+    <MHover Disabled="disableAppOper" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">
+        <div @attributes="@context.Attrs" class="d-flex">
+            <span class="masa-text-2-2 d-inline-block text-truncate">
+                @Value.Name
+            </span>
+            @if (!disableAppOper)
+            {
+                <MSpacer />
+
+                var indeterminate = Value.State == ExpansionMenuState.Indeterminate;
+                var appSelected = Value.State == ExpansionMenuState.Selected;
+                if (!context.Hover && indeterminate)
+                {
+                    <MIcon Small Class="mr-1" Color="primary">mdi-minus-box</MIcon>
+                }
+                <div class="d-flex" style="@GetIsDisplayStyle(context.Hover)">
+                    <span class="masa-text-3-1">@T("SelectAll")</span>
+                    <MSimpleCheckbox Color="primary"
+                                     Ripple="false"
+                                     Value="@(indeterminate || appSelected)"
+                                     ValueChanged="() => { OnItemOperClick.InvokeAsync(Value); }"
+                                     Indeterminate=indeterminate
+                                     Class="masa-icon-size-20"
+                                     Style="flex: none;margin-right: -4px;" />
+                </div>
+            }
+        </div>
+    </MHover>
+    <div Class="mt-4">
+    @foreach (var nav in Value.Children)
+    {
+        <MCard @key="nav" Class="nav" Outlined Style="@GetIsDisplayStyle(!nav.Hidden)">
+            <MList Dense Class="pa-0">
+                <MListItemGroup Multiple>
+                    <ExpansionNavWrapper Value="nav" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick" />
+                </MListItemGroup>
+            </MList>
+        </MCard>
+    }
+    </div>
+</div>

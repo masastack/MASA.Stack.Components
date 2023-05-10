@@ -17,19 +17,19 @@
                             @T("Favorites")
                         </div>
                         <MListItemGroup Value="@("/users")" Class="full-width mt-3">
-                            @foreach (var item in _favoriteNavs)
+                            @foreach (var item in _favorites)
                             {
-                                <MListItem Dense Value="item.NavModel.Url"
+                                <MListItem Dense Value="item.GetData(MENU_URL_NAME)"
                                        Class="mb-4 full-width rounded-2"
                                        ActiveClass="primary white--text"
-                                           OnClick="() => NavigateTo(item.NavModel.Url)">
+                                           OnClick="() => NavigateTo(item.GetData(MENU_URL_NAME))">
                                     <ItemContent>
                                         <div class="global-nav-left__favorite-item full-width masa-text-2-2 @(context.ActiveClass)">
                                             <MListItemContent>
-                                                <MListItemTitle>@DT(item.NavModel.Name)</MListItemTitle>
+                                                <MListItemTitle>@DT(item.Name)</MListItemTitle>
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
-                                                <SAutoLoadingButton Icon XSmall Color="#FFB547" OnClick="async () => await FavoriteRemove(item.Nav)" StopPropagation>
+                                                <SAutoLoadingButton Icon XSmall Color="#FFB547" OnClick="async () => await FavoriteRemoveAsync(item)" StopPropagation>
                                                     <SIcon Small Tooltip="@T("CancelFavorite")">mdi-star</SIcon>
                                                 </SAutoLoadingButton>
                                             </MListItemAction>
@@ -55,7 +55,7 @@
                         <div class="d-flex">
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
                             <MSpacer />
-                            <SSearch Dense Class="mr-6" @bind-Value="_searchMenu" />
+                            <SSearch Dense Class="mr-6" ValueChanged="SearchChanged" />
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>
                             </MButton>
@@ -69,13 +69,7 @@
                         </div>
                     </div>
                     <div class="global-nav-content">
-                        <CascadingValue Value="this">
-                            <ExpansionWrapper Value="_favoriteNavs"
-                                              ValueChanged="FavoriteChanged"
-                                              Categories="@_categories"
-                                              Search="@_searchMenu"
-                                              Favorite />
-                        </CascadingValue>
+                        <ExpansionMenuWrapper Value="_menu" OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
                     </div>
                 </div>
             </div>

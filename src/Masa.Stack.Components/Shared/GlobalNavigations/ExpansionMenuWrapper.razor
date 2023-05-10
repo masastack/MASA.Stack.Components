@@ -1,0 +1,37 @@
+@namespace Masa.Stack.Components.Shared.GlobalNavigations
+@inherits MasaComponentBase
+
+@if (Value != null)
+{
+    <div class="global-nav-content__main " style="@GetIsDisplayStyle(!Value.Hidden)">
+        @foreach (var category in Value.Children)
+        {
+            <div class="apps">
+                <div class="category_title_app">
+                    <div class="masa-text-1-2__title title_category py-4" id="@category.Id">@category.Name</div>
+                    @foreach (var app in category.Children)
+                    {
+                        <ExpansionAppWrapper Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    
+    <div class="global-nav-content__side @SideClass" style="@SideStyle">
+        <MNavigationDrawer Floating Right Width="256" Class="toc">
+            <ul>
+                @foreach (var category in Value.Children)
+                {
+                    <li class="masa-text-2-2 pl-3 py-2 category_side" id="@($"{category.Id}_side")"
+                        @onclick="@(() => ScrollTo(category.Id, ".global-nav-content__main"))">
+                        <MIcon Color="primary" Class="dot" Size="20">mdi-checkbox-blank-circle</MIcon>
+                        <span>
+                            @TranslateProvider.DT(category.Name)
+                        </span>
+                    </li>
+                }
+            </ul>
+        </MNavigationDrawer>
+    </div>
+}

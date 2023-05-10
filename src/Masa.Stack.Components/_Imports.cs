@@ -28,6 +28,7 @@ global using Masa.Contrib.Storage.ObjectStorage.Aliyun.Options;
 global using Masa.Stack.Components.Configs;
 global using Masa.Stack.Components.Extensions;
 global using Masa.Stack.Components.Extensions.OpenIdConnect;
+global using Masa.Stack.Components.Shared.GlobalNavigations;
 global using Masa.Stack.Components.Infrastructure;
 global using Masa.Stack.Components.Infrastructure.Identity;
 global using Masa.Stack.Components.Layouts;
