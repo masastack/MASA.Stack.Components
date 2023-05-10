@@ -77,12 +77,7 @@ public class ExpansionMenu
         StateChangedAsync = stateChangedAsync;
         Data = new Dictionary<string, string>();
 
-        SetTypeDeepRange();
-    }
-
-    private ExpansionMenu CreateViewElement()
-    {
-        return new ExpansionMenu(GetViewElementId(), VIEW_ELEMENT_NAME, ExpansionMenuType.Element, State, Metadata, Impersonal, Disabled,this);
+        SetTypeDeepStart();
     }
 
     private string GetViewElementId() => $"{Id}-{VIEW_ELEMENT_NAME}";
@@ -109,7 +104,7 @@ public class ExpansionMenu
 
     public ExpansionMenu? Parent { get; private set; }
 
-    public IReadOnlyList<ExpansionMenu> Children { get; set; }
+    public IReadOnlyList<ExpansionMenu> Children { get; private set; }
 
     public Func<ExpansionMenu, Task>? StateChangedAsync { get; set; }
 
@@ -131,8 +126,7 @@ public class ExpansionMenu
         
         if (Children.Count == 0 && Parent != null)
         {
-            var searchChildren= Parent.Children.Where(children => children.Filter(translateProvider, search));
-            var hiddenChildren = Parent.Children.ExceptBy(searchChildren.Select(child => child.Id), child => child.Id);
+            var hiddenChildren= Parent.Children.Where(children => !children.Filter(translateProvider, search));
             foreach (var child in hiddenChildren)
             {
                 child.Hidden = true;
@@ -208,14 +202,6 @@ public class ExpansionMenu
         return data;
     }
 
-    public void SetTypeDeepRange()
-    {
-        if (Metadata.TypeDeepStartDict.ContainsKey(Type)&&Parent != null && Parent.Type != Type)
-        {
-            Metadata.TypeDeepStartDict[Type] = Deep;
-        }
-    }
-
     public int GetNavDeep()
     {
         if (!Metadata.TypeDeepStartDict.TryGetValue(ExpansionMenuType.Nav, out int start))
@@ -232,6 +218,11 @@ public class ExpansionMenu
         
         List<ExpansionMenu> GetMenusByStateInternal(ExpansionMenu menu, List<ExpansionMenu> stateMenus)
         {
+            if (Type == ExpansionMenuType.Element && Id == GetViewElementId())
+            {
+                return stateMenus;
+            }
+            
             if (states.Contains(menu.State))
             {
                 stateMenus.Add(menu);
@@ -429,6 +420,20 @@ public class ExpansionMenu
     private ExpansionMenu Clone()
     {
         return new ExpansionMenu(Id, Name, Type, State, Metadata, Disabled);
+    }
+    
+    
+    private ExpansionMenu CreateViewElement()
+    {
+        return new ExpansionMenu(GetViewElementId(), VIEW_ELEMENT_NAME, ExpansionMenuType.Element, State, Metadata, Impersonal, Disabled,this);
+    }
+
+    private void SetTypeDeepStart()
+    {
+        if (Metadata.TypeDeepStartDict.ContainsKey(Type)&&Parent != null && Parent.Type != Type)
+        {
+            Metadata.TypeDeepStartDict[Type] = Deep;
+        }
     }
 
     public static ExpansionMenu CreateRootMenu(ExpansionMenuSituation situation)
