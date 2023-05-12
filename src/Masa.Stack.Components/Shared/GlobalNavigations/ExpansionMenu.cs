@@ -126,7 +126,7 @@ public class ExpansionMenu : ICloneable
 
     public void SetSituation(ExpansionMenuSituation situation)
     {
-        MetaData.Situation = ExpansionMenuSituation.Authorization;
+        MetaData.Situation = situation;
         foreach (var child in Children)
         {
             child.SetSituation(situation);
