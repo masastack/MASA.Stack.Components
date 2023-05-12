@@ -15,15 +15,16 @@
                        OnClick="ItemClick" ActiveClass="GetActiveClass()">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="@(Value.State == ExpansionMenuState.Selected?"color: #323D6F;":"")">@I18n.T(Value.Name)
+                        <MListItemTitle Style="@(Value.State == ExpansionMenuState.Selected?"color: #323D6F;":"")">
+                            @DT(Value.Name)
                         </MListItemTitle>
                     </MListItemContent>
                     <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
-                        @if (Value.Metadata.Situation == ExpansionMenuSituation.Authorization)
+                        @if (Value.MetaData.Situation == ExpansionMenuSituation.Authorization)
                         {
                             <MCheckbox Color="primary" Indeterminate=indeterminate Dense Value="@(indeterminate || selected)" />
                         }
-                        else if (Value.Metadata.Situation == ExpansionMenuSituation.Favorite)
+                        else if (Value.MetaData.Situation == ExpansionMenuSituation.Favorite)
                         {
                             <SAutoLoadingButton Icon XSmall Color="@(isFavorited ? "#FFB547" : "")" OnClick="ItemOperClick"
                                                 StopPropagation>
@@ -31,7 +32,7 @@
                             </SAutoLoadingButton>
                         }
                     </MListItemAction>
-                    @if (!context.Hover && Value.Metadata.Situation != ExpansionMenuSituation.Preview)
+                    @if (!context.Hover && Value.MetaData.Situation != ExpansionMenuSituation.Preview)
                     {
                         switch (Value.State)
                         {
@@ -56,10 +57,10 @@
         else if (Value.Type == ExpansionMenuType.Element)
         {
             <MListItem @attributes="@context.Attrs" Class="@GetClass(context.Hover)" Disabled="Value.Disabled"
-                       OnClick="ItemClick" Value="Value.Id" ActiveClass="GetActiveClass()" Style="@GetIsDisplayStyle(Value.Metadata.Situation == ExpansionMenuSituation.Authorization)">
+                       OnClick="ItemClick" Value="Value.Id" ActiveClass="GetActiveClass()" Style="@GetIsDisplayStyle(Value.MetaData.Situation == ExpansionMenuSituation.Authorization)">
                 <ItemContent Context="item">
                     <MListItemContent>
-                        <MListItemTitle Style="@(selected ? "color: #323D6F;" : "")">@I18n.T(Value.Name)</MListItemTitle>
+                        <MListItemTitle Style="@(selected ? "color: #323D6F;" : "")">@DT(Value.Name)</MListItemTitle>
                     </MListItemContent>
 
                     @if (!Value.Disabled)
@@ -87,12 +88,12 @@
 
     @if (Value.GetNavDeep() == 0 && Value.Children.Any(child=>!child.Hidden))
     {
-        <div class="mx-4" style="border: 1px dashed #E4E8F3;"></div>
+        <div class="mx-4" data-count="@Value.Children.Count(child=>!child.Hidden)" style="border: 1px dashed #E4E8F3;"></div>
     }
 </div>
 
 
-@foreach(var nav in Value.Children)
+@foreach(var child in Value.Children)
 {
-    <ExpansionNavWrapper Value="nav" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick" />
+    <ExpansionNavWrapper Value="child" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick" />
 }

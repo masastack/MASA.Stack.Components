@@ -34,41 +34,43 @@ public enum ExpansionMenuStatePopDirection
     Children = 2,
 }
 
-public record ExpansionMenuMetadata
+public record ExpansionMenuMetaData
 {
-    public ExpansionMenuMetadata()
+    public ExpansionMenuMetaData()
     {
-        TypeDeepStartDict = new Dictionary<ExpansionMenuType, int>();
-        TypeDeepStartDict.Add(ExpansionMenuType.Root, -1);
-        TypeDeepStartDict.Add(ExpansionMenuType.Category, -1);
-        TypeDeepStartDict.Add(ExpansionMenuType.App, -1);
-        TypeDeepStartDict.Add(ExpansionMenuType.Nav, -1);
-        TypeDeepStartDict.Add(ExpansionMenuType.Element, -1);
-        TypeDeepStartDict.Add(ExpansionMenuType.Api, -1);
+        TypeDeepStartDic = new Dictionary<ExpansionMenuType, int>() {
+            {ExpansionMenuType.Root, -1 },
+            {ExpansionMenuType.Category, -1 },
+            {ExpansionMenuType.App, -1 },
+            {ExpansionMenuType.Nav, -1 },
+            {ExpansionMenuType.Element, -1 },
+            {ExpansionMenuType.Api, -1}
+        };
     }
-    
-    public ExpansionMenuMetadata(ExpansionMenuSituation situation) : this()
+
+    public ExpansionMenuMetaData(ExpansionMenuSituation situation) : this()
     {
         Situation = situation;
     }
-    
-    public IDictionary<ExpansionMenuType, int> TypeDeepStartDict { get; set; }
+
+    public IDictionary<ExpansionMenuType, int> TypeDeepStartDic { get; set; }
 
     public ExpansionMenuSituation Situation { get; set; } = ExpansionMenuSituation.Preview;
 }
 
-public class ExpansionMenu
+public class ExpansionMenu : ICloneable
 {
     private const string VIEW_ELEMENT_NAME = "view";
     private readonly List<ExpansionMenu> _children;
-    
-    public ExpansionMenu(string id, string name, ExpansionMenuType type, ExpansionMenuState state, ExpansionMenuMetadata? metadata = null, bool impersonal = false, bool disabled = false, ExpansionMenu? parent = null, List<ExpansionMenu>? children = null, Func<ExpansionMenu, Task>? stateChangedAsync = null)
+
+
+    public ExpansionMenu(string id, string name, ExpansionMenuType type, ExpansionMenuState state, ExpansionMenuMetaData? metaData = null, bool impersonal = false, bool disabled = false, ExpansionMenu? parent = null, List<ExpansionMenu>? children = null, Func<ExpansionMenu, Task>? stateChangedAsync = null)
     {
         Id = id;
         Name = name;
         Type = type;
         State = state;
-        Metadata = metadata ?? new ExpansionMenuMetadata();
+        MetaData = metaData ?? new ExpansionMenuMetaData();
         Impersonal = impersonal;
         Deep = parent != null ? parent.Deep + 1 : 0;
         Parent = parent;
@@ -76,6 +78,7 @@ public class ExpansionMenu
         Children = _children.AsReadOnly();
         StateChangedAsync = stateChangedAsync;
         Data = new Dictionary<string, string>();
+        Disabled = disabled;
 
         SetTypeDeepStart();
     }
@@ -90,7 +93,7 @@ public class ExpansionMenu
 
     public ExpansionMenuState State { get; private set; }
 
-    public ExpansionMenuMetadata Metadata { get; private set; }
+    public ExpansionMenuMetaData MetaData { get; private set; }
 
     public IDictionary<string, string> Data { get; set; }
 
@@ -106,6 +109,7 @@ public class ExpansionMenu
 
     public IReadOnlyList<ExpansionMenu> Children { get; private set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public Func<ExpansionMenu, Task>? StateChangedAsync { get; set; }
 
     public ExpansionMenu AddChild(ExpansionMenu child)
@@ -114,24 +118,41 @@ public class ExpansionMenu
         {
             _children.Add(CreateViewElement());
         }
-        
+
         _children.Add(child);
         Children = _children.AsReadOnly();
         return this;
     }
 
+    public void SetSituation(ExpansionMenuSituation situation)
+    {
+        MetaData.Situation = ExpansionMenuSituation.Authorization;
+        foreach (var child in Children)
+        {
+            child.SetSituation(situation);
+        }
+    }
+
+    public void Show()
+    {
+        foreach (var child in Children)
+        {
+            child.Hidden = false;
+            child.Show();
+        }
+    }
+
     public void SetHiddenBySearch(string? search, DynamicTranslateProvider translateProvider)
     {
-        Hidden = false;
-        
-        if (Children.Count == 0 && Parent != null)
+        if (Type == ExpansionMenuType.Nav)
         {
-            var hiddenChildren= Parent.Children.Where(children => !children.Filter(translateProvider, search));
-            foreach (var child in hiddenChildren)
+            Hidden = !Filter(translateProvider, search);
+            // Show all children when parent is found
+            if (!Hidden)
             {
-                child.Hidden = true;
+                Show();
+                return;
             }
-            return;
         }
 
         foreach (var child in Children)
@@ -139,33 +160,42 @@ public class ExpansionMenu
             child.SetHiddenBySearch(search, translateProvider);
         }
 
-        if (Children.All(child => child.Hidden))
-        {
-            Hidden = true;
-        }
+        Hidden = Children.All(child => child.Hidden);
     }
 
     public void SetHiddenByPreview(bool preview)
     {
-        Hidden = false;
-        var hasLastNav = (Children.Count == 0 || Children.First().Type == ExpansionMenuType.Element);
-        if(Type == ExpansionMenuType.Nav && hasLastNav && State != ExpansionMenuState.Selected && State != ExpansionMenuState.Indeterminate)
+        if (!preview)
         {
             Hidden = preview;
+            foreach (var child in Children)
+            {
+                child.SetHiddenByPreview(preview);
+            }
             return;
         }
-        
-        if (hasLastNav)
+        if (Type == ExpansionMenuType.Element)
         {
+            Hidden = true;
             return;
         }
-        
-        foreach (var child in Children)
+        if (Type == ExpansionMenuType.Nav && State != ExpansionMenuState.Selected && State != ExpansionMenuState.Indeterminate)
         {
-            child.SetHiddenByPreview(preview);
+            Hidden = true;
         }
 
-        Hidden = Children.All(child => child.Hidden);
+        if (Children.Count > 0)
+        {
+            foreach (var child in Children)
+            {
+                child.SetHiddenByPreview(preview);
+            }
+        }
+
+        if (Type == ExpansionMenuType.App || Type == ExpansionMenuType.Category)
+        {
+            Hidden = Children.All(child => child.Hidden);
+        }
     }
 
     private bool Filter(DynamicTranslateProvider translateProvider, string? search)
@@ -174,7 +204,6 @@ public class ExpansionMenu
         {
             return true;
         }
-
         return translateProvider.DT(Name).Contains(search, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -204,7 +233,7 @@ public class ExpansionMenu
 
     public int GetNavDeep()
     {
-        if (!Metadata.TypeDeepStartDict.TryGetValue(ExpansionMenuType.Nav, out int start))
+        if (!MetaData.TypeDeepStartDic.TryGetValue(ExpansionMenuType.Nav, out int start))
         {
             return Deep;
         }
@@ -215,19 +244,19 @@ public class ExpansionMenu
     public List<ExpansionMenu> GetMenusByStates(params ExpansionMenuState[] states)
     {
         return GetMenusByStateInternal(this, new List<ExpansionMenu>());
-        
+
         List<ExpansionMenu> GetMenusByStateInternal(ExpansionMenu menu, List<ExpansionMenu> stateMenus)
         {
             if (Type == ExpansionMenuType.Element && Id == GetViewElementId())
             {
                 return stateMenus;
             }
-            
+
             if (states.Contains(menu.State))
             {
                 stateMenus.Add(menu);
             }
-            
+
             foreach (var stateMenu in menu.Children)
             {
                 stateMenus = GetMenusByStateInternal(stateMenu, stateMenus);
@@ -246,7 +275,7 @@ public class ExpansionMenu
 
     private async Task ChangeStateWithViewElementAsync(ExpansionMenuState newState)
     {
-        if (Type != ExpansionMenuType.Element || Metadata.Situation != ExpansionMenuSituation.Authorization || Parent == null)
+        if (Type != ExpansionMenuType.Element || MetaData.Situation != ExpansionMenuSituation.Authorization || Parent == null)
         {
             return;
         }
@@ -255,7 +284,7 @@ public class ExpansionMenu
         {
             return;
         }
-        
+
         var viewElementId = Parent.GetViewElementId();
         if (Id == viewElementId && (newState == ExpansionMenuState.Normal || newState == ExpansionMenuState.Impersonal))
         {
@@ -278,7 +307,7 @@ public class ExpansionMenu
     private ExpansionMenuState CalcState()
     {
         var newState = State;
-        switch (Metadata.Situation)
+        switch (MetaData.Situation)
         {
             case ExpansionMenuSituation.Preview:
                 newState = CalcNewStateForPreview();
@@ -326,7 +355,7 @@ public class ExpansionMenu
         {
             await StateChangedAsync.Invoke(this);
         }
-        
+
         if (popDirection == ExpansionMenuStatePopDirection.UnSet || popDirection == ExpansionMenuStatePopDirection.Children)
         {
             await PopChildrenStateAsync();
@@ -344,7 +373,7 @@ public class ExpansionMenu
             return Task.CompletedTask;
         }
 
-        switch (Metadata.Situation)
+        switch (MetaData.Situation)
         {
             case ExpansionMenuSituation.Authorization:
                 return PopParentStateWithAuthorizationAsync(Parent);
@@ -354,7 +383,7 @@ public class ExpansionMenu
                 return Task.CompletedTask;
         }
     }
-    
+
     private async Task PopChildrenStateAsync()
     {
         if (Children.Count == 0 || State == ExpansionMenuState.Indeterminate)
@@ -383,7 +412,7 @@ public class ExpansionMenu
         {
             return parent.PopStateAsync(ExpansionMenuState.Indeterminate, ExpansionMenuStatePopDirection.Parent);
         }
-        
+
         var childrenAllImpersonal = parent.Children.Any(child => child.State == ExpansionMenuState.Impersonal);
         if (childrenAllImpersonal)
         {
@@ -416,29 +445,28 @@ public class ExpansionMenu
 
         return Task.CompletedTask;
     }
-    
-    private ExpansionMenu Clone()
-    {
-        return new ExpansionMenu(Id, Name, Type, State, Metadata, Disabled);
-    }
-    
-    
+
     private ExpansionMenu CreateViewElement()
     {
-        return new ExpansionMenu(GetViewElementId(), VIEW_ELEMENT_NAME, ExpansionMenuType.Element, State, Metadata, Impersonal, Disabled,this);
+        return new ExpansionMenu(GetViewElementId(), VIEW_ELEMENT_NAME, ExpansionMenuType.Element, State, MetaData, Impersonal, Disabled, this);
     }
 
     private void SetTypeDeepStart()
     {
-        if (Metadata.TypeDeepStartDict.ContainsKey(Type)&&Parent != null && Parent.Type != Type)
+        if (MetaData.TypeDeepStartDic.ContainsKey(Type) && Parent != null && Parent.Type != Type)
         {
-            Metadata.TypeDeepStartDict[Type] = Deep;
+            MetaData.TypeDeepStartDic[Type] = Deep;
         }
     }
 
     public static ExpansionMenu CreateRootMenu(ExpansionMenuSituation situation)
     {
-        var metaData = new ExpansionMenuMetadata() {Situation = situation};
+        var metaData = new ExpansionMenuMetaData() { Situation = situation };
         return new ExpansionMenu("root", "root", ExpansionMenuType.Root, ExpansionMenuState.Normal, metaData);
+    }
+
+    public object Clone()
+    {
+        return new ExpansionMenu(Id, Name, Type, State, MetaData with { }, Impersonal, Disabled, Parent, Children.Select(c => (ExpansionMenu)c.Clone()).ToList(), StateChangedAsync);
     }
 }
