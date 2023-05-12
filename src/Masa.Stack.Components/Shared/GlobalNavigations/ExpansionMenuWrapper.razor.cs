@@ -22,7 +22,7 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
 
     protected virtual async Task ItemClick(ExpansionMenu menu)
     {
-        if (Value.Metadata.Situation == ExpansionMenuSituation.Authorization)
+        if (Value.MetaData.Situation == ExpansionMenuSituation.Authorization)
         {
             await menu.ChangeStateAsync();
         }

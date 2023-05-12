@@ -2,7 +2,7 @@
 @inherits MasaComponentBase
 
 @{
-    var disableAppOper = Value.Metadata.Situation == ExpansionMenuSituation.Preview || Value.Metadata.Situation == ExpansionMenuSituation.Favorite;
+    var disableAppOper = Value.MetaData.Situation == ExpansionMenuSituation.Preview || Value.MetaData.Situation == ExpansionMenuSituation.Favorite;
 }
 <div class="app" style="@GetIsDisplayStyle(!Value.Hidden)">@*  id="@App.TagID(CategoryCode, TagIDPrefix)"> *@
     <MHover Disabled="disableAppOper" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">

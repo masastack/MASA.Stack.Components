@@ -84,10 +84,10 @@ public partial class GlobalNavigation : MasaComponentBase
 
             foreach (var category in categories)
             {
-                var categoryMenu = new ExpansionMenu(category.Key, category.Key, ExpansionMenuType.Category, ExpansionMenuState.Normal, menu.Metadata, parent: menu);
+                var categoryMenu = new ExpansionMenu(category.Key, category.Key, ExpansionMenuType.Category, ExpansionMenuState.Normal, menu.MetaData, parent: menu);
                 foreach (var app in category.Where(a => a.Navs.Any()))
                 {
-                    var appMenu = new ExpansionMenu(app.Id.ToString(), app.Name, ExpansionMenuType.App, ExpansionMenuState.Normal, menu.Metadata, parent: categoryMenu);
+                    var appMenu = new ExpansionMenu(app.Id.ToString(), app.Name, ExpansionMenuType.App, ExpansionMenuState.Normal, menu.MetaData, parent: categoryMenu);
                     foreach (var nav in app.Navs)
                     {
                         appMenu.AddChild(ConvertForNav(nav, appMenu.Deep + 1, appMenu, favorites));
@@ -107,7 +107,7 @@ public partial class GlobalNavigation : MasaComponentBase
     private ExpansionMenu ConvertForNav(NavModel navModel, int deep, ExpansionMenu parent, List<string> favorites)
     {
         var state = favorites.Any(favorite => favorite == navModel.Code) ? ExpansionMenuState.Favorite : ExpansionMenuState.Normal;
-        var menu = new ExpansionMenu(navModel.Code, navModel.Name, ExpansionMenuType.Nav, state, parent.Metadata, parent: parent)
+        var menu = new ExpansionMenu(navModel.Code, navModel.Name, ExpansionMenuType.Nav, state, parent.MetaData, parent: parent)
             .AddData(MENU_URL_NAME, navModel.Url);
         foreach (var childrenNav in navModel.Children)
         {
