@@ -4,7 +4,7 @@
 @{
     var disableAppOper = Value.MetaData.Situation == ExpansionMenuSituation.Preview || Value.MetaData.Situation == ExpansionMenuSituation.Favorite;
 }
-<div class="app" style="@GetIsDisplayStyle(!Value.Hidden)">@*  id="@App.TagID(CategoryCode, TagIDPrefix)"> *@
+<div class="app" style="@GetIsDisplayStyle(!Value.Hidden)"> 
     <MHover Disabled="disableAppOper" Class="masa-text-highlight-1 mb-0 d-flex justify-space-between">
         <div @attributes="@context.Attrs" class="d-flex">
             <span class="masa-text-2-2 d-inline-block text-truncate">

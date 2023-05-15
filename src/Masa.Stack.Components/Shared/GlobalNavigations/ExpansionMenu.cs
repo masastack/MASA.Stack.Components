@@ -60,9 +60,8 @@ public record ExpansionMenuMetaData
 
 public class ExpansionMenu : ICloneable
 {
-    private const string VIEW_ELEMENT_NAME = "view";
+    private const string VIEW_ELEMENT_NAME = "View";
     private readonly List<ExpansionMenu> _children;
-
 
     public ExpansionMenu(string id, string name, ExpansionMenuType type, ExpansionMenuState state, ExpansionMenuMetaData? metaData = null, bool impersonal = false, bool disabled = false, ExpansionMenu? parent = null, List<ExpansionMenu>? children = null, Func<ExpansionMenu, Task>? stateChangedAsync = null)
     {
@@ -116,7 +115,7 @@ public class ExpansionMenu : ICloneable
     {
         if (child.Type == ExpansionMenuType.Element && !(Children.Any(c => c.Name == VIEW_ELEMENT_NAME)))
         {
-            _children.Add(CreateViewElement());
+            _children.Add(new ExpansionMenu(GetViewElementId(), VIEW_ELEMENT_NAME, ExpansionMenuType.Element, State, MetaData, Impersonal, Disabled, this));
         }
 
         _children.Add(child);
@@ -192,9 +191,9 @@ public class ExpansionMenu : ICloneable
             }
         }
 
-        if (Type == ExpansionMenuType.App || Type == ExpansionMenuType.Category)
+        if (Type <= ExpansionMenuType.App)
         {
-            Hidden = Children.All(child => child.Hidden);
+            Hidden = Children.Count == 0 || Children.All(child => child.Hidden);
         }
     }
 
@@ -444,11 +443,6 @@ public class ExpansionMenu : ICloneable
         }
 
         return Task.CompletedTask;
-    }
-
-    private ExpansionMenu CreateViewElement()
-    {
-        return new ExpansionMenu(GetViewElementId(), VIEW_ELEMENT_NAME, ExpansionMenuType.Element, State, MetaData, Impersonal, Disabled, this);
     }
 
     private void SetTypeDeepStart()
