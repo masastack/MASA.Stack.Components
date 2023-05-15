@@ -31,7 +31,14 @@ public partial class SDateTimeTitle
         get => _value;
         set
         {
-            _value = value?.Add(DisplayTimezoneOffset);       
+            if (value != null && value != new DateTime())
+            {
+                _value = value?.Add(DisplayTimezoneOffset);
+            }
+            else
+            {
+                _value = value;
+            }
         }
     }
 

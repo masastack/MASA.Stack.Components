@@ -4,21 +4,17 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
 {
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
-    
+
     [Parameter]
     public ExpansionMenu? Value { get; set; }
 
-    [Parameter] 
+    [Parameter]
     public EventCallback<ExpansionMenu> OnItemClick { get; set; }
 
-    [Parameter] 
+    [Parameter]
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
-    
-    [Parameter]
-    public string SideStyle { get; set; } = "";
 
-    [Parameter]
-    public string SideClass { get; set; } = "";
+    private readonly string idPrefix = "g" + Guid.NewGuid().ToString();
 
     protected virtual async Task ItemClick(ExpansionMenu menu)
     {

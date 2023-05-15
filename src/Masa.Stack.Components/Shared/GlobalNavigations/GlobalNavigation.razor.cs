@@ -2,8 +2,8 @@
 
 public partial class GlobalNavigation : MasaComponentBase
 {
-    private const string MENU_URL_NAME = "url"; 
-    
+    private const string MENU_URL_NAME = "url";
+
     [Parameter]
     public RenderFragment<ActivatorProps> ActivatorContent { get; set; } = null!;
 
@@ -29,7 +29,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private async Task GetRecommendApps()
     {
-        //todo pm config
+        //TODO pm config
         var recommendAppIdentities = new List<string>() { MasaStackConfig.GetWebId(MasaStackConstant.PM), MasaStackConfig.GetWebId(MasaStackConstant.DCC), MasaStackConfig.GetWebId(MasaStackConstant.AUTH) };
         var projects = await PmClient.ProjectService.GetProjectAppsAsync(EnvironmentProvider.GetEnvironment());
         _recommendApps = projects.SelectMany(p => p.Apps).Where(a => recommendAppIdentities.Contains(a.Identity))
@@ -92,7 +92,7 @@ public partial class GlobalNavigation : MasaComponentBase
                     {
                         appMenu.AddChild(ConvertForNav(nav, appMenu.Deep + 1, appMenu, favorites));
                     }
-                    categoryMenu.AddChild(appMenu); 
+                    categoryMenu.AddChild(appMenu);
                 }
                 menu.AddChild(categoryMenu);
             }
@@ -122,7 +122,7 @@ public partial class GlobalNavigation : MasaComponentBase
         return (await AuthClient.PermissionService.GetFavoriteMenuListAsync())
             .Select(m => m.Value.ToString()).ToList();
     }
-    
+
     private async Task GetRecentVisits()
     {
         var visitedList = await AuthClient.UserService.GetVisitedListAsync();
