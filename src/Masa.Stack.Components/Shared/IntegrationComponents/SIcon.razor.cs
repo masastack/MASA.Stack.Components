@@ -40,16 +40,16 @@ public partial class SIcon : MIcon
 
     private void InitDefaultToolTip()
     {
-        if (IsDefaultToolTip && Tooltip is null && Icon is not null)
+        if (IsDefaultToolTip && Tooltip is null && IconContent is not null)
         {
-            Icon = Icon.Trim();
-            if (IconI18N.TryGetValue(Icon, out string? value))
+            var icon = IconContent.Trim();
+            if (IconI18N.TryGetValue(icon, out string? value))
             {
                 Tooltip = I18N?.T(value);
             }
             else
             {
-                value = IconI18N.FirstOrDefault(x => Icon.Contains(x.Key)).Value;
+                value = IconI18N.FirstOrDefault(x => icon.Contains(x.Key)).Value;
                 if (value is not null)
                 {
                     Tooltip = I18N?.T(value);
