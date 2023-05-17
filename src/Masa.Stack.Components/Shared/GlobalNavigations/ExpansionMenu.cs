@@ -62,6 +62,7 @@ public class ExpansionMenu : ICloneable
 {
     private const string VIEW_ELEMENT_NAME = "View";
     private readonly List<ExpansionMenu> _children;
+    private ExpansionMenuState _state;
 
     public ExpansionMenu(string id, string name, ExpansionMenuType type, ExpansionMenuState state, ExpansionMenuMetaData? metaData = null, bool impersonal = false, bool disabled = false, ExpansionMenu? parent = null, List<ExpansionMenu>? children = null, Func<ExpansionMenu, Task>? stateChangedAsync = null)
     {
@@ -90,7 +91,29 @@ public class ExpansionMenu : ICloneable
 
     public ExpansionMenuType Type { get; private set; }
 
-    public ExpansionMenuState State { get; private set; }
+    public ExpansionMenuState State
+    {
+        get
+        {
+            //if (_state != ExpansionMenuState.Selected)
+            //{
+            //    return _state;
+            //}
+            //else if (_children.Any(c => c.State != ExpansionMenuState.Selected))
+            //{
+            //    return ExpansionMenuState.Indeterminate;
+            //}
+            //else
+            //{
+            //    return _state;
+            //}
+            return _state;
+        }
+        private set
+        {
+            _state = value;
+        }
+    }
 
     public ExpansionMenuMetaData MetaData { get; private set; }
 
