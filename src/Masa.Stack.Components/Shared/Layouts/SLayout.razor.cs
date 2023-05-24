@@ -129,6 +129,7 @@ public partial class SLayout
                         new Nav("simpleConfirmExample", "simpleConfirmExample", default,"/simpleConfirmExample", "father"),
                         new Nav("empty", "empty", default,"/empty", "father"),
                         new Nav("icons", "icons", default,"/icons", "father"),
+                        new Nav("searchPanelExample", "searchPanelExample", default,"/searchPanelExample", "father"),
                     }),
                 };
             }
