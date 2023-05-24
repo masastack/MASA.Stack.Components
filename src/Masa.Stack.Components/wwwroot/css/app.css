@@ -848,3 +848,12 @@ body, .masa-stack-components {
     padding-left: 22px;
     padding-right: 24px;
 }
+
+.masa-stack-components .filter-button {
+    min-width: 40px;
+    min-height: 40px;
+    border: 1px solid #F0F3FA;
+    box-sizing: border-box;
+    border-radius: 10px;
+    cursor: pointer;
+}

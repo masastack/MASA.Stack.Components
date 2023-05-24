@@ -1,0 +1,32 @@
+﻿@page "/searchPanelExample"
+@using Masa.Stack.Components.Shared.IntegrationComponents
+
+<SSearchPanel @bind-Value="@Filter" Advanced OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" OnClick="HandleClickAsync">
+    <ChildContent>
+        标题
+    </ChildContent>
+    <AdvancedContent>
+        <SDateRangePicker />
+    </AdvancedContent>
+</SSearchPanel>
+
+@code {
+    public string Filter { get; set; } = string.Empty;
+
+    public Guid ChannelId { get; set; }
+
+    private async Task RefreshAsync()
+    {
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleClearAsync()
+    {
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleClickAsync()
+    {
+        await Task.CompletedTask;
+    }
+}

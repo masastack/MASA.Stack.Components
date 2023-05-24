@@ -15,7 +15,7 @@ builder.Services.AddScoped<TokenProvider>();
 builder.AddMasaStackComponentsForServer(default);
 builder.Services.AddMasaOpenIdConnect(new MasaOpenIdConnectOptions()
 {
-    Authority = "https://sso-develop.masastack.com/",
+    Authority = "https://auth-sso-dev.masastack.com",
     ClientId = "masa.stack.web-development",
     Scopes = new List<string> { "offline_access" }
 });
