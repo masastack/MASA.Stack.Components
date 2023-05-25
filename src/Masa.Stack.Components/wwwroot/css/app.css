@@ -857,3 +857,8 @@ body, .masa-stack-components {
     border-radius: 10px;
     cursor: pointer;
 }
+
+.masa-stack-components .m-input__append-outer {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
