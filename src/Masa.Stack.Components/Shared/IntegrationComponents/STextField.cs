@@ -106,7 +106,6 @@ public class STextField<TValue> : MTextField<TValue>
                 builder.OpenComponent<SIcon>(0);
                 builder.AddAttribute(1, "Tooltip", Tooltip);
                 builder.AddAttribute(2, "ChildContent", (RenderFragment)(cb => cb.AddContent(3, "mdi-help-circle-outline")));
-                builder.AddAttribute(4, "Style", "margin-top: 6px;");
                 builder.CloseComponent();
             };
         }
