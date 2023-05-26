@@ -30,7 +30,7 @@
     {
         <ExpandTransition>
             <ShowTransitionElement Value="_advanced">
-                <MRow Class="@($"mt-6 flex-none")" NoGutters="AdvancedNoGutters">
+                <MRow Class="@($"{ComputedAdvancedClass} flex-none")" NoGutters="AdvancedNoGutters">
                     @AdvancedContent
                 </MRow>
             </ShowTransitionElement>
@@ -40,7 +40,7 @@
     {
         @if (_advanced)
         {
-            <MRow Class="@($"mt-6 flex-none animate__animated {_animate}")" NoGutters="AdvancedNoGutters">
+            <MRow Class="@($"{ComputedAdvancedClass} flex-none animate__animated {_animate}")" NoGutters="AdvancedNoGutters">
                 @AdvancedContent
             </MRow>
         }
@@ -62,6 +62,9 @@
 
     [Parameter]
     public bool Advanced { get; set; }
+
+    [Parameter]
+    public string AdvancedClass { get; set; } = string.Empty;
 
     [Parameter]
     public bool AdvancedNoGutters { get; set; }
@@ -126,6 +129,19 @@
             }
 
             return I18n.T("Create");
+        }
+    }
+
+    public string ComputedAdvancedClass
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(AdvancedClass))
+            {
+                return AdvancedClass;
+            }
+
+            return AdvancedNoGutters ? "mt-6" : "mt-3";
         }
     }
 }
