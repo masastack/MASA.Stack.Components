@@ -29,7 +29,7 @@ public partial class SearchMenu
         {
             _menus = BuildMenus(GlobalConfig.Menus);
         }
-        return base.SetParametersAsync(parameters);
+        return base.SetParametersAsync(parameters);     
     }
 
     List<Menu> BuildMenus(List<Nav> navs, Menu? parent = null)

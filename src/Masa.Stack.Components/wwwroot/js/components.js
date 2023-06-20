@@ -31,7 +31,7 @@ window.MasaStackComponents.scrollTo = (target, inside = 'window') => {
                     element.classList.add('title_category_active')
                 }
             }
-        });
+        }); 
 
         var sideId = target +"_side";
         const sideElement = document.querySelector(sideId);

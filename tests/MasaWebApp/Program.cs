@@ -1,4 +1,5 @@
-using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
+// Ignore Spelling: app
+
 using Masa.Contrib.StackSdks.Caller;
 using Masa.Stack.Components;
 using Masa.Stack.Components.Extensions.OpenIdConnect;

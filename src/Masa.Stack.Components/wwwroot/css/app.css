@@ -841,3 +841,24 @@ body, .masa-stack-components {
 .masa-stack-components .navigation.m-navigation-drawer--mini-variant .isolation p {
     visibility: hidden;
 }
+
+.masa-stack-components .m-input__append-outer .mdi-help-circle-outline {
+    width: 24px;
+    height: 24px;
+    padding-left: 22px;
+    padding-right: 24px;
+}
+
+.masa-stack-components .filter-button {
+    min-width: 40px;
+    min-height: 40px;
+    border: 1px solid #F0F3FA;
+    box-sizing: border-box;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.masa-stack-components .m-input__append-outer {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}

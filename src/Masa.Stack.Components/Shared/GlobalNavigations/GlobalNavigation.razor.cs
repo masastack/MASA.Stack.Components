@@ -2,6 +2,8 @@
 
 public partial class GlobalNavigation : MasaComponentBase
 {
+    private const string MENU_URL_NAME = "url";
+
     [Parameter]
     public RenderFragment<ActivatorProps> ActivatorContent { get; set; } = null!;
 
@@ -11,32 +13,30 @@ public partial class GlobalNavigation : MasaComponentBase
     [Parameter]
     public Func<string, Task>? OnFavoriteRemove { get; set; }
 
-    string _searchMenu = string.Empty;
     bool _visible;
     List<(string name, string url)> _recentVisits = new();
-    List<Category> _categories { get; set; } = new();
     List<KeyValuePair<string, string>> _recommendApps = new();
-    List<CategoryAppNav> _favoriteNavs = new();
+    List<ExpansionMenu> _favorites = new();
+    ExpansionMenu? _menu;
 
     async Task IniDataAsync()
     {
-        _searchMenu = string.Empty;
-        _categories = await FetchCategories();
-        await GetFavoriteNavs(_categories);
+        _menu = await GenerateMenuAsync();
+        _favorites = _menu.GetMenusByStates(ExpansionMenuState.Favorite);
         await GetRecommendApps();
         await GetRecentVisits();
     }
 
     private async Task GetRecommendApps()
     {
-        //todo pm config
+        //TODO pm config
         var recommendAppIdentities = new List<string>() { MasaStackConfig.GetWebId(MasaStackConstant.PM), MasaStackConfig.GetWebId(MasaStackConstant.DCC), MasaStackConfig.GetWebId(MasaStackConstant.AUTH) };
         var projects = await PmClient.ProjectService.GetProjectAppsAsync(MultiEnvironmentContext.CurrentEnvironment);
         _recommendApps = projects.SelectMany(p => p.Apps).Where(a => recommendAppIdentities.Contains(a.Identity))
             .Select(a => new KeyValuePair<string, string>(a.Name, a.Url)).ToList();
     }
 
-    public async Task VisibleChanged(bool visible)
+    private async Task VisibleChanged(bool visible)
     {
         if (visible)
         {
@@ -45,69 +45,82 @@ public partial class GlobalNavigation : MasaComponentBase
         _visible = visible;
     }
 
-    private async Task<List<Category>> FetchCategories()
+    private void SearchChanged(string? search)
     {
-        var config = new TypeAdapterConfig();
-        config.NewConfig<AppModel, App>()
-            .Map(dest => dest.Code, src => src.Identity);
+        _menu?.SetHiddenBySearch(search, TranslateProvider);
+    }
 
+    private void MenuItemClickAsync(ExpansionMenu menu)
+    {
+        var url = menu.GetData(MENU_URL_NAME);
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return;
+        }
+
+        NavigateTo(url);
+    }
+
+    private async Task MenuItemOperClickAsync(ExpansionMenu menu)
+    {
+        if (menu.State == ExpansionMenuState.Normal)
+        {
+            await FavoriteRemoveAsync(menu);
+        }
+        else if (menu.State == ExpansionMenuState.Favorite)
+        {
+            await FavoriteAddAsync(menu);
+        }
+    }
+
+    private async Task<ExpansionMenu> GenerateMenuAsync()
+    {
+        var menu = ExpansionMenu.CreateRootMenu(ExpansionMenuSituation.Favorite);
         try
         {
             var apps = (await AuthClient.ProjectService.GetGlobalNavigations()).SelectMany(p => p.Apps).ToList();
-            var categories = apps.GroupBy(a => a.Tag).Select(ag => new Category(ag.Key, ag.Key, ag.Select(a => a.Adapt<App>(config)).Where(a => a.Navs.Any()).ToList())).ToList();
+            var categories = apps.GroupBy(a => a.Tag).ToList();
+            var favorites = await FetchFavorites();
 
-            return categories;
+            foreach (var category in categories)
+            {
+                var categoryMenu = new ExpansionMenu(category.Key, category.Key, ExpansionMenuType.Category, ExpansionMenuState.Normal, menu.MetaData, parent: menu);
+                foreach (var app in category.Where(a => a.Navs.Any()))
+                {
+                    var appMenu = new ExpansionMenu(app.Id.ToString(), app.Name, ExpansionMenuType.App, ExpansionMenuState.Normal, menu.MetaData, parent: categoryMenu);
+                    foreach (var nav in app.Navs)
+                    {
+                        appMenu.AddChild(ConvertForNav(nav, appMenu.Deep + 1, appMenu, favorites));
+                    }
+                    categoryMenu.AddChild(appMenu);
+                }
+                menu.AddChild(categoryMenu);
+            }
         }
         catch
         {
-
         }
 
-        return new();
+        return menu;
+    }
+
+    private ExpansionMenu ConvertForNav(NavModel navModel, int deep, ExpansionMenu parent, List<string> favorites)
+    {
+        var state = favorites.Any(favorite => favorite == navModel.Code) ? ExpansionMenuState.Favorite : ExpansionMenuState.Normal;
+        var menu = new ExpansionMenu(navModel.Code, navModel.Name, ExpansionMenuType.Nav, state, parent.MetaData, parent: parent)
+            .AddData(MENU_URL_NAME, navModel.Url);
+        foreach (var childrenNav in navModel.Children)
+        {
+            menu.AddChild(ConvertForNav(childrenNav, deep++, menu, favorites));
+        }
+        menu.Disabled = menu.Children.Count > 0;
+        return menu;
     }
 
     private async Task<List<string>> FetchFavorites()
     {
         return (await AuthClient.PermissionService.GetFavoriteMenuListAsync())
             .Select(m => m.Value.ToString()).ToList();
-    }
-
-    private async Task GetFavoriteNavs(List<Category> categories)
-    {
-        _favoriteNavs.Clear();
-
-        var categoryAppNavs = categories.SelectMany(category =>
-            category.Apps.SelectMany(app => app.Navs.Select(nav => new
-            CategoryAppNavModel(category.Code, app.Code, nav)))).ToList();
-
-        var favorites = await FetchFavorites();
-
-        foreach (var favorite in favorites)
-        {
-            var favoriteItem = ConvertFavoriteNavs(categoryAppNavs, favorite);
-            if (favoriteItem != null)
-            {
-                _favoriteNavs.Add(favoriteItem);
-            }
-        }
-
-        CategoryAppNav? ConvertFavoriteNavs(List<CategoryAppNavModel> items, string code)
-        {
-            var favoriteItem = items.FirstOrDefault(f => f.Nav.Code == code);
-            if (favoriteItem != null)
-            {
-                return new CategoryAppNav(favoriteItem.CategoryCode, favoriteItem.AppCode, favoriteItem.Nav.Code, default, favoriteItem.Nav);
-            }
-            else
-            {
-                var children = items.SelectMany(n => n.Nav.Children.Select(nav => new CategoryAppNavModel(n.CategoryCode, n.AppCode, nav))).ToList();
-                if (children.Any())
-                {
-                    return ConvertFavoriteNavs(children, code);
-                }
-            }
-            return null;
-        }
     }
 
     private async Task GetRecentVisits()
@@ -126,26 +139,32 @@ public partial class GlobalNavigation : MasaComponentBase
         NavigationManager.NavigateTo(url, forceLoad: true);
     }
 
-    private async Task FavoriteRemove(string nav)
+    private async Task FavoriteRemoveAsync(ExpansionMenu nav)
     {
-        var favoriteNav = _favoriteNavs.FirstOrDefault(e => e.Nav == nav);
-        _favoriteNavs.Remove(favoriteNav);
-        await OnFavoriteRemove.Invoke(favoriteNav.Nav);
+        var favoriteNav = _favorites.FirstOrDefault(e => e.Id == nav.Id);
+        if (favoriteNav == null)
+        {
+            return;
+        }
+
+        _favorites.Remove(favoriteNav);
+        if (OnFavoriteRemove != null)
+        {
+            await OnFavoriteRemove.Invoke(favoriteNav.Id);
+        }
     }
 
-    private async Task FavoriteChanged(List<CategoryAppNav> favoriteNavs)
+    private async Task FavoriteAddAsync(ExpansionMenu nav)
     {
-        favoriteNavs = favoriteNavs.Where(a => !a.NavModel!.HasChildren).ToList();
-        var removes = _favoriteNavs.Except(favoriteNavs);
-        foreach (var remove in removes)
+        if (_favorites.Any(e => e.Id == nav.Id))
         {
-            await OnFavoriteRemove.Invoke(remove.Nav);
+            return;
         }
-        var adds = favoriteNavs.Except(_favoriteNavs);
-        foreach (var add in adds)
+
+        _favorites.Add(nav);
+        if (OnFavoriteAdd != null)
         {
-            await OnFavoriteAdd.Invoke(add.Nav);
+            await OnFavoriteAdd.Invoke(nav.Id);
         }
-        _favoriteNavs = favoriteNavs;
     }
 }
