@@ -1,7 +1,7 @@
 ﻿
 namespace Masa.Stack.Components;
 
-public abstract class MasaComponentBase : ComponentBase
+public abstract class MasaComponentBase : NextTickComponentBase
 {
     [Inject]
     public I18n I18n { get; set; } = null!;

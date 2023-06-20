@@ -79,7 +79,7 @@ public partial class Notification : MasaComponentBase
         else
         {
             _showMenu = false;
-            NavigationManager.NavigateTo("/notification-center", true);
+            NavigationManager.NavigateTo("/notification-center");
         }
     }
 
