@@ -22,7 +22,7 @@
                     <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
                         @if (Value.MetaData.Situation == ExpansionMenuSituation.Authorization)
                         {
-                            <MCheckbox Color="primary" Indeterminate=indeterminate Dense Value="@(indeterminate || selected)" />
+                            <MCheckbox Color="primary" Indeterminate=indeterminate Dense Value="@(indeterminate || selected)" TValue="bool" />
                         }
                         else if (Value.MetaData.Situation == ExpansionMenuSituation.Favorite)
                         {
@@ -66,7 +66,7 @@
                     @if (!Value.Disabled)
                     {
                         <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
-                            <MCheckbox Dense Value="selected"></MCheckbox>
+                            <MCheckbox Dense Value="selected" TValue="bool"></MCheckbox>
                         </MListItemAction>
                         @if (!context.Hover)
                         {
