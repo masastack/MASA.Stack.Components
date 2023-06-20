@@ -1,30 +1,110 @@
 ﻿namespace Masa.Stack.Components.Layouts
 {
-    public partial class Breadcrumbs : MasaComponentBase
+    public partial class Breadcrumbs : MasaComponentBase, IDisposable
     {
         [Parameter, EditorRequired]
         public List<Nav> FlattenedNavs { get; set; } = new();
 
+        private List<Nav>? _previousFlattenedNavs;
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
+        }
+
         protected override void OnParametersSet()
         {
-            var url = new Uri(NavigationManager.Uri).AbsolutePath;
+            base.OnParametersSet();
 
-            var currentNav = FlattenedNavs.FirstOrDefault(n => n.Url == url);
-            if (currentNav == null)
+            if (_previousFlattenedNavs != FlattenedNavs)
             {
-                Items = new List<BreadcrumbItem>();
+                _previousFlattenedNavs = FlattenedNavs;
+
+                UpdateItems();
+            }
+        }
+
+        private void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
+        {
+            UpdateItems();
+
+            InvokeAsync(StateHasChanged);
+        }
+
+        private void UpdateItems()
+        {
+            Items = new();
+
+            var absolutePath = new Uri(NavigationManager.Uri).AbsolutePath;
+
+            var matchedNavs = FlattenedNavs.Where(n =>
+            {
+                if (string.IsNullOrWhiteSpace(n.Url)) return false;
+
+                return n.Exact
+                    ? n.Url.Equals(absolutePath, StringComparison.OrdinalIgnoreCase)
+                    : Regex.IsMatch(absolutePath, n.Url, RegexOptions.IgnoreCase);
+            }).ToList();
+
+            if (matchedNavs.Count == 0)
+            {
                 return;
             }
 
-            var parents = GetParents(currentNav.ParentCode);
-            parents.Add(currentNav);
+            var currentNav = matchedNavs.Count == 1
+                ? matchedNavs[0]
+                : matchedNavs.OrderByDescending(n => n.Url!.Split("/").Length).First();
 
-            Items = parents.Select(n => new BreadcrumbItem()
+            string? extra = null;
+
+            if (currentNav.Url != absolutePath)
+            {
+                extra = absolutePath.Replace(currentNav.Url!, string.Empty, StringComparison.OrdinalIgnoreCase);
+                extra = extra.Trim('/');
+            }
+
+            if (currentNav.ParentCode != null)
+            {
+                var parents = GetParents(currentNav.ParentCode);
+
+                Items.AddRange(parents.Select(n => new BreadcrumbItem()
+                {
+                    Exact = true,
+                    Href = n.ChildUrl,
+                    Text = n.Name
+                }).ToList());
+            }
+
+            Items.Add(new BreadcrumbItem()
             {
                 Exact = true,
-                Href = n.Url,             
-                Text = n.Name
-            }).ToList();
+                Href = currentNav.Url,
+                Text = currentNav.Name
+            });
+
+            if (extra != null)
+            {
+                Items.Add(new BreadcrumbItem()
+                {
+                    Text = extra
+                });
+            }
+        }
+
+        internal void ReplaceLastBreadcrumb(string text)
+        {
+            NextTickIf(() =>
+            {
+                if (!Items.Any())
+                {
+                    return;
+                }
+                
+                Items.Last().Text = text;
+                StateHasChanged();
+            }, () => !Items.Any());
         }
 
         private List<BreadcrumbItem> Items { get; set; } = new();
@@ -46,6 +126,11 @@
             }
 
             return parents;
+        }
+
+        public void Dispose()
+        {
+            NavigationManager.LocationChanged -= NavigationManagerOnLocationChanged;
         }
     }
 }

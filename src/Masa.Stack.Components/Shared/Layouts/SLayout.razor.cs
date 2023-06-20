@@ -3,7 +3,6 @@
 public partial class SLayout
 {
     [Inject]
-    [NotNull]
     public IPopupService PopupService { get; set; } = null!;
 
     [Inject]
@@ -40,9 +39,6 @@ public partial class SLayout
     public string AppId { get; set; } = string.Empty;
 
     [Parameter]
-    public bool ShowBreadcrumbs { get; set; }
-
-    [Parameter]
     public Func<bool>? OnSignOut { get; set; }
 
     [Parameter]
@@ -55,17 +51,22 @@ public partial class SLayout
     public List<string> WhiteUris { get; set; } = new List<string>();
 
     [Parameter]
-    public bool Exact { get; set; } = true;
-
-    [Parameter]
     public bool IsShowEnvironmentSwitch { get; set; } = false;
+
+    private Breadcrumbs _breadcrumbs = null!;
 
     List<Nav> NavItems = new();
     List<string> _preWhiteUris = new();
+
     List<Nav> FlattenedNavs { get; set; } = new();
+
     List<Nav> FlattenedAllNavs { get; set; } = new();
-    List<string> _whiteUriList = new List<string> { "403", "404", "user-center",
-        "notification-center", "notification-center/*" };
+
+    List<string> _whiteUriList = new List<string>
+    {
+        "403", "404", "user-center",
+        "notification-center"
+    };
 
     protected override void OnParametersSet()
     {
@@ -79,6 +80,8 @@ public partial class SLayout
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await base.OnAfterRenderAsync(firstRender);
+
         if (firstRender)
         {
             await JsInitVariables.SetTimezoneOffset();
@@ -101,35 +104,36 @@ public partial class SLayout
                 NavItems = new List<Nav>()
                 {
                     new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index"),
+                    new Nav("user", "User", "mdi-account", "/users"),
                     new Nav("counter", "Counter", "mdi-pencil", "/counter"),
                     new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata"),
-                    new Nav("father", "Father", "mdi-numeric-0-box-outline", new List<Nav>
+                    new Nav("father", "Father", null, new List<Nav>
                     {
                         new Nav("children2", "ChildTwo", "father", new List<Nav>()
                         {
-                            new Nav("children", "ChildOne", "/has-children", "children2"),
+                            new Nav("children", "ChildOne", default, "/children2", "children2"),
                         }),
-                        new Nav("dialog", "dialog",default, "/dialog", "father"),
-                        new Nav("tab", "tab", default,"/tab", "father"),
-                        new Nav("sselect", "sselect", default,"/sselect", "father"),
-                        new Nav("deleteButton", "deleteButton", default,"/deleteButton", "father"),
-                        new Nav("mini", "mini",default, "/mini-components", "father"),
-                        new Nav("extend", "extend", default,"/extend", "father"),
-                        new Nav("userAutoCompleteExample", "userAutoComplete",default, "/userAutoCompleteExample", "father"),
-                        new Nav("defaultTextFieldExample", "defaultTextField",default, "/defaultTextFieldExample", "father"),
-                        new Nav("defaultButtonExample", "defaultButton",default, "/defaultButtonExample", "father"),
-                        new Nav("defaultDataTableExample", "defaultDataTable",default, "/defaultDataTableExample", "father"),
-                        new Nav("paginationExample", "pagination", default,"/defaultPaginationExample", "father"),
-                        new Nav("uploadImageExample", "uploadImage",default, "/uploadImageExample", "father"),
-                        new Nav("comboxExample", "combox", default,"/comboxExample", "father"),
-                        new Nav("paginationSelectExample", "paginationSelect",default, "/paginationSelectExample", "father"),
-                        new Nav("dateRangePickerExample", "dateRangePicker",default, "/dateRangePickerExample", "father"),
-                        new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", default,"/dateTimeRangePickerExample", "father"),
-                        new Nav("simpleModalExample", "simpleModal", default,"/simpleModalExample", "father"),
-                        new Nav("simpleConfirmExample", "simpleConfirmExample", default,"/simpleConfirmExample", "father"),
-                        new Nav("empty", "empty", default,"/empty", "father"),
-                        new Nav("icons", "icons", default,"/icons", "father"),
-                        new Nav("searchPanelExample", "searchPanelExample", default,"/searchPanelExample", "father"),
+                        new Nav("dialog", "dialog", default, "/dialog", "father"),
+                        new Nav("tab", "tab", default, "/tab", "father"),
+                        new Nav("sselect", "sselect", default, "/sselect", "father"),
+                        new Nav("deleteButton", "deleteButton", default, "/deleteButton", "father"),
+                        new Nav("mini", "mini", default, "/mini-components", "father"),
+                        new Nav("extend", "extend", default, "/extend", "father"),
+                        new Nav("userAutoCompleteExample", "userAutoComplete", default, "/userAutoCompleteExample", "father"),
+                        new Nav("defaultTextFieldExample", "defaultTextField", default, "/defaultTextFieldExample", "father"),
+                        new Nav("defaultButtonExample", "defaultButton", default, "/defaultButtonExample", "father"),
+                        new Nav("defaultDataTableExample", "defaultDataTable", default, "/defaultDataTableExample", "father"),
+                        new Nav("paginationExample", "pagination", default, "/defaultPaginationExample", "father"),
+                        new Nav("uploadImageExample", "uploadImage", default, "/uploadImageExample", "father"),
+                        new Nav("comboxExample", "combox", default, "/comboxExample", "father"),
+                        new Nav("paginationSelectExample", "paginationSelect", default, "/paginationSelectExample", "father"),
+                        new Nav("dateRangePickerExample", "dateRangePicker", default, "/dateRangePickerExample", "father"),
+                        new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", default, "/dateTimeRangePickerExample", "father"),
+                        new Nav("simpleModalExample", "simpleModal", default, "/simpleModalExample", "father"),
+                        new Nav("simpleConfirmExample", "simpleConfirmExample", default, "/simpleConfirmExample", "father"),
+                        new Nav("empty", "empty", default, "/empty", "father"),
+                        new Nav("icons", "icons", default, "/icons", "father"),
+                        new Nav("searchPanelExample", "searchPanelExample", default, "/searchPanelExample", "father"),
                     }),
                 };
             }
@@ -143,8 +147,9 @@ public partial class SLayout
                 NavigationManager.NavigateTo(NavItems.GetDefaultRoute());
                 return;
             }
-            var relativeUri = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
-            if (relativeUri.Contains("dashboard") is false && !IsMenusUri(NavItems, relativeUri))
+
+            var absolutePath = NavigationManager.GetAbsolutePath();
+            if (absolutePath.Contains("dashboard") is false && !IsMenusUri(NavItems, absolutePath))
             {
                 NavigationManager.NavigateTo("/403");
                 return;
@@ -153,33 +158,33 @@ public partial class SLayout
             Logger.LogInformation("URL of navigation to : {Location}", NavigationManager.Uri);
             try
             {
-                await AuthClient.UserService.VisitedAsync(AppId, relativeUri);
+                await AuthClient.UserService.VisitedAsync(AppId, absolutePath);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
             }
 
-
             FlattenedNavs = FlattenNavs(NavItems, true);
             FlattenedAllNavs = FlattenNavs(NavItems, false);
 
             StateHasChanged();
         }
+    }
 
-        await base.OnAfterRenderAsync(firstRender);
+    public void ReplaceLastBreadcrumb(string text)
+    {
+        _breadcrumbs.ReplaceLastBreadcrumb(text);
     }
 
     private bool IsMenusUri(List<Nav> navs, string uri)
     {
-        uri = uri.ToLower();
-        if (_whiteUriList.Any(item => Regex.IsMatch(uri.ToLower(),
-                Regex.Escape(item.ToLower()).Replace(@"\*", ".*"))))
+        if (_whiteUriList.Any(w => Regex.IsMatch(uri.ToLower(), w, RegexOptions.IgnoreCase)))
         {
             return true;
         }
 
-        var allowed = navs.Any(n => (n.Url ?? "").Trim('/').ToLower().Equals(uri));
+        var allowed = navs.Any(n => (n.Url ?? "").Equals(uri, StringComparison.OrdinalIgnoreCase));
         if (!allowed)
         {
             foreach (var nav in navs)
@@ -207,6 +212,11 @@ public partial class SLayout
         {
             if (!(nav.HasChildren && excludeNavHasChildren))
             {
+                if (nav.HasChildren)
+                {
+                    nav.ChildUrl = nav.Children.FirstOrDefault(u => !u.HasChildren)?.Url;
+                }
+
                 res.Add(nav);
             }
 
@@ -216,6 +226,7 @@ public partial class SLayout
                 {
                     child.ParentCode = nav.Code;
                 }
+
                 res.AddRange(FlattenNavs(nav.Children, excludeNavHasChildren));
             }
         }
@@ -225,10 +236,7 @@ public partial class SLayout
 
     protected override void OnInitialized()
     {
-        OnErrorAsync ??= async exception =>
-        {
-            await PopupService.EnqueueSnackbarAsync(exception, false);
-        };
+        OnErrorAsync ??= async exception => { await PopupService.EnqueueSnackbarAsync(exception, false); };
 
         ErrorContent ??= Exception => builder => { };
 
@@ -237,9 +245,9 @@ public partial class SLayout
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        var uri = e.Location;
-        var relativeUri = uri.Replace(NavigationManager.BaseUri, "");
-        if (uri.Contains("/dashboard") is false && !IsMenusUri(NavItems, relativeUri))
+        var absolutePath = NavigationManager.GetAbsolutePath();
+
+        if (absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath))
         {
             NavigationManager.NavigateTo("/403");
             return;
@@ -248,7 +256,7 @@ public partial class SLayout
         Logger.LogInformation("URL of new location: {Location}", e.Location);
         try
         {
-            AuthClient.UserService.VisitedAsync(AppId, relativeUri);
+            AuthClient.UserService.VisitedAsync(AppId, absolutePath);
         }
         catch (Exception ex)
         {
@@ -266,11 +274,6 @@ public partial class SLayout
         await AuthClient.PermissionService.RemoveFavoriteMenuAsync(Guid.Parse(code));
     }
 
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= HandleLocationChanged;
-    }
-
     private async Task<bool> OnErrorHandleAsync(Exception exception)
     {
         if (OnErrorAsync != null)
@@ -280,4 +283,10 @@ public partial class SLayout
 
         return true;
     }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
 }
