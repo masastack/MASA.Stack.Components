@@ -1,0 +1,27 @@
+﻿@page "/users/{id}"
+
+<h3>UserDetail @Id</h3>
+
+@code {
+
+    [CascadingParameter]
+    public SLayout Layout { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        
+        if (Id == "1")
+        {
+            Layout.ReplaceLastBreadcrumb("One!!!");
+        }
+        else if (Id == "2")
+        {
+            Layout.ReplaceLastBreadcrumb("Two!!");
+        }
+    }
+
+}

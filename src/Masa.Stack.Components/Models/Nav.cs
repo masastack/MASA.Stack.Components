@@ -10,6 +10,8 @@ public class Nav : NavBase
 
     public string? Url { get; set; }
 
+    public bool Exact { get; set; }
+
     public List<Nav> Children
     {
         get
@@ -18,12 +20,15 @@ public class Nav : NavBase
             {
                 _children = new();
             }
+
             return _children;
         }
         set => _children = value;
     }
 
     public List<Nav> Actions => Children.Where(item => item.IsAction).ToList();
+
+    public string? ChildUrl { get; set; }
 
     public bool IsAction { get; set; }
 
@@ -52,7 +57,7 @@ public class Nav : NavBase
         Name = name;
     }
 
-    public Nav(string code, string name, string? icon, string? url, string? parentCode =  null)
+    public Nav(string code, string name, string? icon, string? url, string? parentCode = null)
     {
         Code = code;
         Name = name;
@@ -86,7 +91,10 @@ public class Nav : NavBase
         return string.Equals(tempUrl, url, StringComparison.OrdinalIgnoreCase);
     }
 
-    internal bool Filter(DynamicTranslateProvider translateProvider, string? search) => string.IsNullOrEmpty(search) ? true : translateProvider.DT(Name).Contains(search, StringComparison.OrdinalIgnoreCase) || Children.Any(children => children.Filter(translateProvider, search));
+    internal bool Filter(DynamicTranslateProvider translateProvider, string? search) => string.IsNullOrEmpty(search)
+        ? true
+        : translateProvider.DT(Name).Contains(search, StringComparison.OrdinalIgnoreCase) ||
+          Children.Any(children => children.Filter(translateProvider, search));
 
     public override bool Equals(object? obj)
     {
