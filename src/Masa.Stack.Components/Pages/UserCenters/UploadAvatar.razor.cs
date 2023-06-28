@@ -9,13 +9,13 @@ public partial class UploadAvatar : SUploadImage
     public IObjectStorageClient Client { get; set; } = default!;
 
     [Inject]
-    public IConfiguration Configuration { get; set; } = default!;
-    
+    public IMasaConfiguration Configuration { get; set; } = default!;
+
     public OssOptions OssOptions
     {
         get
         {
-            return Configuration.GetSection("ConfigurationApi:public-$Config:$public.oss").Get<OssOptions>();
+            return Configuration.ConfigurationApi.GetPublic().GetSection("$public.oss").Get<OssOptions>();
         }
     }
 
@@ -30,7 +30,7 @@ public partial class UploadAvatar : SUploadImage
 
     protected override async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
-        if(e.File.ContentType == "image/gif")
+        if (e.File.ContentType == "image/gif")
         {
             await PopupService.EnqueueSnackbarAsync(T($"Does not support gif format avatar"), AlertTypes.Error);
             return;
@@ -44,7 +44,7 @@ public partial class UploadAvatar : SUploadImage
         var stsToken = response.SessionToken;
         var accessId = response.AccessKeyId;
         var accessSecret = response.AccessKeySecret;
-        var region = "oss-cn-hangzhou";
+        var region = OssOptions.RegionId;
         var bucket = OssOptions.Bucket;
 
         var paramter = new SecurityTokenModel(region, accessId, accessSecret, stsToken, bucket);

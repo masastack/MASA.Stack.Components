@@ -1,14 +1,17 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Contrib.StackSdks.Isolation;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddMasaStackComponentsForServer(this WebApplicationBuilder builder,
+    //Consider only one web clearance for now
+    public static async Task<IServiceCollection> AddMasaStackComponentsAsync(this IServiceCollection services, MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
         string? pmHost = null)
     {
-        builder.Services.AddScoped<JsInitVariables>();
-        builder.Services.AddAutoInject();
-        builder.Services.AddMasaIdentity(options =>
+        services.AddScoped<JsInitVariables>();
+        services.AddAutoInject();
+        services.AddMasaIdentity(options =>
         {
             options.UserName = "name";
             options.UserId = "sub";
@@ -21,8 +24,10 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
 
-        builder.Services.AddMasaStackConfigAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        var masaStackConfig = builder.Services.GetMasaStackConfig();
+        services.AddSingleton(sp => new ProjectAppOptions(project));
+
+        services.AddMasaStackConfigAsync(project, MasaStackApp.WEB).ConfigureAwait(false).GetAwaiter().GetResult();
+        var masaStackConfig = services.GetMasaStackConfig();
 
         authHost = authHost ?? masaStackConfig.GetAuthServiceDomain();
         mcHost = mcHost ?? masaStackConfig.GetMcServiceDomain();
@@ -40,26 +45,25 @@ public static class ServiceCollectionExtensions
             Password = masaStackConfig.RedisModel.RedisPassword
         };
 
-        builder.Services.AddAuthClient(authHost, redisOption);
-        var options = new McServiceOptions(mcHost);
-        builder.Services.AddSingleton(options);
-        builder.Services.AddMcClient(mcHost);
-        builder.Services.AddPmClient(pmHost);
+        services.AddAuthClient(authHost, redisOption);
+        services.AddSingleton(new McServiceOptions(mcHost));
+        services.AddMcClient(mcHost);
+        services.AddPmClient(pmHost);
 
-        builder.Services.AddOss();
-        builder.Services.AddElasticsearchAutoComplete(() => new UserAutoCompleteOptions
+        await services.AddStackIsolationAsync("");
+
+        services.AddObjectStorage(option =>
         {
-            Index = masaStackConfig.ElasticModel.Index,
-            Nodes = masaStackConfig.ElasticModel.Nodes.ToArray()
+            option.UseAliyunStorage();
         });
 
-        builder.Services.AddScoped((serviceProvider) =>
+        services.AddScoped((serviceProvider) =>
         {
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
         });
 
-        var masaBuilder = builder.Services.AddMasaBlazor(options =>
+        var masaBuilder = services.AddMasaBlazor(options =>
         {
             options.ConfigureTheme(theme =>
             {
@@ -87,7 +91,7 @@ public static class ServiceCollectionExtensions
             masaBuilder.AddI18nForServer(i18nDirectoryPath);
         }
 
-        return builder.Services;
+        return services;
     }
 
     private static IEnumerable<(string cultureName, Dictionary<string, string> map)> GetLocales()

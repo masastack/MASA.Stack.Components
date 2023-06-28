@@ -1,8 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 public partial class SUserAutoComplete
 {
-    IAutoCompleteClient? _autocompleteClient;
-
     [Parameter]
     public Guid Value { get; set; }
 
@@ -11,12 +9,6 @@ public partial class SUserAutoComplete
 
     [Parameter]
     public EventCallback<UserSelectModel> OnSelectedItemUpdate { get; set; }
-
-    [Parameter]
-    public int Page { get; set; } = 1;
-
-    [Parameter]
-    public int PageSize { get; set; } = 10;
 
     [Parameter]
     public string Class { get; set; } = "";
@@ -66,13 +58,6 @@ public partial class SUserAutoComplete
 
     public string Search { get; set; } = "";
 
-    [Inject]
-    public IAutoCompleteClient AutoCompleteClient
-    {
-        get => _autocompleteClient ?? throw new Exception("Please inject IAutoCompleteClient");
-        set => _autocompleteClient = value;
-    }
-
     private readonly AsyncTaskQueue _asyncTaskQueue;
 
     public SUserAutoComplete()
@@ -105,8 +90,7 @@ public partial class SUserAutoComplete
 
     public async Task OnSearchChanged(string search)
     {
-        search = search.TrimStart(' ').TrimEnd(' ');
-        Search = search;
+        Search = search.TrimStart(' ').TrimEnd(' ');
         if (Search == "")
         {
             UserSelect.Clear();
@@ -115,16 +99,12 @@ public partial class SUserAutoComplete
         {
             var result = await _asyncTaskQueue.ExecuteAsync(async () =>
             {
-                var response = await AutoCompleteClient.GetBySpecifyDocumentAsync<UserSelectModel>(search, new AutoCompleteOptions
-                {
-                    Page = Page,
-                    PageSize = PageSize,
-                });
+                var response = await AuthClient.UserService.SearchAsync(Search);
                 return response;
             });
             if (result.IsValid)
             {
-                UserSelect = result.result.Data;
+                UserSelect = result.result;
             }
         }
     }

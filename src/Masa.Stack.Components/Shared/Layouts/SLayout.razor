@@ -5,6 +5,7 @@
 @inject GlobalConfig GlobalConfig
 @inject IAuthClient AuthClient
 @inject ILogger<SLayout> Logger
+@inherits OwningComponentBase<IMultiEnvironmentUserContext>
 
 <CascadingValue Value="this" IsFixed>
     <CascadingValue Value="@I18n.Culture.ToString()" Name="Culture">
@@ -30,7 +31,7 @@
                     <Breadcrumbs FlattenedNavs="FlattenedAllNavs" @ref="_breadcrumbs"></Breadcrumbs>
                     <MSpacer />
                     <Languages OnChange="() => { }" />
-                    <MSheet class="d-flex align-center justify-space-between rounded-6 pa-1 mr-n4" Width="100">
+                    <MSheet Class="d-flex align-center justify-space-between rounded-6 pa-1 mr-n4" Width="100">
                         <Notification />
                         <User />
                     </MSheet>
@@ -41,7 +42,7 @@
                             MiniLogo="@MiniLogo"
                             IsShowEnvironmentSwitch="@IsShowEnvironmentSwitch" />
 
-                <MMain class="masa-main">
+                <MMain Class="masa-main">
                     <div class="@($"px-6 pb-6 max-width full-height {@Class}")" style="@Style">
                         @ChildContent
                     </div>

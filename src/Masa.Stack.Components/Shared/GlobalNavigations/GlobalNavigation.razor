@@ -1,6 +1,7 @@
 ﻿@namespace Masa.Stack.Components
+@using Masa.BuildingBlocks.Isolation;
 @inherits MasaComponentBase
-@inject IEnvironmentProvider EnvironmentProvider
+@inject IMultiEnvironmentContext MultiEnvironmentContext
 
 <MDialog Value="_visible" ValueChanged="VisibleChanged"
          Fullscreen

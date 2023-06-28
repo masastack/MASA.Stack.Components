@@ -1,9 +1,10 @@
 ﻿@namespace Masa.Stack.Components.Layouts
+@using Masa.BuildingBlocks.Isolation;
 @using Masa.BuildingBlocks.StackSdks.Pm.Model
 @using Masa.Stack.Components.Extensions
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
-@inject IEnvironmentProvider EnvironmentProvider
+@inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
 @inject ILogger<Navigation> Logger
 
 <MNavigationDrawer App
@@ -85,10 +86,10 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MList Nav Routable>
-                            <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
-                        </MList>
-                    </ChildContent>
-                </MMenu>
+                        <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
+                    </MList>
+                </ChildContent>
+            </MMenu>
             }
         }
     </MList>
@@ -133,11 +134,14 @@
                 </ChildContent>
             </STooltip>
         }
-        <p>
-            <MChip Class="mt-3" Small Color="regular2--text" Outlined>
-                @MasaStackConfig.Version
-            </MChip>
-        </p>
+        @if (!GlobalConfig.Mini)
+        {
+            <p>
+                <MChip Class="mt-3" Small Color="regular2--text" Outlined>
+                    @MasaStackConfig.Version
+                </MChip>
+            </p>
+        }
     </div>
 </MNavigationDrawer>
 
@@ -193,8 +197,7 @@
             {
                 Logger.LogError(e, "PmClient.EnvironmentService.GetListAsync");
             }
-
-            _currentEnvironment = EnvironmentProvider.GetEnvironment();
+            _currentEnvironment = MultiEnvironmentUserContext.Environment ?? "";
         }
         await base.OnAfterRenderAsync(firstRender);
     }

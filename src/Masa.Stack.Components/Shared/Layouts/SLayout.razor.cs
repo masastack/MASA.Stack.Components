@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using System.Reflection.Metadata;
+
+namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
@@ -13,6 +15,9 @@ public partial class SLayout
 
     [Inject]
     private MasaUser MasaUser { get; set; } = null!;
+
+    [Inject]
+    private IMultiEnvironmentMasaStackConfig MultiEnvironmentMasaStackConfig { get; set; } = null!;
 
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
@@ -35,8 +40,8 @@ public partial class SLayout
     [Parameter, EditorRequired]
     public string? MiniLogo { get; set; }
 
-    [Parameter, EditorRequired]
-    public string AppId { get; set; } = string.Empty;
+    [Inject]
+    internal ProjectAppOptions ProjectApp { get; set; } = default!;
 
     [Parameter]
     public Func<bool>? OnSignOut { get; set; }
@@ -53,7 +58,11 @@ public partial class SLayout
     [Parameter]
     public bool IsShowEnvironmentSwitch { get; set; } = false;
 
-    private Breadcrumbs _breadcrumbs = null!;
+    [Obsolete("This parameter is temporarily used and will be deleted later.")]
+    [Parameter]
+    public bool DebugWeb { get; set; } = false;
+
+    public string AppId => MultiEnvironmentMasaStackConfig.SetEnvironment(Service.Environment ?? "").GetWebId(ProjectApp.Project);
 
     List<Nav> NavItems = new();
     List<string> _preWhiteUris = new();
@@ -89,7 +98,10 @@ public partial class SLayout
 
             try
             {
-                menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
+                if (!DebugWeb)
+                {
+                    menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
+                }
             }
             catch (Exception e)
             {

@@ -14,8 +14,6 @@
             ClearIcon="mdi-close-circle"
             Height="Height"
             MinHeight="MinHeight"
-            OnFocus="FocusHandler"
-            OnBlur="BlurHandler"
             PrependInnerIcon="mdi-magnify"
             Style="@($"border-radius:10px; mix-blend-mode: normal;{Style}{styleMaxWidth}")"
             OnClearClick="OnClearClick"
@@ -62,8 +60,6 @@
     [Parameter]
     public int MaxWidth { get; set; } = 300;
 
-    bool isFocused = false;
-
     private string styleMaxWidth = string.Empty;
 
     private async Task HandleOnKeyDown(KeyboardEventArgs args)
@@ -72,16 +68,6 @@
         {
             await OnEnter.InvokeAsync();
         }
-    }
-
-    private void FocusHandler()
-    {
-        isFocused = true;
-    }
-
-    private void BlurHandler()
-    {
-        isFocused = false;
     }
 
     protected override Task OnParametersSetAsync()
