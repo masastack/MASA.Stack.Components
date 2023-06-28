@@ -62,6 +62,8 @@ public partial class SLayout
     [Parameter]
     public bool DebugWeb { get; set; } = false;
 
+    private Breadcrumbs _breadcrumbs = null!;
+
     public string AppId => MultiEnvironmentMasaStackConfig.SetEnvironment(Service.Environment ?? "").GetWebId(ProjectApp.Project);
 
     List<Nav> NavItems = new();
