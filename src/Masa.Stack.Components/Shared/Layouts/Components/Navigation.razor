@@ -25,9 +25,9 @@
         {
             <img width="200" src="@Logo" alt="logo" style="cursor: pointer" @onclick="NavigateToIndex" />
         }
-    </div> 
+    </div>
 
-    <MDivider/>
+    <MDivider />
 
     <MList Nav Routable Class="pa-6 subtitle2">
         @foreach (var nav in Items!)
@@ -37,16 +37,16 @@
                 <STooltip Disabled="!GlobalConfig.Mini">
                     <ActivatorContent Context="tooltipContext">
                         <SListItem Medium Class="mb-2 rounded-2" ActiveClass="primary" Href="@nav.Url" @attributes="@tooltipContext.Attrs" Exact="Exact">
-                        <ItemContent>
-                            <MListItemIcon>
-                            <MIcon Dense Style="margin-left:6px" Color="@(context.Active ? "white" : "regular3--text")">@nav.Icon</MIcon>
-                                    </MListItemIcon>
-                                    <MListItemContent>
+                            <ItemContent>
+                                <MListItemIcon>
+                                    <MIcon Dense Style="margin-left:6px" Color="@(context.Active ? "white" : "regular3--text")">@nav.Icon</MIcon>
+                                </MListItemIcon>
+                                <MListItemContent>
                                     <div class="ml-1 text-truncate @(context.Active ? "white--text" : "regular2--text")">
                                         @DT(nav.Name)
                                     </div>
-                                    </MListItemContent>
-                             </ItemContent>
+                                </MListItemContent>
+                            </ItemContent>
                         </SListItem>
                     </ActivatorContent>
                     <ChildContent>
@@ -59,13 +59,13 @@
                 <MMenu Disabled="!GlobalConfig.Mini" OffsetY OpenOnHover CloseOnContentClick="false" ContentClass="white pa-2 subtitle2" MinWidth="250">
                     <ActivatorContent Context="menuContext">
                         <MListGroup Group="@GenGroup(nav.Children)"
-                                            NoAction
-                                ActiveClass="primary--text"
-                                AppendIcon="mdi-menu-down"
-                                @attributes="@menuContext.Attrs">
+                                        NoAction
+                                    ActiveClass="primary--text"
+                                    AppendIcon="mdi-menu-down"
+                        @attributes="@menuContext.Attrs">
                             <ActivatorContent>
                                 <MListItemContent>
-                                <div class="ml-1 text-truncate regular2--text">@DT(nav.Name)</div>
+                                    <div class="ml-1 text-truncate regular2--text">@DT(nav.Name)</div>
                                 </MListItemContent>
                             </ActivatorContent>
                             <PrependIconContent>
@@ -78,10 +78,10 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MList Nav Routable>
-                            <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
-                        </MList>
-                    </ChildContent>
-                </MMenu>
+                        <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
+                    </MList>
+                </ChildContent>
+            </MMenu>
             }
         }
     </MList>
@@ -94,12 +94,12 @@
                         <MMenu OffsetY NudgeLeft="15" NudgeTop="4" Top>
                         <ActivatorContent Context="mContext">
                             <MIcon @attributes="@mContext.Attrs" Large Color="@(_environments.FirstOrDefault(e=>e.Name == _currentEnvironment)?.Color??"primary")">
-                                mdi-record-circle
+                                    mdi-record-circle
                                 </MIcon>
                             </ActivatorContent>
                             <ChildContent>
                                 <MList>
-                                @foreach (var environment in _environments.Where(e => e.Name != _currentEnvironment))
+                                    @foreach (var environment in _environments.Where(e => e.Name != _currentEnvironment))
                                     {
                                         <STooltip>
                                             <ActivatorContent Context="itemContext">
@@ -126,11 +126,14 @@
                 </ChildContent>
             </STooltip>
         }
-        <p>
-            <MChip Class="mt-3" Small Color="regular2--text" Outlined>
-                @MasaStackConfig.Version
-            </MChip>
-        </p>
+        @if (!GlobalConfig.Mini)
+        {
+            <p>
+                <MChip Class="mt-3" Small Color="regular2--text" Outlined>
+                    @MasaStackConfig.Version
+                </MChip>
+            </p>
+        }
     </div>
 </MNavigationDrawer>
 
@@ -188,7 +191,7 @@
             {
                 Logger.LogError(e, "PmClient.EnvironmentService.GetListAsync");
             }
-            _currentEnvironment = MultiEnvironmentUserContext.Environment??"";
+            _currentEnvironment = MultiEnvironmentUserContext.Environment ?? "";
         }
         await base.OnAfterRenderAsync(firstRender);
     }

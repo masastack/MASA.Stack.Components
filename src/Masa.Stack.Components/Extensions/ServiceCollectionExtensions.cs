@@ -4,7 +4,8 @@ namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
-    public static async Task<IServiceCollection> AddMasaStackComponentsAsync(this IServiceCollection services,
+    //Consider only one web clearance for now
+    public static async Task<IServiceCollection> AddMasaStackComponentsAsync(this IServiceCollection services, MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
         string? pmHost = null)
     {
@@ -23,7 +24,9 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
 
-        services.AddMasaStackConfigAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        services.AddSingleton(sp => new ProjectAppOptions(project));
+
+        services.AddMasaStackConfigAsync(project, MasaStackApp.WEB).ConfigureAwait(false).GetAwaiter().GetResult();
         var masaStackConfig = services.GetMasaStackConfig();
 
         authHost = authHost ?? masaStackConfig.GetAuthServiceDomain();

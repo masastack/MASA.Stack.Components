@@ -1,6 +1,7 @@
 // Ignore Spelling: app
 
 using Masa.Contrib.StackSdks.Caller;
+using Masa.Contrib.StackSdks.Config;
 using Masa.Stack.Components;
 using Masa.Stack.Components.Extensions.OpenIdConnect;
 using MasaWebApp.Data;
@@ -12,9 +13,17 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenProvider>();
-await builder.Services.AddMasaStackComponentsAsync();
-var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
-builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC").Get<MasaOpenIdConnectOptions>());
+
+await builder.Services.AddMasaStackConfigAsync(MasaStackProject.Auth, MasaStackApp.WEB);
+var masaStackConfig = builder.Services.GetMasaStackConfig();
+builder.Services.AddMasaOpenIdConnect(new MasaOpenIdConnectOptions
+{
+    Authority = masaStackConfig.GetSsoDomain(),
+    ClientId = masaStackConfig.GetWebId(MasaStackProject.Auth),
+    Scopes = new List<string> { "offline_access" }
+});
+
+await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Auth);
 
 var app = builder.Build();
 
