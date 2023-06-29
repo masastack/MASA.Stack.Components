@@ -10,7 +10,7 @@ public class Nav : NavBase
 
     public string? Url { get; set; }
 
-    public bool Exact => Url?.Contains("?") ?? true;
+    public bool Exact => !Url?.Contains("?") ?? true;
 
     public List<Nav> Children
     {
