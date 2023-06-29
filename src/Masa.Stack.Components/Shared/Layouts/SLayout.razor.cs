@@ -155,6 +155,9 @@ public partial class SLayout
 
             GlobalConfig.Menus = NavItems;
 
+            FlattenedNavs = FlattenNavs(NavItems, true);
+            FlattenedAllNavs = FlattenNavs(NavItems, false);
+
             //add home index content sould remove this code
             if (NavigationManager.Uri == NavigationManager.BaseUri)
             {
@@ -178,9 +181,6 @@ public partial class SLayout
             {
                 Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
             }
-
-            FlattenedNavs = FlattenNavs(NavItems, true);
-            FlattenedAllNavs = FlattenNavs(NavItems, false);
 
             StateHasChanged();
         }

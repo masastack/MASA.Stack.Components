@@ -38,7 +38,6 @@
             Items = new();
 
             var absolutePath = new Uri(NavigationManager.Uri).AbsolutePath;
-
             var matchedNavs = FlattenedNavs.Where(n =>
             {
                 if (string.IsNullOrWhiteSpace(n.Url)) return false;
@@ -101,7 +100,7 @@
                 {
                     return;
                 }
-                
+
                 Items.Last().Text = text;
                 StateHasChanged();
             }, () => !Items.Any());

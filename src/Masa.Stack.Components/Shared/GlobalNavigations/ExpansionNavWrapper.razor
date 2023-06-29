@@ -27,7 +27,7 @@
                         else if (Value.MetaData.Situation == ExpansionMenuSituation.Favorite)
                         {
                             <SAutoLoadingButton Icon XSmall Color="@(isFavorited ? "#FFB547" : "")" OnClick="ItemOperClick"
-                                                StopPropagation>
+                                                OnClickStopPropagation>
                                 <SIcon Small Tooltip="@T(isFavorited ? "CancelFavorite" :"Favorite")">mdi-star</SIcon>
                             </SAutoLoadingButton>
                         }
