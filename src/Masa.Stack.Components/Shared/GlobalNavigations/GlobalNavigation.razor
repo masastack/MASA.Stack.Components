@@ -1,7 +1,10 @@
 ﻿@namespace Masa.Stack.Components
 @using Masa.BuildingBlocks.Isolation;
+@using Microsoft.AspNetCore.Hosting;
 @inherits MasaComponentBase
-@inject IMultiEnvironmentContext MultiEnvironmentContext
+@inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
+@inject IWebHostEnvironment WebHostEnvironment
+@inject ILogger<GlobalNavigation> Logger
 
 <MDialog Value="_visible" ValueChanged="VisibleChanged"
          Fullscreen
