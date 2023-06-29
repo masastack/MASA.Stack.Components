@@ -32,7 +32,7 @@
                 <span>@T("Favorite")</span>
             </ChildContent>
         </MTooltip>
-    </ActivatorContent>
+    </ActivatorContent> 
     <ChildContent>
         <MList Class="pb-1" Style="min-width:320px;">
             <MListItem Class="mb-1">
@@ -62,7 +62,7 @@
                     </MListItemContent>
                     <MListItemIcon Class="my-1">
                         <MButton Color="@(item.Favorite ? "#FFB547" : "")"
-                                 StopPropagation
+                                  OnClickStopPropagation
                                  Icon
                                  OnClick="() => ToggleFavorite(item.Nav.Code)">
                             <SIcon Size=20>@(item.Favorite ? "mdi-star" : "mdi-star-outline")</SIcon>
