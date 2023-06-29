@@ -31,7 +31,14 @@ public partial class GlobalNavigation : MasaComponentBase
     {
         //TODO pm config
         var recommendAppIdentities = new List<string>() { MasaStackConfig.GetWebId(MasaStackProject.PM), MasaStackConfig.GetWebId(MasaStackProject.DCC), MasaStackConfig.GetWebId(MasaStackProject.Auth) };
-        var projects = await PmClient.ProjectService.GetProjectAppsAsync(MultiEnvironmentContext.CurrentEnvironment);
+        var environment = MultiEnvironmentUserContext.Environment;
+        if (environment.IsNullOrEmpty())
+        {
+            Logger.LogWarning("Multi Environment is empty");
+            environment = WebHostEnvironment.EnvironmentName;
+        }
+
+        var projects = await PmClient.ProjectService.GetProjectAppsAsync(environment);
         _recommendApps = projects.SelectMany(p => p.Apps).Where(a => recommendAppIdentities.Contains(a.Identity))
             .Select(a => new KeyValuePair<string, string>(a.Name, a.Url)).ToList();
     }
