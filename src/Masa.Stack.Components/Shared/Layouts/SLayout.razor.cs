@@ -58,10 +58,6 @@ public partial class SLayout
     [Parameter]
     public bool IsShowEnvironmentSwitch { get; set; } = false;
 
-    [Obsolete("This parameter is temporarily used and will be deleted later.")]
-    [Parameter]
-    public bool DebugWeb { get; set; } = false;
-
     private Breadcrumbs _breadcrumbs = null!;
 
     public string AppId => MultiEnvironmentMasaStackConfig.SetEnvironment(Service.Environment ?? "").GetWebId(ProjectApp.Project);
@@ -100,10 +96,7 @@ public partial class SLayout
 
             try
             {
-                if (!DebugWeb)
-                {
-                    menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
-                }
+                menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
             }
             catch (Exception e)
             {
