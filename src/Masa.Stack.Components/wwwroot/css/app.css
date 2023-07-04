@@ -889,5 +889,5 @@ body, .masa-stack-components {
     clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%, 8px 50%);
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-    background-color: rgb(211 211 211 / 30%);
+    color: grey;
 }

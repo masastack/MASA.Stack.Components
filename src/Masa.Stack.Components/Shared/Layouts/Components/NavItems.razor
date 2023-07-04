@@ -26,7 +26,8 @@
                                        Class="mb-0 rounded-2"
                                        ActiveClass="primary"
                                        Href="@lastNav.Url"
-                                       Exact="@lastNav.Exact">
+                                       Exact="@lastNav.Exact"
+                                       MatchPattern="@lastNav.MatchPattern">
                                 <ItemContent>
                                     <MListItemContent>
                                         <div class="text-truncate ml-3 @(context.Active ? "white--text" : "text-btn regular2--text")">
@@ -57,7 +58,8 @@
             <SListItem Medium Class="mb-0 rounded-2" 
                        ActiveClass="primary"
                        Href="@subNav.Url" 
-                       Exact="@subNav.Exact">
+                       Exact="@subNav.Exact"
+                       MatchPattern="@subNav.MatchPattern">
                 <ItemContent>
                     <MListItemContent>
                         <div class="text-truncate @(context.Active ? "white--text" : "text-btn regular2--text")">

@@ -40,11 +40,22 @@
             var absolutePath = new Uri(NavigationManager.Uri).AbsolutePath;
             var matchedNavs = FlattenedNavs.Where(n =>
             {
-                if (string.IsNullOrWhiteSpace(n.Url)) return false;
+                if (string.IsNullOrWhiteSpace(n.Url))
+                {
+                    return false;
+                }
 
-                return n.Exact
-                    ? n.Url.Equals(absolutePath, StringComparison.OrdinalIgnoreCase)
-                    : Regex.IsMatch(absolutePath, n.Url, RegexOptions.IgnoreCase);
+                if (!string.IsNullOrWhiteSpace(n.MatchPattern))
+                {
+                    return Regex.IsMatch(absolutePath, n.MatchPattern, RegexOptions.IgnoreCase);
+                }
+
+                if (n.Exact)
+                {
+                    return n.Url.Equals(absolutePath, StringComparison.OrdinalIgnoreCase);
+                }
+
+                return Regex.IsMatch(absolutePath, n.Url, RegexOptions.IgnoreCase);
             }).ToList();
 
             if (matchedNavs.Count == 0)
@@ -60,8 +71,38 @@
 
             if (currentNav.Url != absolutePath)
             {
-                extra = absolutePath.Replace(currentNav.Url!, string.Empty, StringComparison.OrdinalIgnoreCase);
-                extra = extra.Trim('/');
+                if (!string.IsNullOrWhiteSpace(currentNav.MatchPattern))
+                {
+                    var intersection = GetIntersection(currentNav.Url, absolutePath);
+                    extra = absolutePath.Replace(intersection, "", StringComparison.OrdinalIgnoreCase);
+                }
+                else
+                {
+                    extra = absolutePath.Replace(currentNav.Url!, string.Empty, StringComparison.OrdinalIgnoreCase);
+                    extra = extra.Trim('/');
+                }
+            }
+
+            string GetIntersection(string left, string right)
+            {
+                var str1 = left.ToLower();
+                var str2 = right.ToLower();
+                int index = 0;
+
+                var maxLength = Math.Max(str1.Length, str2.Length);
+
+                for (int i = 0; i < maxLength; i++)
+                {
+                    if (str1[i] == str2[i])
+                    {
+                        continue;
+                    }
+
+                    index = i;
+                    break;
+                }
+
+                return index == 0 ? string.Empty : left[..index];
             }
 
             if (currentNav.ParentCode != null)
