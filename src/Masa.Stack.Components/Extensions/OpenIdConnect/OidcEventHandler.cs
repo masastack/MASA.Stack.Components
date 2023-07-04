@@ -49,15 +49,10 @@ public class OidcEventHandler : OpenIdConnectEvents
 
     public override Task RedirectToIdentityProviderForSignOut(RedirectContext context)
     {
-        if (context.Properties.Items.ContainsKey("env"))
+        if (context.Properties.Items.ContainsKey(IsolationConsts.ENVIRONMENT))
         {
-            context.ProtocolMessage.SetParameter("env",
-                context.Properties.Items["env"]);
-        }
-        if (context.Properties.Items.ContainsKey("RedirectToLogin"))
-        {
-            context.ProtocolMessage.SetParameter("RedirectToLogin",
-                context.Properties.Items["RedirectToLogin"]);
+            context.ProtocolMessage.SetParameter(IsolationConsts.ENVIRONMENT,
+                context.Properties.Items[IsolationConsts.ENVIRONMENT]);
         }
         return base.RedirectToIdentityProviderForSignOut(context);
     }
