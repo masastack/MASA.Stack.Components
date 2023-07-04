@@ -60,7 +60,10 @@ public partial class SLayout
 
     private Breadcrumbs _breadcrumbs = null!;
 
-    public string AppId => MultiEnvironmentMasaStackConfig.SetEnvironment(Service.Environment ?? "").GetWebId(ProjectApp.Project);
+    [Parameter]
+    public string? AppId { get; set; } = string.Empty;
+
+    public string GetAppId() => MultiEnvironmentMasaStackConfig.SetEnvironment(Service.Environment ?? "").GetWebId(ProjectApp.Project);
 
     List<Nav> NavItems = new();
     List<string> _preWhiteUris = new();
@@ -96,7 +99,7 @@ public partial class SLayout
 
             try
             {
-                menus = await AuthClient.PermissionService.GetMenusAsync(AppId);
+                menus = await AuthClient.PermissionService.GetMenusAsync(AppId ?? GetAppId());
             }
             catch (Exception e)
             {
