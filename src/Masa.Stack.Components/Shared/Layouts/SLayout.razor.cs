@@ -61,7 +61,7 @@ public partial class SLayout
     private Breadcrumbs _breadcrumbs = null!;
 
     [Parameter]
-    public string? AppId { get; set; } = string.Empty;
+    public string? AppId { get; set; }
 
     public string GetAppId() => MultiEnvironmentMasaStackConfig.SetEnvironment(Service.Environment ?? "").GetWebId(ProjectApp.Project);
 
@@ -99,7 +99,8 @@ public partial class SLayout
 
             try
             {
-                menus = await AuthClient.PermissionService.GetMenusAsync(AppId ?? GetAppId());
+                var appId = AppId.IsNullOrEmpty() ? GetAppId() : AppId;
+                menus = await AuthClient.PermissionService.GetMenusAsync(appId);
             }
             catch (Exception e)
             {
