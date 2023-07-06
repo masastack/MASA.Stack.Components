@@ -12,6 +12,8 @@ public class Nav : NavBase
 
     public bool Exact { get; set; }
 
+    public string? MatchPattern { get; set; }
+
     public List<Nav> Children
     {
         get
@@ -57,19 +59,18 @@ public class Nav : NavBase
         Name = name;
     }
 
-    public Nav(string code, string name, string? icon, string? url, string? parentCode = null)
+    public Nav(string code, string name, string icon, string url, string? parentCode = null, string? matchPattern = null)
+        : this(code, name)
     {
-        Code = code;
-        Name = name;
         Url = url;
         Icon = icon;
         ParentCode = parentCode;
+        MatchPattern = matchPattern;
     }
 
-    public Nav(string code, string name, string parentCode, List<Nav> children)
+    public Nav(string code, string name, string parentCode, List<Nav> children) 
+        : this(code, name)
     {
-        Code = code;
-        Name = name;
         ParentCode = parentCode;
         Children = children;
     }

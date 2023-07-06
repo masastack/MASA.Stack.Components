@@ -116,6 +116,7 @@ public partial class SLayout
                 {
                     new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index"),
                     new Nav("user", "User", "mdi-account", "/users"),
+                    new Nav("products", "Products", "mdi-rectangle", "/products/list", matchPattern: "/products/(list|details/)[^/]*"),
                     new Nav("counter", "Counter", "mdi-pencil", "/counter"),
                     new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata"),
                     new Nav("father", "Father", null, new List<Nav>
