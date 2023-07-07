@@ -168,7 +168,7 @@
             return parents;
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             NavigationManager.LocationChanged -= NavigationManagerOnLocationChanged;
         }
