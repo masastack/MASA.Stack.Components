@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components.Layouts
 {
-    public partial class Breadcrumbs : MasaComponentBase, IDisposable
+    public partial class Breadcrumbs : MasaComponentBase
     {
         [Parameter, EditorRequired]
         public List<Nav> FlattenedNavs { get; set; } = new();
@@ -168,9 +168,10 @@
             return parents;
         }
 
-        public new void Dispose()
+        protected override void Dispose(bool disposing)
         {
             NavigationManager.LocationChanged -= NavigationManagerOnLocationChanged;
+            base.Dispose(disposing);
         }
     }
 }
