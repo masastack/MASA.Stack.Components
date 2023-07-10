@@ -40,7 +40,7 @@
             var absolutePath = new Uri(NavigationManager.Uri).AbsolutePath;
             var matchedNavs = FlattenedNavs.Where(n =>
             {
-                if (string.IsNullOrWhiteSpace(n.Url))
+                if (string.IsNullOrWhiteSpace(n.Url) || n.HasChildren)
                 {
                     return false;
                 }
