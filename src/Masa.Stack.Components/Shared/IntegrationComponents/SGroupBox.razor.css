@@ -3,7 +3,6 @@
     border-color: #E2E7F4;
     border-style: solid;
     border-width: 1px;
-    pointer-events: none;
     transition-duration: 0.15s;
     transition-property: color;
     transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
