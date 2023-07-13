@@ -61,7 +61,7 @@ public static class ServiceCollectionExtensions
             options.GetClaimsFromUserInfoEndpoint = true;
             options.UseTokenLifetime = true;
 
-            options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(5.0);
+            //options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(5.0);
             options.TokenValidationParameters.RequireExpirationTime = true;
             options.TokenValidationParameters.ValidateLifetime = true;
 
