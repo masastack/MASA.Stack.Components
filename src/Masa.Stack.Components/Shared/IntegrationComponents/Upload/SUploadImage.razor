@@ -1,5 +1,6 @@
 ﻿@namespace Masa.Stack.Components
 @inherits SUpload
+@inject IJSRuntime JS
 
 <label class="uploadImage">
     <Microsoft.AspNetCore.Components.Forms.InputFile @ref="InputFileRef" OnChange=OnInputFileChange accept="@Accept" multiple=@Multiple />
