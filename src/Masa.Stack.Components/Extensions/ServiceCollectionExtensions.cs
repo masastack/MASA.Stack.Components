@@ -1,6 +1,4 @@
-﻿using Masa.Contrib.StackSdks.Isolation;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -49,6 +47,23 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(new McServiceOptions(mcHost));
         services.AddMcClient(mcHost);
         services.AddPmClient(pmHost);
+
+        services.AddLogging(configure =>
+        {
+            // 创建配置构建器
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .Build();
+            var sericeName = masaStackConfig.GetWebId(project);
+            services.AddObservable(configure, () => new MasaObservableOptions
+            {
+                ServiceNameSpace = masaStackConfig.Environment,
+                ServiceVersion = masaStackConfig.Version,
+                ServiceName = sericeName.IsNullOrEmpty() ? project.Name : sericeName,
+                Layer = masaStackConfig.Namespace,
+                ServiceInstanceId = configuration.GetValue<string>("HOSTNAME")
+            }, () => masaStackConfig.OtlpUrl, true);
+        });
 
         await services.AddStackIsolationAsync("");
 

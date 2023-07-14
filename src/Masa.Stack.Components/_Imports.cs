@@ -23,6 +23,8 @@ global using Masa.Contrib.Caching.Distributed.StackExchangeRedis;
 global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 global using Masa.Contrib.StackSdks.Caller;
 global using Masa.Contrib.StackSdks.Config;
+global using Masa.Contrib.StackSdks.Isolation;
+global using Masa.Contrib.StackSdks.Tsc;
 global using Masa.Contrib.Storage.ObjectStorage.Aliyun;
 global using Masa.Stack.Components.Configs;
 global using Masa.Stack.Components.Extensions;
