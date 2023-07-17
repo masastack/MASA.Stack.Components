@@ -64,11 +64,6 @@ public partial class SUploadImage : SUpload
 		await base.OnAfterRenderAsync(firstRender);
 	}
 
-	protected override async Task OnInputFileChange(InputFileChangeEventArgs e)
-	{
-		await base.OnInputFileChange(e);
-	}
-
 	string GetClass()
 	{
 		var css = Class;
