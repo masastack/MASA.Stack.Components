@@ -67,11 +67,6 @@ public partial class SUploadImage : SUpload
 	protected override async Task OnInputFileChange(InputFileChangeEventArgs e)
 	{
 		await base.OnInputFileChange(e);
-		if (OnInputFileChanged is not null && OnInputFileChanged.JsCallbackValue.Equals(default) is false)
-		{
-			var previewImageUrls = OnInputFileChanged.JsCallbackValue.Deserialize<List<string>>() ?? new();
-			await SetValueAsync(previewImageUrls);
-		}
 	}
 
 	string GetClass()

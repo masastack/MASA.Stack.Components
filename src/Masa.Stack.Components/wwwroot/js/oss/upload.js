@@ -1,5 +1,4 @@
 async function UploadImage(imageFiles, ossParamter) {
-    console.log("UploadImage", ossParamter);
     const client = new OSS(ossParamter);
 
     const headers = {
