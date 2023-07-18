@@ -189,6 +189,11 @@ public partial class SLayout
         _breadcrumbs.ReplaceLastBreadcrumb(text);
     }
 
+    public void UpdateBreadcrumbs(Action<List<BreadcrumbItem>> configure)
+    {
+        _breadcrumbs.UpdateBreadcrumbs(configure);
+    }
+
     private bool IsMenusUri(List<Nav> navs, string uri)
     {
         if (_whiteUriList.Any(w => Regex.IsMatch(uri.ToLower(), w, RegexOptions.IgnoreCase)))

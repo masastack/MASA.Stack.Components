@@ -147,6 +147,20 @@
             }, () => !Items.Any());
         }
 
+        internal void UpdateBreadcrumbs(Action<List<BreadcrumbItem>> configure)
+        {
+            NextTickIf(() =>
+            {
+                if (!Items.Any())
+                {
+                    return;
+                }
+
+                configure(Items);
+                StateHasChanged();
+            }, () => !Items.Any());
+        }
+
         private List<BreadcrumbItem> Items { get; set; } = new();
 
         private IList<Nav> GetParents(string parentCode)
