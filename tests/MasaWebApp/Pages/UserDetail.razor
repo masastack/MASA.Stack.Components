@@ -13,7 +13,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-
+        
         if (Id == "1")
         {
             Layout.ReplaceLastBreadcrumb("One!!!");
@@ -26,12 +26,13 @@
         {
             Layout.UpdateBreadcrumbs(items =>
             {
-                items[1].Text = "Three!!";
-                items[1].Href = "/users/3";
+                items[1].Text = "Prev user";
+                items[1].Href = "/users/2";
                 items.Add(new()
                 {
-                    Text = "ooh",
+                    Text = "Three!!",
                 });
+                
             });
         }
     }
