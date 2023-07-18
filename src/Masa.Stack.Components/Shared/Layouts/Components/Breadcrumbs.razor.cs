@@ -55,7 +55,7 @@
                     return n.Url.Equals(absolutePath, StringComparison.OrdinalIgnoreCase);
                 }
 
-                return Regex.IsMatch(absolutePath, $"{n.Url}/", RegexOptions.IgnoreCase);
+                return Regex.IsMatch(absolutePath, $"^/?{n.Url}($|/[^/]?)", RegexOptions.IgnoreCase);
             }).ToList();
 
             if (matchedNavs.Count == 0)
