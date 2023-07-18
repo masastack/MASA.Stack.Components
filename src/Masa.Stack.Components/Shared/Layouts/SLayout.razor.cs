@@ -184,9 +184,31 @@ public partial class SLayout
         }
     }
 
+    /// <summary>
+    /// Update the text of last breadcrumb
+    /// </summary>
+    /// <param name="text"></param>
+    /// <example>
+    /// UpdateLastBreadcrumb("New Text");
+    /// </example>
     public void ReplaceLastBreadcrumb(string text)
     {
         _breadcrumbs.ReplaceLastBreadcrumb(text);
+    }
+
+    /// <summary>
+    /// Update breadcrumbs
+    /// </summary>
+    /// <param name="configure"></param>
+    /// <example>
+    /// UpdateBreadcrumbs(items => {
+    ///     items[0].Text = "New Text";
+    ///     items[0].Url = "/new-url";
+    /// })
+    /// </example>
+    public void UpdateBreadcrumbs(Action<List<BreadcrumbItem>> configure)
+    {
+        _breadcrumbs.UpdateBreadcrumbs(configure);
     }
 
     private bool IsMenusUri(List<Nav> navs, string uri)

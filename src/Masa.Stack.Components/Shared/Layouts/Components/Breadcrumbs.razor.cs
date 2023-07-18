@@ -55,7 +55,7 @@
                     return n.Url.Equals(absolutePath, StringComparison.OrdinalIgnoreCase);
                 }
 
-                return Regex.IsMatch(absolutePath, $"{n.Url}/", RegexOptions.IgnoreCase);
+                return Regex.IsMatch(absolutePath, $"^/?{n.Url}($|/[^/]?)", RegexOptions.IgnoreCase);
             }).ToList();
 
             if (matchedNavs.Count == 0)
@@ -143,6 +143,20 @@
                 }
 
                 Items.Last().Text = text;
+                StateHasChanged();
+            }, () => !Items.Any());
+        }
+
+        internal void UpdateBreadcrumbs(Action<List<BreadcrumbItem>> configure)
+        {
+            NextTickIf(() =>
+            {
+                if (!Items.Any())
+                {
+                    return;
+                }
+
+                configure(Items);
                 StateHasChanged();
             }, () => !Items.Any());
         }

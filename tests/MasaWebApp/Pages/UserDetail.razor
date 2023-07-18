@@ -22,6 +22,19 @@
         {
             Layout.ReplaceLastBreadcrumb("Two!!");
         }
+        else if (Id == "3")
+        {
+            Layout.UpdateBreadcrumbs(items =>
+            {
+                items[1].Text = "Prev user";
+                items[1].Href = "/users/2";
+                items.Add(new()
+                {
+                    Text = "Three!!",
+                });
+                
+            });
+        }
     }
 
 }
