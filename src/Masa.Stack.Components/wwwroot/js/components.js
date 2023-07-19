@@ -138,32 +138,6 @@ window.MasaStackComponents.getTimezoneOffset = function() {
     return new Date().getTimezoneOffset();
 }
 
-window.MasaStackComponents.setAppBorder = function () {
-    var navContent = document.getElementsByClassName('global-nav-content__main')[0];
-    var apps = navContent.getElementsByClassName("app");
-    apps = Array.from(apps);
-    var topPosition = 9999;
-    var bottomRect = -9999;
-    apps.forEach((app) => {
-        if (app.offsetTop < topPosition) {
-            topPosition = app.offsetTop;
-        }
-        if (app.getBoundingClientRect().bottom > bottomRect) {
-            bottomRect = app.getBoundingClientRect().bottom;
-        }
-    });
-    apps.forEach((app) => {
-        if (app.offsetTop != 0 && app.offsetTop <= topPosition) {
-            app.style.borderTopLeftRadius = "20px";
-            app.style.borderTopRightRadius = "20px";
-        }
-        if (app.getBoundingClientRect().bottom != 0 && app.getBoundingClientRect().bottom >= bottomRect) {
-            app.style.borderBottomLeftRadius = "20px";
-            app.style.borderBottomRightRadius = "20px";
-        }
-    });
-}
-
 function debounce(fn, wait) {
     let timer = null;
     return function (...args) {
