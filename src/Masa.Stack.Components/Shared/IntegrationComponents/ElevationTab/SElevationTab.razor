@@ -1,11 +1,11 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<CascadingValue Value="this">
+<CascadingValue Value="this" IsFixed>
     @ChildContent
     <div Class="@($"d-flex flex-column {AlignItems} {Class}")" Style="@Style">
         <SLabeledRadioGroup Class="@TabsClass"
-                            ActiveClass="@ActiveClass"                           
+                            ActiveClass="@ActiveClass"
                             Dense="Dense"
                             Style="@($"width: fit-content; {TabsStyle}")"
                             TValue="string"
@@ -14,7 +14,7 @@
             @for (var i = 0; i < Tabs!.Count; i++)
             {
                 var tab = Tabs[i];
-                <SLabeledRadio MinWidth="@TabMinWidth" Value="@(IndexTab?i.ToString():tab)">
+                <SLabeledRadio MinWidth="@TabMinWidth" Value="@(IndexTab ? i.ToString() : tab)">
                     <span class="@(Tab == tab ? "subtitle2 emphasis2--text" : "btn regular2--text")">@T(tab)</span>
                 </SLabeledRadio>
             }
@@ -29,9 +29,20 @@
                 if (item is not null)
                 {
                     var tab = Tabs[i];
-                    <MWindowItem Class="full-height" Value="@(IndexTab?i.ToString():tab)">
-                        @item.ChildContent
-                    </MWindowItem>
+                    var value = IndexTab ? i.ToString() : tab;
+
+                    if (NoTransition)
+                    {
+                        <MWindowItem Class="full-height" Value="@value" Transition="">
+                            @item.ChildContent
+                        </MWindowItem>
+                    }
+                    else
+                    {
+                        <MWindowItem Class="full-height" Value="@value">
+                            @item.ChildContent
+                        </MWindowItem>
+                    }
                 }
             }
         </MWindow>
@@ -78,10 +89,10 @@
         get => _tabs;
         set
         {
-            if(value.Count != _tabs.Count || value.Except(_tabs).Any())
+            if (value.Count != _tabs.Count || value.Except(_tabs).Any())
             {
                 _tabs = value;
-                if(_tabs.Contains(Tab) is false)
+                if (_tabs.Contains(Tab) is false)
                 {
                     Tab = _tabs.First();
                 }
@@ -104,7 +115,12 @@
     [Parameter]
     public EventCallback<string> TabChanged { get; set; }
 
+    [Parameter]
+    public bool NoTransition { get; set; }
+
     List<SElevationTabItem> _elevationTabItems = new();
+
+    internal int TabIndex { get; private set; } = -1;
 
     private string AlignItems
     {
@@ -124,18 +140,21 @@
         }
     }
 
-    public void AddTabItem(SElevationTabItem tabItem)
+    internal int AddTabItem(SElevationTabItem tabItem)
     {
         _elevationTabItems.Add(tabItem);
+        return _elevationTabItems.Count - 1;
     }
 
-    public void RemoveTabItem(SElevationTabItem tabItem)
+    internal void RemoveTabItem(SElevationTabItem tabItem)
     {
         _elevationTabItems.Remove(tabItem);
     }
 
     private async Task ValueChanged(string v)
     {
+        TabIndex = Tabs.IndexOf(v);
+
         if (TabChanged.HasDelegate)
         {
             await TabChanged.InvokeAsync(v);
