@@ -8,10 +8,18 @@ public class SElevationTabItem : ComponentBase, IDisposable
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    private int? _index;
+
     protected override void OnInitialized()
     {
-        Tab?.AddTabItem(this);
+        _index = Tab?.AddTabItem(this);
         base.OnInitialized();
+    }
+
+    protected override bool ShouldRender()
+    {
+        var shouldRender = _index == Tab?.TabIndex;
+        return shouldRender;
     }
 
     public void Dispose()
