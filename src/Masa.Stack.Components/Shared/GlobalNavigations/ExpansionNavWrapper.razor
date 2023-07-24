@@ -4,7 +4,7 @@
 @{
     var indeterminate = Value.State == ExpansionMenuState.Indeterminate;
     var selected = Value.State == ExpansionMenuState.Selected;
-    var isFavorited = Value.State == ExpansionMenuState.Favorite;
+    var isFavorite = Value.State == ExpansionMenuState.Favorite;
 }
 
 <div style="@GetIsDisplayStyle(!Value.Hidden)">
@@ -12,7 +12,7 @@
         @if (Value.Type == ExpansionMenuType.Nav)
         {
             <MListItem @attributes="@context.Attrs" Class="@GetClass(context.Hover)" Value="Value.Id" Disabled="Value.Disabled"
-                       OnClick="ItemClick" ActiveClass="GetActiveClass()">
+                       OnClick="ItemClick" ActiveClass="@GetActiveClass()">
                 <ItemContent Context="item">
                     <MListItemContent>
                         <MListItemTitle Style="@(Value.State == ExpansionMenuState.Selected?"color: #323D6F;":"")">
@@ -26,9 +26,9 @@
                         }
                         else if (Value.MetaData.Situation == ExpansionMenuSituation.Favorite)
                         {
-                            <SAutoLoadingButton Icon XSmall Color="@(isFavorited ? "#FFB547" : "")" OnClick="ItemOperClick"
+                            <SAutoLoadingButton Icon XSmall Color="@(isFavorite ? "#FFB547" : "")" OnClick="ItemOperClick"
                                                 OnClickStopPropagation>
-                                <SIcon Small Tooltip="@T(isFavorited ? "CancelFavorite" :"Favorite")">mdi-star</SIcon>
+                                <SIcon Small Tooltip="@T(isFavorite ? "CancelFavorite" :"Favorite")">mdi-star</SIcon>
                             </SAutoLoadingButton>
                         }
                     </MListItemAction>
