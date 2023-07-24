@@ -19,7 +19,6 @@ public class SElevationTabItem : ComponentBase, IDisposable
     protected override bool ShouldRender()
     {
         var shouldRender = _index == Tab?.TabIndex;
-        Console.Out.WriteLine($"_index = {_index} shouldRender = {shouldRender}");
         return shouldRender;
     }
 
