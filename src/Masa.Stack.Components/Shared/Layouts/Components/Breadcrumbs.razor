@@ -10,7 +10,7 @@
                 var item = Items[i];
                 var isLast = i == Items.Count - 1;
                 <MBreadcrumbsItem @key="@item" Href="@(isLast ? null : item.Href)">
-                    @T(item.Text)
+                    @DT(item.Text)
                 </MBreadcrumbsItem>
             }
         </ChildContent>
