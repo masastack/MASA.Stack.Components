@@ -20,7 +20,8 @@ public static class PopupServiceExtensions
             {
                 { nameof(SSimpleConfirm.Type), type },
                 { nameof(SSimpleConfirm.Title), title },
-                { nameof(SSimpleConfirm.Content), content }
+                { nameof(SSimpleConfirm.Content), content },
+                {nameof(SSimpleConfirm.ContentClass),"text-break" }
             });
 
         if (confirm is bool value)
