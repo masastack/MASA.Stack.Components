@@ -119,12 +119,12 @@ body, .masa-stack-components {
         break-inside: avoid-column;
     }
 
-    .masa-stack-components .global-nav .apps .category_title_app :nth-child(2).app {
+    .masa-stack-components .global-nav .apps .category_title_app :nth-child(2):not([style*="display:none"]).app {
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
     }
 
-    .masa-stack-components .global-nav .apps .category_title_app .app:last-child {
+    .masa-stack-components .global-nav .apps .category_title_app .app:last-child:not([style*="display:none"]) {
         border-bottom-right-radius: 20px;
         border-bottom-left-radius: 20px;
     }
