@@ -70,7 +70,7 @@ public class SSimpleModal : PModal
             {
                 RenderFragment content = builder =>
                 {
-                    builder.OpenComponent<MButton>(0);
+                    builder.OpenComponent<SButton>(0);
                     builder.AddAttribute(1, "Fab", true);
                     builder.AddAttribute(2, "Small", true);
                     builder.AddAttribute(3, "Outlined", true);
@@ -114,7 +114,7 @@ public class SSimpleModal : PModal
             {
                 RenderFragment content = builder =>
                 {
-                    builder.OpenComponent<MButton>(0);
+                    builder.OpenComponent<SButton>(0);
                     builder.AddAttribute(1, "Color", "primary");
                     builder.AddAttribute(2, "Class", "rounded-3");
                     builder.AddAttribute(3, "Style", "min-width: 140px !important;height: 56px !important;");
