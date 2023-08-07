@@ -8,6 +8,8 @@ public class SAutoLoadingButton : MButton
     [Parameter]
     public bool DisableLoading { get; set; }
 
+    CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Color = "primary";
@@ -27,6 +29,15 @@ public class SAutoLoadingButton : MButton
 
                 try
                 {
+                    _cancellationTokenSource.Cancel();
+                    _cancellationTokenSource = new CancellationTokenSource();
+                    await Task.Delay(500, _cancellationTokenSource.Token);
+
+                    if (_cancellationTokenSource.IsCancellationRequested)
+                    {
+                        return;
+                    }
+
                     await originalOnClick.InvokeAsync(args);
                 }
                 finally
