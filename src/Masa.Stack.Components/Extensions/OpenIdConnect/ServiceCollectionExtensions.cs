@@ -68,12 +68,7 @@ public static class ServiceCollectionExtensions
             options.NonceCookie.SameSite = SameSiteMode.Unspecified;
             options.CorrelationCookie.SameSite = SameSiteMode.Unspecified;
 
-            options.ClaimActions.MapUniqueJsonKey("account", "account");
-            options.ClaimActions.MapUniqueJsonKey("roles", "roles");
-            options.ClaimActions.MapUniqueJsonKey("environment", "environment");
-            options.ClaimActions.MapUniqueJsonKey("current_team", "current_team");
-            options.ClaimActions.MapUniqueJsonKey("phone_number", "phone_number");
-            options.ClaimActions.MapUniqueJsonKey("staff_id", "staff_id");
+            options.ClaimActions.MapAll();
 
             options.EventsType = typeof(OidcEventHandler);
 
