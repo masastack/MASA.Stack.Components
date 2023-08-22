@@ -36,13 +36,9 @@
     <div Class="mt-4">
     @foreach (var nav in Value.Children)
     {
-        <MCard @key="nav" Class="nav" Outlined Style="@GetIsDisplayStyle(!nav.Hidden)">
-            <MList Dense Class="pa-0">
-                <MListItemGroup Multiple>
-                    <ExpansionNavWrapper Value="nav" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick" />
-                </MListItemGroup>
-            </MList>
-        </MCard>
+        <div class="nav m-list--dense" style="background:white; @GetIsDisplayStyle(!nav.Hidden)">
+            <ExpansionNavWrapper Value="nav" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick"></ExpansionNavWrapper>
+        </div>
     }
     </div>
 </div>

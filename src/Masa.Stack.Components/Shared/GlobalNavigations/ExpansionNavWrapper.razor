@@ -7,93 +7,101 @@
     var isFavorite = Value.State == ExpansionMenuState.Favorite;
 }
 
-<div style="@GetIsDisplayStyle(!Value.Hidden)">
+<div class="expansion-nav" style="@GetIsDisplayStyle(!Value.Hidden)">
     <MHover Disabled="Value.Disabled">
         @if (Value.Type == ExpansionMenuType.Nav)
         {
-            <MListItem @attributes="@context.Attrs" Class="@GetClass(context.Hover)" Value="Value.Id" Disabled="Value.Disabled"
-                       OnClick="ItemClick" ActiveClass="@GetActiveClass()">
-                <ItemContent Context="item">
-                    <MListItemContent>
-                        <MListItemTitle Style="@(Value.State == ExpansionMenuState.Selected?"color: #323D6F;":"")">
-                            @DT(Value.Name)
-                        </MListItemTitle>
-                    </MListItemContent>
-                    <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
-                        @if (Value.MetaData.Situation == ExpansionMenuSituation.Authorization)
+            <a class="m-list-item theme--light @(Value.Disabled ? "m-list-item--disabled" : "") @GetClass(context.Hover) "
+               @onclick="ItemClick"
+               @attributes="@context.Attrs">
+                <div class="d-flex align-center full-width">
+                    <div style="font-weight: 500; font-size: 14px; @(Value.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
+                        @DT(Value.Name)
+                    </div>
+                    <MSpacer />
+                    <div>
+                        @if (context.Hover)
                         {
-                            <MCheckbox Color="primary" Indeterminate=indeterminate Dense Value="@(indeterminate || selected)" TValue="bool" />
+                            @if (Value.MetaData.Situation == ExpansionMenuSituation.Authorization)
+                            {
+                                <MCheckbox Class="expansion-nav__checkbox" Color="primary" Indeterminate=indeterminate Dense Value="@(indeterminate || selected)" TValue="bool" HideDetails="true" />
+                            }
+                            else if (Value.MetaData.Situation == ExpansionMenuSituation.Favorite)
+                            {
+                                <SIcon Small
+                                       Class="expansion-nav__action"
+                                       Tooltip="@T(isFavorite ? "CancelFavorite" : "Favorite")"
+                                       Color="@(isFavorite ? "#FFB547" : "")"
+                                       OnClick="ItemOperClick"
+                                       OnClickStopPropagation>
+                                    mdi-star
+                                </SIcon>
+                            }
                         }
-                        else if (Value.MetaData.Situation == ExpansionMenuSituation.Favorite)
+                        else if (!context.Hover && Value.MetaData.Situation != ExpansionMenuSituation.Preview)
                         {
-                            <SAutoLoadingButton Icon XSmall Color="@(isFavorite ? "#FFB547" : "")" OnClick="ItemOperClick"
-                                                OnClickStopPropagation>
-                                <SIcon Small Tooltip="@T(isFavorite ? "CancelFavorite" :"Favorite")">mdi-star</SIcon>
-                            </SAutoLoadingButton>
+                            switch (Value.State)
+                            {
+                                case ExpansionMenuState.Selected:
+                                    <MIcon Small Class="expansion-nav__action" Color="primary">mdi-check</MIcon>
+                                    break;
+                                case ExpansionMenuState.Impersonal:
+                                    <MIcon Small Class="expansion-nav__action" Color="red">mdi-close</MIcon>
+                                    break;
+                                case ExpansionMenuState.Indeterminate:
+                                    <MIcon Dense Class="expansion-nav__action" Color="primary">mdi-minus-box</MIcon>
+                                    break;
+                                case ExpansionMenuState.Favorite:
+                                    <MIcon Small Class="expansion-nav__action" Color="#FFB547">mdi-star</MIcon>
+                                    break;
+                            }
                         }
-                    </MListItemAction>
-                    @if (!context.Hover && Value.MetaData.Situation != ExpansionMenuSituation.Preview)
-                    {
-                        switch (Value.State)
-                        {
-                            case ExpansionMenuState.Selected:
-                                <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
-                                break;
-                            case ExpansionMenuState.Impersonal:
-                                <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
-                                break;
-                            case ExpansionMenuState.Indeterminate:
-                                <MIcon Small Class="mr-1" Color="primary">mdi-minus-box</MIcon>
-                                break;
-                            case ExpansionMenuState.Favorite:
-                                <SIcon Small Style="margin-right: 6px" Color="#FFB547" Tooltip="@T("CancelFavorite")">mdi-star</SIcon>
-                                break;
-                        }
-                    }
-
-                </ItemContent>
-            </MListItem>
+                    </div>
+                </div>
+            </a>
         }
         else if (Value.Type == ExpansionMenuType.Element)
         {
-            <MListItem @attributes="@context.Attrs" Class="@GetClass(context.Hover)" Disabled="Value.Disabled"
-                       OnClick="ItemClick" Value="Value.Id" ActiveClass="GetActiveClass()" Style="@GetIsDisplayStyle(Value.MetaData.Situation == ExpansionMenuSituation.Authorization)">
-                <ItemContent Context="item">
-                    <MListItemContent>
-                        <MListItemTitle Style="@(selected ? "color: #323D6F;" : "")">@DT(Value.Name)</MListItemTitle>
-                    </MListItemContent>
-
+            <div class="m-list-item theme--light @(Value.Disabled ? "m-list-item--disabled" : "") @GetClass(context.Hover)"
+                 style="@GetIsDisplayStyle(Value.MetaData.Situation == ExpansionMenuSituation.Authorization)"
+                 @onclick="ItemClick"
+                 @attributes="@context.Attrs">
+                <div class="d-flex align-center full-width">
+                    <div style="font-weight: 500; font-size: 14px; @(Value.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
+                        @DT(Value.Name)
+                    </div>
+                    <MSpacer />
                     @if (!Value.Disabled)
                     {
-                        <MListItemAction Class="ma-0" Style="@GetIsDisplayStyle(context.Hover)">
-                            <MCheckbox Dense Value="selected" TValue="bool"></MCheckbox>
-                        </MListItemAction>
+                        <div style="@GetIsDisplayStyle(context.Hover)">
+                            <MCheckbox Dense Value="selected" TValue="bool" HideDetails="true" Class="expansion-nav__checkbox"></MCheckbox>
+                        </div>
                         @if (!context.Hover)
                         {
                             switch (Value.State)
                             {
                                 case ExpansionMenuState.Selected:
-                                    <MIcon Small Class="mr-1" Color="primary">mdi-check</MIcon>
+                                    <MIcon Small Class="expansion-nav__action" Color="primary">mdi-check</MIcon>
                                     break;
                                 case ExpansionMenuState.Impersonal:
-                                    <MIcon Small Class="mr-1" Color="red">mdi-close</MIcon>
+                                    <MIcon Small Class="expansion-nav__action" Color="red">mdi-close</MIcon>
                                     break;
                             }
                         }
                     }
-                </ItemContent>
-            </MListItem>
+                </div>
+            </div>
         }
     </MHover>
 
-    @if (Value.GetNavDeep() == 0 && Value.Children.Any(child=>!child.Hidden))
+    @if (Value.GetNavDeep() == 0 && Value.Children.Any(child => !child.Hidden))
     {
-        <div class="mx-4" data-count="@Value.Children.Count(child=>!child.Hidden)" style="border: 1px dashed #E4E8F3;"></div>
+        <div class="mx-4" data-count="@Value.Children.Count(child => !child.Hidden)" style="border: 1px dashed #E4E8F3;"></div>
     }
 </div>
 
 
-@foreach(var child in Value.Children)
+@foreach (var child in Value.Children)
 {
     <ExpansionNavWrapper Value="child" OnItemClick="OnItemClick" OnItemOperClick="OnItemOperClick" />
 }
