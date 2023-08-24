@@ -12,9 +12,6 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
     public bool Large { get; set; }
 
     [Parameter]
-    public bool Required { get; set; }
-
-    [Parameter]
     public bool AutoLabel { get; set; } = true;
 
     public override async Task SetParametersAsync(ParameterView parameters)

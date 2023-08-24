@@ -10,7 +10,6 @@ public class SSimpleModal : PModal
         HideCancelAction = true;
         Persistent = true;
         Width = 770;
-
         return base.SetParametersAsync(parameters);
     }
 

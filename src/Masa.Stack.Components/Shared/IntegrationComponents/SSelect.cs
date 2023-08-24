@@ -12,9 +12,6 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
     public bool Large { get; set; }
 
     [Parameter]
-    public bool Required { get; set; }
-
-    [Parameter]
     public string? Tooltip { get; set; }
 
     [Parameter]
