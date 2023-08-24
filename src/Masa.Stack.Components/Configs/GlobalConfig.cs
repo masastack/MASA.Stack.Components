@@ -5,9 +5,10 @@ public class GlobalConfig : IScopedDependency
     private const string DarkCookieKey = "GlobalConfig_IsDark";
     private const string MiniCookieKey = "GlobalConfig_NavigationMini";
     private const string FavoriteCookieKey = "GlobalConfig_Favorite";
+    private const string LangCookieKey = "GlobalConfig_Lang";
 
-    private readonly CookieStorage? _cookieStorage;
-    private readonly I18n? _i18N;
+    private readonly CookieStorage _cookieStorage;
+    private readonly I18n _i18N;
     private bool _dark;
     private bool _mini;
     private string _favorite;
@@ -21,26 +22,19 @@ public class GlobalConfig : IScopedDependency
 
     public event CurrentTeamChanged? OnCurrentTeamChanged;
 
-    public GlobalConfig(CookieStorage cookieStorage, I18n i18n, IHttpContextAccessor httpContextAccessor)
+    public GlobalConfig(CookieStorage cookieStorage, I18n i18n)
     {
         _cookieStorage = cookieStorage;
         _i18N = i18n;
-        if (httpContextAccessor.HttpContext is not null)
-            Initialization(httpContextAccessor.HttpContext.Request.Cookies);
     }
 
-    public CultureInfo? Culture
+    public CultureInfo Culture
     {
-        get => _i18N?.Culture;
+        get => _i18N.Culture;
         set
         {
-            if (_i18N is null)
-            {
-                return;
-            }
-
             _i18N.SetCulture(value);
-
+            _cookieStorage.SetAsync(LangCookieKey, value.Name);
             OnLanguageChanged?.Invoke();
         }
     }
@@ -67,7 +61,7 @@ public class GlobalConfig : IScopedDependency
         set
         {
             _dark = value;
-            _cookieStorage?.SetItemAsync(DarkCookieKey, value);
+            _cookieStorage.SetAsync(DarkCookieKey, value);
         }
     }
 
@@ -79,7 +73,7 @@ public class GlobalConfig : IScopedDependency
         set
         {
             _mini = value;
-            _cookieStorage?.SetItemAsync(MiniCookieKey, value);
+            _cookieStorage?.SetAsync(MiniCookieKey, value);
         }
     }
 
@@ -89,14 +83,20 @@ public class GlobalConfig : IScopedDependency
         set
         {
             _favorite = value;
-            _cookieStorage?.SetItemAsync(FavoriteCookieKey, value);
+            _cookieStorage?.SetAsync(FavoriteCookieKey, value);
         }
     }
 
-    private void Initialization(IRequestCookieCollection cookies)
+    public async void Initialization()
     {
-        _dark = Convert.ToBoolean(cookies[DarkCookieKey]);
-        _mini = !cookies.ContainsKey(MiniCookieKey) || Convert.ToBoolean(cookies[MiniCookieKey]);
-        _favorite = cookies[FavoriteCookieKey];
+        _dark = Convert.ToBoolean(await _cookieStorage.GetAsync(DarkCookieKey));
+        bool.TryParse(await _cookieStorage.GetAsync(MiniCookieKey), out _mini);
+        _favorite = await _cookieStorage.GetAsync(FavoriteCookieKey);
+
+        var lang = await _cookieStorage.GetAsync(LangCookieKey);
+        if (!string.IsNullOrWhiteSpace(lang))
+        {
+            _i18N.SetCulture(new CultureInfo(lang));
+        }
     }
 }

@@ -22,4 +22,5 @@ public class IconConstants
     public const string More = "mdi-dots-vertical";
     public const string MenuDown = "mdi-menu-down";
     public const string MenuRight = "mdi-menu-right";
+    public const string Claim = "mdi-card-account-details-outline";
 }

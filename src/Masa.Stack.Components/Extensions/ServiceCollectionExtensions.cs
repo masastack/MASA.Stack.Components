@@ -7,6 +7,7 @@ public static class ServiceCollectionExtensions
         string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
         string? pmHost = null)
     {
+        services.AddScoped<CookieStorage>();
         services.AddScoped<JsInitVariables>();
         services.AddAutoInject();
         services.AddMasaIdentity(options =>

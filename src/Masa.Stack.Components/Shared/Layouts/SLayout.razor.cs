@@ -94,6 +94,8 @@ public partial class SLayout
 
         if (firstRender)
         {
+            GlobalConfig.Initialization();
+
             await JsInitVariables.SetTimezoneOffset();
             List<MenuModel> menus = new();
 

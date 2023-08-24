@@ -2,9 +2,6 @@
 
 public class STextarea : MTextarea
 {
-    [Parameter]
-    public bool Required { get; set; }
-
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         HideDetails = "auto";

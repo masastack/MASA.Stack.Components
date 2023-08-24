@@ -32,7 +32,7 @@ public partial class Favorites
         {
             ArgumentNullException.ThrowIfNull(CookieStorage);
 
-            var cookieFavorite = await CookieStorage.GetCookieAsync(GlobalConfig_Favorite);
+            var cookieFavorite = await CookieStorage.GetAsync(GlobalConfig_Favorite);
 
             if (cookieFavorite is not null)
             {
@@ -81,7 +81,7 @@ public partial class Favorites
             FavoriteNavCodes.Remove(code);
         }
 
-        CookieStorage?.SetItemAsync(GlobalConfig_Favorite, string.Join("|", FavoriteNavCodes));
+        CookieStorage.SetAsync(GlobalConfig_Favorite, string.Join("|", FavoriteNavCodes));
     }
 
     private void MenuValueChanged(bool value)

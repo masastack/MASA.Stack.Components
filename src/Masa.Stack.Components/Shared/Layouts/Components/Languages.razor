@@ -38,7 +38,6 @@
 
     async Task OnLanguageChangeAsync(CultureInfo culture)
     {
-        I18n.SetCulture(culture);
         GlobalConfig.Culture = culture;
         if (OnChange.HasDelegate) await OnChange.InvokeAsync(culture);
     }
