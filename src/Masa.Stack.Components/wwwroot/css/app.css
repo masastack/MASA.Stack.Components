@@ -555,7 +555,7 @@ body, .masa-stack-components {
 }
 
 .masa-stack-components .table-border-head .m-data-table__wrapper table tr .m-icon {
-    color: #323D6F !important;
+    color: #323D6F;
 }
 
 /*
