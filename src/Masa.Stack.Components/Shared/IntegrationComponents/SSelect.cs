@@ -114,5 +114,7 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
         {
             Class += " select_vertical_line";
         }
+
+        Required = false; // disable required feature from base component in S[Component]
     }
 }

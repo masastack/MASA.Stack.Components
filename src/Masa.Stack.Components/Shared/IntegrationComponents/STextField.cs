@@ -133,6 +133,8 @@ public class STextField<TValue> : MTextField<TValue>
             var fieldName = (accessorBody as MemberExpression)!.Member.Name;
             Label = I18n.T(fieldName);
         }
+
+        Required = false; // disable required feature from base component in S[Component]
     }
 }
 

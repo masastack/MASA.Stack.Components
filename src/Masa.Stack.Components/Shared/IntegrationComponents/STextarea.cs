@@ -13,6 +13,7 @@ public class STextarea : MTextarea
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+
         if (Required && LabelContent == default)
         {
             LabelContent = builder =>
@@ -24,5 +25,7 @@ public class STextarea : MTextarea
                 builder.AddContent(3, Label);
             };
         }
+
+        Required = false; // disable required feature from base component in S[Component]
     }
 }

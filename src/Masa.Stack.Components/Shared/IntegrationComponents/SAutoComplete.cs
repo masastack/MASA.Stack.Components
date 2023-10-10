@@ -87,5 +87,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
             var fieldName = (accessorBody as MemberExpression)!.Member.Name;
             Label = I18n.T(fieldName);
         }
+
+        Required = false; // disable required feature from base component in S[Component]
     }
 }
