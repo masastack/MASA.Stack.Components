@@ -27,9 +27,6 @@
     [Inject]
     private MasaBlazor MasaBlazor { get; set; } = null!;
 
-    [Inject]
-    private Window Window { get; set; } = null!;
-
     [Parameter]
     public RenderFragment<TItem>? ChildContent { get; set; }
 
@@ -85,7 +82,12 @@
     protected override void OnInitialized()
     {
         // TODO: should resize the div element.
-        Window.OnResize += HandleOnResizeAsync;
+        MasaBlazor.BreakpointChanged += MasaBlazorOnBreakpointChanged;
+    }
+
+    private void MasaBlazorOnBreakpointChanged(object? sender, BreakpointChangedEventArgs e)
+    {
+        InvokeAsync(ComputeCols);
     }
 
     protected override void OnParametersSet()
@@ -99,14 +101,6 @@
         {
             await ComputeCols();
         }
-    }
-
-    private async Task HandleOnResizeAsync()
-    {
-        await InvokeAsync(async () =>
-        {
-            await ComputeCols();
-        });
     }
 
     private async Task ComputeCols()
@@ -152,7 +146,7 @@
 
     public void Dispose()
     {
-        Window.OnResize -= HandleOnResizeAsync;
+        MasaBlazor.BreakpointChanged -= MasaBlazorOnBreakpointChanged;
     }
     
 }
