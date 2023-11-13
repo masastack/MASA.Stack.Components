@@ -1,6 +1,5 @@
 ﻿@page "/simpleModalExample"
-@using Masa.Stack.Components.IntegrationComponents
-@using Masa.Stack.Components.Models
+@using Masa.Stack.Components.Rcl.Models
 <SSimpleModal Value="@_visible" Title="标题" SaveText="保存" OnDelete="()=>Console.WriteLine(1)" OnSave="()=>Console.WriteLine(1)" BodyStyle="height: 597px;">
     <ChildContent>
         <MForm Model="_model" EnableValidation Class="full-height">

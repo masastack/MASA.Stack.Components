@@ -11,6 +11,6 @@
 		<PackageReference Include="Masa.Contrib.Configuration" Version="1.0.1-preview.1" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
+	  <ProjectReference Include="..\..\src\Masa.Stack.Components.Server\Masa.Stack.Components.Server.csproj" />
 	</ItemGroup>
 </Project>

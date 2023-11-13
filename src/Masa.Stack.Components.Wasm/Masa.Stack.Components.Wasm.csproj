@@ -15,4 +15,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.3" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Masa.Stack.Components.Rcl\Masa.Stack.Components.Rcl.csproj" />
+	</ItemGroup>
+
 </Project>

@@ -1,0 +1,23 @@
+﻿@namespace Masa.Stack.Components
+@inherits MIcon
+
+@{
+    InitDefaultToolTip();
+}
+@if (Tooltip is not null)
+{
+    <MTooltip Top>
+        <ActivatorContent>
+            <span @attributes="context.Attrs">
+                @base.BuildRenderTree
+            </span>
+        </ActivatorContent>
+        <ChildContent>
+            <span style="white-space: pre;">@Tooltip</span>
+        </ChildContent>
+    </MTooltip>
+}
+else
+{
+    @base.BuildRenderTree
+}

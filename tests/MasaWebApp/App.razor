@@ -1,5 +1,6 @@
 ﻿@using System.Reflection
 @using Masa.Contrib.StackSdks.Caller;
+ 
 @inject TokenProvider TokenProvider
 
 <Router AppAssembly="@typeof(App).Assembly"
@@ -24,7 +25,7 @@
 
     public App()
     {
-        var masaStackComponentsAssembly = typeof(Masa.Stack.Components.UserCenter).Assembly;
+        var masaStackComponentsAssembly = typeof(Masa.Stack.Components.Rcl.UserCenter).Assembly;
         additionalAssemblies.Add(masaStackComponentsAssembly);
     }
 

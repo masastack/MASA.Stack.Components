@@ -1,0 +1,81 @@
+﻿@namespace Masa.Stack.Components
+
+@inherits MasaComponentBase
+@inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
+@inject IWebHostEnvironment WebHostEnvironment
+@inject ILogger<GlobalNavigation> Logger
+
+<MDialog Value="_visible" ValueChanged="VisibleChanged"
+         Fullscreen
+         Transition="dialog-top-transition">
+    <ActivatorContent>
+        @ActivatorContent?.Invoke(context)
+    </ActivatorContent>
+    <ChildContent>
+        <MCard>
+            <div class="global-nav">
+                <div class="global-nav-left">
+                    <div class="global-nav-left__content">
+                        <div class="global-nav-left__title">
+                            @T("Favorites")
+                        </div>
+                        <MListItemGroup Value="@("/users")" Class="full-width mt-3">
+                            @foreach (var item in _favorites)
+                            {
+                                <MListItem Dense Value="item.GetData(MENU_URL_NAME)"
+                                       Class="mb-4 full-width rounded-2"
+                                       ActiveClass="primary white--text"
+                                           OnClick="() => NavigateTo(item.GetData(MENU_URL_NAME))">
+                                    <ItemContent>
+                                        <div class="global-nav-left__favorite-item full-width masa-text-2-2 @(context.ActiveClass)">
+                                            <MListItemContent>
+                                                <MListItemTitle>@DT(item.Name)</MListItemTitle>
+                                            </MListItemContent>
+                                            <MListItemAction Class="ma-0">
+                                                <SAutoLoadingButton Icon XSmall Color="#FFB547" OnClick="async () => await FavoriteRemoveAsync(item)" OnClickStopPropagation>
+                                                    <SIcon Small Tooltip="@T("CancelFavorite")">mdi-star</SIcon>
+                                                </SAutoLoadingButton>
+                                            </MListItemAction>
+                                        </div>
+                                    </ItemContent>
+                                </MListItem>
+                            }
+                            @foreach (var _recommendApp in _recommendApps)
+                            {
+                                <MListItem Dense Class="mb-4 full-width rounded-2"
+                                       ActiveClass="primary white--text" OnClick="() => NavigateTo(_recommendApp.Value)">
+                                    @DT(_recommendApp.Key)
+                                </MListItem>
+                            }
+                        </MListItemGroup>
+                        <div class="global-nav-left__title">
+                            @T("PlatformTools")
+                        </div>
+                    </div>
+                </div>
+                <div class="global-nav-right">
+                    <div class="global-nav-header">
+                        <div class="d-flex">
+                            <span class="global-nav-header__title">@T("GlobalNavigation")</span>
+                            <MSpacer />
+                            <SSearch Dense Class="mr-6" ValueChanged="SearchChanged" />
+                            <MButton Icon OnClick="() => _visible = false">
+                                <MIcon>mdi-close</MIcon>
+                            </MButton>
+                        </div>
+                        <div class="mt-4">
+                            <span class="masa-text-3-1">@T("RecentVisits")</span>
+                            @foreach (var (name, url) in _recentVisits)
+                            {
+                                <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@DT(name)</MChip>
+                            }
+                        </div>
+                    </div>
+                    <div class="global-nav-content">
+                        <ExpansionMenuWrapper Value="_menu" OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
+                    </div>
+                </div>
+            </div>
+        </MCard>
+    </ChildContent>
+</MDialog>

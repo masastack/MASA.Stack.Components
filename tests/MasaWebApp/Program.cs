@@ -2,8 +2,8 @@
 
 using Masa.Contrib.StackSdks.Caller;
 using Masa.Contrib.StackSdks.Config;
-using Masa.Stack.Components;
-using Masa.Stack.Components.Extensions.OpenIdConnect;
+using Masa.Stack.Components.Server.Extensions;
+using Masa.Stack.Components.Server.Extensions.OpenIdConnect;
 using MasaWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
