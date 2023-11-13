@@ -25,7 +25,7 @@ jobs:
       run: dotnet restore 
 
     - name: build
-      run: dotnet build --configuration Release --no-restore /p:ContinuousIntegrationBuild=true
+      run: dotnet build src/Masa.Stack.Components/Masa.Stack.Components.csproj --configuration Release --no-restore /p:ContinuousIntegrationBuild=true
 
     - name: pack
       run: dotnet pack --configuration Release --include-symbols  -p:PackageVersion=0.0.$GITHUB_RUN_NUMBER
