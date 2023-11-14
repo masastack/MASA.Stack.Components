@@ -8,7 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-
+//DccOptions dccOptions = builder.Configuration.GetSection("DccOptions").Get<DccOptions>();
+builder.Services.AddMasaConfiguration(configurationBuilder =>
+{
+    configurationBuilder.UseDcc();//使用Dcc 扩展Configuration能力，支持远程配置
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

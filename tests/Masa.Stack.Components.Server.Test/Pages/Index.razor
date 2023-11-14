@@ -1,9 +1,24 @@
 ﻿@page "/"
+@using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 
-<PageTitle>Index</PageTitle>
+<PageTitle>@_val</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    [Inject]
+    public Masa.BuildingBlocks.Configuration.IMasaConfiguration Configuration { get; set; }
+
+    private string _val;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var value = Configuration.ConfigurationApi.GetDefault().GetValue<string>("20231113-1");
+        _val = value;
+        Console.WriteLine(value);
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

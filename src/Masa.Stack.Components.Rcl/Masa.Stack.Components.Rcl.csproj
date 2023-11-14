@@ -36,4 +36,29 @@
 	<ItemGroup>
 		<EmbeddedResource Include="Locales\*.json" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="wwwroot\js\components.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\js\http.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\js\jsInitVariables\jsInitVariables.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\js\oss\aliyun-oss-sdk.min.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\js\oss\upload.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\js\upload\upload.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\i18n\" />
+	</ItemGroup>
 </Project>

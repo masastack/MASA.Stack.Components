@@ -10,7 +10,72 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.25.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
+    <PackageReference Include="YamlDotNet" Version="13.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Masa.BuildingBlocks.Caching">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.Configuration">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.Data">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.Data.Contracts">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.Data.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.Exceptions">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.Exceptions.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.Globalization.I18n">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.Globalization.I18n.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.Isolation">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.Isolation.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.Service.Caller">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.Service.Caller.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.StackSdks.Dcc.Contracts">
+      <HintPath>..\..\testdll\Masa.BuildingBlocks.StackSdks.Dcc.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Contrib.Caching.Distributed.StackExchangeRedis">
+      <HintPath>..\..\testdll\Masa.Contrib.Caching.Distributed.StackExchangeRedis.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Contrib.Caching.MultilevelCache">
+      <HintPath>..\..\testdll\Masa.Contrib.Caching.MultilevelCache.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Contrib.Configuration">
+      <HintPath>..\..\testdll\Masa.Contrib.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc">
+      <HintPath>..\..\testdll\Masa.Contrib.Configuration.ConfigurationApi.Dcc.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Contrib.Data.Serialization.Yaml">
+      <HintPath>..\..\testdll\Masa.Contrib.Data.Serialization.Yaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Contrib.Service.Caller.HttpClient">
+      <HintPath>..\..\testdll\Masa.Contrib.Service.Caller.HttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Utils.Caching.Memory">
+      <HintPath>..\..\testdll\Masa.Utils.Caching.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Utils.Extensions.DotNet">
+      <HintPath>..\..\testdll\Masa.Utils.Extensions.DotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Utils.Extensions.Expressions">
+      <HintPath>..\..\testdll\Masa.Utils.Extensions.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Utils.Models.Config">
+      <HintPath>..\..\testdll\Masa.Utils.Models.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Utils.Security.Cryptography">
+      <HintPath>..\..\testdll\Masa.Utils.Security.Cryptography.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

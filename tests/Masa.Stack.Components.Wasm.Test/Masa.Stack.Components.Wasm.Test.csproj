@@ -11,4 +11,19 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Masa.BuildingBlocks.Service.Caller">
+      <HintPath>bin\Debug\net7.0\wwwroot\_framework\Masa.BuildingBlocks.Service.Caller.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.BuildingBlocks.StackSdks.Dcc.Contracts">
+      <HintPath>bin\Debug\net7.0\wwwroot\_framework\Masa.BuildingBlocks.StackSdks.Dcc.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Contrib.Configuration">
+      <HintPath>bin\Debug\net7.0\wwwroot\_framework\Masa.Contrib.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc">
+      <HintPath>bin\Debug\net7.0\wwwroot\_framework\Masa.Contrib.Configuration.ConfigurationApi.Dcc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

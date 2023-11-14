@@ -1,5 +1,6 @@
 ﻿using Masa.Stack.Components.Rcl.Configs;
 using Masa.Stack.Components.Rcl.JsInterop;
+using Masa.Stack.Components.Rcl.Options;
 
 namespace Masa.Stack.Components.Wasm.Extensions;
 
