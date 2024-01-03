@@ -6,7 +6,8 @@
 @inject IWebHostEnvironment WebHostEnvironment
 @inject ILogger<GlobalNavigation> Logger
 
-<MDialog Value="_visible" ValueChanged="VisibleChanged"
+<MDialog Value="_visible"
+         ValueChanged="VisibleChanged"
          Fullscreen
          Transition="dialog-top-transition">
     <ActivatorContent>
@@ -17,40 +18,61 @@
             <div class="global-nav">
                 <div class="global-nav-left">
                     <div class="global-nav-left__content">
-                        <div class="global-nav-left__title">
-                            @T("Favorites")
-                        </div>
-                        <MListItemGroup Value="@("/users")" Class="full-width mt-3">
-                            @foreach (var item in _favorites)
-                            {
-                                <MListItem Dense Value="item.GetData(MENU_URL_NAME)"
-                                       Class="mb-4 full-width rounded-2"
-                                       ActiveClass="primary white--text"
-                                           OnClick="() => NavigateTo(item.GetData(MENU_URL_NAME))">
-                                    <ItemContent>
-                                        <div class="global-nav-left__favorite-item full-width masa-text-2-2 @(context.ActiveClass)">
+                        <div class="global-nav-left__group">
+                            <div class="global-nav-left__title">
+                                @T("Favorites")
+                            </div>
+                            <div class="full-width mt-3">
+                                @if (_favorites == null)
+                                {
+                                    <MSkeletonLoader Class="transparent" Type="list-item@3" />
+                                }
+                                else
+                                {
+                                    @foreach (var item in _favorites)
+                                    {
+                                        <MListItem Dense
+                                                   Class="mb-1 full-width rounded-2 masa-text-2-2"
+                                                   OnClick="@(() => NavigateTo(item.GetData(MENU_URL_NAME)))">
                                             <MListItemContent>
                                                 <MListItemTitle>@DT(item.Name)</MListItemTitle>
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
-                                                <SAutoLoadingButton Icon XSmall Color="#FFB547" OnClick="async () => await FavoriteRemoveAsync(item)" OnClickStopPropagation>
+                                                <SAutoLoadingButton Icon Small Color="#FFB547"
+                                                                    OnClick="@(() => FavoriteRemoveAsync(item))"
+                                                                    OnClickStopPropagation>
                                                     <SIcon Small Tooltip="@T("CancelFavorite")">mdi-star</SIcon>
                                                 </SAutoLoadingButton>
                                             </MListItemAction>
-                                        </div>
-                                    </ItemContent>
-                                </MListItem>
-                            }
-                            @foreach (var _recommendApp in _recommendApps)
-                            {
-                                <MListItem Dense Class="mb-4 full-width rounded-2"
-                                       ActiveClass="primary white--text" OnClick="() => NavigateTo(_recommendApp.Value)">
-                                    @DT(_recommendApp.Key)
-                                </MListItem>
-                            }
-                        </MListItemGroup>
-                        <div class="global-nav-left__title">
-                            @T("PlatformTools")
+                                        </MListItem>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="global-nav-left__group">
+                            <div class="global-nav-left__title">
+                                @T("PlatformTools")
+                            </div>
+                            <div>
+                                @if (_recommendApps == null)
+                                {
+                                    <MSkeletonLoader Class="transparent" Type="list-item@3" />
+                                }
+                                else
+                                {
+                                    foreach (var item in _recommendApps)
+                                    {
+                                        <MListItem Dense
+                                                   Class="mb-1 full-width rounded-2 masa-text-2-2"
+                                                   Href="@item.Value">
+                                            <MListItemContent>
+                                                <MListItemTitle>@DT(item.Key)</MListItemTitle>
+                                            </MListItemContent>
+                                        </MListItem>
+                                    }
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,15 +87,34 @@
                             </MButton>
                         </div>
                         <div class="mt-4">
-                            <span class="masa-text-3-1">@T("RecentVisits")</span>
-                            @foreach (var (name, url) in _recentVisits)
+                            <span class="masa-text-3-1 mb-2">@T("RecentVisits")</span>
+
+                            @if (_recentVisits == null)
                             {
-                                <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@DT(name)</MChip>
+                                <MSkeletonLoader Class="d-flex transparent" Type="chip@3" />
+                            }
+                            else
+                            {
+                                foreach (var (name, url) in _recentVisits)
+                                {
+                                    <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@DT(name)</MChip>
+                                }
                             }
                         </div>
                     </div>
                     <div class="global-nav-content">
-                        <ExpansionMenuWrapper Value="_menu" OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
+                        @if (_menu is null)
+                        {
+                            <div class="d-flex" style=" width: calc(100% - 256px);">
+                                <MSkeletonLoader Class="transparent full-width mr-2" Type="list-item@3" />
+                                <MSkeletonLoader Class="transparent full-width mr-2" Type="list-item@3" />
+                                <MSkeletonLoader Class="transparent full-width" Type="list-item@3" />
+                            </div>
+                        }
+                        else
+                        {
+                            <ExpansionMenuWrapper Value="_menu" OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
+                        }
                     </div>
                 </div>
             </div>

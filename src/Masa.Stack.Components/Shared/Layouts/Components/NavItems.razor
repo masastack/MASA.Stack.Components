@@ -77,9 +77,6 @@
     [Parameter, EditorRequired]
     public Nav Data { get; set; } = null!;
 
-    [Parameter]
-    public string? Class { get; set; }
-
     private List<string> GenGroup(List<Nav> navs)
     {
         if (!navs.Any())

@@ -14,23 +14,26 @@ public partial class GlobalNavigation : MasaComponentBase
     public Func<string, Task>? OnFavoriteRemove { get; set; }
 
     bool _visible;
-    List<(string name, string url)> _recentVisits = new();
-    List<KeyValuePair<string, string>> _recommendApps = new();
-    List<ExpansionMenu> _favorites = new();
+    private List<(string name, string url)>? _recentVisits;
+    private List<KeyValuePair<string, string>>? _recommendApps;
+    private List<ExpansionMenu>? _favorites;
     ExpansionMenu? _menu;
 
-    async Task IniDataAsync()
+    private async Task GetMenuAndFavorites()
     {
         _menu = await GenerateMenuAsync();
         _favorites = _menu.GetMenusByStates(ExpansionMenuState.Favorite);
-        await GetRecommendApps();
-        await GetRecentVisits();
+        StateHasChanged();
     }
 
     private async Task GetRecommendApps()
     {
         //TODO pm config
-        var recommendAppIdentities = new List<string>() { MasaStackConfig.GetWebId(MasaStackProject.PM), MasaStackConfig.GetWebId(MasaStackProject.DCC), MasaStackConfig.GetWebId(MasaStackProject.Auth) };
+        var recommendAppIdentities = new List<string>()
+        {
+            MasaStackConfig.GetWebId(MasaStackProject.PM), MasaStackConfig.GetWebId(MasaStackProject.DCC),
+            MasaStackConfig.GetWebId(MasaStackProject.Auth)
+        };
         var environment = MultiEnvironmentUserContext.Environment;
         if (environment.IsNullOrEmpty())
         {
@@ -40,15 +43,20 @@ public partial class GlobalNavigation : MasaComponentBase
 
         var projects = await PmClient.ProjectService.GetProjectAppsAsync(environment);
         _recommendApps = projects.SelectMany(p => p.Apps).Where(a => recommendAppIdentities.Contains(a.Identity))
-            .Select(a => new KeyValuePair<string, string>(a.Name, a.Url)).ToList();
+                                 .Select(a => new KeyValuePair<string, string>(a.Name, a.Url)).ToList();
+
+        StateHasChanged();
     }
 
-    private async Task VisibleChanged(bool visible)
+    private void VisibleChanged(bool visible)
     {
-        if (visible)
+        if (visible && _menu == null)
         {
-            await IniDataAsync();
+            _ = GetRecommendApps();
+            _ = GetRecentVisits();
+            _ = GetMenuAndFavorites();
         }
+
         _visible = visible;
     }
 
@@ -91,16 +99,20 @@ public partial class GlobalNavigation : MasaComponentBase
 
             foreach (var category in categories)
             {
-                var categoryMenu = new ExpansionMenu(category.Key, category.Key, ExpansionMenuType.Category, ExpansionMenuState.Normal, menu.MetaData, parent: menu);
+                var categoryMenu = new ExpansionMenu(category.Key, category.Key, ExpansionMenuType.Category, ExpansionMenuState.Normal, menu.MetaData,
+                    parent: menu);
                 foreach (var app in category.Where(a => a.Navs.Any()))
                 {
-                    var appMenu = new ExpansionMenu(app.Id.ToString(), app.Name, ExpansionMenuType.App, ExpansionMenuState.Normal, menu.MetaData, parent: categoryMenu);
+                    var appMenu = new ExpansionMenu(app.Id.ToString(), app.Name, ExpansionMenuType.App, ExpansionMenuState.Normal, menu.MetaData,
+                        parent: categoryMenu);
                     foreach (var nav in app.Navs)
                     {
                         appMenu.AddChild(ConvertForNav(nav, appMenu.Deep + 1, appMenu, favorites));
                     }
+
                     categoryMenu.AddChild(appMenu);
                 }
+
                 menu.AddChild(categoryMenu);
             }
         }
@@ -120,6 +132,7 @@ public partial class GlobalNavigation : MasaComponentBase
         {
             menu.AddChild(ConvertForNav(childrenNav, deep++, menu, favorites));
         }
+
         menu.Disabled = menu.Children.Count > 0;
         return menu;
     }
@@ -127,13 +140,15 @@ public partial class GlobalNavigation : MasaComponentBase
     private async Task<List<string>> FetchFavorites()
     {
         return (await AuthClient.PermissionService.GetFavoriteMenuListAsync())
-            .Select(m => m.Value.ToString()).ToList();
+               .Select(m => m.Value.ToString()).ToList();
     }
 
     private async Task GetRecentVisits()
     {
         var visitedList = await AuthClient.UserService.GetVisitedListAsync();
         _recentVisits = visitedList.Select(v => new ValueTuple<string, string>(v.Name, v.Url)).ToList();
+
+        StateHasChanged();
     }
 
     private void NavigateTo(string? url)

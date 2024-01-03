@@ -182,10 +182,11 @@
             return parents;
         }
 
-        protected override void Dispose(bool disposing)
+        protected override ValueTask DisposeAsync(bool disposing)
         {
             NavigationManager.LocationChanged -= NavigationManagerOnLocationChanged;
-            base.Dispose(disposing);
+            
+            return base.DisposeAsync(disposing);
         }
     }
 }

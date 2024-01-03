@@ -11,12 +11,6 @@ public partial class SUserAutoComplete
     public EventCallback<UserSelectModel> OnSelectedItemUpdate { get; set; }
 
     [Parameter]
-    public string Class { get; set; } = "";
-
-    [Parameter]
-    public string Style { get; set; } = "";
-
-    [Parameter]
     public bool FillBackground { get; set; } = true;
 
     [Parameter]

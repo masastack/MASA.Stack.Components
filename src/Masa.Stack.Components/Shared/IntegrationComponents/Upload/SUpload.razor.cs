@@ -9,12 +9,6 @@ public partial class SUpload : IAsyncDisposable
     public IJSRuntime? Js { get; set; }
 
     [Parameter]
-    public string Class { get; set; } = "";
-
-    [Parameter]
-    public string Style { get; set; } = "";
-
-    [Parameter]
     public bool Multiple { get; set; }
 
     [Parameter]

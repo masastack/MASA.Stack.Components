@@ -41,12 +41,6 @@ public partial class SDateTimeRangePicker
     [Parameter]
     public bool Clearable { get; set; } = false;
 
-    [Parameter]
-    public string Class { get; set; } = string.Empty;
-
-    [Parameter]
-    public string Style { get; set; } = string.Empty;
-
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 

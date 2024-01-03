@@ -23,8 +23,17 @@ body, .masa-stack-components {
             padding: 24px;
         }
 
+        .global-nav .m-skeleton-loader__list-item {
+            background: transparent !important;
+        }
+        
+        .global-nav .m-skeleton-loader__chip {
+            margin-right: 8px;
+        }
+
         .masa-stack-components .global-nav .global-nav-left__title {
             color: #A3AED0;
+            margin-bottom: 8px;
         }
 
         .masa-stack-components .global-nav .global-nav-left__content {
@@ -38,9 +47,6 @@ body, .masa-stack-components {
         }
 
         .masa-stack-components .global-nav .global-nav-left__favorite-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
         }
 
         .masa-stack-components .global-nav .global-nav-left__content .m-list-item:hover::before {
@@ -59,8 +65,19 @@ body, .masa-stack-components {
             font-weight: 700;
             font-size: 24px;
         }
+        
+        .global-nav-left__group {
+            width: 100%;
+            margin-bottom: 24px;
+        }
 
         .masa-stack-components .global-nav .global-nav-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .global-nav-content__wrapper {
+            width: 100%;
             display: flex;
             height: calc(100vh - 158px);
         }
@@ -904,4 +921,14 @@ body, .masa-stack-components {
 
 .expansion-nav__checkbox {
     margin-right: -6px ;
+}
+
+@media (min-width: 1264px) {
+    .masa-app-bar:not(.app--sized) {
+        left: 300px !important;
+    }
+    
+    .masa-main:not(.app--sized) {
+        padding-left: 300px !important;
+    }
 }
