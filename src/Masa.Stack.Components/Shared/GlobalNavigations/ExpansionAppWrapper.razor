@@ -25,7 +25,7 @@
                     <MSimpleCheckbox Color="primary"
                                      Ripple="false"
                                      Value="@(indeterminate || appSelected)"
-                                     ValueChanged="() => { OnItemOperClick.InvokeAsync(Value); }"
+                                     ValueChanged="@ItemOperClick"
                                      Indeterminate=indeterminate
                                      Class="masa-icon-size-20"
                                      Style="flex: none;margin-right: -4px;" />

@@ -1,7 +1,10 @@
 ﻿@namespace Masa.Stack.Components
 @inherits NextTickComponentBase
 
-<MBottomSheet ContentClass="m-sheet-dialog full-height elevation-0 m-dialog--fullscreen" Value=Value ValueChanged="SheetValueChangedAsync">
+<MBottomSheet HideOverlay
+              ContentClass="m-sheet-dialog full-height elevation-0 transparent m-dialog--fullscreen"
+              Value=Value
+              ValueChanged="SheetValueChangedAsync">
     <MHover>
         <div @attributes="context.Attrs" style="@($"padding-right:{Padding}px;padding-left:{Padding}px")" class="m-sheet-dialog-overlay d-flex flex-column full-height" @onclick="OnClose" @onclick:stopPropagation>
             @if (HeaderContent is null)
@@ -13,8 +16,8 @@
                         </MIcon>
                         <label class="white--text ml-2" style="font-style: normal;font-weight: 700;font-size: 20px;line-height: 30px;">@Title</label>
                     </div>
-                    <MIcon Color="white" OnClick="OnClose" OnClickStopPropagation>@(context.Hover ? "mdi-close-circle" : "mdi-close")</MIcon>
-                    </div>
+                    <MIcon Color="white" OnClick="OnClose" Class="close-icon" OnClickStopPropagation>mdi-close</MIcon>
+                </div>
             }
             else
             {
@@ -23,15 +26,15 @@
         </div>
     </MHover>
     <MSheet Class="@($"m-sheet-dialog-content flex-grow-1 rounded-5 rounded-b-0 {ContentClass}")"
-            Style="@($"position: absolute;top: 0;left: {Padding}px;right: {Padding}px;top: {HeaderHeight}px;height: calc(100% - {HeaderHeight}px);width: calc(100% - {2*Padding}px); {ContentStyle}")">
+            Style="@($"position: absolute;top: 0;left: {Padding}px;right: {Padding}px;top: {HeaderHeight}px;height: calc(100% - {HeaderHeight}px);width: calc(100% - {2 * Padding}px); {ContentStyle}")">
         @if (ContentLoading.Loading)
         {
             <div class="d-flex align-center justify-center" style="height: 100%">
-                    <MProgressCircular Indeterminate="@ContentLoading.Indeterminate"
+                <MProgressCircular Indeterminate="@ContentLoading.Indeterminate"
                                    Size="@ContentLoading.Size"
                                    Width="@ContentLoading.Width"
                                    Color="@ContentLoading.Color">
-                    </MProgressCircular>
+                </MProgressCircular>
             </div>
         }
         else
@@ -56,9 +59,13 @@
     public class MProgressInfo
     {
         public bool Loading { get; set; } = false;
+
         public int Width { get; set; } = 8;
+
         public int Size { get; set; } = 80;
+
         public bool Indeterminate { get; set; } = true;
+
         public string Color { get; set; } = "primary";
     }
 
@@ -143,4 +150,5 @@
             });
         }
     }
+
 }

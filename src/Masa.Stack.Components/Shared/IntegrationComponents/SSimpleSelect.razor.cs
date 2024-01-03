@@ -15,12 +15,6 @@ public partial class SSimpleSelect<TValue>
     public string? DefaultText { get; set; }
 
     [Parameter]
-    public string Style { get; set; } = "";
-
-    [Parameter]
-    public string Class { get; set; } = "";
-
-    [Parameter]
     public virtual List<(TValue value, string text)> ValueTexts { get; set; } = new();
 
     public string Text

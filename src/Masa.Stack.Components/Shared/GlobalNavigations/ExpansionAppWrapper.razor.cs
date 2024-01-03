@@ -4,10 +4,15 @@ public partial class ExpansionAppWrapper
 {
     [Parameter]
     public ExpansionMenu Value { get; set; } = default!;
-    
-    [Parameter] 
+
+    [Parameter]
     public EventCallback<ExpansionMenu> OnItemClick { get; set; }
 
-    [Parameter] 
+    [Parameter]
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
+
+    private async Task ItemOperClick()
+    {
+        await OnItemOperClick.InvokeAsync(Value);
+    }
 }

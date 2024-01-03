@@ -6,12 +6,6 @@ namespace Masa.Stack.Components;
 public partial class SDateRangePicker
 {
     [Parameter]
-    public string Class { get; set; } = "";
-
-    [Parameter]
-    public string Style { get; set; } = "";
-
-    [Parameter]
     public DateOnly? StartTime { get; set; }
 
     [Parameter]
