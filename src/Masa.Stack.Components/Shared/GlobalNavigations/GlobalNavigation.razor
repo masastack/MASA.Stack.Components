@@ -105,11 +105,8 @@
                     <div class="global-nav-content">
                         @if (_menu is null)
                         {
-                            <div class="d-flex" style=" width: calc(100% - 256px);">
-                                <MSkeletonLoader Class="transparent full-width mr-2" Type="list-item@3" />
-                                <MSkeletonLoader Class="transparent full-width mr-2" Type="list-item@3" />
-                                <MSkeletonLoader Class="transparent full-width" Type="list-item@3" />
-                            </div>
+                            <MSkeletonLoader Type="image,image,image" Class="global-nav-content__loader"></MSkeletonLoader>
+                            <MSkeletonLoader Type="image" Class="global-nav-content__toc-loader"></MSkeletonLoader>
                         }
                         else
                         {
