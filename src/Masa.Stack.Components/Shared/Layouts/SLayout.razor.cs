@@ -58,7 +58,23 @@ public partial class SLayout
     [Parameter]
     public bool IsShowEnvironmentSwitch { get; set; } = false;
 
-    private Breadcrumbs _breadcrumbs = null!;
+    private Breadcrumbs? _breadcrumbsComp;
+    private Action? _breadcrumbSetCallback;
+
+    private Breadcrumbs? BreadcrumbsComp
+    {
+        get => _breadcrumbsComp;
+        set
+        {
+            _breadcrumbsComp = value;
+            if (value is null)
+            {
+                return;
+            }
+
+            _breadcrumbSetCallback?.Invoke();
+        }
+    }
 
     [Parameter]
     public string? AppId { get; set; }
@@ -195,7 +211,14 @@ public partial class SLayout
     /// </example>
     public void ReplaceLastBreadcrumb(string text)
     {
-        _breadcrumbs.ReplaceLastBreadcrumb(text);
+        if (BreadcrumbsComp is null)
+        {
+            _breadcrumbSetCallback = () => BreadcrumbsComp!.ReplaceLastBreadcrumb(text);
+        }
+        else
+        {
+            BreadcrumbsComp.ReplaceLastBreadcrumb(text);
+        }
     }
 
     /// <summary>
@@ -210,7 +233,14 @@ public partial class SLayout
     /// </example>
     public void UpdateBreadcrumbs(Action<List<BreadcrumbItem>> configure)
     {
-        _breadcrumbs.UpdateBreadcrumbs(configure);
+        if (BreadcrumbsComp is null)
+        {
+            _breadcrumbSetCallback = () => BreadcrumbsComp!.UpdateBreadcrumbs(configure);
+        }
+        else
+        {
+            BreadcrumbsComp.UpdateBreadcrumbs(configure);
+        }
     }
 
     private bool IsMenusUri(List<Nav> navs, string uri)
@@ -324,5 +354,4 @@ public partial class SLayout
     {
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
-
 }

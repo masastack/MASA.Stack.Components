@@ -6,11 +6,14 @@
         public List<Nav> FlattenedNavs { get; set; } = new();
 
         private List<Nav>? _previousFlattenedNavs;
+        private string? _prevLocation;
+        private Action? _updateLastBreadcrumb;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
+            _prevLocation = NavigationManager.Uri;
             NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
         }
 
@@ -21,13 +24,13 @@
             if (_previousFlattenedNavs != FlattenedNavs)
             {
                 _previousFlattenedNavs = FlattenedNavs;
-
                 UpdateItems();
             }
         }
 
         private void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
         {
+            _prevLocation = e.Location;
             UpdateItems();
 
             InvokeAsync(StateHasChanged);
@@ -131,34 +134,38 @@
                     Text = extra
                 });
             }
+
+            if (_updateLastBreadcrumb != null)
+            {
+                _updateLastBreadcrumb();
+                _updateLastBreadcrumb = null;
+            }
         }
 
         internal void ReplaceLastBreadcrumb(string text)
         {
-            NextTickIf(() =>
+            if (_prevLocation == NavigationManager.Uri && Items.Count > 0)
             {
-                if (!Items.Any())
-                {
-                    return;
-                }
-
                 Items.Last().Text = text;
                 StateHasChanged();
-            }, () => !Items.Any());
+            }
+            else
+            {
+                _updateLastBreadcrumb = () => Items.Last().Text = text;
+            }
         }
 
         internal void UpdateBreadcrumbs(Action<List<BreadcrumbItem>> configure)
         {
-            NextTickIf(() =>
+            if (_prevLocation == NavigationManager.Uri && Items.Count > 0)
             {
-                if (!Items.Any())
-                {
-                    return;
-                }
-
                 configure(Items);
                 StateHasChanged();
-            }, () => !Items.Any());
+            }
+            else
+            {
+                _updateLastBreadcrumb = () => configure(Items);
+            }
         }
 
         private List<BreadcrumbItem> Items { get; set; } = new();
@@ -185,7 +192,7 @@
         protected override ValueTask DisposeAsync(bool disposing)
         {
             NavigationManager.LocationChanged -= NavigationManagerOnLocationChanged;
-            
+
             return base.DisposeAsync(disposing);
         }
     }
