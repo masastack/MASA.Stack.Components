@@ -1,6 +1,10 @@
 ﻿@import url(standard.css);
 @import url(pure-components.css);
 
+h1:focus {
+    outline: none;
+}
+
 body, .masa-stack-components {
     background-color: #F0F3FA !important;
 }
@@ -720,8 +724,13 @@ body, .masa-stack-components {
         margin-left: 0em !important;
     }
 
-.masa-stack-components .m-dialog:not(.m-dialog--fullscreen) {
+.masa-stack-components .m-dialog:not(.m-dialog--fullscreen):not(.m-dialog--drawer) {
     border-radius: 20px !important;
+}
+
+.masa-stack-components .m-dialog--drawer {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
 .masa-main .m-card {
@@ -988,6 +997,10 @@ body, .masa-stack-components {
     width: 100%;
     margin-left: 8px;
     border-radius: 4px;
+}
+
+.m-btn:not(.m-btn--round) {
+    border-radius: 8px;
 }
 
 @media (min-width: 1264px) {
