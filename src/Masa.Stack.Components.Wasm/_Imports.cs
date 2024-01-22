@@ -11,8 +11,6 @@ global using Masa.Contrib.StackSdks.Config;
 global using Masa.Contrib.StackSdks.Isolation;
 global using Masa.Contrib.StackSdks.Tsc;
 global using Masa.Contrib.Storage.ObjectStorage.Aliyun;
-global using Masa.Stack.Components.Configs;
-global using Masa.Stack.Components.Options;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Text.RegularExpressions;

@@ -12,21 +12,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" PrivateAssets="all" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Masa.Stack.Components.Wasm\Masa.Stack.Components.Wasm.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Masa.BuildingBlocks.Service.Caller">
-      <HintPath>..\..\..\MASA.Framework\src\Contrib\Configuration\ConfigurationApi\Masa.Contrib.Configuration.ConfigurationApi.Dcc\bin\Debug\net6.0\Masa.BuildingBlocks.Service.Caller.dll</HintPath>
-    </Reference>
-    <Reference Include="Masa.Contrib.Configuration">
-      <HintPath>..\..\..\MASA.Framework\src\Contrib\Configuration\ConfigurationApi\Masa.Contrib.Configuration.ConfigurationApi.Dcc\bin\Debug\net6.0\Masa.Contrib.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc">
-      <HintPath>..\..\..\MASA.Framework\src\Contrib\Configuration\ConfigurationApi\Masa.Contrib.Configuration.ConfigurationApi.Dcc\bin\Debug\net6.0\Masa.Contrib.Configuration.ConfigurationApi.Dcc.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
