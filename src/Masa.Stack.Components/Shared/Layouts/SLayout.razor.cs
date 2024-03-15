@@ -20,6 +20,9 @@ public partial class SLayout
     private IMultiEnvironmentMasaStackConfig MultiEnvironmentMasaStackConfig { get; set; } = null!;
 
     [Inject]
+    private IMultiEnvironmentUserContext MultiEnvironmentUserContext { get; set; } = null!;
+
+    [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
     [Parameter]
@@ -79,7 +82,7 @@ public partial class SLayout
     [Parameter]
     public string? AppId { get; set; }
 
-    public string GetAppId() => MultiEnvironmentMasaStackConfig.SetEnvironment(Service.Environment ?? "").GetWebId(ProjectApp.Project);
+    public string GetAppId() => MultiEnvironmentMasaStackConfig.SetEnvironment(MultiEnvironmentUserContext.Environment ?? "").GetWebId(ProjectApp.Project);
 
     List<Nav> NavItems = new();
     List<string> _preWhiteUris = new();
