@@ -5,7 +5,7 @@
 @inject GlobalConfig GlobalConfig
 @inject IAuthClient AuthClient
 @inject ILogger<SLayout> Logger
-@inherits OwningComponentBase<IMultiEnvironmentUserContext>
+@inherits OwningComponentBase
 
 <CascadingValue Value="this" IsFixed>
     <CascadingValue Value="@I18n.Culture.ToString()" Name="Culture">
