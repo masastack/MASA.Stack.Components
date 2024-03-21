@@ -22,10 +22,10 @@
 		<PackageReference Include="Masa.Utils.Extensions.Enums" Version="1.0.1-preview.1" />
 		<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="1.0.1-preview.1" />
 		<PackageReference Include="Masa.Contrib.Storage.ObjectStorage.Aliyun" Version="1.0.1-preview.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.15" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
 		<PackageReference Include="Masa.Contrib.Configuration" Version="1.0.1-preview.1" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Isolation" Version="1.0.1-preview.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.15" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>
