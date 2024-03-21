@@ -12,7 +12,7 @@
                      Style="@DateTimeButtonStyle"
                      @attributes="@context.Attrs">
                 <MIcon Size="20" Class="mx-2">mdi-calendar-month</MIcon>
-                <div style="width: calc(100% - 28px)">
+                <div style="width: calc(100% - 28px)" class="d-flex">
                     <div class="datetimetext">@FormatDateTime(StartDateTime, T("Start time"))</div>
                     <MDivider Vertical Class="mx-2" Style="align-self: auto; height: 14px;"/>
                     <div class="datetimetext">@FormatDateTime(EndDateTime, T("End time"))</div>

@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components.Layouts
+﻿using System.Web;
+
+namespace Masa.Stack.Components.Layouts
 {
     public partial class Breadcrumbs : MasaComponentBase
     {
@@ -131,7 +133,7 @@
             {
                 Items.Add(new BreadcrumbItem()
                 {
-                    Text = extra
+                    Text = HttpUtility.UrlDecode(extra)
                 });
             }
 
