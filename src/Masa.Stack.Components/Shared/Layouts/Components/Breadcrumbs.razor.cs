@@ -191,11 +191,10 @@ namespace Masa.Stack.Components.Layouts
             return parents;
         }
 
-        protected override ValueTask DisposeAsync(bool disposing)
+        protected override ValueTask DisposeAsyncCore()
         {
             NavigationManager.LocationChanged -= NavigationManagerOnLocationChanged;
-
-            return base.DisposeAsync(disposing);
+            return base.DisposeAsyncCore();
         }
     }
 }
