@@ -14,7 +14,12 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
     [Parameter]
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
 
+    [Parameter]
+    public string? CssForScroll { get; set; }
+
     private readonly string idPrefix = "g" + Guid.NewGuid().ToString();
+
+    private string CssSelectorForScroll => string.IsNullOrWhiteSpace(CssForScroll) ? string.Empty : "." + CssForScroll;
 
     protected virtual async Task ItemClick(ExpansionMenu menu)
     {
