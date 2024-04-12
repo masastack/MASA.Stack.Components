@@ -86,15 +86,11 @@ body, .masa-stack-components {
 
         .global-nav-content__wrapper {
             width: 100%;
-            display: flex;
             height: calc(100vh - 158px);
+            overflow-y: auto;
         }
 
         .masa-stack-components .global-nav .global-nav-content__main {
-            width: calc(100% - 256px);
-            overflow: auto;
-            padding-right: 16px;
-            margin-right: 16px;
             -moz-column-count: 3; /* Firefox */
             -webkit-column-count: 3; /* Safari 和 Chrome */
             column-count: 3;
