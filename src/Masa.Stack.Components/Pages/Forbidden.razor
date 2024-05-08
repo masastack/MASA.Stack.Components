@@ -1,5 +1,6 @@
 ﻿@page "/403"
 @namespace Masa.Stack.Components
+@inherits MasaComponentBase
 
 <PageTitle>403</PageTitle>
 
@@ -7,13 +8,13 @@
     <MContainer Class="d-flex flex-column justify-space-between align-center">
         <MImage Src="./_content/Masa.Stack.Components/img/status/403.png" Width="350" Height="200">
         </MImage>
-        <MRow NoGutters Class="mt-12 text-btn neutral-lighten-2--text">You are not authorized! 🔐</MRow>
+        <MRow NoGutters Class="mt-12 text-btn neutral-lighten-2--text">@I18n.T("403Tips") 🔐</MRow>
         <MButton Class="rounded-pill mt-6"
                  Dark    
                  Tile 
                  Href="/"
                  Color="primary">
-            Back to home
+            @I18n.T("BackToHome")
         </MButton>
     </MContainer>
 </MRow>

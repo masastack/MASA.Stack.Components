@@ -214,5 +214,8 @@
   "Close": "关闭",
   "PreviousStep": "上一步",
   "NextStep": "下一步",
-  "Create": "新建"
+  "Create": "新建",
+  "403Tips": "您未经授权！",
+  "404Tips": "找不到请求的URL。",
+  "BackToHome": "回到主页"
 }

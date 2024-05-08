@@ -1,5 +1,6 @@
 ﻿@page "/404"
 @namespace Masa.Stack.Components
+@inherits MasaComponentBase
 
 <PageTitle>404</PageTitle>
 
@@ -7,13 +8,13 @@
     <MContainer Class="d-flex flex-column justify-space-between align-center">
         <MImage Src="./_content/Masa.Stack.Components/img/status/404.png" Width="350" Height="200">
         </MImage>
-        <MRow NoGutters Class="mt-12 text-btn neutral-lighten-2--text">The requested URL was not found.😖</MRow>
+        <MRow NoGutters Class="mt-12 text-btn neutral-lighten-2--text">@I18n.T("404Tips")😖</MRow>
         <MButton Class="rounded-pill mt-6"
                  Dark
                  Tile
                  Color="primary"
                  Href="/">
-            Back to home
+            @I18n.T("BackToHome")
         </MButton>
     </MContainer>
 </MRow>
