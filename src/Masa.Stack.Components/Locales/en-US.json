@@ -128,5 +128,8 @@
     "ThisMonthSoFar": "This month so far",
     "ThisYear": "This year",
     "ThisYearSoFar": "This year so far"
-  }
+  },
+  "403Tips": "You are not authorized! ",
+  "404Tips": "The requested URL was not found.",
+  "BackToHome": "Back to home"
 }
