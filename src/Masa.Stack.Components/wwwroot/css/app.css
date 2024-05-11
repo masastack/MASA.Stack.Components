@@ -311,8 +311,8 @@ body, .masa-stack-components {
         margin-bottom: 12px;
     }
 
-    .masa-stack-components .m-list--nav .m-list-item:not(:last-child):not(:only-child) {
-        margin-bottom: 0;
+    .masa-stack-components .navigation .m-list-group--active > .m-list-group__items {
+        margin-bottom: 8px;
     }
 
     .masa-stack-components .m-list--nav .m-list-item, .m-list--nav .m-list-item:before {
