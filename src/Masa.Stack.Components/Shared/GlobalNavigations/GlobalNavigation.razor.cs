@@ -13,11 +13,12 @@ public partial class GlobalNavigation : MasaComponentBase
     [Parameter]
     public Func<string, Task>? OnFavoriteRemove { get; set; }
 
-    bool _visible;
+    private bool _visible;
     private List<(string name, string url)>? _recentVisits;
     private List<KeyValuePair<string, string>>? _recommendApps;
     private List<ExpansionMenu>? _favorites;
-    ExpansionMenu? _menu;
+    private ExpansionMenu? _menu;
+    private string? _search;
 
     private async Task GetMenuAndFavorites()
     {
@@ -50,11 +51,16 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private void VisibleChanged(bool visible)
     {
-        if (visible && _menu == null)
+        if (visible)
         {
-            _ = GetRecommendApps();
-            _ = GetRecentVisits();
-            _ = GetMenuAndFavorites();
+            SearchChanged(null);
+
+            if (_menu == null)
+            {
+                _ = GetRecommendApps();
+                _ = GetRecentVisits();
+                _ = GetMenuAndFavorites();
+            }
         }
 
         _visible = visible;
@@ -62,6 +68,7 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private void SearchChanged(string? search)
     {
+        _search = search;
         _menu?.SetHiddenBySearch(search, TranslateProvider);
     }
 
