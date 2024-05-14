@@ -1,6 +1,10 @@
 ﻿@import url(standard.css);
 @import url(pure-components.css);
 
+:root {
+    --ms-box-shadow-color: 112, 144, 176;
+}
+
 h1:focus {
     outline: none;
 }
@@ -729,15 +733,6 @@ body, .masa-stack-components {
     border-bottom-left-radius: 20px;
 }
 
-.masa-main .m-card {
-    box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 20%), 0px 0px 0px 0px rgb(0 0 0 / 14%), 0px 0px 0px 0px rgb(0 0 0 / 12%) !important;
-    border-radius: 20px !important;
-}
-
-    .masa-main .m-card.line {
-        border-radius: 10px !important;
-    }
-
 .m-sheet-dialog .m-card {
     box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 20%), 0px 0px 0px 0px rgb(0 0 0 / 14%), 0px 0px 0px 0px rgb(0 0 0 / 12%) !important;
 }
@@ -918,8 +913,24 @@ body, .masa-stack-components {
     color: grey;
 }
 
-.m-sheet.m-card--hover:focus, .m-sheet.m-card--hover:hover {
-    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12) !important;
+.m-sheet.m-card {
+    border-radius: 20px;
+}
+
+.m-sheet.m-card:not(.m-sheet--outlined) {
+    box-shadow: none;
+}
+
+.m-sheet.m-card--hover:not(.m-sheet--outlined):focus, .m-sheet.m-card--hover:not(.m-sheet--outlined):hover {
+    box-shadow: 0 5px 5px -3px rgba(var(--ms-box-shadow-color),.2),0 8px 10px 1px rgba(var(--ms-box-shadow-color),.14),0 3px 14px 2px rgba(var(--ms-box-shadow-color),.12);
+}
+
+.m-pagination__item, .m-pagination__navigation {
+    box-shadow: 0 3px 1px -2px rgba(var(--ms-box-shadow-color),.2),0 2px 2px 0 rgba(var(--ms-box-shadow-color),.14),0 1px 5px 0 rgba(var(--ms-box-shadow-color),.12)
+}
+
+.m-pagination__item--active {
+    box-shadow: 0 2px 4px -1px rgba(var(--ms-box-shadow-color),.2),0 4px 5px 0 rgba(var(--ms-box-shadow-color),.14),0 1px 10px 0 rgba(var(--ms-box-shadow-color),.12);
 }
 
 .expansion-nav:not(.preview) {
