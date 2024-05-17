@@ -33,10 +33,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Remove="Locales\ru-RU.json" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Folder Include="Options\" />
 	</ItemGroup>
 </Project>
