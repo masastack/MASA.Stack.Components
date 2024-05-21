@@ -33,7 +33,7 @@ public class GlobalConfig : IScopedDependency
         get => _i18N.Culture;
         set
         {
-            _i18N.SetCulture(value);
+            _i18N.SetCulture(new CultureInfo("en-US"), value);
             _cookieStorage.SetAsync(LangCookieKey, value.Name);
             OnLanguageChanged?.Invoke();
         }
@@ -96,7 +96,7 @@ public class GlobalConfig : IScopedDependency
         var lang = await _cookieStorage.GetAsync(LangCookieKey);
         if (!string.IsNullOrWhiteSpace(lang))
         {
-            _i18N.SetCulture(new CultureInfo(lang));
+            _i18N.SetCulture(new CultureInfo("en-US"), new CultureInfo(lang));
         }
     }
 }
