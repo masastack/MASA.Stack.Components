@@ -5,6 +5,9 @@ public partial class GlobalNavigation : MasaComponentBase
     private const string MENU_URL_NAME = "url";
 
     [Parameter]
+    public string ClientId { get; set; }
+
+    [Parameter]
     public RenderFragment<ActivatorProps> ActivatorContent { get; set; } = null!;
 
     [Parameter]
@@ -100,7 +103,7 @@ public partial class GlobalNavigation : MasaComponentBase
         var menu = ExpansionMenu.CreateRootMenu(ExpansionMenuSituation.Favorite);
         try
         {
-            var apps = (await AuthClient.ProjectService.GetGlobalNavigations()).SelectMany(p => p.Apps).ToList();
+            var apps = (await AuthClient.ProjectService.GetGlobalNavigations(ClientId)).SelectMany(p => p.Apps).ToList();
             var categories = apps.GroupBy(a => a.Tag).ToList();
             var favorites = await FetchFavorites();
 

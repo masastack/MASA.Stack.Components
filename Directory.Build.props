@@ -1,0 +1,9 @@
+﻿<Project>
+	<PropertyGroup>
+		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net6.0'">6.0.0</MicrosoftPackageVersion>
+		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net7.0'">7.0.0</MicrosoftPackageVersion>
+		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.0.0</MicrosoftPackageVersion>
+		<MasaFrameworkPackageVersion>1.2.0-preview.2</MasaFrameworkPackageVersion>
+		<MasaStackSdksPackageVersion>1.1.0-preview.1</MasaStackSdksPackageVersion>
+	</PropertyGroup>
+</Project>
