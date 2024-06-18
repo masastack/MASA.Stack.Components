@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Blazor.Core.I18n;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {

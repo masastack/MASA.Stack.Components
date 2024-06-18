@@ -1,5 +1,6 @@
 ﻿@namespace Masa.Stack.Components
 @inherits NextTickComponentBase
+@using Masa.Blazor.Extensions
 @typeparam TValue
 
 <MButtonGroup Value="_selectedKey"
@@ -26,6 +27,10 @@
 
     [Inject]
     private JsDotNetInvoker JsDotNetInvoker { get; set; } = null!;
+
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter] public string? Style { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -158,7 +163,7 @@
 
     private async Task UpdateItemClientRect(SLabeledRadio<TValue> radio)
     {
-        var rect = await Js.InvokeAsync<BlazorComponent.Web.Element>(JsInteropConstants.GetDomInfo, radio.Instance!.Ref);
+        var rect = await Js.InvokeAsync<Masa.Blazor.JSInterop.Element>(JsInteropConstants.GetDomInfo, radio.Instance!.Ref);
 
         radio.Height = rect.ClientHeight;
         radio.Width = rect.ClientWidth;

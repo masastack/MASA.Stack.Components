@@ -1,6 +1,4 @@
-﻿global using BlazorComponent;
-global using BlazorComponent.I18n;
-global using FluentValidation;
+﻿global using FluentValidation;
 global using IdentityModel.Client;
 global using Mapster;
 global using Masa.Blazor;

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Blazor.Core;
+
 namespace Masa.Stack.Components;
 
 public class SButton : SAutoLoadingButton
@@ -14,14 +16,25 @@ public class SButton : SAutoLoadingButton
         await base.SetParametersAsync(parameters);
     }
 
-    protected override void SetComponentClass()
+    protected override IEnumerable<string> BuildComponentClass()
     {
-        base.SetComponentClass();
-
-        CssProvider.Merge(delegate (CssBuilder cssBuilder)
+        CssBuilder cssBuilder = new CssBuilder();
+        cssBuilder.Add("btn");
+        if (Large)
         {
-            cssBuilder.Add("btn");
-            cssBuilder.AddFirstIf(("large-button", () => Large), ("medium-button", () => Medium), ("small-button", () => Small));
-        });
+            cssBuilder.Add("large-button");
+        }
+        
+        if (Medium)
+        {
+            cssBuilder.Add("medium-button");
+        }
+        
+        if (Small)
+        {
+            cssBuilder.Add("small-button");
+        }
+
+        return base.BuildComponentClass().Concat(new[] { cssBuilder.ToString() });
     }
 }

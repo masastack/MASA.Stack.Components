@@ -50,16 +50,13 @@ public class SAutoLoadingButton : MButton
         }
     }
 
-    protected override void SetComponentClass()
+    protected override IEnumerable<string> BuildComponentClass()
     {
-        base.SetComponentClass();
-
-        CssProvider.Merge(delegate (CssBuilder cssBuilder)
+        if (!(Class?.Split(' ').Contains(BorderRadiusClass) ?? false))
         {
-            cssBuilder.AddIf(BorderRadiusClass, () =>
-            {
-                return !(Class?.Split(' ').Contains(BorderRadiusClass) ?? false);
-            });
-        });
+            return base.BuildComponentClass().Concat(new[] { BorderRadiusClass });
+        }
+
+        return base.BuildComponentClass();
     }
 }
