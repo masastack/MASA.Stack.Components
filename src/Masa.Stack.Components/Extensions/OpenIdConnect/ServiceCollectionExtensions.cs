@@ -70,6 +70,7 @@ public static class ServiceCollectionExtensions
 
             options.ClaimActions.MapAll();
             options.MapInboundClaims = false;
+
             options.EventsType = typeof(OidcEventHandler);
 
             //ensure normal i use self signed certificate
