@@ -97,6 +97,14 @@ public partial class SLayout
         "notification-center"
     };
 
+    string ClientId
+    {
+        get
+        {
+            return AppId.IsNullOrEmpty() ? GetAppId() : AppId;
+        }
+    }
+
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
