@@ -9,10 +9,6 @@ h1:focus {
     outline: none;
 }
 
-body, .masa-stack-components {
-    background-color: #F0F3FA !important;
-}
-
     .masa-stack-components .m-app-bar {
         background-color: transparent !important;
     }
@@ -577,10 +573,6 @@ body, .masa-stack-components {
     color: #485585 !important;
     line-height: 1.5rem !important;
     letter-spacing: 0em !important;
-}
-
-.masa-stack-components .table-border-head .m-data-table__wrapper table tr .m-icon {
-    color: #323D6F;
 }
 
 /*

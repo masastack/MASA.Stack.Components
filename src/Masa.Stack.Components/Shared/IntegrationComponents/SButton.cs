@@ -24,12 +24,12 @@ public class SButton : SAutoLoadingButton
         {
             cssBuilder.Add("large-button");
         }
-        
+
         if (Medium)
         {
             cssBuilder.Add("medium-button");
         }
-        
+
         if (Small)
         {
             cssBuilder.Add("small-button");

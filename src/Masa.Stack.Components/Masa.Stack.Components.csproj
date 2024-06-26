@@ -9,7 +9,6 @@
 	<ItemGroup>
 		<PackageReference Include="Humanizer" Version="2.14.1" />
 		<PackageReference Include="Mapster" Version="7.3.0" />
-<!--		<PackageReference Include="Masa.Blazor" Version="1.6.*" />-->
 		<PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Caller" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Config" Version="$(MasaStackSdksPackageVersion)" />
@@ -37,6 +36,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj" />
+	  <ProjectReference Include="..\Masa.Stack.Components.Standalone\Masa.Stack.Components.Standalone.csproj" />
 	</ItemGroup>
 </Project>
