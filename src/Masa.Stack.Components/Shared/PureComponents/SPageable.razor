@@ -1,6 +1,6 @@
 ﻿@namespace Masa.Stack.Components
-@using BlazorComponent.Web
 @typeparam TItem
+@using Masa.Blazor.JSInterop
 @implements IDisposable
 
 <div class="pageable-items mb-6" @ref="_div">
@@ -105,7 +105,7 @@
 
     private async Task ComputeCols()
     {
-        var divDomInfo = await Js.InvokeAsync<BlazorComponent.Web.Element>(JsInteropConstants.GetDomInfo, _div);
+        var divDomInfo = await Js.InvokeAsync<Element>(JsInteropConstants.GetDomInfo, _div);
         var clientWidth = divDomInfo.ClientWidth;
 
         if (clientWidth >= MasaBlazor.Breakpoint.Thresholds.Lg)

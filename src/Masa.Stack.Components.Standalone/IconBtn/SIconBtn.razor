@@ -1,9 +1,5 @@
-﻿@namespace Masa.Stack.Components
-@inherits MIcon
-
-@{
-    InitDefaultToolTip();
-}
+﻿@namespace Masa.Stack.Components.Standalone
+@inherits SBtn
 
 @if (string.IsNullOrWhiteSpace(Tooltip))
 {
@@ -11,7 +7,7 @@
 }
 else
 {
-    <MTooltip Top>
+    <MTooltip Top Disabled="@(string.IsNullOrWhiteSpace(Tooltip))">
         <ActivatorContent>
             @{
                 @foreach (var attr in context.Attrs)
@@ -23,7 +19,21 @@ else
             @((RenderFragment)base.BuildRenderTree)
         </ActivatorContent>
         <ChildContent>
-            <span style="white-space: pre;">@Tooltip</span>
+            @Tooltip
         </ChildContent>
     </MTooltip>
+}
+
+@code {
+
+    [Parameter] public string? Tooltip { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        // always set icon to true
+        Icon = true;
+    }
+
 }

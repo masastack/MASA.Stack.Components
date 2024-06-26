@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Blazor.Core.I18n;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -89,6 +91,7 @@ public static class ServiceCollectionExtensions
                 theme.Themes.Light.Success = "#00B42A";
                 theme.Themes.Light.Warning = "#FF7D00";
                 theme.Themes.Light.Info = "#37A7FF";
+                theme.Themes.Light.Surface = "#F0F3FA";
             });
             options.Defaults = new Dictionary<string, IDictionary<string, object?>?>
             {

@@ -1,6 +1,4 @@
-﻿global using BlazorComponent;
-global using BlazorComponent.I18n;
-global using FluentValidation;
+﻿global using FluentValidation;
 global using IdentityModel.Client;
 global using Mapster;
 global using Masa.Blazor;
@@ -73,3 +71,5 @@ global using System.Text.Json;
 global using System.Text.Json.Nodes;
 global using System.Text.Json.Serialization;
 global using System.Text.RegularExpressions;
+global using Masa.Blazor.Core;
+global using Masa.Stack.Components.Standalone;

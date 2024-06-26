@@ -30,6 +30,10 @@ public abstract class MasaComponentBase : NextTickComponentBase
     [Inject]
     public DynamicTranslateProvider TranslateProvider { get; set; } = default!;
 
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter] public string? Style { get; set; }
+
     protected string T(string key)
     {
         return I18n.T(key);
