@@ -25,6 +25,11 @@ public class STextField<TValue> : MTextField<TValue>
 
     private DefaultTextfieldAction InternalAction { get; set; } = new();
 
+    private RenderFragment? _requiredLabelContent;
+    private RenderFragment? _tooltipContent;
+    private RenderFragment? _actionContent;
+    private string? _fieldName;
+    
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Dense = true;
@@ -37,6 +42,8 @@ public class STextField<TValue> : MTextField<TValue>
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+        
+        // TODO: refactor the following code about css
         Class ??= "";
         if (Large is false && Small is false) Medium = true;
         if (Dense is true)
@@ -70,71 +77,42 @@ public class STextField<TValue> : MTextField<TValue>
         if (Action is not null)
         {
             Action.Invoke(InternalAction);
-
-            AppendContent = builder =>
+        
+            _actionContent ??= builder =>
             {
-                builder.OpenElement(0, "div");
-                builder.AddAttribute(1, "class", "d-flex");
-                builder.AddAttribute(2, "style", $"margin-right:-12px;height:{Height}px;");
-                builder.AddContent(3, subBuilder =>
-                {
-                    subBuilder.OpenComponent<MDivider>(0);
-                    subBuilder.AddAttribute(1, "Vertical", true);
-                    subBuilder.CloseComponent();
-
-                    subBuilder.OpenComponent<SAutoLoadingButton>(2);
-                    subBuilder.AddAttribute(3, "Text", InternalAction.Text);
-                    subBuilder.AddAttribute(4, "Disabled", InternalAction.Disabled);
-                    subBuilder.AddAttribute(5, "Color", InternalAction.Color);
-                    subBuilder.AddAttribute(6, "Style", "border:none;border-radius: 0 8px 8px 0 !important;height:100%;");
-                    subBuilder.AddAttribute(7, "DisableLoading", InternalAction.DisableLoding);
-                    subBuilder.AddAttribute(8, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, InternalAction.OnClick));
-                    subBuilder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));
-                    subBuilder.CloseComponent();
-                });
-                builder.CloseElement();
+                builder.OpenComponent<MDivider>(0);
+                builder.AddAttribute(1, "Vertical", true);
+                builder.CloseComponent();
+        
+                builder.OpenComponent<SAutoLoadingButton>(2);
+                builder.AddAttribute(3, "Text", InternalAction.Text);
+                builder.AddAttribute(4, "Disabled", InternalAction.Disabled);
+                builder.AddAttribute(5, "Color", InternalAction.Color);
+                builder.AddAttribute(6, "Style", "border:none;border-radius: 0 8px 8px 0 !important;height:100%;");
+                builder.AddAttribute(7, "DisableLoading", InternalAction.DisableLoding);
+                builder.AddAttribute(8, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, InternalAction.OnClick));
+                builder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));
+                builder.CloseComponent();
             };
+        
+            AppendContent = _actionContent;
         }
 
         if (!string.IsNullOrWhiteSpace(Tooltip) && AppendOuterContent == default)
         {
-            AppendOuterContent = builder =>
-            {
-                builder.OpenComponent<SIcon>(0);
-                builder.AddAttribute(1, "Tooltip", Tooltip);
-                builder.AddAttribute(2, "ChildContent", (RenderFragment)(cb => cb.AddContent(3, "mdi-help-circle-outline")));
-                builder.CloseComponent();
-            };
+            AppendOuterContent = _tooltipContent ??= RenderFragments.GenHelpIcon(Tooltip);
         }
 
         if (Required && LabelContent == default)
         {
-            LabelContent = builder =>
-            {
-                builder.OpenElement(0, "label");
-                builder.AddAttribute(1, "class", "red--text mr-1");
-                builder.AddContent(2, "*");
-                builder.CloseElement();
-                builder.AddContent(3, Label);
-            };
+            LabelContent = _requiredLabelContent ??= RenderFragments.GenRequiredLabel(Label);
         }
 
-        if (string.IsNullOrEmpty(Label) is true && AutoLabel && ValueExpression is not null)
+        if (string.IsNullOrEmpty(Label) && AutoLabel && ValueExpression is not null)
         {
-            var accessorBody = ValueExpression.Body;
-
-            if (accessorBody is UnaryExpression unaryExpression
-                && unaryExpression.NodeType == ExpressionType.Convert
-                && unaryExpression.Type == typeof(object))
-            {
-                accessorBody = unaryExpression.Operand;
-            }
-
-            var fieldName = (accessorBody as MemberExpression)!.Member.Name;
+            var fieldName = _fieldName ??= ValueExpression.GetFieldName();
             Label = I18n.T(fieldName);
         }
-
-        Required = false; // disable required feature from base component in S[Component]
     }
 }
 
