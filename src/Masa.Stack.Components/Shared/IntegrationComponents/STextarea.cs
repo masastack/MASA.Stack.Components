@@ -2,6 +2,8 @@
 
 public class STextarea : MTextarea
 {
+    private RenderFragment? _requiredLabelContent;
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         HideDetails = "auto";
@@ -16,16 +18,7 @@ public class STextarea : MTextarea
 
         if (Required && LabelContent == default)
         {
-            LabelContent = builder =>
-            {
-                builder.OpenElement(0, "label");
-                builder.AddAttribute(1, "class", "red--text mr-1");
-                builder.AddContent(2, "*");
-                builder.CloseElement();
-                builder.AddContent(3, Label);
-            };
+            LabelContent = _requiredLabelContent ??= RenderFragments.GenRequiredLabel(Label);
         }
-
-        Required = false; // disable required feature from base component in S[Component]
     }
 }
