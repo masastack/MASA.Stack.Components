@@ -1,8 +1,12 @@
 ﻿namespace Masa.Stack.Components;
 
-
 public class SSimpleModal : PModal
 {
+    private RenderFragment? _titleContent;
+    private RenderFragment? _closeContent;
+    private RenderFragment? _deleteContent;
+    private RenderFragment? _saveContent;
+
     public override Task SetParametersAsync(ParameterView parameters)
     {
         HideActionsDivider = true;
@@ -47,83 +51,71 @@ public class SSimpleModal : PModal
             ActionsClass += " pl-0 pb-0 pt-9";
         }
 
-        if (TitleContent is null)
+        TitleContent ??= _titleContent ??= builder =>
         {
-            TitleContent = builder =>
+            builder.OpenComponent<MIcon>(0);
+            builder.AddAttribute(1, "Size", (StringNumber)16);
+            builder.AddAttribute(2, "Color", "primary");
+            builder.AddAttribute(3, "Class", "pr-2");
+            builder.AddAttribute(4, "ChildContent", (RenderFragment)(cb => cb.AddContent(5, "mdi-circle")));
+            builder.CloseComponent();
+            builder.OpenElement(6, "span");
+            builder.AddContent(7, Title);
+            builder.CloseElement();
+        };
+
+        CloseContent ??= callback =>
+        {
+            return _closeContent ??= builder =>
             {
-                builder.OpenComponent<MIcon>(0);
-                builder.AddAttribute(1, "Size", (StringNumber)16);
-                builder.AddAttribute(2, "Color", "primary");
-                builder.AddAttribute(3, "Class", "pr-2");
-                builder.AddAttribute(4, "ChildContent", (RenderFragment)(cb => cb.AddContent(5, "mdi-circle")));
+                builder.OpenComponent<SButton>(0);
+                builder.AddAttribute(1, "Fab", true);
+                builder.AddAttribute(2, "Small", true);
+                builder.AddAttribute(3, "Outlined", true);
+                builder.AddAttribute(4, "Color", "emphasis");
+                builder.AddAttribute(5, "Style", "border-color: #E2E7F4;width:32px;height:32px");
+                builder.AddAttribute(6, "OnClick",
+                    EventCallback.Factory.Create<MouseEventArgs>(this, e => callback(e)));
+                builder.AddAttribute(7, "ChildContent", (RenderFragment)(subBuilder =>
+                {
+                    subBuilder.OpenComponent<MIcon>(0);
+                    subBuilder.AddAttribute(1, "Size", (StringNumber)24);
+                    subBuilder.AddAttribute(2, "ChildContent",
+                        (RenderFragment)(cb => cb.AddContent(3, "mdi-close")));
+                    subBuilder.CloseComponent();
+                }));
                 builder.CloseComponent();
-                builder.OpenElement(6, "span");
-                builder.AddContent(7, Title);
-                builder.CloseElement();
             };
-        }
+        };
 
-        if (CloseContent is null)
+        DeleteContent ??= callback =>
         {
-            CloseContent = callback =>
+            return _deleteContent ??= builder =>
             {
-                RenderFragment content = builder =>
-                {
-                    builder.OpenComponent<SButton>(0);
-                    builder.AddAttribute(1, "Fab", true);
-                    builder.AddAttribute(2, "Small", true);
-                    builder.AddAttribute(3, "Outlined", true);
-                    builder.AddAttribute(4, "Color", "emphasis");
-                    builder.AddAttribute(5, "Style", "border-color: #E2E7F4;width:32px;height:32px");
-                    builder.AddAttribute(6, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, e => callback(e)));
-                    builder.AddAttribute(7, "ChildContent", (RenderFragment)(subBuilder =>
-                    {
-                        subBuilder.OpenComponent<MIcon>(0);
-                        subBuilder.AddAttribute(1, "Size", (StringNumber)24);
-                        subBuilder.AddAttribute(2, "ChildContent", (RenderFragment)(cb => cb.AddContent(3, "mdi-close")));
-                        subBuilder.CloseComponent();
-                    }));
-                    builder.CloseComponent();
-                };
-                return content;
+                builder.OpenComponent<SIcon>(0);
+                builder.AddAttribute(1, "Size", (StringNumber)24);
+                builder.AddAttribute(2, "Color", "error");
+                builder.AddAttribute(3, "Class", "align-self-center");
+                builder.AddAttribute(4, "OnClick",
+                    EventCallback.Factory.Create<MouseEventArgs>(this, e => callback.Click(e)));
+                builder.AddAttribute(5, "ChildContent", (RenderFragment)(cb => cb.AddContent(6, "mdi-delete")));
+                builder.CloseComponent();
             };
-        }
+        };
 
-        if (DeleteContent is null)
+        SaveContent ??= callback =>
         {
-            DeleteContent = callback =>
+            return _saveContent ??= builder =>
             {
-                RenderFragment content = builder =>
-                {
-                    builder.OpenComponent<SIcon>(0);
-                    builder.AddAttribute(1, "Size", (StringNumber)24);
-                    builder.AddAttribute(2, "Color", "error");
-                    builder.AddAttribute(3, "Class", "align-self-center");
-                    builder.AddAttribute(4, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, e => callback.Click(e)));
-                    builder.AddAttribute(5, "ChildContent", (RenderFragment)(cb => cb.AddContent(6, "mdi-delete")));
-                    builder.CloseComponent();
-                };
-                return content;
+                builder.OpenComponent<SButton>(0);
+                builder.AddAttribute(1, "Color", "primary");
+                builder.AddAttribute(2, "Class", "rounded-3");
+                builder.AddAttribute(3, "Style", "min-width: 140px !important;height: 56px !important;");
+                builder.AddAttribute(4, "OnClick",
+                    EventCallback.Factory.Create<MouseEventArgs>(this, e => callback.Click(e)));
+                builder.AddAttribute(5, "ChildContent", (RenderFragment)(cb => cb.AddContent(6, SaveText)));
+                builder.CloseComponent();
             };
-        }
-
-        if (SaveContent is null)
-        {
-            SaveContent = callback =>
-            {
-                RenderFragment content = builder =>
-                {
-                    builder.OpenComponent<SButton>(0);
-                    builder.AddAttribute(1, "Color", "primary");
-                    builder.AddAttribute(2, "Class", "rounded-3");
-                    builder.AddAttribute(3, "Style", "min-width: 140px !important;height: 56px !important;");
-                    builder.AddAttribute(4, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, e => callback.Click(e)));
-                    builder.AddAttribute(5, "ChildContent", (RenderFragment)(cb => cb.AddContent(6, SaveText)));
-                    builder.CloseComponent();
-                };
-                return content;
-            };
-        }
+        };
     }
-
 }

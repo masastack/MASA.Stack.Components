@@ -84,4 +84,28 @@ public static class RenderFragments
             builder.CloseComponent();
         };
     }
+
+    public static RenderFragment GenRequiredLabel(string? label)
+    {
+        return builder =>
+        {
+            builder.OpenElement(0, "label");
+            builder.AddAttribute(1, "class", "red--text mr-1");
+            builder.AddContent(2, "*");
+            builder.CloseElement();
+            builder.AddContent(3, label);
+        };
+    }
+
+    public static RenderFragment GenHelpIcon(string tooltip)
+    {
+        return builder =>
+        {
+            builder.OpenComponent<SIcon>(0);
+            builder.AddAttribute(1, "Tooltip", tooltip);
+            builder.AddAttribute(2, "ChildContent",
+                (RenderFragment)(cb => cb.AddContent(3, "mdi-help-circle-outline")));
+            builder.CloseComponent();
+        };
+    }
 }

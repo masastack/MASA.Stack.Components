@@ -1,14 +1,14 @@
 ﻿namespace Masa.Stack.Components;
 
+[Obsolete("Use SBtn instead")]
 public class SAutoLoadingButton : MButton
 {
-    [Parameter]
-    public string BorderRadiusClass { get; set; } = "rounded-pill";
+    [Parameter] public string BorderRadiusClass { get; set; } = "rounded-pill";
 
-    [Parameter]
-    public bool DisableLoading { get; set; }
+    [Parameter] public bool DisableLoading { get; set; }
 
-    CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+    private EventCallback<MouseEventArgs>? _cachedOnClick;
+    private CancellationTokenSource? _cancellationTokenSource;
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
@@ -18,27 +18,35 @@ public class SAutoLoadingButton : MButton
 
     protected override void OnParametersSet()
     {
-        var originalOnClick = OnClick;
+        base.OnParametersSet();
 
-        if (OnClick.HasDelegate)
+        Class ??= "";
+        Class += " " + BorderRadiusClass;
+
+        if (_cachedOnClick != null)
         {
-            OnClick = EventCallback.Factory.Create<MouseEventArgs>(this, async (args) =>
+            OnClick = _cachedOnClick.Value;
+        }
+        else if (OnClick.HasDelegate)
+        {
+            var originalOnClick = OnClick;
+
+            _cachedOnClick = EventCallback.Factory.Create<MouseEventArgs>(this, async (args) =>
             {
                 Loading = DisableLoading is false;
                 Disabled = true;
+                StateHasChanged();
 
+                _cancellationTokenSource?.Cancel();
+                _cancellationTokenSource = new CancellationTokenSource();
                 try
                 {
-                    _cancellationTokenSource.Cancel();
-                    _cancellationTokenSource = new CancellationTokenSource();
-                    await Task.Delay(500, _cancellationTokenSource.Token);
-
-                    if (_cancellationTokenSource.IsCancellationRequested)
-                    {
-                        return;
-                    }
-
+                    await Task.Delay(100, _cancellationTokenSource.Token);
                     await originalOnClick.InvokeAsync(args);
+                }
+                catch (TaskCanceledException)
+                {
+                    // ignored
                 }
                 finally
                 {
@@ -47,19 +55,8 @@ public class SAutoLoadingButton : MButton
                     StateHasChanged();
                 }
             });
+
+            OnClick = _cachedOnClick.Value;
         }
-    }
-
-    protected override void SetComponentClass()
-    {
-        base.SetComponentClass();
-
-        CssProvider.Merge(delegate (CssBuilder cssBuilder)
-        {
-            cssBuilder.AddIf(BorderRadiusClass, () =>
-            {
-                return !(Class?.Split(' ').Contains(BorderRadiusClass) ?? false);
-            });
-        });
     }
 }

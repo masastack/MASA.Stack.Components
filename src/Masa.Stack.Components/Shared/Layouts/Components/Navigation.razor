@@ -146,15 +146,13 @@
     </div>
 </MNavigationDrawer>
 
-<SButton Icon
-         Medium
-         Class="nav-trigger white"
-         Style="@($"{(GlobalConfig.Mini ? "left:76px;" : "left:280px;")}")"
-         OnClick="() => GlobalConfig.Mini = !GlobalConfig.Mini">
+<SIconBtn Class="nav-trigger medium-button white"
+          Style="@($"{(GlobalConfig.Mini ? "left:76px;" : "left:280px;")}")"
+          OnClick="() => GlobalConfig.Mini = !GlobalConfig.Mini">
     <MIcon Color="primary">
         @(GlobalConfig.Mini ? "mdi-chevron-right" : "mdi-chevron-left")
     </MIcon>
-</SButton>
+</SIconBtn>
 
 @code {
 

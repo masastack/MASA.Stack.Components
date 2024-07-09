@@ -14,16 +14,9 @@
         </div>
     </div>
     <div class="ml-auto d-flex">
-        <div @onclick="Previous"
-             class="@(PreviousDisabled ? "" : "hover-pointer") pa-1 regular3--text"
-             style="width: 34px;height: 34px;background: #FFFFFF;border-radius: 34px;">
-            <MIcon Disabled="PreviousDisabled" Size=24>mdi-chevron-left</MIcon>
-        </div>
+        <MButton IconName="mdi-chevron-left" Disabled="PreviousDisabled" OnClick="@Previous"></MButton>
         <div class="mx-4 my-auto regular--text overline">@Page/@TotalPage</div>
-        <div @onclick="Next" class="@(NextDisabled ? "" : "hover-pointer") pa-1 regular3--text"
-             style="width: 34px;height: 34px;background: #FFFFFF;border-radius: 34px;">
-            <MIcon Disabled="NextDisabled" Size="24">mdi-chevron-right</MIcon>
-        </div>
+        <MButton IconName="mdi-chevron-right" Disabled="NextDisabled" OnClick="@Next"></MButton>
     </div>
 </div>
 

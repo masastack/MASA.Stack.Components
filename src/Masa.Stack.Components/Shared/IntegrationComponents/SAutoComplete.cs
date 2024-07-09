@@ -13,6 +13,9 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
 
     [Parameter]
     public bool AutoLabel { get; set; } = true;
+    
+    private RenderFragment? _requiredLabelContent;
+    private string? _fieldName;
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
@@ -63,31 +66,13 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
 
         if (Required && LabelContent == default)
         {
-            LabelContent = builder =>
-            {
-                builder.OpenElement(0, "label");
-                builder.AddAttribute(1, "class", "red--text mr-1");
-                builder.AddContent(2, "*");
-                builder.CloseElement();
-                builder.AddContent(3, Label);
-            };
+            LabelContent = _requiredLabelContent ??= RenderFragments.GenRequiredLabel(Label);
         }
 
         if (string.IsNullOrEmpty(Label) is true && AutoLabel && ValueExpression is not null)
         {
-            var accessorBody = ValueExpression.Body;
-
-            if (accessorBody is UnaryExpression unaryExpression
-                && unaryExpression.NodeType == ExpressionType.Convert
-                && unaryExpression.Type == typeof(object))
-            {
-                accessorBody = unaryExpression.Operand;
-            }
-
-            var fieldName = (accessorBody as MemberExpression)!.Member.Name;
+            var fieldName = _fieldName ?? ValueExpression.GetFieldName();
             Label = I18n.T(fieldName);
         }
-
-        Required = false; // disable required feature from base component in S[Component]
     }
 }
