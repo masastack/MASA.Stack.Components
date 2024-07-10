@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components.Standalone;
+﻿// ReSharper disable StaticMemberInGenericType
+
+namespace Masa.Stack.Components.Standalone;
 
 public class SStatefulChip<TState> : MChip
 {
@@ -21,50 +23,68 @@ public class SStatefulChip<TState> : MChip
     /// Accepts built-in states: "info", "success", "error", "warning", "neutral", "premium"
     /// and custom built-in colors.
     /// </summary>
-    [Parameter] public Func<TState, string>? Rule { get; set; }
+    [Parameter]
+    public Func<TState, string>? Rule { get; set; }
+
+    private static string _successColorCss = GetColorCss("green");
+    private static string _errorColorCss = GetColorCss("red");
+    private static string _warningColorCss = GetColorCss("orange");
+    private static string _infoColorCss = GetColorCss("blue");
+    private static string _neutralColorCss = GetColorCss("grey");
+    private static string _premiumColorCss = GetColorCss("purple");
+
+    private TState? _prevState;
+    private bool _firstSet = true;
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        if (Color is null)
+        if (_firstSet || !EqualityComparer<TState>.Default.Equals(_prevState, State))
         {
-            string? color = null;
+            _firstSet = false;
+            _prevState = State;
 
-            if (Rule is not null)
+            if (!IsDirtyParameter(nameof(Color)) && State is not null)
             {
-                color = GetStateCss(Rule(State));
+                Color = Rule is not null ? GetStateCss(Rule(State)) : GetDefaultRuleStateCss();
             }
-            else
-            {
-                if (SuccessState != null && EqualityComparer<TState>.Default.Equals(SuccessState, State))
-                {
-                    color = GetColorCss("green");
-                }
-                else if (ErrorState != null && EqualityComparer<TState>.Default.Equals(ErrorState, State))
-                {
-                    color = GetColorCss("red");
-                }
-                else if (WarningState != null && EqualityComparer<TState>.Default.Equals(WarningState, State))
-                {
-                    color = GetColorCss("orange");
-                }
-                else if (InfoState != null && EqualityComparer<TState>.Default.Equals(InfoState, State))
-                {
-                    color = GetColorCss("blue");
-                }
-                else if (NeutralState != null && EqualityComparer<TState>.Default.Equals(NeutralState, State))
-                {
-                    color = GetColorCss("grey");
-                }
-                else if (PremiumState != null && EqualityComparer<TState>.Default.Equals(PremiumState, State))
-                {
-                    color = GetColorCss("purple");
-                }
-            }
-
-            Color = color;
         }
+    }
+
+    private string? GetDefaultRuleStateCss()
+    {
+        if (SuccessState != null && EqualityComparer<TState>.Default.Equals(SuccessState, State))
+        {
+            return _successColorCss;
+        }
+
+        if (ErrorState != null && EqualityComparer<TState>.Default.Equals(ErrorState, State))
+        {
+            return _errorColorCss;
+        }
+
+        if (WarningState != null && EqualityComparer<TState>.Default.Equals(WarningState, State))
+        {
+            return _warningColorCss;
+        }
+
+        if (InfoState != null && EqualityComparer<TState>.Default.Equals(InfoState, State))
+        {
+            return _infoColorCss;
+        }
+
+        if (NeutralState != null && EqualityComparer<TState>.Default.Equals(NeutralState, State))
+        {
+            return _neutralColorCss;
+        }
+
+        if (PremiumState != null && EqualityComparer<TState>.Default.Equals(PremiumState, State))
+        {
+            return _premiumColorCss;
+        }
+
+        return null;
     }
 
     private static string? GetStateCss(string? stateOrColor)
@@ -73,7 +93,7 @@ public class SStatefulChip<TState> : MChip
         {
             return null;
         }
-        
+
         var color = stateOrColor switch
         {
             "info" => "blue",

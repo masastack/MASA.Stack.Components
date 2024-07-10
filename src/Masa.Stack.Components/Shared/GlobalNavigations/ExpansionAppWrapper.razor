@@ -99,7 +99,7 @@
                                    Class="@($"expansion-nav__action mdi {icon}")">
                             </MIcon>
                         }
-                        else if (menu.MetaData.Situation == ExpansionMenuSituation.Favorite)
+                        else if (menu.MetaData.Situation == ExpansionMenuSituation.Favorite && !menu.Children.Any())
                         {
                             <MIcon Small
                                    Color="@(isFavorite ? "#FFB547" : "")"
