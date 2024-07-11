@@ -113,9 +113,13 @@ public partial class Notification : MasaComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
-    public async void Dispose()
+    protected override async ValueTask DisposeAsyncCore()
     {
         NoticeState.OnNoticeChanged -= Changed;
-        await HubConnection.DisposeAsync();
+        if (HubConnection != null)
+        {
+            await HubConnection.DisposeAsync();
+        }
+        await base.DisposeAsyncCore();
     }
 }

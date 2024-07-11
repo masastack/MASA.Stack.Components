@@ -14,14 +14,11 @@ public partial class ExpansionAppWrapper
     [Inject]
     public GlobalConfig GlobalConfig { get; set; } = null!;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
-        {
-            GlobalConfig.OnNavLayerChanged += Changed;
-        }
+        await base.OnInitializedAsync();
 
-        await base.OnAfterRenderAsync(firstRender);
+        GlobalConfig.OnNavLayerChanged += Changed;
     }
 
     private async Task ItemOperClick()
@@ -60,5 +57,11 @@ public partial class ExpansionAppWrapper
     async Task Changed()
     {
         await InvokeAsync(StateHasChanged);
+    }
+
+    protected override ValueTask DisposeAsyncCore()
+    {
+        GlobalConfig.OnNavLayerChanged -= Changed;
+        return base.DisposeAsyncCore();
     }
 }
