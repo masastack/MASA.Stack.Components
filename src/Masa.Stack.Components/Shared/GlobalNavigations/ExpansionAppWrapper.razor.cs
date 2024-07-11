@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+
 namespace Masa.Stack.Components.Shared.GlobalNavigations;
 
 public partial class ExpansionAppWrapper
@@ -10,6 +12,35 @@ public partial class ExpansionAppWrapper
 
     [Parameter]
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
+
+    [Inject]
+    public GlobalNavigationState GlobalNavigationState { get; set; } = null!;
+
+    [Inject]
+    public ProtectedLocalStorage ProtectedLocalStore { get; set; } = null!;
+
+    private string _layerStoreKey = "NavigationLayer";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ProtectedLocalStore.GetAsync<int>(_layerStoreKey);
+        if (result.Success)
+        {
+            GlobalNavigationState.Layer = result.Value;
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            GlobalNavigationState.OnLayerChanged += Changed;
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     private async Task ItemOperClick()
     {
@@ -42,5 +73,11 @@ public partial class ExpansionAppWrapper
         }
 
         return string.Join(" ", css);
+    }
+
+    async Task Changed()
+    {
+        await InvokeAsync(StateHasChanged);
+        await ProtectedLocalStore.SetAsync(_layerStoreKey, GlobalNavigationState.Layer);
     }
 }

@@ -217,5 +217,7 @@
   "Create": "新建",
   "403Tips": "您未经授权！",
   "404Tips": "找不到请求的URL。",
-  "BackToHome": "回到主页"
+  "BackToHome": "回到主页",
+  "NavigationLayerLabel": "菜单显示",
+  "Layer": "层"
 }

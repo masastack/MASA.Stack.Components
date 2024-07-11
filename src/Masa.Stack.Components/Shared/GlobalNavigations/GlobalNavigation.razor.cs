@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+
+namespace Masa.Stack.Components;
 
 public partial class GlobalNavigation : MasaComponentBase
 {
@@ -15,6 +17,12 @@ public partial class GlobalNavigation : MasaComponentBase
 
     [Parameter]
     public Func<string, Task>? OnFavoriteRemove { get; set; }
+
+    [Inject]
+    public GlobalNavigationState GlobalNavigationState { get; set; } = null!;
+
+    [Inject]
+    public ProtectedSessionStorage ProtectedSessionStore { get; set; } = null!;
 
     private bool _visible;
     private List<(string name, string url)>? _recentVisits;
