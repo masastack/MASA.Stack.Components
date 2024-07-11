@@ -2,14 +2,13 @@
 
 public class GlobalConfig : IScopedDependency
 {
-    private const string DarkCookieKey = "GlobalConfig_IsDark";
-    private const string MiniCookieKey = "GlobalConfig_NavigationMini";
-    private const string FavoriteCookieKey = "GlobalConfig_Favorite";
-    private const string LangCookieKey = "GlobalConfig_Lang";
+    private const string DarkStoreKey = "GlobalConfig_IsDark";
+    private const string MiniStoreKey = "GlobalConfig_NavigationMini";
+    private const string FavoriteStoreKey = "GlobalConfig_Favorite";
+    private const string LangStoreKey = "GlobalConfig_Lang";
+    private const string NavLayerStoreKey = "GlobalConfig_NavLayer";
 
-    public const string NavLayerStoreKey = "GlobalConfig_NavLayer";
-
-    private readonly CookieStorage _cookieStorage;
+    private readonly LocalStorage _localStore;
     private readonly I18n _i18N;
     private bool _dark;
     private bool _mini;
@@ -31,10 +30,10 @@ public class GlobalConfig : IScopedDependency
 
     public event NavLayerChanged? OnNavLayerChanged;
 
-    public GlobalConfig(CookieStorage cookieStorage, I18n i18n)
+    public GlobalConfig(I18n i18n, LocalStorage localStore)
     {
-        _cookieStorage = cookieStorage;
         _i18N = i18n;
+        _localStore = localStore;
     }
 
     public CultureInfo Culture
@@ -43,7 +42,7 @@ public class GlobalConfig : IScopedDependency
         set
         {
             _i18N.SetCulture(new CultureInfo("en-US"), value);
-            _cookieStorage.SetAsync(LangCookieKey, value.Name);
+            _localStore.SetItemAsync(LangStoreKey, value.Name);
             OnLanguageChanged?.Invoke();
         }
     }
@@ -70,7 +69,7 @@ public class GlobalConfig : IScopedDependency
         set
         {
             _dark = value;
-            _cookieStorage.SetAsync(DarkCookieKey, value);
+            _localStore.SetItemAsync(DarkStoreKey, value);
         }
     }
 
@@ -82,7 +81,7 @@ public class GlobalConfig : IScopedDependency
         set
         {
             _mini = value;
-            _cookieStorage?.SetAsync(MiniCookieKey, value);
+            _localStore?.SetItemAsync(MiniStoreKey, value);
         }
     }
 
@@ -92,7 +91,7 @@ public class GlobalConfig : IScopedDependency
         set
         {
             _favorite = value;
-            _cookieStorage?.SetAsync(FavoriteCookieKey, value);
+            _localStore?.SetItemAsync(FavoriteStoreKey, value);
         }
     }
 
@@ -105,20 +104,27 @@ public class GlobalConfig : IScopedDependency
             {
                 _navLayer = value;
                 OnNavLayerChanged?.Invoke();
+                _localStore.SetItemAsync(NavLayerStoreKey, value);
             }
         }
     }
 
     public async void Initialization()
     {
-        _dark = Convert.ToBoolean(await _cookieStorage.GetAsync(DarkCookieKey));
-        bool.TryParse(await _cookieStorage.GetAsync(MiniCookieKey), out _mini);
-        _favorite = await _cookieStorage.GetAsync(FavoriteCookieKey);
+        _dark = Convert.ToBoolean(await _localStore.GetItemAsync(DarkStoreKey));
+        bool.TryParse(await _localStore.GetItemAsync(MiniStoreKey), out _mini);
+        _favorite = await _localStore.GetItemAsync(FavoriteStoreKey) ?? string.Empty;
 
-        var lang = await _cookieStorage.GetAsync(LangCookieKey);
+        var lang = await _localStore.GetItemAsync(LangStoreKey);
         if (!string.IsNullOrWhiteSpace(lang))
         {
             _i18N.SetCulture(new CultureInfo("en-US"), new CultureInfo(lang));
+        }
+
+        var navLayer = await _localStore.GetItemAsync<int>(NavLayerStoreKey);
+        if (navLayer > 0)
+        {
+            _navLayer = navLayer;
         }
     }
 }

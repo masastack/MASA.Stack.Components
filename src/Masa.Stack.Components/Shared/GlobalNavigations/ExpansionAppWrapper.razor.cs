@@ -14,20 +14,6 @@ public partial class ExpansionAppWrapper
     [Inject]
     public GlobalConfig GlobalConfig { get; set; } = null!;
 
-    [Inject]
-    public ProtectedLocalStorage ProtectedLocalStore { get; set; } = null!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var result = await ProtectedLocalStore.GetAsync<int>(GlobalConfig.NavLayerStoreKey);
-        if (result.Success)
-        {
-            GlobalConfig.NavLayer = result.Value;
-        }
-
-        await base.OnInitializedAsync();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -74,6 +60,5 @@ public partial class ExpansionAppWrapper
     async Task Changed()
     {
         await InvokeAsync(StateHasChanged);
-        await ProtectedLocalStore.SetAsync(GlobalConfig.NavLayerStoreKey, GlobalConfig.NavLayer);
     }
 }
