@@ -12,19 +12,17 @@ public partial class ExpansionAppWrapper
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
 
     [Inject]
-    public GlobalNavigationState GlobalNavigationState { get; set; } = null!;
+    public GlobalConfig GlobalConfig { get; set; } = null!;
 
     [Inject]
     public ProtectedLocalStorage ProtectedLocalStore { get; set; } = null!;
 
-    private string _layerStoreKey = "NavigationLayer";
-
     protected override async Task OnInitializedAsync()
     {
-        var result = await ProtectedLocalStore.GetAsync<int>(_layerStoreKey);
+        var result = await ProtectedLocalStore.GetAsync<int>(GlobalConfig.NavLayerStoreKey);
         if (result.Success)
         {
-            GlobalNavigationState.Layer = result.Value;
+            GlobalConfig.NavLayer = result.Value;
         }
 
         await base.OnInitializedAsync();
@@ -34,7 +32,7 @@ public partial class ExpansionAppWrapper
     {
         if (firstRender)
         {
-            GlobalNavigationState.OnLayerChanged += Changed;
+            GlobalConfig.OnNavLayerChanged += Changed;
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -76,6 +74,6 @@ public partial class ExpansionAppWrapper
     async Task Changed()
     {
         await InvokeAsync(StateHasChanged);
-        await ProtectedLocalStore.SetAsync(_layerStoreKey, GlobalNavigationState.Layer);
+        await ProtectedLocalStore.SetAsync(GlobalConfig.NavLayerStoreKey, GlobalConfig.NavLayer);
     }
 }

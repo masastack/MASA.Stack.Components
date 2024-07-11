@@ -7,12 +7,17 @@ public class GlobalConfig : IScopedDependency
     private const string FavoriteCookieKey = "GlobalConfig_Favorite";
     private const string LangCookieKey = "GlobalConfig_Lang";
 
+    public const string NavLayerStoreKey = "GlobalConfig_NavLayer";
+
     private readonly CookieStorage _cookieStorage;
     private readonly I18n _i18N;
     private bool _dark;
     private bool _mini;
     private string _favorite;
     private Guid _currentTeamId;
+    private int _navLayer = 2;
+
+    public List<int> NavLayerItems = new List<int> { 1, 2, 3 };
 
     public delegate void GlobalConfigChanged();
 
@@ -21,6 +26,10 @@ public class GlobalConfig : IScopedDependency
     public delegate void CurrentTeamChanged(Guid teamId);
 
     public event CurrentTeamChanged? OnCurrentTeamChanged;
+
+    public delegate Task NavLayerChanged();
+
+    public event NavLayerChanged? OnNavLayerChanged;
 
     public GlobalConfig(CookieStorage cookieStorage, I18n i18n)
     {
@@ -84,6 +93,19 @@ public class GlobalConfig : IScopedDependency
         {
             _favorite = value;
             _cookieStorage?.SetAsync(FavoriteCookieKey, value);
+        }
+    }
+
+    public int NavLayer
+    {
+        get => _navLayer;
+        set
+        {
+            if (_navLayer != value)
+            {
+                _navLayer = value;
+                OnNavLayerChanged?.Invoke();
+            }
         }
     }
 
