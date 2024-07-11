@@ -16,6 +16,9 @@ public partial class GlobalNavigation : MasaComponentBase
     [Parameter]
     public Func<string, Task>? OnFavoriteRemove { get; set; }
 
+    [Inject]
+    public GlobalConfig GlobalConfig { get; set; } = null!;
+
     private bool _visible;
     private List<(string name, string url)>? _recentVisits;
     private List<KeyValuePair<string, string>>? _recommendApps;

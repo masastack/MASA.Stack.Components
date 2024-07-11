@@ -11,6 +11,16 @@ public partial class ExpansionAppWrapper
     [Parameter]
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
 
+    [Inject]
+    public GlobalConfig GlobalConfig { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        GlobalConfig.OnNavLayerChanged += Changed;
+    }
+
     private async Task ItemOperClick()
     {
         await OnItemOperClick.InvokeAsync(Value);
@@ -42,5 +52,16 @@ public partial class ExpansionAppWrapper
         }
 
         return string.Join(" ", css);
+    }
+
+    async Task Changed()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override ValueTask DisposeAsyncCore()
+    {
+        GlobalConfig.OnNavLayerChanged -= Changed;
+        return base.DisposeAsyncCore();
     }
 }
