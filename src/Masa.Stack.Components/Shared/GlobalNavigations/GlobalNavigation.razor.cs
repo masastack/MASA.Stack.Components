@@ -19,9 +19,6 @@ public partial class GlobalNavigation : MasaComponentBase
     [Inject]
     public GlobalNavigationState GlobalNavigationState { get; set; } = null!;
 
-    [Inject]
-    public ProtectedSessionStorage ProtectedSessionStore { get; set; } = null!;
-
     private bool _visible;
     private List<(string name, string url)>? _recentVisits;
     private List<KeyValuePair<string, string>>? _recommendApps;
