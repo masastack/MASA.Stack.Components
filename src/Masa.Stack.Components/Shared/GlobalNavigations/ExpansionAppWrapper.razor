@@ -38,21 +38,15 @@
 
 @code {
 
-    private RenderFragment RenderNestNav(ExpansionMenu menu, int layer = 1) => __builder =>
+    private RenderFragment RenderNestNav(ExpansionMenu menu) => __builder =>
     {
         @RenderNav(menu)
-
-        if (GlobalConfig.NavLayer <= layer)
-        {
-            return;
-        }
 
         if (menu.Children.Count != 0)
         {
             foreach (var child in menu.Children)
             {
-                layer++;
-                @RenderNestNav(child, layer)
+                @RenderNestNav(child)
             }
         }
     };

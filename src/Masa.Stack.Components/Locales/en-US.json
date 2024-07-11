@@ -131,7 +131,5 @@
   },
   "403Tips": "You are not authorized! ",
   "404Tips": "The requested URL was not found.",
-  "BackToHome": "Back to home",
-  "NavigationLayerLabel": "Menu display",
-  "Layer": "layer"
+  "BackToHome": "Back to home"
 }
