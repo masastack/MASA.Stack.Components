@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class GlobalNavigation : MasaComponentBase
 {

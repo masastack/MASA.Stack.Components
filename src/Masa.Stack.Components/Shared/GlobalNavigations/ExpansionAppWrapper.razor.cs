@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-
 namespace Masa.Stack.Components.Shared.GlobalNavigations;
 
 public partial class ExpansionAppWrapper
