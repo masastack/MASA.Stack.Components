@@ -56,6 +56,9 @@ public partial class SLayout
     public RenderFragment<Exception>? ErrorContent { get; set; }
 
     [Parameter]
+    public EventCallback<Exception> OnErrorAfterHandle { get; set; }
+
+    [Parameter]
     public List<string> WhiteUris { get; set; } = new List<string>();
 
     [Parameter]
@@ -121,6 +124,8 @@ public partial class SLayout
 
         if (firstRender)
         {
+            Nav a = null;
+            var b = a.Icon;
             GlobalConfig.Initialization();
 
             await JsInitVariables.SetTimezoneOffset();
