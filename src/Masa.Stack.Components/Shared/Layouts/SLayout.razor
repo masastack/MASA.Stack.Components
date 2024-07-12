@@ -9,7 +9,7 @@
 <CascadingValue Value="this" IsFixed>
     <CascadingValue Value="@I18n.Culture.ToString()" Name="Culture">
         <MApp Class="masa masa-stack-components">
-            <MErrorHandler ErrorContent="@ErrorContent" OnHandle="@OnErrorHandleAsync">
+            <MErrorHandler ErrorContent="@ErrorContent" OnHandle="@OnErrorHandleAsync" ShowDetail>
                 <MAppBar App
                          Class="mx-6 masa-app-bar"
                          Elevation="0"
@@ -43,7 +43,7 @@
 
                 <MMain Class="masa-main">
                     <div class="@($"px-6 pb-6 max-width {@Class}")" style="@Style">
-                        <MErrorHandler ErrorContent="@ErrorContent">
+                        <MErrorHandler ErrorContent="@ErrorContent" ShowDetail>
                             @ChildContent
                         </MErrorHandler>
                     </div>
