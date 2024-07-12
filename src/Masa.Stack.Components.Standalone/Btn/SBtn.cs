@@ -4,7 +4,6 @@ public class SBtn : MButton
 {
     [Parameter] public bool AutoLoading { get; set; }
 
-    private EventCallback<MouseEventArgs>? _cachedOnClick;
     private CancellationTokenSource? _cancellationTokenSource;
 
     protected override void OnParametersSet()
@@ -12,43 +11,34 @@ public class SBtn : MButton
         base.OnParametersSet();
 
         // Assume AutoLoading will not change
-        if (AutoLoading)
+        if (AutoLoading && OnClick.HasDelegate)
         {
-            if (_cachedOnClick != null)
-            {
-                OnClick = _cachedOnClick.Value;
-            }
-            else if (OnClick.HasDelegate)
-            {
-                var originalOnClick = OnClick;
+            var originalOnClick = OnClick;
 
-                _cachedOnClick = EventCallback.Factory.Create<MouseEventArgs>(this, async (args) =>
+            OnClick = EventCallback.Factory.Create<MouseEventArgs>(this, async (args) =>
+            {
+                Loading = true;
+                Disabled = true;
+                StateHasChanged();
+
+                _cancellationTokenSource?.Cancel();
+                _cancellationTokenSource = new CancellationTokenSource();
+                try
                 {
-                    Loading = true;
-                    Disabled = true;
+                    await Task.Delay(100, _cancellationTokenSource.Token);
+                    await originalOnClick.InvokeAsync(args);
+                }
+                catch (TaskCanceledException)
+                {
+                    // ignored
+                }
+                finally
+                {
+                    Loading = false;
+                    Disabled = false;
                     StateHasChanged();
-
-                    _cancellationTokenSource?.Cancel();
-                    _cancellationTokenSource = new CancellationTokenSource();
-                    try
-                    {
-                        await Task.Delay(100, _cancellationTokenSource.Token);
-                        await originalOnClick.InvokeAsync(args);
-                    }
-                    catch (TaskCanceledException)
-                    {
-                        // ignored
-                    }
-                    finally
-                    {
-                        Loading = false;
-                        Disabled = false;
-                        StateHasChanged();
-                    }
-                });
-
-                OnClick = _cachedOnClick.Value;
-            }
+                }
+            });
         }
     }
 }
