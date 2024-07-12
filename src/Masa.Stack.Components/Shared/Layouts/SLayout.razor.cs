@@ -124,8 +124,6 @@ public partial class SLayout
 
         if (firstRender)
         {
-            Nav a = null;
-            var b = a.Icon;
             GlobalConfig.Initialization();
 
             await JsInitVariables.SetTimezoneOffset();
