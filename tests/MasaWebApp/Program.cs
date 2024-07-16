@@ -23,7 +23,7 @@ builder.Services.AddMasaOpenIdConnect(new MasaOpenIdConnectOptions
     Scopes = new List<string> { "offline_access" }
 });
 
-await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Auth, "wwwroot/i18n", null, "https://localhost:19501/");
+await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Auth);
 
 var app = builder.Build();
 
