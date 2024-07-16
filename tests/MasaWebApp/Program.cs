@@ -23,7 +23,7 @@ builder.Services.AddMasaOpenIdConnect(new MasaOpenIdConnectOptions
     Scopes = new List<string> { "offline_access" }
 });
 
-await builder.Services.AddMasaStackComponentsAsync(new MasaStackProject(6, "test"));
+await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Auth);
 
 var app = builder.Build();
 

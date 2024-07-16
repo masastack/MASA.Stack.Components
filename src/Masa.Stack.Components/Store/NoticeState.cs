@@ -37,4 +37,11 @@ public class NoticeState : IScopedDependency
         });
         Notices = notices.ToList();
     }
+
+    public void AddNoticeAndRemoveLast(WebsiteMessageModel newNotice)
+    {
+        var notices = new List<WebsiteMessageModel> { newNotice };
+        notices.AddRange(Notices.Take(Notices.Count - 1));
+        Notices = notices;
+    }
 }
