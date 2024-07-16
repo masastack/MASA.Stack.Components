@@ -58,10 +58,9 @@ public partial class Notification : MasaComponentBase
             Logger.LogError(e, "HubConnection.StartAsync");
         }
 
-
-        HubConnection?.On(SignalRMethodConsts.GET_NOTIFICATION, async () =>
+        HubConnection?.On(SignalRMethodConsts.GET_NOTIFICATION, (WebsiteMessageModel websiteMessage) =>
         {
-            await LoadData();
+            NoticeState.AddNoticeAndRemoveLast(websiteMessage);
         });
 
         HubConnection?.On(SignalRMethodConsts.CHECK_NOTIFICATION, async () =>
