@@ -12,7 +12,7 @@
                         <div class="masa-text-1-2__title title_category py-4" id="@($"{idPrefix}_{category.Id}")">@category.Name</div>
                         @foreach (var app in category.Children)
                         {
-                            <ExpansionAppWrapper Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" />
+                            <ExpansionAppWrapper RenderLayer="RenderLayer" Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" />
                         }
                     </div>
                 </div>
