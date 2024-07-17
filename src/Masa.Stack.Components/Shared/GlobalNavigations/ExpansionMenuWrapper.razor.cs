@@ -9,6 +9,9 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
     public ExpansionMenu? Value { get; set; }
 
     [Parameter]
+    public bool RenderLayer { get; set; }
+
+    [Parameter]
     public EventCallback<ExpansionMenu> OnItemClick { get; set; }
 
     [Parameter]

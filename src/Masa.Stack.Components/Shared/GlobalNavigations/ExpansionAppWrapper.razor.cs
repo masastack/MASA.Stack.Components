@@ -6,6 +6,9 @@ public partial class ExpansionAppWrapper
     public ExpansionMenu Value { get; set; } = default!;
 
     [Parameter]
+    public bool RenderLayer { get; set; }
+
+    [Parameter]
     public EventCallback<ExpansionMenu> OnItemClick { get; set; }
 
     [Parameter]
@@ -18,7 +21,10 @@ public partial class ExpansionAppWrapper
     {
         await base.OnInitializedAsync();
 
-        GlobalConfig.OnNavLayerChanged += Changed;
+        if (RenderLayer)
+        {
+            GlobalConfig.OnNavLayerChanged += Changed;
+        }
     }
 
     private async Task ItemOperClick()
@@ -61,7 +67,11 @@ public partial class ExpansionAppWrapper
 
     protected override ValueTask DisposeAsyncCore()
     {
-        GlobalConfig.OnNavLayerChanged -= Changed;
+        if (RenderLayer)
+        {
+            GlobalConfig.OnNavLayerChanged -= Changed;
+        }
+
         return base.DisposeAsyncCore();
     }
 }

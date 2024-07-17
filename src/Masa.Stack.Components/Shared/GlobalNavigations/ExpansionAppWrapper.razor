@@ -42,7 +42,7 @@
     {
         @RenderNav(menu)
 
-        if (GlobalConfig.NavLayer <= layer)
+        if (RenderLayer && GlobalConfig.NavLayer <= layer)
         {
             return;
         }
