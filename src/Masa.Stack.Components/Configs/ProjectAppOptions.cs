@@ -4,8 +4,11 @@ internal class ProjectAppOptions
 {
     public MasaStackProject Project { get; init; }
 
-    public ProjectAppOptions(MasaStackProject project)
+    public string? ServiceVersion { get; init; }
+
+    public ProjectAppOptions(MasaStackProject project, string? serviceVersion = null)
     {
         Project = project;
+        ServiceVersion = serviceVersion;
     }
 }

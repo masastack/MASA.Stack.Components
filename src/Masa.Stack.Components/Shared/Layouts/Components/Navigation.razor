@@ -87,10 +87,10 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MList Nav Routable>
-                        <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
-                    </MList>
-                </ChildContent>
-            </MMenu>
+                            <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
+                        </MList>
+                    </ChildContent>
+                </MMenu>
             }
         }
     </MList>
@@ -139,7 +139,7 @@
         {
             <p>
                 <MChip Class="mt-3" Small Color="regular2--text" Outlined>
-                    @MasaStackConfig.Version
+                    @(string.IsNullOrEmpty(ProjectApp.ServiceVersion) ? MasaStackConfig.Version : ProjectApp.ServiceVersion)
                 </MChip>
             </p>
         }
@@ -155,6 +155,8 @@
 </SIconBtn>
 
 @code {
+    [Inject]
+    internal ProjectAppOptions ProjectApp { get; set; } = default!;
 
     [Parameter]
     public string? DefaultRoute { get; set; }
