@@ -6,8 +6,31 @@ public static class ServiceCollectionExtensions
 {
     //Consider only one web clearance for now
     public static async Task<IServiceCollection> AddMasaStackComponentsAsync(this IServiceCollection services, MasaStackProject project,
-        string? i18nDirectoryPath = "wwwroot/i18n", string? authHost = null, string? mcHost = null,
-        string? pmHost = null)
+        string? i18nDirectoryPath = "wwwroot/i18n",
+        string? authHost = null, string? mcHost = null, string? pmHost = null)
+    {
+        ArgumentNullException.ThrowIfNull(project);
+        await AddMasaStackComponentsServiceAsync(services, project, i18nDirectoryPath, authHost, mcHost, pmHost);
+        AddObservable(services, true, project);
+        return services;
+    }
+
+    public static async Task<IServiceCollection> AddMasaStackComponentsWithNormalAppAsync(this IServiceCollection services, MasaStackProject project, string otlpUrl, string serviceVersion, string projectName = "default",
+        string? i18nDirectoryPath = "wwwroot/i18n",
+        string? authHost = null, string? mcHost = null, string? pmHost = null)
+    {
+        ArgumentNullException.ThrowIfNull(projectName);
+        ArgumentNullException.ThrowIfNull(otlpUrl);
+        ArgumentNullException.ThrowIfNull(serviceVersion);
+        ArgumentNullException.ThrowIfNull(projectName);
+        await AddMasaStackComponentsServiceAsync(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, serviceVersion);
+        AddObservable(services, false, project: project, serviceVersion: serviceVersion, projectName: projectName, otlpUrl: otlpUrl);
+        return services;
+    }
+
+    private static async Task AddMasaStackComponentsServiceAsync(IServiceCollection services, MasaStackProject project,
+        string? i18nDirectoryPath = "wwwroot/i18n",
+        string? authHost = null, string? mcHost = null, string? pmHost = null, string? serviceVersion = null)
     {
         services.AddScoped<CookieStorage>();
         services.AddScoped<JsInitVariables>();
@@ -24,15 +47,14 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.PhoneNumber), IdentityClaimConsts.PHONE_NUMBER);
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
-
-        services.AddSingleton(sp => new ProjectAppOptions(project));
+        services.AddSingleton(sp => new ProjectAppOptions(project, serviceVersion));
 
         services.AddMasaStackConfigAsync(project, MasaStackApp.WEB).ConfigureAwait(false).GetAwaiter().GetResult();
         var masaStackConfig = services.GetMasaStackConfig();
 
-        authHost = authHost ?? masaStackConfig.GetAuthServiceDomain();
-        mcHost = mcHost ?? masaStackConfig.GetMcServiceDomain();
-        pmHost = pmHost ?? masaStackConfig.GetPmServiceDomain();
+        authHost ??= masaStackConfig.GetAuthServiceDomain();
+        mcHost ??= masaStackConfig.GetMcServiceDomain();
+        pmHost ??= masaStackConfig.GetPmServiceDomain();
         var redisOption = new RedisConfigurationOptions
         {
             Servers = new List<RedisServerOptions> {
@@ -50,23 +72,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(new McServiceOptions(mcHost));
         services.AddMcClient(mcHost);
         services.AddPmClient(pmHost);
-
-        services.AddLogging(configure =>
-        {
-            // 创建配置构建器
-            IConfiguration configuration = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
-                .Build();
-            var sericeName = masaStackConfig.GetWebId(project);
-            services.AddObservable(configure, () => new MasaObservableOptions
-            {
-                ServiceNameSpace = masaStackConfig.Environment,
-                ServiceVersion = masaStackConfig.Version,
-                ServiceName = sericeName.IsNullOrEmpty() ? project.Name : sericeName,
-                Layer = masaStackConfig.Namespace,
-                ServiceInstanceId = configuration.GetValue<string>("HOSTNAME")
-            }, () => masaStackConfig.OtlpUrl, true);
-        });
 
         await services.AddStackIsolationAsync("");
 
@@ -109,8 +114,29 @@ public static class ServiceCollectionExtensions
         {
             masaBuilder.AddI18nForServer(i18nDirectoryPath);
         }
+    }
 
-        return services;
+    private static void AddObservable(IServiceCollection services, bool isMasa, MasaStackProject project, string? serviceVersion = null, string? projectName = null, string? otlpUrl = null)
+    {
+        services.AddLogging(configure =>
+        {
+            var masaStackConfig = services.GetMasaStackConfig();
+            // 创建配置构建器
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .Build();
+
+            var masaSericeName = isMasa ? masaStackConfig.GetWebId(project) : project.Name;
+            ArgumentNullException.ThrowIfNull(masaSericeName);
+            services.AddObservable(configure, () => new MasaObservableOptions
+            {
+                ServiceNameSpace = masaStackConfig.Environment,
+                ServiceVersion = isMasa ? masaStackConfig.Version : serviceVersion!,
+                ServiceName = masaSericeName,
+                Layer = isMasa ? masaStackConfig.Namespace : projectName!,
+                ServiceInstanceId = configuration.GetValue<string>("HOSTNAME")!
+            }, () => isMasa ? masaStackConfig.OtlpUrl : otlpUrl!, true);
+        });
     }
 
     private static IEnumerable<(string cultureName, Dictionary<string, string> map)> GetLocales()
