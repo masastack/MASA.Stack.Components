@@ -3,7 +3,7 @@
 
 <SSelect Value="Value"
          ValueChanged="ValueChanged"
-         Items="ThirdPartyIdps"
+         Items="_thirdPartyIdps"
          Label="@T(Label??"")"
          ItemText="e => e.DisplayName"
          ItemValue="e => e.Name"
@@ -32,9 +32,6 @@
     public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
-    public List<ThirdPartyIdpSelectModel>? ThirdPartyIdps { get; set; }
-
-    [Parameter]
     public bool Small { get; set; }
 
     [Parameter]
@@ -46,18 +43,20 @@
     [Parameter]
     public bool FillBackground { get; set; } = true;
 
+    [Parameter]
+    public bool IncludeLdap { get; set; } = true;
+
+    private List<ThirdPartyIdpSelectModel>? _thirdPartyIdps = new();
+
     protected override async Task OnInitializedAsync()
     {
-        if (ThirdPartyIdps is null)
-        {
-            await InitThirdPartyIdps();
-        }
-        else Label ??= "ThirdPartyIdp";
+        Label ??= "ThirdPartyIdp";
+
+        await InitThirdPartyIdps();
     }
 
     public async Task InitThirdPartyIdps()
     {
-        ThirdPartyIdps = new();
-        ThirdPartyIdps.AddRange(await AuthClient.ThirdPartyIdpService.GetSelectAsync(default, true));
+        _thirdPartyIdps = await AuthClient.ThirdPartyIdpService.GetSelectAsync(default, IncludeLdap);
     }
 }
