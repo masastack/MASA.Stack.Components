@@ -11,7 +11,8 @@
          Clearable=Clearable
          BackgroundColor="@(FillBackground?"fill-background":"white")"
          Style="@($"{Style}")"
-         Class="@($"{Class}")">
+         Class="@($"{Class}")"
+         Tooltip="@Tooltip">
     <ItemContent Context="data">
         <div class="d-flex align-center" style="height:48px;">
             <MAvatar Size=30>
@@ -45,6 +46,9 @@
 
     [Parameter]
     public bool IncludeLdap { get; set; } = true;
+
+    [Parameter]
+    public string? Tooltip { get; set; }
 
     private List<ThirdPartyIdpSelectModel>? _thirdPartyIdps = new();
 
