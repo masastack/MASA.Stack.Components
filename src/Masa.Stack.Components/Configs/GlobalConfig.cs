@@ -14,9 +14,12 @@ public class GlobalConfig : IScopedDependency
     private bool _mini;
     private string _favorite;
     private Guid _currentTeamId;
+    private bool _loading;
     private int _navLayer = 2;
 
     public List<int> NavLayerItems = new List<int> { 1, 2, 3 };
+
+    public string LoadingText = string.Empty;
 
     public delegate void GlobalConfigChanged();
 
@@ -29,6 +32,10 @@ public class GlobalConfig : IScopedDependency
     public delegate Task NavLayerChanged();
 
     public event NavLayerChanged? OnNavLayerChanged;
+
+    public delegate void LoadingChanged(bool loading, string loadingText);
+
+    public event LoadingChanged? OnLoadingChanged;
 
     public GlobalConfig(I18n i18n, LocalStorage localStore)
     {
@@ -105,6 +112,19 @@ public class GlobalConfig : IScopedDependency
                 _navLayer = value;
                 OnNavLayerChanged?.Invoke();
                 _localStore.SetItemAsync(NavLayerStoreKey, value);
+            }
+        }
+    }
+
+    public bool Loading
+    {
+        get => _loading;
+        set
+        {
+            if (_loading != value)
+            {
+                _loading = value;
+                OnLoadingChanged?.Invoke(_loading, LoadingText);
             }
         }
     }
