@@ -24,6 +24,25 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
 
     private string CssSelectorForScroll => string.IsNullOrWhiteSpace(CssForScroll) ? string.Empty : "." + CssForScroll;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (Value is not null)
+            {
+                await MasonryInitAsync();
+            }
+        }
+    }
+
+    protected virtual async Task MasonryInitAsync()
+    {
+        foreach (var category in Value.Children)
+        {
+            await JsRuntime.InvokeVoidAsync("MasaStackComponents.masonryInit", $".{idPrefix}_{category.Id}", ".app", 24);
+        }
+    }
+
     protected virtual async Task ItemClick(ExpansionMenu menu)
     {
         if (Value.MetaData.Situation == ExpansionMenuSituation.Authorization)
