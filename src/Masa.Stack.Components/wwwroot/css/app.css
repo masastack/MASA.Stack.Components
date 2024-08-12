@@ -91,12 +91,12 @@ h1:focus {
         }
 
         .masa-stack-components .global-nav .global-nav-content__main {
-            -moz-column-count: 3; /* Firefox */
-            -webkit-column-count: 3; /* Safari 和 Chrome */
-            column-count: 3;
-            -moz-column-gap: 24px; /* Firefox */
-            -webkit-column-gap: 24px; /* Safari 和 Chrome */
-            column-gap: 24px;
+            /*-moz-column-count: 3;*/ /* Firefox */
+            /*-webkit-column-count: 3;*/ /* Safari 和 Chrome */
+            /*column-count: 3;
+            -moz-column-gap: 24px;*/ /* Firefox */
+            /*-webkit-column-gap: 24px;*/ /* Safari 和 Chrome */
+            /*column-gap: 24px;*/
         }
 
             .masa-stack-components .global-nav .global-nav-content__main .title_category_active {
@@ -127,20 +127,27 @@ h1:focus {
         break-inside: avoid-column;
         background: #F6F8FD;
         padding: 16px;
+
+        width: calc(33.33% - 16px);
+        margin-bottom: 24px;
     }
 
     .masa-stack-components .global-nav-content__main .category_title_app {
         -webkit-column-break-inside: avoid;
         page-break-inside: avoid;
         break-inside: avoid-column;
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px; /* 设置行间距和列间距 */
     }
 
-    .masa-stack-components .global-nav .apps .category_title_app :nth-child(2):not([style*="display:none"]).app {
+    .masa-stack-components .global-nav .apps .category_title_app :not([style*="display:none"]).app {
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
     }
 
-    .masa-stack-components .global-nav .apps .category_title_app .app:last-child:not([style*="display:none"]) {
+    .masa-stack-components .global-nav .apps .category_title_app .app:not([style*="display:none"]) {
         border-bottom-right-radius: 20px;
         border-bottom-left-radius: 20px;
     }

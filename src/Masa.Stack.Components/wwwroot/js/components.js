@@ -138,6 +138,16 @@ window.MasaStackComponents.getTimezoneOffset = function() {
     return new Date().getTimezoneOffset();
 }
 
+window.MasaStackComponents.masonryInit = (selector, itemSelector, gutter) => {
+    const elem = document.querySelector(selector);
+    new Masonry(elem, {
+        itemSelector: itemSelector,
+        columnWidth: itemSelector,
+        gutter: gutter,
+        percentPosition: true
+    });
+}
+
 function debounce(fn, wait) {
     let timer = null;
     return function (...args) {

@@ -8,8 +8,8 @@
             @foreach (var category in Value.Children)
             {
                 <div class="apps" style="@GetIsDisplayStyle(!category.Hidden)">
-                    <div class="category_title_app">
-                        <div class="masa-text-1-2__title title_category py-4" id="@($"{idPrefix}_{category.Id}")">@category.Name</div>
+                    <div class="masa-text-1-2__title title_category py-4" id="@($"{idPrefix}_{category.Id}")">@category.Name</div>
+                    <div class="category_title_app @($"{idPrefix}_{category.Id}")" style="display:flex">
                         @foreach (var app in category.Children)
                         {
                             <ExpansionAppWrapper RenderLayer="RenderLayer" Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" />
