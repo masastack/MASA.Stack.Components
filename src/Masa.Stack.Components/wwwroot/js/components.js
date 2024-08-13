@@ -145,10 +145,8 @@ window.MasaStackComponents.initOrUpdateMasonry = (selector, itemSelector, gutter
     if (!elem) return;
 
     if (masonryInstances[selector]) {
-        // 更新布局
         masonryInstances[selector].layout();
     } else {
-        // 初始化布局
         masonryInstances[selector] = new Masonry(elem, {
             itemSelector: itemSelector,
             columnWidth: itemSelector,
