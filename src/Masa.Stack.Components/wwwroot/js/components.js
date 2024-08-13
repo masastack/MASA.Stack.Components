@@ -138,15 +138,25 @@ window.MasaStackComponents.getTimezoneOffset = function() {
     return new Date().getTimezoneOffset();
 }
 
-window.MasaStackComponents.masonryInit = (selector, itemSelector, gutter) => {
-    const elem = document.querySelector(selector);
-    new Masonry(elem, {
-        itemSelector: itemSelector,
-        columnWidth: itemSelector,
-        gutter: gutter,
-        percentPosition: true
-    });
-}
+let masonryInstances = {};
+
+window.MasaStackComponents.initOrUpdateMasonry = (selector, itemSelector, gutter) => {
+    var elem = document.querySelector(selector);
+    if (!elem) return;
+
+    if (masonryInstances[selector]) {
+        // 更新布局
+        masonryInstances[selector].layout();
+    } else {
+        // 初始化布局
+        masonryInstances[selector] = new Masonry(elem, {
+            itemSelector: itemSelector,
+            columnWidth: itemSelector,
+            percentPosition: true,
+            gutter: gutter
+        });
+    }
+};
 
 function debounce(fn, wait) {
     let timer = null;

@@ -24,22 +24,31 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
 
     private string CssSelectorForScroll => string.IsNullOrWhiteSpace(CssForScroll) ? string.Empty : "." + CssForScroll;
 
+    private bool _shouldUpdateMasonry;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (_shouldUpdateMasonry)
         {
-            if (Value is not null)
-            {
-                await MasonryInitAsync();
-            }
+            _shouldUpdateMasonry = false;
+            await InitMasonryAsync();
         }
     }
 
-    protected virtual async Task MasonryInitAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        foreach (var category in Value.Children)
+        _shouldUpdateMasonry = true;
+        await base.OnParametersSetAsync();
+    }
+
+    protected virtual async Task InitMasonryAsync()
+    {
+        if (Value is not null)
         {
-            await JsRuntime.InvokeVoidAsync("MasaStackComponents.masonryInit", $".{idPrefix}_{category.Id}", ".app", 24);
+            foreach (var category in Value.Children)
+            {
+                await JsRuntime.InvokeVoidAsync("MasaStackComponents.initOrUpdateMasonry", $".{idPrefix}_{category.Id}", ".app", 24);
+            }
         }
     }
 
