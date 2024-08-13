@@ -141,7 +141,7 @@ window.MasaStackComponents.getTimezoneOffset = function() {
 let masonryInstances = {};
 
 window.MasaStackComponents.initOrUpdateMasonry = (selector, itemSelector, gutter) => {
-    var elem = document.querySelector(selector);
+    const elem = document.querySelector(selector);
     if (!elem) return;
 
     if (masonryInstances[selector]) {
