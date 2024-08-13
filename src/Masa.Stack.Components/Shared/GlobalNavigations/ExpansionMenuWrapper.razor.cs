@@ -31,7 +31,7 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
         if (_shouldUpdateMasonry)
         {
             _shouldUpdateMasonry = false;
-            await InitMasonryAsync();
+            await InitOrUpdateMasonryAsync();
         }
     }
 
@@ -41,7 +41,7 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
         await base.OnParametersSetAsync();
     }
 
-    protected virtual async Task InitMasonryAsync()
+    protected virtual async Task InitOrUpdateMasonryAsync()
     {
         if (Value is not null)
         {
