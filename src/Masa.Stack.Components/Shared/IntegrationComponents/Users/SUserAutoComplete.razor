@@ -27,6 +27,6 @@
                Clearable=Clearable
                PrependInnerIcon="mdi-magnify">
     <ItemContent Context="data">
-        @RenderFragments.UserSelectItem(data.Item.Avatar, data.Item.DisplayName, data.Item.PhoneNumber, data.Item.Account, data.Item.Email)
+        @RenderFragments.UserSelectItem(data.Item.Avatar, data.Item.DisplayName, data.Item.PhoneNumber?.MaskPhoneNumber(), data.Item.Account.MaskAccount(), data.Item.Email)
     </ItemContent>
 </SAutoComplete>
