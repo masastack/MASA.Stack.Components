@@ -886,6 +886,7 @@ h1:focus {
 .ms-breadcrumbs {
     padding: 0 !important;
     margin-left: -4px;
+    flex-wrap: nowrap;
 }
 
 .ms-breadcrumbs li {
@@ -910,6 +911,7 @@ h1:focus {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     color: grey;
+    overflow-wrap: anywhere;
 }
 
 .m-sheet.m-card {
