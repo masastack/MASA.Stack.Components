@@ -4,8 +4,9 @@ namespace Masa.Stack.Components.Layouts
 {
     public partial class Breadcrumbs : MasaComponentBase
     {
-        [Parameter, EditorRequired]
-        public List<Nav> FlattenedNavs { get; set; } = new();
+        [Inject] private ILogger<Breadcrumbs> Logger { get; set; } = null!;
+        
+        [Parameter, EditorRequired] public List<Nav> FlattenedNavs { get; set; } = new();
 
         private List<Nav>? _previousFlattenedNavs;
         private string? _prevLocation;
@@ -45,22 +46,30 @@ namespace Masa.Stack.Components.Layouts
             var absolutePath = new Uri(NavigationManager.Uri).AbsolutePath;
             var matchedNavs = FlattenedNavs.Where(n =>
             {
-                if (string.IsNullOrWhiteSpace(n.Url) || n.HasChildren)
+                try
                 {
+                    if (string.IsNullOrWhiteSpace(n.Url) || n.HasChildren)
+                    {
+                        return false;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(n.MatchPattern))
+                    {
+                        return Regex.IsMatch(absolutePath, n.MatchPattern, RegexOptions.IgnoreCase);
+                    }
+
+                    if (n.Exact)
+                    {
+                        return n.Url.Equals(absolutePath, StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    return Regex.IsMatch(absolutePath, $"^/?{n.Url}($|/[^/]?)", RegexOptions.IgnoreCase);
+                }
+                catch (RegexParseException e)
+                {
+                    Logger.LogError(e, "Invalid regular expression pattern: {MatchPattern}", n.MatchPattern);
                     return false;
                 }
-
-                if (!string.IsNullOrWhiteSpace(n.MatchPattern))
-                {
-                    return Regex.IsMatch(absolutePath, n.MatchPattern, RegexOptions.IgnoreCase);
-                }
-
-                if (n.Exact)
-                {
-                    return n.Url.Equals(absolutePath, StringComparison.OrdinalIgnoreCase);
-                }
-
-                return Regex.IsMatch(absolutePath, $"^/?{n.Url}($|/[^/]?)", RegexOptions.IgnoreCase);
             }).ToList();
 
             if (matchedNavs.Count == 0)
