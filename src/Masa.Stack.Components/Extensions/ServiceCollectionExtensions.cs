@@ -1,6 +1,4 @@
-﻿using Masa.Blazor.Core.I18n;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -37,8 +35,8 @@ public static class ServiceCollectionExtensions
         services.AddAutoInject();
         services.AddMasaIdentity(options =>
         {
-            options.UserName = "name";
-            options.UserId = "sub";
+            options.UserName = IdentityClaimConsts.USER_NAME;
+            options.UserId = IdentityClaimConsts.USER_ID;
             options.Role = IdentityClaimConsts.ROLES;
             options.Environment = IdentityClaimConsts.ENVIRONMENT;
             options.Mapping(nameof(MasaUser.CurrentTeamId), IdentityClaimConsts.CURRENT_TEAM);
