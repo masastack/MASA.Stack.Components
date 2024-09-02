@@ -12,9 +12,11 @@
 <MMenu @bind-Value="@MenuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
        ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
     <ActivatorContent>
-        <MAvatar @attributes="@context.Attrs" Size=40>
-            <MImage Src="@avatar"></MImage>
-        </MAvatar>
+        <MButton Icon XLarge Height="40" Width="40" @attributes="@context.Attrs">
+            <MAvatar Size=40>
+                <MImage Src="@avatar"></MImage>
+            </MAvatar>
+        </MButton>
     </ActivatorContent>
     <ChildContent>
         <MList>
