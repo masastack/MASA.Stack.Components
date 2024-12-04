@@ -14,6 +14,9 @@ public partial class ExpansionAppWrapper
     [Parameter]
     public EventCallback<ExpansionMenu> OnItemOperClick { get; set; }
 
+    [Parameter]
+    public EventCallback OnRenderCompleted { get; set; }
+
     [Inject]
     public GlobalConfig GlobalConfig { get; set; } = null!;
 
@@ -24,6 +27,14 @@ public partial class ExpansionAppWrapper
         if (RenderLayer)
         {
             GlobalConfig.OnNavLayerChanged += Changed;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && OnRenderCompleted.HasDelegate && !Value.Hidden)
+        {
+            await OnRenderCompleted.InvokeAsync(null);
         }
     }
 

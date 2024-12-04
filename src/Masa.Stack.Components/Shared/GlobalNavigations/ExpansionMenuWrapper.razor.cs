@@ -25,30 +25,56 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
     private string CssSelectorForScroll => string.IsNullOrWhiteSpace(CssForScroll) ? string.Empty : "." + CssForScroll;
 
     private bool _shouldUpdateMasonry;
+    private int renderedChildrenCount = 0;
+    private int totalChildrenCount = 0;
+    private string errorMessage = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_shouldUpdateMasonry)
+        //if (Value?.Children.Any(x => !x.Hidden) == true && _shouldUpdateMasonry)
+        //{
+        //    _shouldUpdateMasonry = false;
+
+        //    await InitOrUpdateMasonryAsync();
+        //}
+
+        //if (Value?.Children.Any(x => !x.Hidden) == true)
+        //{
+        //    await InitOrUpdateMasonryAsync();
+        //}
+
+        if (firstRender)
         {
-            _shouldUpdateMasonry = false;
-            await InitOrUpdateMasonryAsync();
+            await JsRuntime.InvokeVoidAsync("MasaStackComponents.mutationObserverMasonry", ".masonry-container", ".category_title_app", ".app-show", 24);
         }
     }
 
-    protected override async Task OnParametersSetAsync()
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    _shouldUpdateMasonry = true;
+    //    await base.OnParametersSetAsync();
+    //}
+
+    private async Task OnChildRendered()
     {
-        _shouldUpdateMasonry = true;
-        await base.OnParametersSetAsync();
+        //renderedChildrenCount++;
+        //Console.WriteLine($"{totalChildrenCount}:{renderedChildrenCount}");
+        //if (renderedChildrenCount >= totalChildrenCount)
+        //{
+        //    renderedChildrenCount = 0;
+        //    await InitOrUpdateMasonryAsync();
+        //}
     }
 
     protected virtual async Task InitOrUpdateMasonryAsync()
     {
         if (Value is not null)
         {
-            foreach (var category in Value.Children)
-            {
-                await JsRuntime.InvokeVoidAsync("MasaStackComponents.initOrUpdateMasonry", $".{idPrefix}_{category.Id}", ".app", 24);
-            }
+            //foreach (var category in Value.Children.Where(x => !x.Hidden))
+            //{
+            //    await JsRuntime.InvokeVoidAsync("MasaStackComponents.initOrUpdateMasonry", $".{idPrefix}_{category.Id}", ".app-show", 24);
+            //}
+            await JsRuntime.InvokeVoidAsync("MasaStackComponents.mutationObserverMasonry", ".masonry-container", ".category_title_app", ".app-show", 24);
         }
     }
 

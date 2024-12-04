@@ -4,15 +4,15 @@
 @if (Value != null)
 {
     <div class="global-nav-content__wrapper @CssForScroll">
-        <div class="global-nav-content__main ">
+        <div class="global-nav-content__main masonry-container">
             @foreach (var category in Value.Children)
             {
                 <div class="apps" style="@GetIsDisplayStyle(!category.Hidden)">
                     <div class="masa-text-1-2__title title_category py-4" id="@($"{idPrefix}_{category.Id}")">@category.Name</div>
-                    <div class="category_title_app @($"{idPrefix}_{category.Id}")">
+                    <div class="category_title_app" id="@($"app_{idPrefix}_{category.Id}")">
                         @foreach (var app in category.Children)
                         {
-                            <ExpansionAppWrapper RenderLayer="RenderLayer" Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" />
+                            <ExpansionAppWrapper RenderLayer="RenderLayer" Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" OnRenderCompleted="OnChildRendered" />
                         }
                     </div>
                 </div>

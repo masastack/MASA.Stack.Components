@@ -6,7 +6,7 @@
     var indeterminate = Value.State == ExpansionMenuState.Indeterminate;
     var appSelected = Value.State == ExpansionMenuState.Selected;
 }
-<div class="app"
+<div class="app @(Value.Hidden ? "" : "app-show")"
      style="@GetIsDisplayStyle(!Value.Hidden)">
     <div class="d-flex align-center mx-2 expansion-app @(indeterminate || appSelected ? "active" : null)">
         <span class="masa-text-2-2 d-inline-block t ext-truncate">

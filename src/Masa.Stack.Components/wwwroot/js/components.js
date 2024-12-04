@@ -141,8 +141,16 @@ window.MasaStackComponents.getTimezoneOffset = function() {
 let masonryInstances = {};
 
 window.MasaStackComponents.initOrUpdateMasonry = (selector, itemSelector, gutter) => {
+    console.log(selector, itemSelector, gutter)
     const elem = document.querySelector(selector);
     if (!elem) return;
+
+    const itemElements = elem.querySelectorAll(itemSelector);
+    console.log('itemElements',itemElements)
+    if (itemElements < 2) {
+        console.log('itemElements小于2')
+        return;
+    }
 
     if (masonryInstances[selector]) {
         masonryInstances[selector].layout();
@@ -154,6 +162,50 @@ window.MasaStackComponents.initOrUpdateMasonry = (selector, itemSelector, gutter
             gutter: gutter
         });
     }
+};
+
+window.MasaStackComponents.mutationObserverMasonry = (selector, gropuSelector, itemSelector, gutter) => {
+    function initializeMasonry(selector, gropuSelector, itemSelector) {
+        const elem = document.querySelector(selector);
+        const containers = elem.querySelectorAll(gropuSelector);
+        containers.forEach(container => {
+            const key = container.id;
+            console.log('masonryInstances', key)
+            if (masonryInstances[key]) {
+                masonryInstances[key].layout();
+            } else {
+                masonryInstances[key] = new Masonry(elem, {
+                    itemSelector: itemSelector,
+                    columnWidth: itemSelector,
+                    gutter: gutter,
+                    percentPosition: true
+                });
+            }
+        });
+    }
+
+    initializeMasonry(selector, gropuSelector, itemSelector, gutter);
+
+    const targetNode = document.querySelector(selector);
+
+    // 观察选项
+    const config = { childList: true, subtree: true };
+
+    // 创建一个观察器实例并传入回调函数
+    const observer = new MutationObserver((mutationsList, observer) => {
+        console.log(mutationsList, observer)
+        for (let mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                initializeMasonry(selector, gropuSelector, itemSelector);
+            }
+        }
+    });
+
+    // 以上述配置开始观察目标节点
+    observer.observe(targetNode, config);
+
+    // 返回观察器实例，以便可以在需要时停止观察
+    return observer;
 };
 
 function debounce(fn, wait) {
