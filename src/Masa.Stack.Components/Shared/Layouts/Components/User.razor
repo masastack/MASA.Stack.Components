@@ -42,25 +42,25 @@
             {
                 <MDivider></MDivider>
                 <MListGroup @bind-Value="_showChangeTeam" NoAction Style="">
-                <PrependIconContent>
-                    <MAvatar Width="24" Height="24" MinHeight="24" MinWidth="24" Style="margin-right: 10px;">
-                        <MImage Src="@CurrentTeam.Avatar"></MImage>
-                    </MAvatar>
-                </PrependIconContent>
-                <ActivatorContent>
-                    <MListItemContent>
-                        <MListItemTitle>@CurrentTeam.Name</MListItemTitle>
-                    </MListItemContent>
-                </ActivatorContent>
-                <ChildContent>
-                    @if (_teams.Count > 5)
+                    <PrependIconContent>
+                        <MAvatar Width="24" Height="24" MinHeight="24" MinWidth="24" Style="margin-right: 10px;">
+                            <MImage Src="@CurrentTeam.Avatar"></MImage>
+                        </MAvatar>
+                    </PrependIconContent>
+                    <ActivatorContent>
+                        <MListItemContent>
+                            <MListItemTitle>@CurrentTeam.Name</MListItemTitle>
+                        </MListItemContent>
+                    </ActivatorContent>
+                    <ChildContent>
+                        @if (_teams.Count > 5)
                         {
                             <SSearch @bind-Value="@_teamSearchKey" MaxWidth="250" Class="py-2" />
                         }
                         <MVirtualScroll Items="_teams.Where(t => t.Name.Contains(_teamSearchKey)).ToList()"
-                                    ItemSize="48"
-                                    Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))
-                                    OverscanCount="0">
+                                        ItemSize="48"
+                                        Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))
+                                        OverscanCount="0">
                             <ItemContent>
                                 <MListItem IsActive="@(MasaUser.CurrentTeamId == context.Id)" OnClick="() => CurrentTeamChanged(context.Id)">
                                     <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
@@ -92,13 +92,13 @@
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
-            </MList>
-        </ChildContent>
-        </MMenu>
+        </MList>
+    </ChildContent>
+</MMenu>
 
-        <UpdatePasswordModal @bind-value="UpdatePasswordDialogVisible" />
+<UpdatePasswordModal @bind-value="UpdatePasswordDialogVisible" />
 
-        @code {
+@code {
 
     [CascadingParameter]
     public SLayout Layout { get; set; } = null!;
@@ -141,6 +141,8 @@
                 }
                 //TODO remove current team id in token,otherwise every time current team changed should revoked token
                 MasaUser.CurrentTeamId = user?.CurrentTeamId ?? Guid.Empty;
+
+                GlobalConfig.CurrentTeamId = MasaUser.CurrentTeamId;
             }
             catch (Exception e)
             {
