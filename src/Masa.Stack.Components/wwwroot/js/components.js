@@ -140,20 +140,20 @@ window.MasaStackComponents.getTimezoneOffset = function() {
 
 let masonryInstances = {};
 
-window.MasaStackComponents.initOrUpdateMasonry = (selector, itemSelector, gutter) => {
+window.MasaStackComponents.initMasonry = (selector, itemSelector, gutter) => {
     const elem = document.querySelector(selector);
     if (!elem) return;
 
-    if (masonryInstances[selector]) {
+    masonryInstances[selector] = new Masonry(elem, {
+        itemSelector: itemSelector,
+        columnWidth: itemSelector,
+        percentPosition: true,
+        gutter: gutter
+    });
+
+    setTimeout(() => {
         masonryInstances[selector].layout();
-    } else {
-        masonryInstances[selector] = new Masonry(elem, {
-            itemSelector: itemSelector,
-            columnWidth: itemSelector,
-            percentPosition: true,
-            gutter: gutter
-        });
-    }
+    }, 1000);
 };
 
 function debounce(fn, wait) {
