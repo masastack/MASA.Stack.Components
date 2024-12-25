@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Masa.Stack.Components;
 
 public class JsInitVariables : IAsyncDisposable
 {
@@ -20,16 +22,10 @@ public class JsInitVariables : IAsyncDisposable
         }
     }
 
-    public JsInitVariables(IJSRuntime jsRuntime, CookieStorage storage, IHttpContextAccessor httpContextAccessor)
+    public JsInitVariables(IJSRuntime jsRuntime, CookieStorage storage)
     {
         _jsRuntime = jsRuntime;
         _storage = storage;
-        var httpContext = httpContextAccessor.HttpContext;
-        if (httpContext is not null)
-        {
-            var timezoneOffsetResult = httpContext.Request.Cookies[TimezoneOffsetKey];
-            _timezoneOffset = TimeSpan.FromMinutes(Convert.ToDouble(timezoneOffsetResult));
-        }
     }
 
     public async Task SetTimezoneOffset()

@@ -1,9 +1,12 @@
-﻿using System.Reflection.Metadata;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
     [Inject]
     public IPopupService PopupService { get; set; } = null!;
 
@@ -212,6 +215,8 @@ public partial class SLayout
                 Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
             }
 
+
+
             StateHasChanged();
         }
     }
@@ -326,6 +331,18 @@ public partial class SLayout
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         var absolutePath = NavigationManager.GetAbsolutePath();
+
+        if (absolutePath.Contains("/authentication"))
+        {
+            return;
+        }
+
+        var authState = authenticationStateTask.Result;
+        if (authState.User.Identity?.IsAuthenticated != true)
+        {
+            NavigationManager.NavigateTo("/authentication/login");
+            return;
+        }
 
         if (absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath))
         {

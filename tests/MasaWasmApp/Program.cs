@@ -1,23 +1,20 @@
-using MasaWasmApp;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.Services.AddSingleton(sp => builder.Configuration);
+await builder.Services.AddMasaStackConfigAsync(builder.Configuration, builder.HostEnvironment.Environment);
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-builder.Services.AddMasaBlazor();
-
-builder.Services.AddOidcAuthentication(options =>
+var masaStackConfig = builder.Services.GetMasaStackConfig();
+builder.AddMasaOpenIdConnect(new MasaOpenIdConnectOptions
 {
-    builder.Configuration.Bind("oidc", options.ProviderOptions);
+    Authority = masaStackConfig.GetSsoDomain(),
+    ClientId = masaStackConfig.GetWebId(MasaStackProject.Auth),
+    Scopes = new List<string> { "offline_access" }
 });
 
-builder.Services.AddAuthorizationCore(options =>
-{
-    options.FallbackPolicy = options.DefaultPolicy;
-});
-
-await builder.Build().RunAsync();
+builder.Services.AddMasaStackComponentsWithNormalApp(MasaStackProject.Auth, "http://localhost:4317", "1.0.0");
+var host = builder.Build();
+await host.Services.InitializeMasaStackApplicationAsync();
+await host.RunAsync();

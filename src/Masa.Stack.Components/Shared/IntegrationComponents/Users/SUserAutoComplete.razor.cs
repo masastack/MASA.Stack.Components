@@ -52,17 +52,6 @@ public partial class SUserAutoComplete
 
     public string Search { get; set; } = "";
 
-    private readonly AsyncTaskQueue _asyncTaskQueue;
-
-    public SUserAutoComplete()
-    {
-        _asyncTaskQueue = new AsyncTaskQueue
-        {
-            AutoCancelPreviousTask = true,
-            UseSingleThread = true
-        };
-    }
-
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
@@ -91,15 +80,7 @@ public partial class SUserAutoComplete
         }
         else
         {
-            var result = await _asyncTaskQueue.ExecuteAsync(async () =>
-            {
-                var response = await AuthClient.UserService.SearchAsync(Search);
-                return response;
-            });
-            if (result.IsValid)
-            {
-                UserSelect = result.result;
-            }
+            UserSelect = await AuthClient.UserService.SearchAsync(Search);
         }
     }
 

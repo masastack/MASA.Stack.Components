@@ -1,25 +1,15 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using SecurityTokenModel = Masa.Stack.Components.UserCenters.Models.SecurityTokenModel;
-
 namespace Masa.Stack.Components;
 
 public partial class UploadAvatar : SUploadImage
 {
     [Inject]
-    public IObjectStorageClient Client { get; set; } = default!;
+    public IAuthClient Client { get; set; } = default!;
 
     [Inject]
-    public IMasaConfiguration Configuration { get; set; } = default!;
-
-    public OssOptions OssOptions
-    {
-        get
-        {
-            return Configuration.ConfigurationApi.GetPublic().GetSection("$public.oss").Get<OssOptions>();
-        }
-    }
+    private IMultiEnvironmentUserContext MultiEnvironmentUserContext { get; set; } = null!;
 
     public override Task SetParametersAsync(ParameterView parameters)
     {
@@ -42,15 +32,8 @@ public partial class UploadAvatar : SUploadImage
 
     public override async Task UploadAsync()
     {
-        var response = Client.GetSecurityToken();
-        var stsToken = response.SessionToken;
-        var accessId = response.AccessKeyId;
-        var accessSecret = response.AccessKeySecret;
-        var region = OssOptions.RegionId;
-        var bucket = OssOptions.Bucket;
-
-        var paramter = new SecurityTokenModel(region, accessId, accessSecret, stsToken, bucket);
-        OnInputFileUpload = FileUploadCallBack.CreateCallback("UploadImage", paramter);
+        var response = await Client.OssService.GetSecurityTokenAsync();
+        OnInputFileUpload = FileUploadCallBack.CreateCallback("UploadImage", response);
         await base.UploadAsync();
     }
 }

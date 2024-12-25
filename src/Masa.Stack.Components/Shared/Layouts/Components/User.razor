@@ -1,22 +1,19 @@
 ﻿@namespace Masa.Stack.Components.Layouts
-@using Masa.BuildingBlocks.StackSdks.Auth.Contracts
-@using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts
-@using Masa.Stack.Components.Infrastructure.Identity
-@using Microsoft.AspNetCore.Identity
+@* @using Microsoft.AspNetCore.Identity *@
 @inherits MasaComponentBase
 @implements IAsyncDisposable
 @inject GlobalConfig GlobalConfig
 @inject IJSRuntime JS
 @inject ILogger<User> Logger
+@inject AuthenticationStateManager AuthenticationStateManager
+@inject SignOutSessionStateManager SignOutManager
 
 <MMenu @bind-Value="@MenuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
        ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
     <ActivatorContent>
-        <MButton Icon XLarge Height="40" Width="40" @attributes="@context.Attrs">
-            <MAvatar Size=40>
-                <MImage Src="@avatar"></MImage>
-            </MAvatar>
-        </MButton>
+        <MAvatar @attributes="@context.Attrs" Size=40>
+            <MImage Src="@avatar"></MImage>
+        </MAvatar>
     </ActivatorContent>
     <ChildContent>
         <MList>
@@ -143,8 +140,6 @@
                 }
                 //TODO remove current team id in token,otherwise every time current team changed should revoked token
                 MasaUser.CurrentTeamId = user?.CurrentTeamId ?? Guid.Empty;
-
-                GlobalConfig.CurrentTeamId = MasaUser.CurrentTeamId;
             }
             catch (Exception e)
             {
@@ -169,13 +164,15 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private void HandleSignOut()
+    private async Task HandleSignOut()
     {
         if (Layout.OnSignOut != null && Layout.OnSignOut.Invoke())
         {
             return;
         }
-        Layout.NavigationManager.NavigateTo("/Account/Logout", true);
+
+        await SignOutManager.SetSignOutState();
+        Layout.NavigationManager.NavigateTo("/authentication/logout");
     }
 
     private async Task CurrentTeamChanged(Guid teamId)
@@ -185,7 +182,8 @@
         {
             await AuthClient.UserService.SetCurrentTeamAsync(teamId);
         }
-        await _module.InvokeVoidAsync("upsertClaim", IdentityClaimConsts.CURRENT_TEAM, teamId);
+
+        await AuthenticationStateManager.UpsertClaimAsync(IdentityClaimConsts.CURRENT_TEAM, teamId.ToString());
         GlobalConfig.CurrentTeamId = teamId;
         MasaUser.CurrentTeamId = teamId;
         _showChangeTeam = false;
