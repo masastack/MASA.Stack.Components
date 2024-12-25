@@ -141,19 +141,40 @@ window.MasaStackComponents.getTimezoneOffset = function() {
 let masonryInstances = {};
 
 window.MasaStackComponents.initMasonry = (selector, itemSelector, gutter) => {
+    if (!selector || !itemSelector) {
+        console.error('Invalid selector or itemSelector provided.');
+        return;
+    }
+
     const elem = document.querySelector(selector);
-    if (!elem) return;
+    if (!elem) {
+        console.warn(`Element not found for selector: ${selector}`);
+        return;
+    }
 
-    masonryInstances[selector] = new Masonry(elem, {
-        itemSelector: itemSelector,
-        columnWidth: itemSelector,
-        percentPosition: true,
-        gutter: gutter
-    });
+    if (typeof Masonry === 'undefined') {
+        console.warn('Masonry is not available. Falling back to normal layout.');
+        return;
+    }
 
-    setTimeout(() => {
-        masonryInstances[selector].layout();
-    }, 1000);
+    if (masonryInstances[selector]) {
+        masonryInstances[selector].destroy();
+    }
+
+    try {
+        masonryInstances[selector] = new Masonry(elem, {
+            itemSelector: itemSelector,
+            columnWidth: itemSelector,
+            percentPosition: true,
+            gutter: gutter || 0
+        });
+
+        requestAnimationFrame(() => {
+            masonryInstances[selector].layout();
+        });
+    } catch (error) {
+        console.warn('Falling back to normal layout.');
+    }
 };
 
 function debounce(fn, wait) {
