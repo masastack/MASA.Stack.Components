@@ -348,7 +348,7 @@ public partial class SLayout
         var authState = authenticationStateTask.Result;
         if (authState.User.Identity?.IsAuthenticated != true)
         {
-            NavigationManager.NavigateTo("/authentication/login?environment=Production");
+            NavigationManager.NavigateTo("/authentication/login");
             return;
         }
 
