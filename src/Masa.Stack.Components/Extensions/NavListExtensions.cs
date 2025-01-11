@@ -11,10 +11,8 @@ internal static class NavListExtensions
             {
                 return GetDefaultRoute(firstMenu.Children);
             }
-
             return firstMenu.Url;
         }
-
         return defaultRoute;
     }
 }

@@ -1,9 +1,10 @@
-﻿using System.Reflection.Metadata;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
     [Inject]
     public IPopupService PopupService { get; set; } = null!;
 
@@ -24,6 +25,9 @@ public partial class SLayout
 
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
+
+    [Inject]
+    public I18nCache I18nCache { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -212,6 +216,8 @@ public partial class SLayout
                 Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
             }
 
+
+
             StateHasChanged();
         }
     }
@@ -321,11 +327,30 @@ public partial class SLayout
         ErrorContent ??= Exception => builder => { };
 
         NavigationManager.LocationChanged += HandleLocationChanged;
+
+        I18nCache.OnSectionUpdated += HandleSectionUpdated;
+    }
+
+    private void HandleSectionUpdated()
+    {
+        InvokeAsync(StateHasChanged); 
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         var absolutePath = NavigationManager.GetAbsolutePath();
+
+        if (absolutePath.Contains("/authentication"))
+        {
+            return;
+        }
+
+        var authState = authenticationStateTask.Result;
+        if (authState.User.Identity?.IsAuthenticated != true)
+        {
+            NavigationManager.NavigateTo("/authentication/login");
+            return;
+        }
 
         if (absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath))
         {

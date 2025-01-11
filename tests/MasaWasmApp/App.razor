@@ -1,25 +1,33 @@
-﻿ <CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly">
+﻿@using System.Reflection
+@using Masa.Contrib.StackSdks.Caller;
+@using Masa.Stack.Components.Shared
+@using MasaWasmApp.Shared
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@* @inject TokenProvider TokenProvider *@
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="additionalAssemblies">
         <Found Context="routeData">
-             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                    <NotAuthorized>
-                        @if (!context.User.Identity.IsAuthenticated)
-                        {
-                            <RedirectToLogin />
-                        }
-                        else
-                        {
-                            <p>You are not authorized to access this resource.</p>
-                        }
-                    </NotAuthorized>
-                </AuthorizeRouteView>
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
         <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
-            </LayoutView>
+            <MApp>
+                <NotFound />
+            </MApp>
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
+@code {
+
+    private List<Assembly> additionalAssemblies = new();
+
+    public App()
+    {
+        var masaStackComponentsAssembly = typeof(Masa.Stack.Components.UserCenter).Assembly;
+        additionalAssemblies.Add(masaStackComponentsAssembly);
+    }
+}
