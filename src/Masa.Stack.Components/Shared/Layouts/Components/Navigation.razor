@@ -1,8 +1,4 @@
 ﻿@namespace Masa.Stack.Components.Layouts
-@using Masa.Blazor
-@using Masa.BuildingBlocks.Isolation;
-@using Masa.BuildingBlocks.StackSdks.Pm.Model
-@using Masa.Stack.Components.Extensions
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
 @inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
@@ -160,6 +156,9 @@
     [Inject]
     internal ProjectAppOptions ProjectApp { get; set; } = default!;
 
+    [Inject]
+    public CookieStorage CookieStorage { get; set; } = default!;
+
     [Parameter]
     public string? DefaultRoute { get; set; }
 
@@ -241,9 +240,9 @@
             return;
         }
 
+        CookieStorage.SetAsync(Consts.ENVIRONMENT, environment);
         await SignOutManager.SetSignOutState();
-        NavigationManager.NavigateTo($"/authentication/logout?environment={environment}");
-        // NavigationManager.NavigateTo($"/Account/Logout?environment={environment}", true);
+        NavigationManager.NavigateTo($"/authentication/logout?environment={environment}", true);
     }
 
 }

@@ -7,11 +7,11 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var masaStackConfig = builder.Services.GetMasaStackConfig();
-builder.AddMasaOpenIdConnect(new MasaOpenIdConnectOptions
+await builder.AddMasaOpenIdConnectAsync(new MasaOpenIdConnectOptions
 {
     Authority = masaStackConfig.GetSsoDomain(),
     ClientId = masaStackConfig.GetWebId(MasaStackProject.Auth),
-    Scopes = new List<string> { "offline_access" }
+    Scopes = new List<string> { "openid", "profile" }
 });
 
 builder.Services.AddMasaStackComponentsWithNormalApp(MasaStackProject.Auth, "http://localhost:4317", "1.0.0");

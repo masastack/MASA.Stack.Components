@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
@@ -27,6 +25,9 @@ public partial class SLayout
 
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
+
+    [Inject]
+    public I18nCache I18nCache { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -326,6 +327,13 @@ public partial class SLayout
         ErrorContent ??= Exception => builder => { };
 
         NavigationManager.LocationChanged += HandleLocationChanged;
+
+        I18nCache.OnSectionUpdated += HandleSectionUpdated;
+    }
+
+    private void HandleSectionUpdated()
+    {
+        InvokeAsync(StateHasChanged); 
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -340,7 +348,7 @@ public partial class SLayout
         var authState = authenticationStateTask.Result;
         if (authState.User.Identity?.IsAuthenticated != true)
         {
-            NavigationManager.NavigateTo("/authentication/login");
+            NavigationManager.NavigateTo("/authentication/login?environment=Production");
             return;
         }
 

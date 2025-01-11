@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net6.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>1.0.0-wasm1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Humanizer" Version="2.14.1" />
+		<PackageReference Include="TimeAgo" Version="1.0.8" />
 		<PackageReference Include="Mapster" Version="7.3.0" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Caller.Wasm" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Config.Wasm" Version="$(MasaStackSdksPackageVersion)" />

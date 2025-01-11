@@ -1,23 +1,23 @@
 ﻿@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager NavigationManager
+@namespace Masa.Stack.Components
+@inherits MasaComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<RemoteAuthenticatorView Action="@Action">
-    <LoggingIn>
-        <h2>Checking login state.</h2>
-    </LoggingIn>
-    <LogInFailed>
-        <h2>Your have canceled the Login action.</h2>
-    </LogInFailed>
-    <LogOut>
-        @code {
-
-        }
-    </LogOut>
-    <LogOutSucceeded>
-        <h2>The Logout action was completed successfully.</h2>
-        
-    </LogOutSucceeded>
-</RemoteAuthenticatorView>
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="HandleLogInSucceeded" OnLogOutSucceeded="HandleLogOutSucceeded"></RemoteAuthenticatorView>
 
 @code {
+
     [Parameter] public string Action { get; set; }
+
+    private void HandleLogInSucceeded()
+    {
+        NavigationManager.NavigateTo("/", true);
+    }
+
+    private void HandleLogOutSucceeded()
+    {
+        NavigationManager.NavigateTo("/authentication/login");
+    }
 }

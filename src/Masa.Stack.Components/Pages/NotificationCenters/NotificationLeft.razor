@@ -1,4 +1,5 @@
 ﻿@namespace Masa.Stack.Components.NotificationCenters
+@using Masa.BuildingBlocks.StackSdks.Mc
 @inherits MasaComponentBase
 @inject IMcClient McClient
 @inject GlobalConfig GlobalConfig
@@ -43,7 +44,7 @@
                     </MListItemContent>
 
                     <MListItemAction Class="align-self-start">
-                        <MListItemActionText Class="overline regular2--text">@item.SendTime.Humanize(culture:GlobalConfig.Culture)</MListItemActionText>
+                        <MListItemActionText Class="overline regular2--text">@item.SendTime.DateTime.TimeAgo(GlobalConfig.Culture)</MListItemActionText>
                     </MListItemAction>
                 </MListItem>
             }

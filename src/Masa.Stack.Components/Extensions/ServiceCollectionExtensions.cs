@@ -1,9 +1,4 @@
-﻿using Masa.Contrib.Authentication.Identity.Core;
-using Masa.Contrib.StackSdks.Dcc;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -27,7 +22,7 @@ public static class ServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(serviceVersion);
         ArgumentNullException.ThrowIfNull(projectName);
         AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, serviceVersion);
-        //AddObservable(services, false, project: project, serviceVersion: serviceVersion, projectName: projectName, otlpUrl: otlpUrl);
+        AddObservable(services, false, project: project, serviceVersion: serviceVersion, projectName: projectName, otlpUrl: otlpUrl);
         return services;
     }
 
@@ -35,9 +30,9 @@ public static class ServiceCollectionExtensions
         string? i18nDirectoryPath = "wwwroot/i18n",
         string? authHost = null, string? mcHost = null, string? pmHost = null, string? serviceVersion = null)
     {
-        services.AddScoped<CookieStorage>();
-        services.AddScoped<LocalStorage>();
-        services.AddScoped<JsInitVariables>();
+        services.TryAddScoped<CookieStorage>();
+        services.TryAddScoped<LocalStorage>();
+        services.TryAddScoped<JsInitVariables>();
         services.AddAutoInject();
         services.AddMemoryCache();
         services.AddMasaIdentity(options =>
@@ -54,7 +49,6 @@ public static class ServiceCollectionExtensions
         });
         services.AddSingleton(sp => new ProjectAppOptions(project, serviceVersion));
 
-        //await services.AddMasaStackConfigAsync(project, MasaStackApp.WEB);
         var masaStackConfig = services.GetMasaStackConfig();
 
         var dccHost = masaStackConfig.GetDccServiceDomain();
@@ -66,9 +60,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(new McServiceOptions(mcHost));
         services.AddMcClient(mcHost);
         services.AddPmClient(pmHost);
-
-        //await services.AddStackIsolationAsync("");
-
 
         services.AddScoped((serviceProvider) =>
         {
@@ -100,7 +91,7 @@ public static class ServiceCollectionExtensions
         })
         .AddI18n(GetLocales().ToArray());
 
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), ServiceLifetime.Scoped, null, includeInternalTypes: true);
 
         if (i18nDirectoryPath is not null)
         {
@@ -158,6 +149,8 @@ public static class ServiceCollectionExtensions
     {
         await serviceProvider.InitializeApplicationAsync();
         await serviceProvider.GetRequiredService<IClientScopeServiceProviderAccessor>().ServiceProvider.GetRequiredService<MasaStackConfigCache>().InitializeAsync();
+        var IMasaStackConfig = serviceProvider.GetRequiredService<IMasaStackConfig>();
+        var IMultiEnvironmentMasaStackConfig = serviceProvider.GetRequiredService<IMultiEnvironmentMasaStackConfig>();
         await serviceProvider.GetRequiredService<IClientScopeServiceProviderAccessor>().ServiceProvider.GetRequiredService<I18nCache>().InitializeAsync();
     }
 }

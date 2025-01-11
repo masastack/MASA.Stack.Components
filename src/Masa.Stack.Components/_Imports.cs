@@ -63,3 +63,7 @@ global using Masa.Utils.Caching.Memory;
 global using Microsoft.Extensions.Caching.Memory;
 global using Masa.BuildingBlocks.Isolation;
 global using Masa.Contrib.Authentication.Identity.Core;
+global using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+global using Microsoft.Extensions.DependencyInjection.Extensions;
+global using Masa.Contrib.StackSdks.Dcc;
+global using System.Reflection;
