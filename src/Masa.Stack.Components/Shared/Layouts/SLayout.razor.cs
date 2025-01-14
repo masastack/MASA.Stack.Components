@@ -3,7 +3,7 @@
 public partial class SLayout
 {
     [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
     [Inject]
     public IPopupService PopupService { get; set; } = null!;
@@ -345,7 +345,7 @@ public partial class SLayout
             return;
         }
 
-        var authState = authenticationStateTask.Result;
+        var authState = AuthenticationStateTask.Result;
         if (authState.User.Identity?.IsAuthenticated != true)
         {
             NavigationManager.NavigateTo("/authentication/login");
