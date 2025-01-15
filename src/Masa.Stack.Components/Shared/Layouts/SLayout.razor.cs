@@ -133,6 +133,11 @@ public partial class SLayout
             await JsInitVariables.SetTimezoneOffset();
             List<MenuModel> menus = new();
 
+            if (!CheckAuthenticated())
+            {
+                return;
+            }
+
             try
             {
                 var appId = AppId.IsNullOrEmpty() ? GetAppId() : AppId;
@@ -340,15 +345,8 @@ public partial class SLayout
     {
         var absolutePath = NavigationManager.GetAbsolutePath();
 
-        if (absolutePath.Contains("/authentication"))
+        if (!CheckAuthenticated())
         {
-            return;
-        }
-
-        var authState = AuthenticationStateTask.Result;
-        if (authState.User.Identity?.IsAuthenticated != true)
-        {
-            NavigationManager.NavigateTo("/authentication/login");
             return;
         }
 
@@ -367,6 +365,25 @@ public partial class SLayout
         {
             Logger.LogError(ex, "AuthClient.UserService.VisitedAsync");
         }
+    }
+
+    private bool CheckAuthenticated()
+    {
+        var absolutePath = NavigationManager.GetAbsolutePath();
+
+        if (absolutePath.Contains("/authentication"))
+        {
+            return false;
+        }
+
+        var authState = AuthenticationStateTask.Result;
+        if (authState.User.Identity?.IsAuthenticated != true)
+        {
+            NavigationManager.NavigateTo("/authentication/login");
+            return false;
+        }
+
+        return true;
     }
 
     private async Task AddFavoriteMenu(string code)

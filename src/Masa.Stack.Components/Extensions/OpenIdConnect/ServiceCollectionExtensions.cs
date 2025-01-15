@@ -31,8 +31,16 @@ public static class ServiceCollectionExtensions
         string clientSecret,
         params string[] scopes)
     {
-        var cookieStorage = builder.Services.BuildServiceProvider().GetRequiredService<CookieStorage>();
-        var environment = await cookieStorage.GetAsync(Consts.ENVIRONMENT);
+        var serviceProvider = builder.Services.BuildServiceProvider();
+        var storage = serviceProvider.GetRequiredService<CookieStorage>();
+        var masaStackConfig = serviceProvider.GetRequiredService<IMasaStackConfig>();
+
+        var environment = await storage.GetAsync(Consts.ENVIRONMENT);
+
+        if (string.IsNullOrEmpty(environment))
+        {
+            environment = masaStackConfig.Environment;
+        }
 
         builder.Services.AddOidcAuthentication(options =>
         {
@@ -44,10 +52,7 @@ public static class ServiceCollectionExtensions
             {
                 options.ProviderOptions.DefaultScopes.Add(scope);
             }
-            if (!string.IsNullOrEmpty(environment))
-            {
-                options.ProviderOptions.AdditionalProviderParameters[Consts.ENVIRONMENT] = environment;
-            }
+            options.ProviderOptions.AdditionalProviderParameters[Consts.ENVIRONMENT] = environment;
         });
 
         builder.Services.AddAuthorizationCore(options =>
