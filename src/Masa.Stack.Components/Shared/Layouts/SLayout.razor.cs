@@ -9,7 +9,7 @@ public partial class SLayout
     public IPopupService PopupService { get; set; } = null!;
 
     [Inject]
-    public NavigationManager NavigationManager { get; set; } = null!;
+    public MicroFrontendNavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
     private I18n I18n { get; set; } = null!;
@@ -67,6 +67,9 @@ public partial class SLayout
 
     [Parameter]
     public bool IsShowEnvironmentSwitch { get; set; } = false;
+
+    [Parameter]
+    public string BaseUri { get; set; } = "/";
 
     private Breadcrumbs? _breadcrumbsComp;
     private Action? _breadcrumbSetCallback;
@@ -192,6 +195,8 @@ public partial class SLayout
             }
 #endif
 
+            NavItems.AddPrefixToUrls(NavigationManager.ProjectPrefix);
+
             GlobalConfig.Menus = NavItems;
 
             FlattenedNavs = FlattenNavs(NavItems, true);
@@ -200,7 +205,7 @@ public partial class SLayout
             //add home index content sould remove this code
             if (NavigationManager.Uri == NavigationManager.BaseUri)
             {
-                NavigationManager.NavigateTo(NavItems.GetDefaultRoute());
+                NavigationManager.NavigateTo(NavItems.GetDefaultRoute(projectPrefix: NavigationManager.ProjectPrefix));
                 return;
             }
 

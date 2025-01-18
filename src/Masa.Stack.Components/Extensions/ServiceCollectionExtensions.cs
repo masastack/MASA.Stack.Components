@@ -5,30 +5,30 @@ public static class ServiceCollectionExtensions
     //Consider only one web clearance for now
     public static IServiceCollection AddMasaStackComponent(this IServiceCollection services, MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null)
+        string? authHost = null, string? mcHost = null, string? pmHost = null, string projectPrefix = "/")
     {
         ArgumentNullException.ThrowIfNull(project);
-        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost);
+        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, projectPrefix: projectPrefix);
         AddObservable(services, true, project);
         return services;
     }
 
     public static IServiceCollection AddMasaStackComponentsWithNormalApp(this IServiceCollection services, MasaStackProject project, string otlpUrl, string serviceVersion, string projectName = "default",
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null)
+        string? authHost = null, string? mcHost = null, string? pmHost = null, string projectPrefix = "/")
     {
         ArgumentNullException.ThrowIfNull(projectName);
         ArgumentNullException.ThrowIfNull(otlpUrl);
         ArgumentNullException.ThrowIfNull(serviceVersion);
         ArgumentNullException.ThrowIfNull(projectName);
-        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, serviceVersion);
+        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, serviceVersion, projectPrefix: projectPrefix);
         AddObservable(services, false, project: project, serviceVersion: serviceVersion, projectName: projectName, otlpUrl: otlpUrl);
         return services;
     }
 
     private static void AddMasaStackComponentsService(IServiceCollection services, MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? serviceVersion = null)
+        string? authHost = null, string? mcHost = null, string? pmHost = null, string? serviceVersion = null, string projectPrefix = "/")
     {
         services.TryAddScoped<CookieStorage>();
         services.TryAddScoped<LocalStorage>();
@@ -65,6 +65,12 @@ public static class ServiceCollectionExtensions
         {
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
+        });
+
+        services.AddScoped(sp =>
+        {
+            var navigationManager = sp.GetRequiredService<NavigationManager>();
+            return new MicroFrontendNavigationManager(navigationManager, projectPrefix);
         });
 
         var masaBuilder = services.AddMasaBlazor(options =>

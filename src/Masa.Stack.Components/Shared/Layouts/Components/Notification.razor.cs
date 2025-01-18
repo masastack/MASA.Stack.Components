@@ -5,6 +5,9 @@ namespace Masa.Stack.Components.Layouts;
 
 public partial class Notification : MasaComponentBase
 {
+    [CascadingParameter]
+    public SLayout Layout { get; set; } = null!;
+
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
@@ -114,6 +117,16 @@ public partial class Notification : MasaComponentBase
     async Task Changed()
     {
         await InvokeAsync(StateHasChanged);
+    }
+
+    private void NavigateToNotificationCenter(Guid? id)
+    {
+        if (!id.HasValue)
+        {
+            Layout.NavigationManager.NavigateTo("/notification-center");
+            return;
+        }
+        Layout.NavigationManager.NavigateTo($"/notification-center/{id}");
     }
 
     protected override async ValueTask DisposeAsyncCore()
