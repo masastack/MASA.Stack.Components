@@ -18,11 +18,18 @@ public class MicroFrontendNavigationManager : NavigationManager
 
     protected override void NavigateToCore(string uri, bool forceLoad)
     {
-        if (_microFrontend && !forceLoad && !uri.StartsWith(ProjectPrefix, StringComparison.OrdinalIgnoreCase))
+        if (_microFrontend && !IsAbsoluteUrl(uri) && !uri.StartsWith(ProjectPrefix, StringComparison.OrdinalIgnoreCase))
         {
             uri = $"/{ProjectPrefix}/{uri.TrimStart('/')}";
         }
         _originalNavigationManager.NavigateTo(uri, forceLoad);
+    }
+
+    private bool IsAbsoluteUrl(string url)
+    {
+        // Try parsing the URL and check if it has a scheme (e.g., http, https)
+        Uri result;
+        return System.Uri.TryCreate(url, UriKind.Absolute, out result) && (result.Scheme == System.Uri.UriSchemeHttp || result.Scheme == System.Uri.UriSchemeHttps);
     }
 
     private bool _microFrontend
