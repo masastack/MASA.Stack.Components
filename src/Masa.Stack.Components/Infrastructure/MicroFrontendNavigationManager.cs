@@ -22,15 +22,16 @@ public class MicroFrontendNavigationManager : NavigationManager
     public MicroFrontendNavigationManager(NavigationManager navigationManager, string projectPrefix)
     {
         OriginalNavigationManager = navigationManager ?? throw new ArgumentNullException(nameof(navigationManager));
-        ProjectPrefix = projectPrefix?.Trim('/') ?? throw new ArgumentNullException(nameof(projectPrefix));
+        ProjectPrefix = projectPrefix ?? throw new ArgumentNullException(nameof(projectPrefix));
         Initialize(OriginalNavigationManager.BaseUri, OriginalNavigationManager.Uri);
     }
 
     protected override void NavigateToCore(string uri, bool forceLoad)
     {
-        if (_microFrontend && !IsAbsoluteUrl(uri) && !uri.StartsWith(ProjectPrefix, StringComparison.OrdinalIgnoreCase))
+        Console.WriteLine($"NavigateToCore: {uri}");
+        if (_microFrontend && !IsAbsoluteUrl(uri) && uri.StartsWith("/") && !uri.StartsWith(ProjectPrefix, StringComparison.OrdinalIgnoreCase))
         {
-            uri = $"/{ProjectPrefix}/{uri.TrimStart('/')}";
+            uri = $"{ProjectPrefix}{uri.TrimStart("/")}";
         }
         OriginalNavigationManager.NavigateTo(uri, forceLoad);
     }

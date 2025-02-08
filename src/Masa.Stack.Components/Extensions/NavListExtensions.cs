@@ -13,9 +13,9 @@ internal static class NavListExtensions
             }
 
             var routeUrl = firstMenu.Url;
-            if (routeUrl.StartsWith($"/{projectPrefix}/"))
+            if (routeUrl.StartsWith(projectPrefix))
             {
-                routeUrl = routeUrl.Replace($"/{projectPrefix}/", "/");
+                routeUrl = routeUrl.Replace(projectPrefix, "/");
             }
 
             return routeUrl;
@@ -31,7 +31,7 @@ internal static class NavListExtensions
         {
             if (!string.IsNullOrWhiteSpace(nav.Url))
             {
-                nav.Url = $"/{projectPrefix.TrimEnd('/')}/{nav.Url.TrimStart('/')}";
+                nav.Url = $"{projectPrefix.TrimEnd('/')}/{nav.Url.TrimStart('/')}";
             }
 
             if (nav.Children != null && nav.Children.Any())
