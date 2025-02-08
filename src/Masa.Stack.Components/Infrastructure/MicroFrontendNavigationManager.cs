@@ -6,14 +6,24 @@ namespace Masa.Stack.Components.Infrastructure;
 public class MicroFrontendNavigationManager : NavigationManager
 {
     public readonly string ProjectPrefix;
-    private readonly NavigationManager _originalNavigationManager;
+
+    public readonly NavigationManager OriginalNavigationManager;
+
+    public new event EventHandler<LocationChangedEventArgs> LocationChanged
+    {
+        add => OriginalNavigationManager.LocationChanged += value;
+        remove => OriginalNavigationManager.LocationChanged -= value;
+    }
+
+    public new string BaseUri => OriginalNavigationManager.BaseUri;
+
+    public new string Uri => OriginalNavigationManager.Uri;
 
     public MicroFrontendNavigationManager(NavigationManager navigationManager, string projectPrefix)
     {
-        _originalNavigationManager = navigationManager ?? throw new ArgumentNullException(nameof(navigationManager));
+        OriginalNavigationManager = navigationManager ?? throw new ArgumentNullException(nameof(navigationManager));
         ProjectPrefix = projectPrefix?.Trim('/') ?? throw new ArgumentNullException(nameof(projectPrefix));
-
-        Initialize(_originalNavigationManager.BaseUri, _originalNavigationManager.Uri);
+        Initialize(OriginalNavigationManager.BaseUri, OriginalNavigationManager.Uri);
     }
 
     protected override void NavigateToCore(string uri, bool forceLoad)
@@ -22,7 +32,7 @@ public class MicroFrontendNavigationManager : NavigationManager
         {
             uri = $"/{ProjectPrefix}/{uri.TrimStart('/')}";
         }
-        _originalNavigationManager.NavigateTo(uri, forceLoad);
+        OriginalNavigationManager.NavigateTo(uri, forceLoad);
     }
 
     private bool IsAbsoluteUrl(string url)
