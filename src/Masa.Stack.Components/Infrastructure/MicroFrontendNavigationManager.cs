@@ -28,7 +28,6 @@ public class MicroFrontendNavigationManager : NavigationManager
 
     protected override void NavigateToCore(string uri, bool forceLoad)
     {
-        Console.WriteLine($"NavigateToCore: {uri}");
         if (_microFrontend && !IsAbsoluteUrl(uri) && uri.StartsWith("/") && !uri.StartsWith(ProjectPrefix, StringComparison.OrdinalIgnoreCase))
         {
             uri = $"{ProjectPrefix}{uri.TrimStart("/")}";
