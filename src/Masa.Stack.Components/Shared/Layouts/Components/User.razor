@@ -8,7 +8,7 @@
 @inject SignOutSessionStateManager SignOutManager
 
 <MMenu @bind-Value="@MenuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
-ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
+       ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
     <ActivatorContent>
         <MAvatar @attributes="@context.Attrs" Size=40>
             <MImage Src="@avatar"></MImage>
@@ -56,9 +56,9 @@ ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
                             <SSearch @bind-Value="@_teamSearchKey" MaxWidth="250" Class="py-2" />
                         }
                         <MVirtualScroll Items="_teams.Where(t => t.Name.Contains(_teamSearchKey)).ToList()"
-                        ItemSize="48"
-                        Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))
-                        OverscanCount="0">
+                                        ItemSize="48"
+                                        Height=@(48*(Math.Min(5,_teams.Count(t=>t.Name.Contains(_teamSearchKey)))))
+                                        OverscanCount="0">
                             <ItemContent>
                                 <MListItem IsActive="@(MasaUser.CurrentTeamId == context.Id)" OnClick="() => CurrentTeamChanged(context.Id)">
                                     <MListItemAvatar Width="24" Height="24" MinHeight="24" MinWidth="24">
@@ -158,6 +158,8 @@ ContentClass="px-4 py-2" MaxWidth="280" MinWidth="280">
                 Logger.LogError(e, "AuthClient.TeamService.GetUserTeamsAsync");
             }
 
+            MasaUser.CurrentTeamId = CurrentTeam.Id;
+            GlobalConfig.CurrentTeamId = CurrentTeam.Id;            
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
