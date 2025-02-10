@@ -355,7 +355,7 @@ public partial class SLayout
             return;
         }
 
-        if (absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath))
+        if (absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath) && !(absolutePath == NavigationManager.ProjectPrefix && NavItems.Any()))
         {
             NavigationManager.NavigateTo("/403");
             return;
