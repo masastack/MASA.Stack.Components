@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>MasaWasmApp</title>
     <base href="/" />
-    <link href="_content/Masa.Blazor/css/masa-blazor.min.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="MasaWasmApp.styles.css" rel="stylesheet" />
-    <link href="css/materialdesign/v7.1.96/css/materialdesignicons.min.css" rel="stylesheet">
-    <!-- <link href="css/material/icons.css" rel="stylesheet"> -->
-    <!-- <link href="css/fontawesome/v6.4.0/css/all.min.css" rel="stylesheet"> -->
+    <link href="_content/Masa.Blazor/css/masa-blazor.min.css" rel="stylesheet">
+    <link href="_content/Masa.Stack.Components/css/app.css" rel="stylesheet">
+    <link href="https://cdn.masastack.com/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.masastack.com/npm/materialicons/materialicons.css" rel="stylesheet">
+    <link href="https://cdn.masastack.com/npm/fontawesome/v5.0.13/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.masastack.com/stack/fonts/roboto/font-roboto.css">
+    <link href="css/masa-blazor-pro.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -30,9 +33,12 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
-    <script src="_content/BlazorComponent/js/blazor-component.js"></script>
-    <!--OIDC-->
-    <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+<script src="_content/Masa.Blazor/js/masa-blazor.js"></script>
+<script src="_content/Masa.Stack.Components/js/components.js"></script>
+<script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+<script src="https://cdn.masastack.com/npm/aliyun/aliyun-oss-sdk.min.js"></script>
+<script src="_content/Masa.Stack.Components/js/oss/upload.js"></script>
+<script src="https://cdn.masastack.com/npm/masonry/masonry.pkgd.min.js"></script>
 </body>
 
 </html>

@@ -2,6 +2,9 @@
 
 public partial class Notification : MasaComponentBase
 {
+    [CascadingParameter]
+    public SLayout Layout { get; set; } = null!;
+
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
@@ -43,9 +46,10 @@ public partial class Notification : MasaComponentBase
         HubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri($"{McApiOptions.BaseAddress}/signalr-hubs/notifications"), options =>
             {
-                options.AccessTokenProvider = () =>
+                options.AccessTokenProvider = async () =>
                 {
-                    return Task.FromResult(TokenProvider.AccessToken);
+                    var accessToken = await TokenProvider.GetAccessTokenAsync();
+                    return accessToken;
                 };
             })
             .Build();
@@ -110,6 +114,16 @@ public partial class Notification : MasaComponentBase
     async Task Changed()
     {
         await InvokeAsync(StateHasChanged);
+    }
+
+    private void NavigateToNotificationCenter(Guid? id)
+    {
+        if (!id.HasValue)
+        {
+            Layout.NavigationManager.NavigateTo("/notification-center");
+            return;
+        }
+        Layout.NavigationManager.NavigateTo($"/notification-center/{id}");
     }
 
     protected override async ValueTask DisposeAsyncCore()

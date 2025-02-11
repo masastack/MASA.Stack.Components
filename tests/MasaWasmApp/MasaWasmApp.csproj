@@ -1,16 +1,31 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Masa.Blazor" Version="1.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(MicrosoftPackageVersion)" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(MicrosoftPackageVersion)" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="$(MicrosoftPackageVersion)" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.*" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.*" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,7 @@
 ﻿@namespace Masa.Stack.Components
-@using Masa.BuildingBlocks.Isolation;
-@using Microsoft.AspNetCore.Hosting;
 @inherits MasaComponentBase
 @inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
-@inject IWebHostEnvironment WebHostEnvironment
+@inject IWebAssemblyHostEnvironment WebHostEnvironment
 @inject ILogger<GlobalNavigation> Logger
 
 <MDialog Value="_visible"
@@ -82,9 +80,9 @@
                             <span class="global-nav-header__title">@T("GlobalNavigation")</span>
                             <MSpacer />
                             <div style="width: 140px;" Class="mr-6">
-                                <SSelect @bind-Value="GlobalConfig.NavLayer" Items="GlobalConfig.NavLayerItems" ItemText="@(v => $"{v.ToWords()} {T("Layer")}")" ItemValue="v=> v" Label="@T("NavigationLayerLabel")" Small />
+                                <SSelect @bind-Value="GlobalConfig.NavLayer" Items="GlobalConfig.NavLayerItems" ItemText="@(v => $"{v} {T("Layer")}")" ItemValue="v=> v" Label="@T("NavigationLayerLabel")" Small />
                             </div>
-                            
+
                             <SSearch Dense Class="mr-6" Value="@_search" ValueChanged="SearchChanged" />
                             <MButton Icon OnClick="() => _visible = false">
                                 <MIcon>mdi-close</MIcon>

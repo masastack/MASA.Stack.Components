@@ -1,14 +1,15 @@
-﻿using System.Reflection.Metadata;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     [Inject]
     public IPopupService PopupService { get; set; } = null!;
 
     [Inject]
-    public NavigationManager NavigationManager { get; set; } = null!;
+    public MicroFrontendNavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
     private I18n I18n { get; set; } = null!;
@@ -24,6 +25,9 @@ public partial class SLayout
 
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
+
+    [Inject]
+    public I18nCache I18nCache { get; set; } = default!;
 
     [Parameter]
     public string? Class { get; set; }
@@ -63,6 +67,9 @@ public partial class SLayout
 
     [Parameter]
     public bool IsShowEnvironmentSwitch { get; set; } = false;
+
+    [Parameter]
+    public string BaseUri { get; set; } = "/";
 
     private Breadcrumbs? _breadcrumbsComp;
     private Action? _breadcrumbSetCallback;
@@ -129,6 +136,11 @@ public partial class SLayout
             await JsInitVariables.SetTimezoneOffset();
             List<MenuModel> menus = new();
 
+            if (!CheckAuthenticated())
+            {
+                return;
+            }
+
             try
             {
                 var appId = AppId.IsNullOrEmpty() ? GetAppId() : AppId;
@@ -183,6 +195,8 @@ public partial class SLayout
             }
 #endif
 
+            NavItems.AddPrefixToUrls(NavigationManager.ProjectPrefix);
+
             GlobalConfig.Menus = NavItems;
 
             FlattenedNavs = FlattenNavs(NavItems, true);
@@ -191,7 +205,7 @@ public partial class SLayout
             //add home index content sould remove this code
             if (NavigationManager.Uri == NavigationManager.BaseUri)
             {
-                NavigationManager.NavigateTo(NavItems.GetDefaultRoute());
+                NavigationManager.NavigateTo(NavItems.GetDefaultRoute(projectPrefix: NavigationManager.ProjectPrefix));
                 return;
             }
 
@@ -211,6 +225,8 @@ public partial class SLayout
             {
                 Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
             }
+
+
 
             StateHasChanged();
         }
@@ -321,13 +337,25 @@ public partial class SLayout
         ErrorContent ??= Exception => builder => { };
 
         NavigationManager.LocationChanged += HandleLocationChanged;
+
+        I18nCache.OnSectionUpdated += HandleSectionUpdated;
+    }
+
+    private void HandleSectionUpdated()
+    {
+        InvokeAsync(StateHasChanged); 
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         var absolutePath = NavigationManager.GetAbsolutePath();
 
-        if (absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath))
+        if (!CheckAuthenticated())
+        {
+            return;
+        }
+
+        if (absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath) && !(absolutePath == NavigationManager.ProjectPrefix && NavItems.Any()))
         {
             NavigationManager.NavigateTo("/403");
             return;
@@ -342,6 +370,25 @@ public partial class SLayout
         {
             Logger.LogError(ex, "AuthClient.UserService.VisitedAsync");
         }
+    }
+
+    private bool CheckAuthenticated()
+    {
+        var absolutePath = NavigationManager.GetAbsolutePath();
+
+        if (absolutePath.Contains("/authentication"))
+        {
+            return false;
+        }
+
+        var authState = AuthenticationStateTask.Result;
+        if (authState.User.Identity?.IsAuthenticated != true)
+        {
+            NavigationManager.NavigateTo("/authentication/login");
+            return false;
+        }
+
+        return true;
     }
 
     private async Task AddFavoriteMenu(string code)

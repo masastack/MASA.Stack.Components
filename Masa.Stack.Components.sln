@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32210.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasaWebApp", "tests\MasaWebApp\MasaWebApp.csproj", "{4182AAB9-5654-411E-9EC2-813B4C5F20C2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Stack.Components", "src\Masa.Stack.Components\Masa.Stack.Components.csproj", "{DEE455D8-999F-426D-A5D4-D5EAF5E337B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasaWasmApp", "tests\MasaWasmApp\MasaWasmApp.csproj", "{5C2DD1F3-214F-475C-81D4-D13EC7ACEFE4}"
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4182AAB9-5654-411E-9EC2-813B4C5F20C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4182AAB9-5654-411E-9EC2-813B4C5F20C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4182AAB9-5654-411E-9EC2-813B4C5F20C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4182AAB9-5654-411E-9EC2-813B4C5F20C2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DEE455D8-999F-426D-A5D4-D5EAF5E337B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DEE455D8-999F-426D-A5D4-D5EAF5E337B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEE455D8-999F-426D-A5D4-D5EAF5E337B8}.Release|Any CPU.ActiveCfg = Release|Any CPU

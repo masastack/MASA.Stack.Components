@@ -10,7 +10,7 @@ public abstract class MasaComponentBase : NextTickComponentBase
     private string Culture { get; set; } = null!;
 
     [Inject]
-    public NavigationManager NavigationManager { get; set; } = null!;
+    public MicroFrontendNavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
     public IAuthClient AuthClient { get; set; } = null!;

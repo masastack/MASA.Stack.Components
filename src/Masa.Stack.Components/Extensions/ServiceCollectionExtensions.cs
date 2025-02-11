@@ -3,36 +3,38 @@
 public static class ServiceCollectionExtensions
 {
     //Consider only one web clearance for now
-    public static async Task<IServiceCollection> AddMasaStackComponentsAsync(this IServiceCollection services, MasaStackProject project,
+    public static IServiceCollection AddMasaStackComponent(this IServiceCollection services, MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null)
+        string? authHost = null, string? mcHost = null, string? pmHost = null, bool microFrontend = false)
     {
         ArgumentNullException.ThrowIfNull(project);
-        await AddMasaStackComponentsServiceAsync(services, project, i18nDirectoryPath, authHost, mcHost, pmHost);
+        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, microFrontend: microFrontend);
         AddObservable(services, true, project);
         return services;
     }
 
-    public static async Task<IServiceCollection> AddMasaStackComponentsWithNormalAppAsync(this IServiceCollection services, MasaStackProject project, string otlpUrl, string serviceVersion, string projectName = "default",
+    public static IServiceCollection AddMasaStackComponentsWithNormalApp(this IServiceCollection services, MasaStackProject project, string otlpUrl, string serviceVersion, string projectName = "default",
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null)
+        string? authHost = null, string? mcHost = null, string? pmHost = null, bool microFrontend = false)
     {
         ArgumentNullException.ThrowIfNull(projectName);
         ArgumentNullException.ThrowIfNull(otlpUrl);
         ArgumentNullException.ThrowIfNull(serviceVersion);
         ArgumentNullException.ThrowIfNull(projectName);
-        await AddMasaStackComponentsServiceAsync(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, serviceVersion);
+        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, serviceVersion, microFrontend: microFrontend);
         AddObservable(services, false, project: project, serviceVersion: serviceVersion, projectName: projectName, otlpUrl: otlpUrl);
         return services;
     }
 
-    private static async Task AddMasaStackComponentsServiceAsync(IServiceCollection services, MasaStackProject project,
+    private static void AddMasaStackComponentsService(IServiceCollection services, MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? serviceVersion = null)
+        string? authHost = null, string? mcHost = null, string? pmHost = null, string? serviceVersion = null, bool microFrontend = false)
     {
-        services.AddScoped<CookieStorage>();
-        services.AddScoped<JsInitVariables>();
+        services.TryAddScoped<CookieStorage>();
+        services.TryAddScoped<LocalStorage>();
+        services.TryAddScoped<JsInitVariables>();
         services.AddAutoInject();
+        services.AddMemoryCache();
         services.AddMasaIdentity(options =>
         {
             options.UserName = IdentityClaimConsts.USER_NAME;
@@ -47,41 +49,28 @@ public static class ServiceCollectionExtensions
         });
         services.AddSingleton(sp => new ProjectAppOptions(project, serviceVersion));
 
-        services.AddMasaStackConfigAsync(project, MasaStackApp.WEB).ConfigureAwait(false).GetAwaiter().GetResult();
         var masaStackConfig = services.GetMasaStackConfig();
 
+        var dccHost = masaStackConfig.GetDccServiceDomain();
         authHost ??= masaStackConfig.GetAuthServiceDomain();
         mcHost ??= masaStackConfig.GetMcServiceDomain();
         pmHost ??= masaStackConfig.GetPmServiceDomain();
-        var redisOption = new RedisConfigurationOptions
-        {
-            Servers = new List<RedisServerOptions> {
-                    new RedisServerOptions()
-                    {
-                        Host= masaStackConfig.RedisModel.RedisHost,
-                        Port= masaStackConfig.RedisModel.RedisPort
-                    }
-                },
-            DefaultDatabase = masaStackConfig.RedisModel.RedisDb,
-            Password = masaStackConfig.RedisModel.RedisPassword
-        };
-
-        services.AddAuthClient(authHost, redisOption);
+        services.AddDccClient(dccHost);
+        services.AddAuthClient(authHost);
         services.AddSingleton(new McServiceOptions(mcHost));
         services.AddMcClient(mcHost);
         services.AddPmClient(pmHost);
-
-        await services.AddStackIsolationAsync("");
-
-        services.AddObjectStorage(option =>
-        {
-            option.UseAliyunStorage();
-        });
 
         services.AddScoped((serviceProvider) =>
         {
             var masaUser = serviceProvider.GetRequiredService<IUserContext>().GetUser<MasaUser>() ?? new MasaUser();
             return masaUser;
+        });
+
+        services.AddScoped(sp =>
+        {
+            var navigationManager = sp.GetRequiredService<NavigationManager>();
+            return new MicroFrontendNavigationManager(navigationManager, microFrontend ? $"/{project.Name.ToLower()}/" : "/");
         });
 
         var masaBuilder = services.AddMasaBlazor(options =>
@@ -108,9 +97,11 @@ public static class ServiceCollectionExtensions
         })
         .AddI18n(GetLocales().ToArray());
 
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), ServiceLifetime.Scoped, null, includeInternalTypes: true);
+
         if (i18nDirectoryPath is not null)
         {
-            masaBuilder.AddI18nForServer(i18nDirectoryPath);
+            masaBuilder.AddI18nForWasmAsync(i18nDirectoryPath);
         }
     }
 
@@ -120,20 +111,20 @@ public static class ServiceCollectionExtensions
         {
             var masaStackConfig = services.GetMasaStackConfig();
             // 创建配置构建器
-            IConfiguration configuration = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
-                .Build();
+            //IConfiguration configuration = new ConfigurationBuilder()
+            //    .AddEnvironmentVariables()
+            //    .Build();
 
-            var masaSericeName = isMasa ? masaStackConfig.GetWebId(project) : project.Name;
-            ArgumentNullException.ThrowIfNull(masaSericeName);
-            services.AddObservable(configure, () => new MasaObservableOptions
-            {
-                ServiceNameSpace = masaStackConfig.Environment,
-                ServiceVersion = isMasa ? masaStackConfig.Version : serviceVersion!,
-                ServiceName = masaSericeName,
-                Layer = isMasa ? masaStackConfig.Namespace : projectName!,
-                ServiceInstanceId = configuration.GetValue<string>("HOSTNAME")!
-            }, () => isMasa ? masaStackConfig.OtlpUrl : otlpUrl!, true);
+            //var masaSericeName = isMasa ? masaStackConfig.GetWebId(project) : project.Name;
+            //ArgumentNullException.ThrowIfNull(masaSericeName);
+            //services.AddObservable(configure, () => new MasaObservableOptions
+            //{
+            //    ServiceNameSpace = masaStackConfig.Environment,
+            //    ServiceVersion = isMasa ? masaStackConfig.Version : serviceVersion!,
+            //    ServiceName = masaSericeName,
+            //    Layer = isMasa ? masaStackConfig.Namespace : projectName!,
+            //    ServiceInstanceId = configuration.GetValue<string>("HOSTNAME")!
+            //}, () => isMasa ? masaStackConfig.OtlpUrl : otlpUrl!, true);
         });
     }
 
@@ -157,5 +148,15 @@ public static class ServiceCollectionExtensions
             }
         }
         return output;
+    }
+
+    public static async Task InitializeMasaStackApplicationAsync(
+        [NotNull] this IServiceProvider serviceProvider)
+    {
+        await serviceProvider.InitializeApplicationAsync();
+        await serviceProvider.GetRequiredService<IClientScopeServiceProviderAccessor>().ServiceProvider.GetRequiredService<MasaStackConfigCache>().InitializeAsync();
+        var IMasaStackConfig = serviceProvider.GetRequiredService<IMasaStackConfig>();
+        var IMultiEnvironmentMasaStackConfig = serviceProvider.GetRequiredService<IMultiEnvironmentMasaStackConfig>();
+        await serviceProvider.GetRequiredService<IClientScopeServiceProviderAccessor>().ServiceProvider.GetRequiredService<I18nCache>().InitializeAsync();
     }
 }

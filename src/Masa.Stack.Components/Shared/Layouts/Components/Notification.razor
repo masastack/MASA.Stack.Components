@@ -1,9 +1,7 @@
 ﻿@namespace Masa.Stack.Components.Layouts
 @using Masa.BuildingBlocks.StackSdks.Mc
-@using Microsoft.AspNetCore.Http
 @inherits MasaComponentBase
 @inject IMcClient McClient
-@inject IHttpContextAccessor httpContextAccessor
 @inject ILogger<Notification> Logger
 
 <div class="notice">
@@ -45,7 +43,7 @@
                 <MList ThreeLine>
                     @foreach (var item in NoticeState.Notices)
                     {
-                        <MListItem Link Href="@($"/notification-center/{item.Id}")">
+                        <MListItem Link OnClick="()=>NavigateToNotificationCenter(item.Id)">
                             <MListItemAvatar Class="mt-2">
                                 @if (item.IsRead)
                                 {
@@ -68,7 +66,7 @@
                     }
                 </MList>
                 <MList Dense>
-                    <MListItem Link Href="/notification-center" Class="pt-2" Style="box-shadow: inset 0px 1px 0px #E9EDF7">
+                    <MListItem Link Class="pt-2" Style="box-shadow: inset 0px 1px 0px #E9EDF7" OnClick="()=>NavigateToNotificationCenter(null)">
                         <MListItemIcon Class="mr-0">
                             <MIcon Size="16" Color="regular2" Class="pr-3">mdi-keyboard-backspace</MIcon>
                         </MListItemIcon>

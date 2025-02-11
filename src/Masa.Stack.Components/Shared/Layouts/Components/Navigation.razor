@@ -1,11 +1,9 @@
 ﻿@namespace Masa.Stack.Components.Layouts
-@using Masa.BuildingBlocks.Isolation;
-@using Masa.BuildingBlocks.StackSdks.Pm.Model
-@using Masa.Stack.Components.Extensions
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
 @inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
 @inject ILogger<Navigation> Logger
+@inject SignOutSessionStateManager SignOutManager
 
 <MNavigationDrawer App
                    Class="navigation"
@@ -158,6 +156,9 @@
     [Inject]
     internal ProjectAppOptions ProjectApp { get; set; } = default!;
 
+    [Inject]
+    public CookieStorage CookieStorage { get; set; } = default!;
+
     [Parameter]
     public string? DefaultRoute { get; set; }
 
@@ -238,7 +239,10 @@
             await PopupService.EnqueueSnackbarAsync(T("EnvironmentSwitchTips"), AlertTypes.Warning);
             return;
         }
-        NavigationManager.NavigateTo($"/Account/Logout?environment={environment}", true);
+
+        CookieStorage.SetAsync(Consts.ENVIRONMENT, environment);
+        await SignOutManager.SetSignOutState();
+        NavigationManager.NavigateTo($"/authentication/logout?environment={environment}", true);
     }
 
 }

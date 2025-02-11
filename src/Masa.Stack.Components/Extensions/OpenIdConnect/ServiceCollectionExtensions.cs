@@ -2,93 +2,64 @@
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddMasaOpenIdConnect(
-        this IServiceCollection services,
+    public static async Task<IServiceCollection> AddMasaOpenIdConnectAsync(
+        this WebAssemblyHostBuilder builder,
         IConfiguration configuration)
     {
-        return services.AddMasaOpenIdConnect(configuration.GetSection("$public.OIDC").Get<MasaOpenIdConnectOptions>());
+        var options = configuration.GetSection("$public.OIDC").Get<MasaOpenIdConnectOptions>();
+        return await builder.AddMasaOpenIdConnectAsync(options);
     }
 
-    public static IServiceCollection AddMasaOpenIdConnect(
-        this IServiceCollection services,
+    public static async Task<IServiceCollection> AddMasaOpenIdConnectAsync(
+        this WebAssemblyHostBuilder builder,
         MasaOpenIdConnectOptions masaOpenIdConnectOptions)
     {
-        services.AddSingleton(masaOpenIdConnectOptions);
-        services.AddSingleton<LogoutSessionManager>();
-        services.AddTransient<CookieEventHandler>();
-        services.AddTransient<OidcEventHandler>();
-        return services.AddMasaOpenIdConnect(masaOpenIdConnectOptions.Authority, masaOpenIdConnectOptions.ClientId,
-                masaOpenIdConnectOptions.ClientSecret, masaOpenIdConnectOptions.Scopes.ToArray());
+        builder.Services.AddSingleton(masaOpenIdConnectOptions);
+        builder.Services.AddSingleton<LogoutSessionManager>();
+        builder.Services.TryAddScoped<CookieStorage>();
+        return await builder.AddMasaOpenIdConnectAsync(
+            masaOpenIdConnectOptions.Authority,
+            masaOpenIdConnectOptions.ClientId,
+            masaOpenIdConnectOptions.ClientSecret,
+            masaOpenIdConnectOptions.Scopes.ToArray());
     }
 
-    private static IServiceCollection AddMasaOpenIdConnect(
-        this IServiceCollection services,
+    private static async Task<IServiceCollection> AddMasaOpenIdConnectAsync(
+        this WebAssemblyHostBuilder builder,
         string authority,
-        string clinetId,
+        string clientId,
         string clientSecret,
         params string[] scopes)
     {
-        services.AddHttpContextAccessor();
+        var serviceProvider = builder.Services.BuildServiceProvider();
+        var storage = serviceProvider.GetRequiredService<CookieStorage>();
+        var masaStackConfig = serviceProvider.GetRequiredService<IMasaStackConfig>();
 
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        var environment = await storage.GetAsync(Consts.ENVIRONMENT);
 
-        services.AddAuthentication(options =>
+        if (string.IsNullOrEmpty(environment))
         {
-            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        })
-        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            environment = masaStackConfig.Environment;
+        }
+
+        builder.Services.AddOidcAuthentication(options =>
         {
-            options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
-            options.EventsType = typeof(CookieEventHandler);
-        })
-        .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-        {
-            options.Authority = authority;
-            options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.SignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            options.RequireHttpsMetadata = false;
-            options.ClientId = clinetId;
-            options.ClientSecret = clientSecret;
-            options.ResponseType = OpenIdConnectResponseType.Code;
+            options.ProviderOptions.Authority = authority;
+            options.ProviderOptions.ClientId = clientId;
+            options.ProviderOptions.ResponseType = "code";
+            options.ProviderOptions.DefaultScopes.Clear();
             foreach (var scope in scopes)
             {
-                options.Scope.Add(scope);
+                options.ProviderOptions.DefaultScopes.Add(scope);
             }
-
-            options.SaveTokens = true;
-            options.GetClaimsFromUserInfoEndpoint = true;
-            options.UseTokenLifetime = true;
-
-            options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(0);
-            options.TokenValidationParameters.RequireExpirationTime = true;
-            options.TokenValidationParameters.ValidateLifetime = true;
-
-            options.NonceCookie.SameSite = SameSiteMode.Unspecified;
-            options.CorrelationCookie.SameSite = SameSiteMode.Unspecified;
-
-            options.ClaimActions.MapAll();
-            options.MapInboundClaims = false;
-
-            options.EventsType = typeof(OidcEventHandler);
-
-            //ensure normal i use self signed certificate
-            options.BackchannelHttpHandler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = delegate
-                {
-                    return true;
-                }
-            };
+            options.ProviderOptions.AdditionalProviderParameters[Consts.ENVIRONMENT] = environment;
         });
 
-        services.AddAuthorization(options =>
+        builder.Services.AddAuthorizationCore(options =>
         {
-            // By default, all incoming requests will be authorized according to the default policy
             options.FallbackPolicy = options.DefaultPolicy;
         });
 
-        return services;
+        return builder.Services;
     }
 }

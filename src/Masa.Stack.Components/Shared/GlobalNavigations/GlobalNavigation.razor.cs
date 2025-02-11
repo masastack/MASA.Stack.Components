@@ -45,7 +45,7 @@ public partial class GlobalNavigation : MasaComponentBase
         if (environment.IsNullOrEmpty())
         {
             Logger.LogWarning("Multi Environment is empty");
-            environment = WebHostEnvironment.EnvironmentName;
+            environment = WebHostEnvironment.Environment;
         }
 
         var projects = await PmClient.ProjectService.GetProjectAppsAsync(environment);
