@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
-
-namespace Masa.Stack.Components.Infrastructure.Identity;
+﻿namespace Masa.Stack.Components.Infrastructure.Identity;
 
 public class AuthenticationStateManager : IScopedDependency
 {

@@ -5,7 +5,6 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
-		<Version>1.0.0-wasm22</Version>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,7 +1,4 @@
-﻿using Masa.Contrib.StackSdks.Caller;
-using Microsoft.AspNetCore.SignalR.Client;
-
-namespace Masa.Stack.Components.Layouts;
+﻿namespace Masa.Stack.Components.Layouts;
 
 public partial class Notification : MasaComponentBase
 {

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Masa.Stack.Components;
+﻿namespace Masa.Stack.Components;
 
 public class JsInitVariables : IAsyncDisposable
 {

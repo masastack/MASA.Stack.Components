@@ -1,6 +1,4 @@
-﻿using Masa.Contrib.Authentication.Identity.Core;
-
-namespace Masa.Stack.Components.Infrastructure;
+﻿namespace Masa.Stack.Components.Infrastructure;
 
 public class DynamicTranslateProvider : IScopedDependency
 {
