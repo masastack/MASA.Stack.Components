@@ -1,6 +1,6 @@
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddSingleton(sp => builder.Configuration);
-await builder.Services.AddMasaStackConfigAsync(builder.Configuration, builder.HostEnvironment.Environment);
+await builder.Services.AddMasaStackConfigAsync(builder.Configuration);
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.RootComponents.Add<App>("#app");
