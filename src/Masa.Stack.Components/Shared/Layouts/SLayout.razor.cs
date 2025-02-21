@@ -379,7 +379,7 @@ public partial class SLayout
     private bool CheckAuthenticated()
     {
         var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
-        if (absolutePath.Contains("/authentication/login"))
+        if (absolutePath.Contains("/authentication/"))
         {
             return false;
         }
