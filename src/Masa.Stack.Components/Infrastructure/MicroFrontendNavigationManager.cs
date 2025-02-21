@@ -26,13 +26,14 @@ public class MicroFrontendNavigationManager : NavigationManager
         Initialize(OriginalNavigationManager.BaseUri, OriginalNavigationManager.Uri);
     }
 
-    protected override void NavigateToCore(string uri, bool forceLoad)
+    protected override void NavigateToCore(string uri, NavigationOptions options)
     {
         if (_microFrontend && !IsAbsoluteUrl(uri) && uri.StartsWith("/") && !uri.StartsWith(ProjectPrefix, StringComparison.OrdinalIgnoreCase))
         {
             uri = $"{ProjectPrefix}{uri.TrimStart("/")}";
         }
-        OriginalNavigationManager.NavigateTo(uri, forceLoad);
+
+        OriginalNavigationManager.NavigateTo(uri, options.ForceLoad, options.ReplaceHistoryEntry);
     }
 
     private bool IsAbsoluteUrl(string url)
