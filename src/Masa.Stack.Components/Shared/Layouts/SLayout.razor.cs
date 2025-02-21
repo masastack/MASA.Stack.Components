@@ -95,6 +95,7 @@ public partial class SLayout
     public string GetAppId() => MultiEnvironmentMasaStackConfig.SetEnvironment(MultiEnvironmentUserContext.Environment ?? "").GetWebId(ProjectApp.Project);
 
     List<Nav> NavItems = new();
+    bool _navInit;
     List<string> _preWhiteUris = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
@@ -106,6 +107,8 @@ public partial class SLayout
         "403", "404", "user-center",
         "notification-center"
     };
+
+ 
 
     string ClientId
     {
@@ -202,6 +205,8 @@ public partial class SLayout
             FlattenedNavs = FlattenNavs(NavItems, true);
             FlattenedAllNavs = FlattenNavs(NavItems, false);
 
+            _navInit = true;
+
             //add home index content sould remove this code
             if (NavigationManager.Uri == NavigationManager.BaseUri)
             {
@@ -209,7 +214,7 @@ public partial class SLayout
                 return;
             }
 
-            var absolutePath = NavigationManager.GetAbsolutePath();
+            var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
             if (absolutePath.Contains("dashboard") is false && !IsMenusUri(NavItems, absolutePath))
             {
                 NavigationManager.NavigateTo("/403");
@@ -348,14 +353,13 @@ public partial class SLayout
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        var absolutePath = NavigationManager.GetAbsolutePath();
-
+        var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
         if (!CheckAuthenticated())
         {
             return;
         }
 
-        if (absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath) && !(absolutePath == NavigationManager.ProjectPrefix && NavItems.Any()))
+        if (_navInit && absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath) && !(absolutePath == NavigationManager.ProjectPrefix && NavItems.Any()))
         {
             NavigationManager.NavigateTo("/403");
             return;
@@ -374,9 +378,8 @@ public partial class SLayout
 
     private bool CheckAuthenticated()
     {
-        var absolutePath = NavigationManager.GetAbsolutePath();
-
-        if (absolutePath.Contains("/authentication"))
+        var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
+        if (absolutePath.Contains("/authentication/login"))
         {
             return false;
         }
