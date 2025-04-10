@@ -1,6 +1,6 @@
 ﻿namespace Masa.Stack.Components;
 
-public class SCascader<TItem, TValue> : MCascader<TItem, TValue>
+public class SCascader<TItem, TItemValue, TValue> : MCascader<TItem, TItemValue, TValue>
 {
     [Parameter]
     public bool Small { get; set; }
