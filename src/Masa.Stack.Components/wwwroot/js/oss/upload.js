@@ -1,6 +1,6 @@
 async function UploadImage(imageFiles, ossParamter) {
     const client = new OSS(ossParamter);
-
+    let cdnHost = getCdnHost(ossParamter);
     const headers = {
         // 指定该Object被下载时网页的缓存行为。
         // 'Cache-Control': 'no-cache',
@@ -19,11 +19,19 @@ async function UploadImage(imageFiles, ossParamter) {
         // 指定CopyObject操作时是否覆盖同名目标Object。此处设置为true，表示禁止覆盖同名Object。
         // 'x-oss-forbid-overwrite': 'true',
     };
-
-    return await putObject(client, imageFiles[0], headers);
+    return await putObject(client, imageFiles[0], headers, cdnHost);
 }
 
-async function putObject(client, file, headers) {
+function getCdnHost(ossParamter) {
+    let cdnHost = ((ossParamter || {}).cdnHost || "").trim();
+    if (cdnHost.length == 0) {
+        return cdnHost;
+    }
+    if (cdnHost[cdnHost.length - 1] == '/')
+        return cdnHost.substring(0, cdnHost.length - 1);
+}
+
+async function putObject(client, file, headers, cdnHost) {
     try {
         // 填写Object完整路径。Object完整路径中不能包含Bucket名称。
         // 您可以通过自定义文件名（例如exampleobject.txt）或文件完整路径（例如exampledir/exampleobject.txt）的形式实现将数据上传到当前Bucket或Bucket中的指定目录。
@@ -32,11 +40,14 @@ async function putObject(client, file, headers) {
             `${file.name}`,
             file,
             {
-               headers
+                headers
             }
         );
         console.log(result);
-        return [result.url];
+        console.log("cdnHost: " + cdnHost);
+        let url = cdnHost ? (cdnHost + "/" + result.name) : result.url;
+        console.log(url)
+        return [url];
     } catch (e) {
         console.log(e);
     }
