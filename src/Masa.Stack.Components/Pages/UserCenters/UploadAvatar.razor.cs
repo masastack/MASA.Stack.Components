@@ -6,7 +6,7 @@ namespace Masa.Stack.Components;
 public partial class UploadAvatar : SUploadImage
 {
     [Inject]
-    public IAuthClient Client { get; set; } = default!;
+    public IDccClient Client { get; set; } = default!;
 
     [Inject]
     private IMultiEnvironmentUserContext MultiEnvironmentUserContext { get; set; } = null!;
@@ -32,7 +32,7 @@ public partial class UploadAvatar : SUploadImage
 
     public override async Task UploadAsync()
     {
-        var response = await Client.OssService.GetSecurityTokenAsync();
+        var response = await Client.OpenApiService.GetOssSecurityTokenAsync();
         OnInputFileUpload = FileUploadCallBack.CreateCallback("UploadImage", response);
         await base.UploadAsync();
     }
