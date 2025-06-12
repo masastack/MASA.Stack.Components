@@ -121,7 +121,7 @@
             else if (menu.Type == ExpansionMenuType.Element)
             {
                 <div class="m-list-item theme--light @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
-                     style="@GetIsDisplayStyle(menu.MetaData.Situation == ExpansionMenuSituation.Authorization)"
+                     style="@GetIsDisplayStyle(menu.MetaData.Situation != ExpansionMenuSituation.Favorite)"
                      @onclick="@(() => OnItemClick.InvokeAsync(menu))">
                     <div class="d-flex align-center full-width">
                         <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
