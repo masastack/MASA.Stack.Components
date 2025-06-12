@@ -196,12 +196,7 @@ public class ExpansionMenu : ICloneable
             }
             return;
         }
-        if (Type == ExpansionMenuType.Element)
-        {
-            Hidden = true;
-            return;
-        }
-        if (Type == ExpansionMenuType.Nav && State != ExpansionMenuState.Selected && State != ExpansionMenuState.Indeterminate)
+        if (State != ExpansionMenuState.Selected && State != ExpansionMenuState.Indeterminate)
         {
             Hidden = true;
         }
