@@ -33,8 +33,9 @@ jobs:
 
     - name: pack
       run: |
-        VERSION="0.0.488.$(date +'%y%m%d%H%M')"
-        dotnet pack --configuration Release --include-symbols -p:PackageVersion=$VERSION
+        DATE=$(date +'%y%m%d')
+        TIME=$(date +'%H%M')
+        dotnet pack --configuration Release --include-symbols -p:PackageVersion=0.0.488-$DATE$TIME
     
     - name: package push
       run: dotnet nuget push "**/*.symbols.nupkg" -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json
