@@ -1,0 +1,40 @@
+name: Package Push Nuget
+on:
+  push:
+    branches:
+      - 'server/base'
+  workflow_dispatch:
+
+jobs:
+  package-push:
+    name: package push
+    runs-on: ubuntu-latest
+    steps:
+    - name: git pull
+      uses: actions/checkout@v2
+      
+    - name: checkout server/base branch
+      run: git checkout server/base
+      
+    - name: setting dotnet version
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: |
+          6.0.x
+          7.0.x
+          8.0.x
+        include-prerelease: true
+
+    - name: restore
+      run: dotnet restore 
+
+    - name: build
+      run: dotnet build src/Masa.Stack.Components/Masa.Stack.Components.csproj --configuration Release --no-restore /p:ContinuousIntegrationBuild=true
+
+    - name: pack
+      run: |
+        VERSION="0.0.488.$(date +'%y%m%d%H%M')"
+        dotnet pack --configuration Release --include-symbols -p:PackageVersion=$VERSION
+    
+    - name: package push
+      run: dotnet nuget push "**/*.symbols.nupkg" -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json
