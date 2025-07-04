@@ -299,7 +299,7 @@ public partial class SLayout
                 }
             }
         }
-        Console.WriteLine($"allowed:{allowed}");
+
         return allowed;
     }
 
