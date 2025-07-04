@@ -60,4 +60,19 @@ public abstract class MasaComponentBase : NextTickComponentBase
     {
         return show ? "" : "display:none !important;";
     }
+
+    protected string BuildHref(string? url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            return NavigationManager.ProjectPrefix;
+        }
+
+        if (url.StartsWith("/"))
+        {
+            return NavigationManager.ProjectPrefix.TrimEnd('/') + url;
+        }
+
+        return NavigationManager.ProjectPrefix.TrimEnd('/') + "/" + url;
+    }
 }
