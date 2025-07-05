@@ -171,7 +171,9 @@ public partial class GlobalNavigation : MasaComponentBase
             return;
         }
 
-        NavigationManager.NavigateTo(url, forceLoad: true);
+        _visible = false;
+
+        NavigationManager.NavigateTo(url);
     }
 
     private async Task FavoriteRemoveAsync(ExpansionMenu nav)
