@@ -110,6 +110,6 @@ public class SStatefulChip<TState> : MChip
 
     private static string GetColorCss(string color)
     {
-        return string.Format("{0} lighten-5 {0}--text", color);
+        return string.Format("{0} lighten-5 {0}--text text--darken-4", color);
     }
 }
