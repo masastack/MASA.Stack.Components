@@ -22,28 +22,27 @@ public partial class SUrlTextField : IDisposable
         get => $"{Protocol}://{TextValue}";
         set
         {
-            if (string.IsNullOrEmpty(Value) is false)
-            {
-                if (value.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                {
-                    _protocol = "https";
-                    TextValue = value.TrimStart("https://".ToCharArray());
-                }
-                else if (value.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
-                {
-                    _protocol = "http";
-                    TextValue = value.TrimStart("http://".ToCharArray());
-                }
-                else
-                {
-                    _protocol = "https";
-                    TextValue = "";
-                }
-            }
-            else
+            if (string.IsNullOrEmpty(value))
             {
                 _protocol = "https";
                 TextValue = "";
+                return;
+            }
+
+            if (value.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                _protocol = "https";
+                TextValue = value.Substring("https://".Length);
+            }
+            else if (value.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
+            {
+                _protocol = "http";
+                TextValue = value.Substring("http://".Length);
+            }
+            else
+            {
+                // 如果输入的值不以协议开头，保留原有的协议，只更新文本部分
+                TextValue = value;
             }
         }
     }
@@ -66,17 +65,15 @@ public partial class SUrlTextField : IDisposable
 
     public async Task ValueTextUpdateAsync(string value)
     {
-        if (!string.IsNullOrWhiteSpace(value))
-        {
-            value = $"{Protocol}://{value.TrimStart("https://".ToArray()).TrimStart("http://".ToArray())}";
-        }
+        string fullUrl = string.IsNullOrWhiteSpace(value) ? "" : $"{Protocol}://{value}";
+
         if (ValueChanged.HasDelegate)
         {
-            await ValueChanged.InvokeAsync(value);
+            await ValueChanged.InvokeAsync(fullUrl);
         }
         else
         {
-            Value = value;
+            Value = fullUrl;
         }
     }
 
