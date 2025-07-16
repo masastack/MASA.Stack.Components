@@ -5,6 +5,9 @@ namespace Masa.Stack.Components;
 
 public partial class UploadAvatar : SUploadImage
 {
+    [Parameter]
+    public bool RandomName { get; set; }
+
     [Inject]
     public IDccClient Client { get; set; } = default!;
 
@@ -33,7 +36,17 @@ public partial class UploadAvatar : SUploadImage
     public override async Task UploadAsync()
     {
         var response = await Client.OpenApiService.GetOssSecurityTokenAsync();
-        OnInputFileUpload = FileUploadCallBack.CreateCallback("UploadImage", response);
+        OnInputFileUpload = FileUploadCallBack.CreateCallback("UploadImage",
+            new
+            {
+                response.AccessKeyId,
+                response.AccessKeySecret,
+                response.Region,
+                response.Bucket,
+                response.StsToken,
+                response.CdnHost,
+                RandomName
+            });
         await base.UploadAsync();
     }
 }
