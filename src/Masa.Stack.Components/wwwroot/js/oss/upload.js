@@ -2,21 +2,21 @@ async function UploadImage(imageFiles, ossParamter) {
     const client = new OSS(ossParamter);
     let cdnHost = getCdnHost(ossParamter);
     const headers = {
-        // Ö¸¶¨¸ÃObject±»ÏÂÔØÊ±ÍøÒ³µÄ»º´æĞĞÎª¡£
+        // æŒ‡å®šè¯¥Objectè¢«ä¸‹è½½æ—¶ç½‘é¡µçš„ç¼“å­˜è¡Œä¸ºã€‚
         // 'Cache-Control': 'no-cache',
-        // Ö¸¶¨¸ÃObject±»ÏÂÔØÊ±µÄÃû³Æ¡£
+        // æŒ‡å®šè¯¥Objectè¢«ä¸‹è½½æ—¶çš„åç§°ã€‚
         // 'Content-Disposition': 'oss_download.txt',
-        // Ö¸¶¨¸ÃObject±»ÏÂÔØÊ±µÄÄÚÈİ±àÂë¸ñÊ½¡£
+        // æŒ‡å®šè¯¥Objectè¢«ä¸‹è½½æ—¶çš„å†…å®¹ç¼–ç æ ¼å¼ã€‚
         // 'Content-Encoding': 'UTF-8',
-        // Ö¸¶¨¹ıÆÚÊ±¼ä¡£
+        // æŒ‡å®šè¿‡æœŸæ—¶é—´ã€‚
         // 'Expires': 'Wed, 08 Jul 2022 16:57:01 GMT',
-        // Ö¸¶¨ObjectµÄ´æ´¢ÀàĞÍ¡£
+        // æŒ‡å®šObjectçš„å­˜å‚¨ç±»å‹ã€‚
         // 'x-oss-storage-class': 'Standard',
-        // Ö¸¶¨ObjectµÄ·ÃÎÊÈ¨ÏŞ¡£
+        // æŒ‡å®šObjectçš„è®¿é—®æƒé™ã€‚
         'x-oss-object-acl': 'public-read-write',
-        // ÉèÖÃObjectµÄ±êÇ©£¬¿ÉÍ¬Ê±ÉèÖÃ¶à¸ö±êÇ©¡£
+        // è®¾ç½®Objectçš„æ ‡ç­¾ï¼Œå¯åŒæ—¶è®¾ç½®å¤šä¸ªæ ‡ç­¾ã€‚
         // 'x-oss-tagging': 'Tag1=1&Tag2=2',
-        // Ö¸¶¨CopyObject²Ù×÷Ê±ÊÇ·ñ¸²¸ÇÍ¬ÃûÄ¿±êObject¡£´Ë´¦ÉèÖÃÎªtrue£¬±íÊ¾½ûÖ¹¸²¸ÇÍ¬ÃûObject¡£
+        // æŒ‡å®šCopyObjectæ“ä½œæ—¶æ˜¯å¦è¦†ç›–åŒåç›®æ ‡Objectã€‚æ­¤å¤„è®¾ç½®ä¸ºtrueï¼Œè¡¨ç¤ºç¦æ­¢è¦†ç›–åŒåObjectã€‚
         // 'x-oss-forbid-overwrite': 'true',
     };
     console.log(ossParamter);
@@ -55,9 +55,9 @@ function formatTime(date) {
 async function putObject(client, file, headers, cdnHost, randName) {
     try {
         let fileName = getFileName(file, randName);
-        // ÌîĞ´ObjectÍêÕûÂ·¾¶¡£ObjectÍêÕûÂ·¾¶ÖĞ²»ÄÜ°üº¬BucketÃû³Æ¡£
-        // Äú¿ÉÒÔÍ¨¹ı×Ô¶¨ÒåÎÄ¼şÃû£¨ÀıÈçexampleobject.txt£©»òÎÄ¼şÍêÕûÂ·¾¶£¨ÀıÈçexampledir/exampleobject.txt£©µÄĞÎÊ½ÊµÏÖ½«Êı¾İÉÏ´«µ½µ±Ç°Bucket»òBucketÖĞµÄÖ¸¶¨Ä¿Â¼¡£
-        // data¶ÔÏó¿ÉÒÔ×Ô¶¨ÒåÎªfile¶ÔÏó¡¢BlobÊı¾İ»òÕßOSS Buffer¡£
+        // å¡«å†™Objectå®Œæ•´è·¯å¾„ã€‚Objectå®Œæ•´è·¯å¾„ä¸­ä¸èƒ½åŒ…å«Bucketåç§°ã€‚
+        // æ‚¨å¯ä»¥é€šè¿‡è‡ªå®šä¹‰æ–‡ä»¶åï¼ˆä¾‹å¦‚exampleobject.txtï¼‰æˆ–æ–‡ä»¶å®Œæ•´è·¯å¾„ï¼ˆä¾‹å¦‚exampledir/exampleobject.txtï¼‰çš„å½¢å¼å®ç°å°†æ•°æ®ä¸Šä¼ åˆ°å½“å‰Bucketæˆ–Bucketä¸­çš„æŒ‡å®šç›®å½•ã€‚
+        // dataå¯¹è±¡å¯ä»¥è‡ªå®šä¹‰ä¸ºfileå¯¹è±¡ã€Blobæ•°æ®æˆ–è€…OSS Bufferã€‚
         const result = await client.put(
             `${fileName}`,
             file,
