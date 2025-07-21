@@ -33,6 +33,27 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<CookieStorage>();
         services.TryAddScoped<LocalStorage>();
         services.TryAddScoped<JsInitVariables>();
+
+        // 注册团队状态管理器 - 根据运行时环境选择合适的实现
+        services.AddScoped<ITeamStateManager>(sp =>
+        {
+            // 检测是否为 WASM 模式
+            if (IsWebAssemblyEnvironment(sp))
+            {
+                // WASM 模式：使用页面刷新获取最新的 token 和 claims
+                var authStateProvider = sp.GetRequiredService<AuthenticationStateProvider>();
+                var navigationManager = sp.GetRequiredService<NavigationManager>();
+                return new WasmTeamStateManager(authStateProvider, navigationManager);
+            }
+            else
+            {
+                // Server 模式：直接操作身份验证状态
+                var authStateManager = sp.GetRequiredService<AuthenticationStateManager>();
+                var authStateProvider = sp.GetRequiredService<AuthenticationStateProvider>();
+                return new ServerTeamStateManager(authStateManager, authStateProvider);
+            }
+        });
+
         services.AddAutoInject();
         services.AddMemoryCache();
         services.AddMasaIdentity(options =>
@@ -148,6 +169,25 @@ public static class ServiceCollectionExtensions
             }
         }
         return output;
+    }
+
+    /// <summary>
+    /// 检测是否为 WebAssembly 环境
+    /// </summary>
+    private static bool IsWebAssemblyEnvironment(IServiceProvider serviceProvider)
+    {
+        try
+        {
+            // 在 WASM 模式下，IJSRuntime 实现了 IJSInProcessRuntime 接口
+            // 在 Server 模式下，由于网络延迟，JS 调用都是异步的，不会实现 IJSInProcessRuntime
+            var jsRuntime = serviceProvider.GetService<IJSRuntime>();
+            return jsRuntime is IJSInProcessRuntime;
+        }
+        catch
+        {
+            // 如果出现异常，默认为 Server 模式
+            return false;
+        }
     }
 
     public static async Task InitializeMasaStackApplicationAsync(
