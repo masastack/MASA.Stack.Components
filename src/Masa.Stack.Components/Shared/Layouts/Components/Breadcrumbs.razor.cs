@@ -43,7 +43,7 @@ namespace Masa.Stack.Components.Layouts
         {
             Items = new();
 
-            var absolutePath = new Uri(NavigationManager.Uri).AbsolutePath;
+            var absolutePath = GetNormalizedAbsolutePath(NavigationManager.Uri, NavigationManager.ProjectPrefix);
             var matchedNavs = FlattenedNavs.Where(n =>
             {
                 try
@@ -204,6 +204,21 @@ namespace Masa.Stack.Components.Layouts
         {
             NavigationManager.LocationChanged -= NavigationManagerOnLocationChanged;
             return base.DisposeAsyncCore();
+        }
+
+        private string GetNormalizedAbsolutePath(string uri, string? projectPrefix)
+        {
+            var absolutePath = new Uri(uri).AbsolutePath;
+            projectPrefix = projectPrefix?.TrimEnd('/') ?? string.Empty;
+            if (!string.IsNullOrEmpty(projectPrefix) && absolutePath.StartsWith(projectPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                absolutePath = absolutePath[projectPrefix.Length..];
+                if (!absolutePath.StartsWith("/"))
+                {
+                    absolutePath = "/" + absolutePath;
+                }
+            }
+            return absolutePath;
         }
     }
 }

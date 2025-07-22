@@ -25,7 +25,7 @@ public class WasmTeamStateManager : ITeamStateManager, IScopedDependency
         _logger = logger;
     }
 
-    /// <summary>
+        /// <summary>
     /// 强制刷新 token，通过清除当前 token 来触发 refresh token 流程
     /// </summary>
     private async Task<string?> ForceRefreshTokenAsync()
@@ -63,10 +63,10 @@ public class WasmTeamStateManager : ITeamStateManager, IScopedDependency
         try
         {
             _logger.LogInformation("开始切换团队，团队ID: {TeamId}", teamId);
-
+            
             // 短暂延迟确保后端团队信息更新完成
             await Task.Delay(100);
-
+            
             // 强制刷新 token，获取最新的 claims
             var newToken = await ForceRefreshTokenAsync();
 
