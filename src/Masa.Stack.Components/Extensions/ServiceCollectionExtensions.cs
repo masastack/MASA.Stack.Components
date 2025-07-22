@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
@@ -40,10 +42,12 @@ public static class ServiceCollectionExtensions
             // 检测是否为 WASM 模式
             if (IsWebAssemblyEnvironment(sp))
             {
-                // WASM 模式：使用页面刷新获取最新的 token 和 claims
+                // WASM 模式：使用 refresh token 获取最新的 token 和 claims
                 var authStateProvider = sp.GetRequiredService<AuthenticationStateProvider>();
                 var navigationManager = sp.GetRequiredService<NavigationManager>();
-                return new WasmTeamStateManager(authStateProvider, navigationManager);
+                var tokenProvider = sp.GetRequiredService<IAccessTokenProvider>();
+                var logger = sp.GetRequiredService<ILogger<WasmTeamStateManager>>();
+                return new WasmTeamStateManager(authStateProvider, navigationManager, tokenProvider, logger);
             }
             else
             {
