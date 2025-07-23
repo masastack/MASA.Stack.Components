@@ -6,7 +6,8 @@
     @if (subNav.HasChildren)
     {
         <div class="d-flex align-star @Class" style="position: relative">
-            <img src="https://cdn.masastack.com/stack/images/component/nav-sub-before.png" width="18" height="48" alt="line" />
+            <img src="https://cdn.masastack.com/stack/images/component/nav-sub-before.png" width="18" height="48" alt="line" 
+                 style="user-select: none;"/>
             <MListGroup Group="@GenGroup(subNav.Children)"
                         Class="full-width"
                         ActiveClass="primary--text"
@@ -48,14 +49,16 @@
         {
             <div class="d-flex align-center @Class">
                 <img src="https://cdn.masastack.com/stack/images/component/nav-before-first-sub.png" height="8"
-                     alt="first-sub-before" />
+                     alt="first-sub-before"
+                     style="user-select: none;"/>
             </div>
         }
 
         <div class="d-flex align-center @Class">
-            <img src="https://cdn.masastack.com/stack/images/component/nav-sub-before.png" width="18" height="48" alt="line" />
+            <img src="https://cdn.masastack.com/stack/images/component/nav-sub-before.png" width="18" height="48" alt="line" 
+                 style="user-select: none"/>
 
-            <SListItem Medium Class="mb-0 rounded-2"
+            <SListItem Medium Class="mb-0 rounded-2" 
                        ActiveClass="primary"
                        Href="@BuildHref(subNav.Url)"
                        Exact="@subNav.Exact"
