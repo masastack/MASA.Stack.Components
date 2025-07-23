@@ -7,30 +7,6 @@
     font-size: 16px;
 }
 
-    .masa.m-application .primary {
-        background-color: #4318FF !important;
-    }
-
-    .masa.m-application .primary-hover {
-        background-color: #6956FF !important;
-    }
-
-    .masa.m-application .primary-clicked {
-        background-color: #3613CC !important;
-    }
-
-    .masa.m-application .primary-disabled {
-        background-color: #A18BFF !important;
-    }
-
-    .masa.m-application .primary-special {
-        background-color: #D9D1FF !important;
-    }
-
-    .masa.m-application .primary-lighten {
-        background-color: #ECE8FF !important;
-    }
-
     .masa.m-application .default {
         background-color: #000000 !important;
     }
@@ -59,201 +35,33 @@
         background-color: #FFFFFF !important;
     }
 
-    .masa.m-application .fill-lighten {
-        background-color: #FAFBFE !important;
-    }
-
-    .masa.m-application .fill-hover {
-        background-color: #F6F8FD !important;
-    }
-
-    .masa.m-application .fill-background {
-        background-color: #F0F3FA !important;
-    }
-
-    .masa.m-application .fill-disabled {
-        background-color: #E9EDF7 !important;
-    }
-
-    .masa.m-application .fill-line {
-        background-color: #E2E7F4 !important;
-    }
-
-    .masa.m-application .fill-overlay {
-        background-color: #141726 !important;
-    }
-
     .masa.m-application .success {
         background-color: #00B42A !important;
     }
-
-    .masa.m-application .success-hover {
-        background-color: #23C343 !important;
-    }
-
-    .masa.m-application .success-clicked {
-        background-color: #009A29 !important;
-    }
-
-    .masa.m-application .success-disabled {
-        background-color: #7BE188 !important;
-    }
-
-    .masa.m-application .success-special {
-        background-color: #AFF0B5 !important;
-    }
-
-    .masa.m-application .success-lighten {
-        background-color: #E8FFEA !important;
-    }
-
+    
     .masa.m-application .remind {
         background-color: #FF7D00 !important;
-    }
-
-    .masa.m-application .remind-hover {
-        background-color: #FF9A2E !important;
-    }
-
-    .masa.m-application .remind-clicked {
-        background-color: #D25F00 !important;
-    }
-
-    .masa.m-application .remind-disabled {
-        background-color: #FFCF8B !important;
-    }
-
-    .masa.m-application .remind-special {
-        background-color: #FFE4BA !important;
-    }
-
-    .masa.m-application .remind-lighten {
-        background-color: #FFF7E8 !important;
     }
 
     .masa.m-application .warning {
         background-color: #FF5252 !important;
     }
 
-    .masa.m-application .warning-hover {
-        background-color: #FF8A80 !important;
-    }
-
-    .masa.m-application .warning-clicked {
-        background-color: #B71C1C !important;
-    }
-
-    .masa.m-application .warning-disabled {
-        background-color: #FBACA3 !important;
-    }
-
-    .masa.m-application .warning-special {
-        background-color: #FDCDC5 !important;
-    }
-
-    .masa.m-application .warning-lighten {
-        background-color: #FFECE8 !important;
-    }
-
     .masa.m-application .info {
         background-color: #37A7FF !important;
-    }
-
-    .masa.m-application .info-hover {
-        background-color: #5FB9FF !important;
-    }
-
-    .masa.m-application .info-clicked {
-        background-color: #2C86CC !important;
-    }
-
-    .masa.m-application .info-disabled {
-        background-color: #9BD3FF !important;
-    }
-
-    .masa.m-application .info-special {
-        background-color: #D7EDFF !important;
-    }
-
-    .masa.m-application .info-lighten {
-        background-color: #EBF6FF !important;
     }
 
     .masa.m-application .yellow {
         background-color: #FFB547 !important;
     }
 
-    .masa.m-application .yellow-hover {
-        background-color: #FFC46C !important;
-    }
-
-    .masa.m-application .yellow-clicked {
-        background-color: #CC9139 !important;
-    }
-
-    .masa.m-application .yellow-disabled {
-        background-color: #FFDAA3 !important;
-    }
-
-    .masa.m-application .yellow-special {
-        background-color: #FFF0DA !important;
-    }
-
-    .masa.m-application .yellow-lighten {
-        background-color: #FFF8ED !important;
-    }
-
     .masa.m-application .green {
         background-color: #05CD99 !important;
-    }
-
-    .masa.m-application .green-hover {
-        background-color: #37D7AD !important;
-    }
-
-    .masa.m-application .green-clicked {
-        background-color: #04A47A !important;
-    }
-
-    .masa.m-application .green-disabled {
-        background-color: #82E6CC !important;
-    }
-
-    .masa.m-application .green-special {
-        background-color: #CDF5EB !important;
-    }
-
-    .masa.m-application .green-lighten {
-        background-color: #E6FAF5 !important;
     }
 
     /*
     color of text
 */
-
-    .masa.m-application .primary--text {
-        color: #4318FF !important;
-    }
-
-    .masa.m-application .primary-hover--text {
-        color: #6956FF !important;
-    }
-
-    .masa.m-application .primary-clicked--text {
-        color: #3613CC !important;
-    }
-
-    .masa.m-application .primary-disabled--text {
-        color: #A18BFF !important;
-    }
-
-    .masa.m-application .primary-special--text {
-        color: #D9D1FF !important;
-    }
-
-    .masa.m-application .primary-lighten--text {
-        color: #ECE8FF !important;
-    }
 
     .masa.m-application .default--text {
         color: #000000 !important;
@@ -283,76 +91,12 @@
         color: #FFFFFF !important;
     }
 
-    .masa.m-application .fill-lighten--text {
-        color: #FAFBFE !important;
-    }
-
-    .masa.m-application .fill-hover--text {
-        color: #F6F8FD !important;
-    }
-
-    .masa.m-application .fill-background--text {
-        color: #F0F3FA !important;
-    }
-
-    .masa.m-application .fill-disabled--text {
-        color: #E9EDF7 !important;
-    }
-
-    .masa.m-application .fill-line--text {
-        color: #E2E7F4 !important;
-    }
-
-    .masa.m-application .fill-overlay--text {
-        color: #141726 !important;
-    }
-
     .masa.m-application .yellow--text {
         color: #FFB547 !important;
     }
 
-    .masa.m-application .yellow-hover--text {
-        color: #FFC46C !important;
-    }
-
-    .masa.m-application .yellow-clicked--text {
-        color: #CC9139 !important;
-    }
-
-    .masa.m-application .yellow-disabled--text {
-        color: #FFDAA3 !important;
-    }
-
-    .masa.m-application .yellow-special--text {
-        color: #FFF0DA !important;
-    }
-
-    .masa.m-application .yellow-lighten--text {
-        color: #FFF8ED !important;
-    }
-
     .masa.m-application .green--text {
         color: #05CD99 !important;
-    }
-
-    .masa.m-application .green-hover--text {
-        color: #37D7AD !important;
-    }
-
-    .masa.m-application .green-clicked--text {
-        color: #04A47A !important;
-    }
-
-    .masa.m-application .green-disabled--text {
-        color: #82E6CC !important;
-    }
-
-    .masa.m-application .green-special--text {
-        color: #CDF5EB !important;
-    }
-
-    .masa.m-application .green-lighten--text {
-        color: #E6FAF5 !important;
     }
     /*
     font
