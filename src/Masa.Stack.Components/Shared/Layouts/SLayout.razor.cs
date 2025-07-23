@@ -198,8 +198,6 @@ public partial class SLayout
             }
 #endif
 
-            NavItems.AddPrefixToUrls(NavigationManager.ProjectPrefix);
-
             GlobalConfig.Menus = NavItems;
 
             FlattenedNavs = FlattenNavs(NavItems, true);
@@ -230,8 +228,6 @@ public partial class SLayout
             {
                 Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
             }
-
-
 
             StateHasChanged();
         }
@@ -280,6 +276,8 @@ public partial class SLayout
 
     private bool IsMenusUri(List<Nav> navs, string uri)
     {
+        uri = NormalizeUri(uri);
+
         if (_whiteUriList.Any(w => Regex.IsMatch(uri.ToLower(), w, RegexOptions.IgnoreCase)))
         {
             return true;
@@ -417,5 +415,14 @@ public partial class SLayout
     public void Dispose()
     {
         NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    private string NormalizeUri(string uri)
+    {
+        if (uri.StartsWith(NavigationManager.ProjectPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return "/" + uri.Substring(NavigationManager.ProjectPrefix.Length);
+        }
+        return uri;
     }
 }

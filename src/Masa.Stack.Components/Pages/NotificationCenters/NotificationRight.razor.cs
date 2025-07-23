@@ -45,7 +45,7 @@ public partial class NotificationRight : MasaComponentBase
 
     private async Task HandleOnClick(WebsiteMessageModel item)
     {
-        if (!string.IsNullOrEmpty(item.LinkUrl))
+        if (!string.IsNullOrEmpty(item.LinkUrl) && item.LinkUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
         {
             NavigationManager.NavigateTo(item.LinkUrl);
             return;

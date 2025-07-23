@@ -11,10 +11,10 @@ await builder.AddMasaOpenIdConnectAsync(new MasaOpenIdConnectOptions
 {
     Authority = masaStackConfig.GetSsoDomain(),
     ClientId = masaStackConfig.GetWebId(MasaStackProject.Auth),
-    Scopes = new List<string> { "openid", "profile" }
+    Scopes = new List<string> { "openid", "profile", "offline_access" }
 });
 
-builder.Services.AddMasaStackComponentsWithNormalApp(MasaStackProject.Auth, "http://localhost:4317", "1.0.0");
+builder.Services.AddMasaStackComponent(MasaStackProject.Auth, "", microFrontend: false);
 var host = builder.Build();
 await host.Services.InitializeMasaStackApplicationAsync();
 await host.RunAsync();

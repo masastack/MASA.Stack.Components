@@ -5,6 +5,7 @@
 @inject IJSRuntime JS
 @inject ILogger<User> Logger
 @inject AuthenticationStateManager AuthenticationStateManager
+@inject ITeamStateManager TeamStateManager
 @inject SignOutSessionStateManager SignOutManager
 
 <MMenu @bind-Value="@MenuVisible" OffsetY NudgeTop="-8" CloseOnContentClick="false"
@@ -148,9 +149,24 @@
             try
             {
                 _teams = await AuthClient.TeamService.GetUserTeamsAsync();
-                if (MasaUser.CurrentTeamId == Guid.Empty && _teams.Any())
+                
+                // 从身份验证状态中获取当前团队信息（在 WASM 模式下来自 token）
+                var currentTeamId = await TeamStateManager.GetCurrentTeamAsync();
+                if (currentTeamId != Guid.Empty && _teams.Any(t => t.Id == currentTeamId))
                 {
+                    // 如果从身份验证状态中找到有效的团队信息，使用它
+                    MasaUser.CurrentTeamId = currentTeamId;
+                    GlobalConfig.CurrentTeamId = currentTeamId;
+                }
+                else if (MasaUser.CurrentTeamId == Guid.Empty && _teams.Any())
+                {
+                    // 如果没有团队信息，则使用第一个团队
                     await CurrentTeamChanged(_teams.First().Id);
+                }
+                else if (MasaUser.CurrentTeamId != Guid.Empty && _teams.Any(t => t.Id == MasaUser.CurrentTeamId))
+                {
+                    // 如果 MasaUser 中有有效的团队信息，使用它
+                    GlobalConfig.CurrentTeamId = MasaUser.CurrentTeamId;
                 }
             }
             catch (Exception e)
@@ -158,8 +174,6 @@
                 Logger.LogError(e, "AuthClient.TeamService.GetUserTeamsAsync");
             }
 
-            MasaUser.CurrentTeamId = CurrentTeam.Id;
-            GlobalConfig.CurrentTeamId = CurrentTeam.Id;            
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -184,7 +198,8 @@
             await AuthClient.UserService.SetCurrentTeamAsync(teamId);
         }
 
-        await AuthenticationStateManager.UpsertClaimAsync(IdentityClaimConsts.CURRENT_TEAM, teamId.ToString());
+        // 使用新的团队状态管理器，兼容 Server 和 WASM 模式
+        await TeamStateManager.SetCurrentTeamAsync(teamId);
         GlobalConfig.CurrentTeamId = teamId;
         MasaUser.CurrentTeamId = teamId;
         _showChangeTeam = false;
