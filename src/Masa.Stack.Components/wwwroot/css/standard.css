@@ -33,32 +33,7 @@
 
     .masa.m-application .fill {
       background-color: #FFFFFF !important;
-    }
-
-    .masa.m-application .success {
-      background-color: #00B42A !important;
-    }
-
-    .masa.m-application .remind {
-      background-color: #FF7D00 !important;
-    }
-
-    .masa.m-application .warning {
-      background-color: #FF5252 !important;
-    }
-
-    .masa.m-application .info {
-      background-color: #37A7FF !important;
-    }
-
-    .masa.m-application .yellow {
-      background-color: #FFB547 !important;
-    }
-
-    .masa.m-application .green {
-      background-color: #05CD99 !important;
-    }
-    
+    }    
     /*
     color of text
     */
@@ -89,14 +64,6 @@
 
     .masa.m-application .fill--text {
       color: #FFFFFF !important;
-    }
-
-    .masa.m-application .yellow--text {
-      color: #FFB547 !important;
-    }
-
-    .masa.m-application .green--text {
-      color: #05CD99 !important;
     }
     /*
     font
