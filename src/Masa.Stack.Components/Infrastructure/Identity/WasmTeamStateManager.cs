@@ -45,7 +45,7 @@ public class WasmTeamStateManager : ITeamStateManager, IScopedDependency
                 return newToken.Value;
             }
 
-            _logger.LogWarning("无法获取有效的 token，需要重新登录");
+            _logger.LogWarning("Token 刷新失败");
             return null;
         }
         catch (Exception ex)
@@ -70,16 +70,7 @@ public class WasmTeamStateManager : ITeamStateManager, IScopedDependency
             // 强制刷新 token，获取最新的 claims
             var newToken = await ForceRefreshTokenAsync();
 
-            if (newToken != null)
-            {
-                _logger.LogInformation("团队切换完成，团队ID: {TeamId}", teamId);
-            }
-            else
-            {
-                // 如果 token 刷新失败，回退到页面刷新
-                _logger.LogWarning("Token 刷新失败，回退到页面刷新");
-                _navigationManager.NavigateTo(_navigationManager.Uri, true);
-            }
+            _navigationManager.NavigateTo(_navigationManager.Uri, true);
         }
         catch (Exception ex)
         {
