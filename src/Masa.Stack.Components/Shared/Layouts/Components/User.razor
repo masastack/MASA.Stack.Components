@@ -150,23 +150,10 @@
             {
                 _teams = await AuthClient.TeamService.GetUserTeamsAsync();
                 
-                // 从身份验证状态中获取当前团队信息（在 WASM 模式下来自 token）
-                var currentTeamId = await TeamStateManager.GetCurrentTeamAsync();
-                if (currentTeamId != Guid.Empty && _teams.Any(t => t.Id == currentTeamId))
-                {
-                    // 如果从身份验证状态中找到有效的团队信息，使用它
-                    MasaUser.CurrentTeamId = currentTeamId;
-                    GlobalConfig.CurrentTeamId = currentTeamId;
-                }
-                else if (MasaUser.CurrentTeamId == Guid.Empty && _teams.Any())
+                if (MasaUser.CurrentTeamId == Guid.Empty && _teams.Any())
                 {
                     // 如果没有团队信息，则使用第一个团队
                     await CurrentTeamChanged(_teams.First().Id);
-                }
-                else if (MasaUser.CurrentTeamId != Guid.Empty && _teams.Any(t => t.Id == MasaUser.CurrentTeamId))
-                {
-                    // 如果 MasaUser 中有有效的团队信息，使用它
-                    GlobalConfig.CurrentTeamId = MasaUser.CurrentTeamId;
                 }
             }
             catch (Exception e)

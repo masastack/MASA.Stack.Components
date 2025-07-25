@@ -77,35 +77,4 @@ public class WasmTeamStateManager : ITeamStateManager, IScopedDependency
             _logger.LogError(ex, "切换团队时发生错误，团队ID: {TeamId}", teamId);
         }
     }
-
-    /// <summary>
-    /// 从当前身份验证状态中获取团队ID
-    /// </summary>
-    public async Task<Guid> GetCurrentTeamAsync()
-    {
-        try
-        {
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var teamIdClaim = authState.User.FindFirst(IdentityClaimConsts.CURRENT_TEAM);
-
-            if (teamIdClaim != null && Guid.TryParse(teamIdClaim.Value, out var teamId))
-            {
-                return teamId;
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "获取当前团队ID时发生错误");
-        }
-
-        return Guid.Empty;
-    }
-
-    /// <summary>
-    /// 清除团队状态
-    /// </summary>
-    public async Task ClearTeamStateAsync()
-    {
-        await SetCurrentTeamAsync(Guid.Empty);
-    }
 }
