@@ -218,5 +218,7 @@
   "404Tips": "要求されたURLを見つけることができません。",
   "BackToHome": "ホームに戻る",
   "NavigationLayerLabel": "メニューディスプレイ",
-  "Layer": "レイヤー"
+  "Layer": "レイヤー",
+  "HasSelected": "{0}/{1} アイテムが選択されています",
+  "Label": "ラベル"
 }

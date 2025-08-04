@@ -219,5 +219,7 @@
   "404Tips": "找不到请求的URL。",
   "BackToHome": "回到主页",
   "NavigationLayerLabel": "菜单显示",
-  "Layer": "层"
+  "Layer": "层",
+  "HasSelected": "已选择 {0}/{1} 条数据",
+  "Label": "标签"
 }

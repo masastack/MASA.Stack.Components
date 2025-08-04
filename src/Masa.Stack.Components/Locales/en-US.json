@@ -133,5 +133,7 @@
   "404Tips": "The requested URL was not found.",
   "BackToHome": "Back to home",
   "NavigationLayerLabel": "Menu display",
-  "Layer": "layer"
+  "Layer": "layer",
+  "HasSelected": "Has selected {0}/{1} items",
+  "Label": "Label"
 }
