@@ -1,0 +1,218 @@
+﻿@namespace Masa.Stack.Components
+@using System.Linq.Expressions
+@using Masa.Blazor.Presets
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@typeparam TItem
+@typeparam TItemValue
+@inject I18n I18n
+
+<MAutocomplete Value="@Value"
+               ValueChanged="@ValueChanged"
+               ValueExpression="@ValueExpression"
+               Items="@Items"
+               ItemText="@ItemText"
+               ItemValue="@ItemValue"
+               ItemDisabled="@ItemDisabled"
+               Dense="@Dense"
+               Outlined="@Outlined"
+               Filled="@Filled"
+               Solo="@Solo"
+               SoloInverted="@SoloInverted"
+               HideDetails="@HideDetails"
+               Chips="@Chips"
+               SmallChips="@SmallChips"
+               Label="@Label"
+               Class="@(("s-expandable-autocomplete " + Class).Trim())"
+               Style="@Style"
+               Multiple>
+    <AppendOuterContent>
+        <MButton IconName="mdi-arrow-expand"
+                 Class="my-auto"
+                 Small="@Dense"
+                 OnClickStopPropagation
+                 OnClick="@OnExpand"/>
+    </AppendOuterContent>
+</MAutocomplete>
+
+<PDrawer @bind-Value="expanded" Title="@I18n.T("HasSelected", Value.Count, _items.Count)">
+    <MTextField @bind-Value="Search" Label="@I18n.T("Search")" Dense
+                HideDetails="true" Class="mb-2" Outlined Clearable></MTextField>
+    <MSimpleTable FixedHeader Height="@("calc(100vh - 159px)")">
+        <thead>
+        <tr>
+            <th class="text-center" style="width: 40px">
+                <MSimpleCheckbox Indeterminate="@Indeterminate"
+                                 Value="@IsAllSelected"
+                                 ValueChanged="SelectAll"
+                                 Color="primary"/>
+            </th>
+            <th class="text-left">
+                @I18n.T("Label")
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <Virtualize Items="@_filteredItems" ItemSize="48">
+            <ItemContent>
+                <tr>
+                    <td class="text-center">
+                        <MSimpleCheckbox Value="@Value.Contains(context.Value)"
+                                         ValueChanged="@((value) => Select(context.Value, value))"
+                                         Color="primary"/>
+                    </td>
+                    <td>@context.Label</td>
+                </tr>
+            </ItemContent>
+        </Virtualize>
+        </tbody>
+    </MSimpleTable>
+</PDrawer>
+
+@code {
+
+    #region Parameters
+
+    [Parameter] public List<TItemValue?> Value { get; set; } = [];
+
+    [Parameter] public EventCallback<List<TItemValue?>> ValueChanged { get; set; }
+
+    [Parameter] public Expression<Func<List<TItemValue?>>>? ValueExpression { get; set; }
+
+    [EditorRequired]
+    [Parameter] public IList<TItem> Items { get; set; } = [];
+
+    [Parameter]
+    public Func<TItem, bool>? ItemDisabled { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public Func<TItem, string>? ItemText { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public Func<TItem, TItemValue?>? ItemValue { get; set; }
+
+    [Parameter] public bool Dense { get; set; }
+
+    [Parameter] public bool Outlined { get; set; }
+
+    [Parameter] public bool Chips { get; set; }
+
+    [Parameter] public bool SmallChips { get; set; }
+
+    [Parameter] public string? Label { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter] public string? Style { get; set; }
+
+    [Parameter] public bool Filled { get; set; }
+
+    [Parameter] public bool Solo { get; set; }
+
+    [Parameter] public bool SoloInverted { get; set; }
+
+    [Parameter] public StringBoolean? HideDetails { get; set; }
+
+    #endregion
+
+    private string? _search;
+
+    private string? Search
+    {
+        get => _search;
+        set
+        {
+            _search = value;
+            UpdateFilterItems();
+        }
+    }
+
+    private IList<TItem> _previousItems = [];
+    private HashSet<InternalItem> _items = [];
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (!Equals(_previousItems, Items) || _items.Count == 0)
+        {
+            _previousItems = Items;
+            if (ItemValue is null)
+            {
+                return;
+            }
+
+            _items = Items.Select(item => new InternalItem(ItemText?.Invoke(item), ItemValue.Invoke(item)))
+                .ToHashSet();
+            UpdateFilterItems();
+        }
+    }
+
+    private bool expanded;
+
+    private bool IsAllSelected => _filteredValues.Count > 0 && _filteredValues.All(v => Value.Contains(v));
+    private bool Indeterminate => _filteredValues.Any(v => Value.Contains(v)) && !IsAllSelected;
+
+    private HashSet<InternalItem> _filteredItems = [];
+    private HashSet<TItemValue?> _filteredValues = [];
+
+    private record InternalItem(string? Label, TItemValue? Value);
+
+    private void UpdateFilterItems()
+    {
+        _filteredItems = string.IsNullOrWhiteSpace(Search)
+            ? _items.ToHashSet()
+            : _items.Where(item => item.Label?.Contains(Search, StringComparison.OrdinalIgnoreCase) == true).ToHashSet();
+
+        _filteredValues = _filteredItems.Select(item => item.Value).ToHashSet();
+    }
+
+    private void OnExpand()
+    {
+        expanded = !expanded;
+    }
+
+    private async Task Select(TItemValue? item, bool value)
+    {
+        if (value)
+        {
+            if (!Value.Contains(item))
+            {
+                await ValueChanged.InvokeAsync([..Value, item]);
+            }
+        }
+        else
+        {
+            List<TItemValue?> selected = [..Value];
+            selected.Remove(item);
+            await ValueChanged.InvokeAsync(selected);
+        }
+    }
+
+    private async Task SelectAll(bool value)
+    {
+        if (_filteredValues.Count == 0)
+        {
+            return;
+        }
+
+        if (value)
+        {
+            HashSet<TItemValue?> selected = [..Value, .._filteredValues];
+
+            await ValueChanged.InvokeAsync(selected.ToList());
+        }
+        else
+        {
+            List<TItemValue?> selected = [..Value];
+            foreach (var filteredValue in _filteredValues)
+            {
+                selected.Remove(filteredValue);
+            }
+
+            await ValueChanged.InvokeAsync(selected);
+        }
+    }
+
+}

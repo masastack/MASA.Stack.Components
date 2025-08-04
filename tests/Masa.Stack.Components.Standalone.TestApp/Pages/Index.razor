@@ -2,37 +2,36 @@
 
 <h1>Hello world!</h1>
 
-<div style="height:150vh">
+<SExpandableAutocomplete @bind-Value="_values"
+                         Items="_items"
+                         ItemText="r => r"
+                         ItemValue="r => r"
+                         Outlined
+                         Chips
+                         Dense
+                         SmallChips
+                         Label="Outlined">
+</SExpandableAutocomplete>
 
-    <SActions Dense>
-        <ChildContent>
-            <MButton Small Outlined Color="primary">Details</MButton>
-        </ChildContent>
-        <DropdownContent>
-            <MButton LeftIconName="mdi-account">Account</MButton>
-            <MButton LeftIconName="mdi-cog">Settings</MButton>
-            <MButton LeftIconName="mdi-lock">Privacy</MButton>
-            <MDivider/>
-            <MButton>Star</MButton>
-            <MDivider/>
-            <MButton Color="error" LeftIconName="mdi-delete">Delete</MButton>
-        </DropdownContent>
-    </SActions>
+@code{
 
-    <MCard>
-        <SActions Dense>
-            <ChildContent>
-                <MButton Small Outlined Color="primary">Details</MButton>
-            </ChildContent>
-            <DropdownContent>
-                <MButton LeftIconName="mdi-account">Account</MButton>
-                <MButton LeftIconName="mdi-cog">Settings</MButton>
-                <MButton LeftIconName="mdi-lock">Privacy</MButton>
-                <MDivider/>
-                <MButton>Star</MButton>
-                <MDivider/>
-                <MButton Color="error" LeftIconName="mdi-delete">Delete</MButton>
-            </DropdownContent>
-        </SActions>
-    </MCard>
-</div>
+    private List<string> _items = new List<string>()
+    {
+        "foo", "bar", "fizz", "buzz", "hello", "world", "lorem", "ipsum",
+        "sit", "amet", "consectetur", "adipiscing", "elit",
+        "sed", "do", "eiusmod", "tempor", "incididunt", "labore",
+        "et", "magna", "aliqua", "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation",
+        "ullamco", "laboris", "nisi", "aliquip", "ex", "ea", "commodo",
+        "consequat", "duis", "aute", "irure",
+        "reprehenderit", "voluptate", "velit",
+        "esse", "cillum", "eu", "fugiat",
+        "nulla", "pariatur", "excepteur", "sint",
+    };
+
+    private List<string> _values = new List<string>
+    {
+        "foo", "bar"
+    };
+
+    private string _value = "foo";
+}
