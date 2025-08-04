@@ -1020,3 +1020,14 @@ h1:focus {
         padding-left: 300px !important;
     }
 }
+
+/* expandable-autocomplete */
+
+.s-expandable-autocomplete .m-input__append-outer {
+  margin-top: 10px !important;
+  margin-left: 4px !important;
+}
+
+.s-expandable-autocomplete.m-input--dense .m-input__append-outer {
+  margin-top: 6px !important;
+}
