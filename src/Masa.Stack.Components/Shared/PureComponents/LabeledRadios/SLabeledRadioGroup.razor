@@ -116,8 +116,11 @@
 
         if (item != null)
         {
-            _selectedKey = item.Instance?.Value;
-            await SelectedKeyChanged(_selectedKey);
+            var currentKey = item.Instance?.Value;
+            if (currentKey != _selectedKey)
+            {
+            await SelectedKeyChanged(currentKey);
+            }
         }
 
         await CallSlider();
