@@ -138,7 +138,7 @@ namespace Masa.Stack.Components.Layouts
                 Text = currentNav.Name
             });
 
-            if (extra != null)
+            if (!string.IsNullOrWhiteSpace(extra))
             {
                 Items.Add(new BreadcrumbItem()
                 {

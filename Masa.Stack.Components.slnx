@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/Masa.Stack.Components.Standalone/Masa.Stack.Components.Standalone.csproj" />
+  <Project Path="src/Masa.Stack.Components/Masa.Stack.Components.csproj" />
+  <Project Path="tests/Masa.Stack.Components.Standalone.TestApp/Masa.Stack.Components.Standalone.TestApp.csproj" />
+  <Project Path="tests/MasaWasmApp/MasaWasmApp.csproj" />
+</Solution>
