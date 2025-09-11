@@ -5,7 +5,7 @@ namespace Masa.Stack.Components.Layouts
     public partial class Breadcrumbs : MasaComponentBase
     {
         [Inject] private ILogger<Breadcrumbs> Logger { get; set; } = null!;
-        
+
         [Parameter, EditorRequired] public List<Nav> FlattenedNavs { get; set; } = new();
 
         private List<Nav>? _previousFlattenedNavs;
@@ -138,7 +138,7 @@ namespace Masa.Stack.Components.Layouts
                 Text = currentNav.Name
             });
 
-            if (extra != null)
+            if (!string.IsNullOrWhiteSpace(extra))
             {
                 Items.Add(new BreadcrumbItem()
                 {

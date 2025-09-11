@@ -8,6 +8,10 @@
             @for (var i = 0; i < Items.Count; i++)
             {
                 var item = Items[i];
+                if (string.IsNullOrWhiteSpace(item.Text))
+                {
+                    continue;
+                }
                 var isLast = i == Items.Count - 1;
                 <MBreadcrumbsItem @key="@item"
                                   Href="@(isLast ? null : item.Href)">
