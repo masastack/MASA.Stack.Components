@@ -506,6 +506,8 @@ h1:focus {
 
 .masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-48 .m-input__append-inner {
     margin-top: 12px;
+    height: 48px;
+    margin-right: -12px;
 }
 
 .masa-stack-components .m-text-field--outlined.m-input--dense.m-input--dense-40 .m-label {
