@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Stack.Components.Standalone;
+
+namespace Masa.Stack.Components;
 
 public class STextField<TValue> : MTextField<TValue>
 {
@@ -29,7 +31,7 @@ public class STextField<TValue> : MTextField<TValue>
     private RenderFragment? _tooltipContent;
     private RenderFragment? _actionContent;
     private string? _fieldName;
-    
+
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         Dense = true;
@@ -42,7 +44,7 @@ public class STextField<TValue> : MTextField<TValue>
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        
+
         // TODO: refactor the following code about css
         Class ??= "";
         if (Large is false && Small is false) Medium = true;
@@ -77,14 +79,14 @@ public class STextField<TValue> : MTextField<TValue>
         if (Action is not null)
         {
             Action.Invoke(InternalAction);
-        
+
             _actionContent ??= builder =>
             {
                 builder.OpenComponent<MDivider>(0);
                 builder.AddAttribute(1, "Vertical", true);
                 builder.CloseComponent();
-        
-                builder.OpenComponent<SAutoLoadingButton>(2);
+
+                builder.OpenComponent<SBtn>(2);
                 builder.AddAttribute(3, "Text", InternalAction.Text);
                 builder.AddAttribute(4, "Disabled", InternalAction.Disabled);
                 builder.AddAttribute(5, "Color", InternalAction.Color);
@@ -94,7 +96,7 @@ public class STextField<TValue> : MTextField<TValue>
                 builder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));
                 builder.CloseComponent();
             };
-        
+
             AppendContent = _actionContent;
         }
 
