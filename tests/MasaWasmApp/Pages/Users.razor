@@ -1,4 +1,6 @@
-﻿@page "/users"
+﻿@inject MasaBlazor MasaBlazor
+@inject IJSRuntime JSRuntime
+@page "/users"
 
 <ul>
     <li><a href="/users/1?a=1">User 1</a></li>
@@ -8,9 +10,205 @@
     <li><a href="/users/5">User 5</a></li>
 </ul>
 
+
+<SDateTimeRangeToolbar />
+
+
+<MButtonGroup @bind-Value="@_themeName" @bind-Value:after="OnThemeChanged" Mandatory Color="primary" Class="mb-4">
+    @foreach (var item in themes)
+    {
+        <MButton Value="@item" Class="text-none">@item</MButton>
+    }
+</MButtonGroup>
+
+<MThemeProvider Theme="@_themeName.ToString()" WithBackground>
+    <MRow Dense Class="pa-4 ma-0" Style="background:rgba(var(--m-theme-primary), 0.3)">
+        <MCol Cols="3">
+            <MCard Tile Elevation="0">
+                @GenBg("primary",
+                _currentThemeOptions?.Primary,
+                                "--m-theme-primary",
+                                "primary")
+                @GenText("primary", _currentThemeOptions?.OnPrimary, "--m-theme-on-primary", "primary--text")
+            </MCard>
+        </MCol>
+        <MCol Cols="3">
+            <MCard Tile Elevation="0">
+                @GenBg("secondary", _currentThemeOptions?.Secondary,
+                                "--m-theme-secondary",
+                                "secondary")
+                @GenText("secondary", _currentThemeOptions?.OnSecondary,
+                                "--m-theme-on-secondary",
+                                "secondary--text")
+            </MCard>
+        </MCol>
+        <MCol Cols="3">
+            <MCard Tile Elevation="0">
+                @GenBg("accent", _currentThemeOptions?.Accent,
+                                "--m-theme-accent",
+                                "accent")
+                @GenText("accent", _currentThemeOptions?.OnAccent,
+                                "--m-theme-on-accent",
+                                "accent--text")
+            </MCard>
+        </MCol>
+        <MCol Cols="3">
+            <MCard Tile Elevation="0">
+                @GenBg("error", _currentThemeOptions?.Error,
+                                "--m-theme-error",
+                                "error")
+                @GenText("error", _currentThemeOptions?.OnError,
+                                "--m-theme-on-error",
+                                "error--text")
+            </MCard>
+        </MCol>
+        <MCol Cols="9">
+            <MRow Dense>
+                <MCol Cols="4">
+                    <MCard Tile Elevation="0">
+                        @GenBg("surface-dim", default!,
+                                                "--m-theme-surface-dim",
+                                                "surface-dim")
+                    </MCard>
+                </MCol>
+                <MCol Cols="4">
+                    <MCard Tile Elevation="0">
+                        @GenBg("surface", _currentThemeOptions?.Surface,
+                                                "--m-theme-surface",
+                                                "surface")
+                    </MCard>
+                </MCol>
+                <MCol Cols="4">
+                    <MCard Tile Elevation="0">
+                        @GenBg("surface-bright", default,
+                                                "--m-theme-surface-bright",
+                                                "surface-bright")
+                    </MCard>
+                </MCol>
+                <MCol Cols="12">
+                    <MCard Tile Elevation="0" Class="d-flex">
+                        @GenBg("surface-container-lowest", default,
+                                                "--m-theme-surface-container-lowest",
+                                                "surface-container-lowest")
+                        @GenBg("surface-container-low",default,
+                                                "--m-theme-surface-container-low",
+                                                "surface-container-low")
+                        @GenBg("surface-container", _currentThemeOptions?.SurfaceContainer,
+                                                "--m-theme-surface-container",
+                                                "surface-container")
+                        @GenBg("surface-container-high", default,
+                                                "--m-theme-surface-container-high",
+                                                "surface-container-high")
+                        @GenBg("surface-container-highest", default,
+                                                "--m-theme-surface-container-highest",
+                                                "surface-container-highest")
+                    </MCard>
+                </MCol>
+                <MCol Cols="12">
+                    <MCard Tile Elevation="0" Class="d-flex">
+                        @GenBase(css: null, style: "background: rgba(var(--m-theme-on-surface)); color: rgba(var(--m-theme-surface));", "On Surface", 40, _currentThemeOptions?.OnSurface,
+                                                variableToCopy: "--m-theme-on-surface",
+                                                cssToCopy: null)
+                        @GenStyle("outline", color: null, "--m-theme-outline", "outline")
+                        @GenStyle("outline-variant", color: null, "--m-theme-outline-variant", "outline-variant")
+                    </MCard>
+                </MCol>
+            </MRow>
+        </MCol>
+        <MCol Cols="3" Align="AlignTypes.End">
+            <MRow Dense>
+                <MCol Cols="12">
+                    <MCard Tile Elevation="0">
+                        @GenBase(css: "inverse-surface", style: null, text: "Inverse Surface", height: 40, color: _currentThemeOptions?.InverseSurface,
+                                                "--m-theme-inverse-surface",
+                                                cssToCopy: "inverse-surface")
+                        @GenStyle("inverse-on-surface", _currentThemeOptions?.InverseOnSurface, "--m-theme-inverse-on-surface", "inverse-on-surface")
+                        @GenStyle("inverse-primary", _currentThemeOptions?.InversePrimary, "--m-theme-inverse-primary", null)
+                    </MCard>
+                </MCol>
+            </MRow>
+        </MCol>
+    </MRow>
+</MThemeProvider>
+
 @code {
 
-    [Parameter]
-    public string Id { get; set; }
+    private StringNumber _themeName = "light";
+    private ThemeOptions? _currentThemeOptions;
+    private (string Role, string Color)? _currentColorRole;
+
+    string[] themes = new[] { "light", "dadada" };
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _currentThemeOptions = MasaBlazor.Theme.CurrentTheme;
+    }
+
+    private void OnThemeChanged()
+    {
+        _currentThemeOptions = _themeName == "light" ? MasaBlazor.Theme.Themes.Light : MasaBlazor.Theme.Themes.Dark;
+    }
+
+    private RenderFragment GenBg(string role, string? color, string variableToCopy, string cssToCopy) => GenBase(
+        css: role,
+        style: null,
+        text: role,
+        height: 78,
+        color,
+        variableToCopy,
+        cssToCopy);
+
+    private RenderFragment GenText(string role, string? color, string variableToCopy, string cssToCopy) => GenBase(
+        css: null,
+        style: $"background: rgba(var(--m-theme-on-{role})); color: rgba(var(--m-theme-{role}-text));",
+        text: "on " + role,
+        height: 40,
+        color,
+        variableToCopy,
+        cssToCopy);
+
+    private RenderFragment GenStyle(string role, string? color, string variableToCopy, string? cssToCopy) => GenBase(
+        css: null,
+        style: $"background: rgba(var(--m-theme-{role})); color: rgba(var(--m-theme-{role}-text));",
+        text: role,
+        height: 40,
+        color,
+        variableToCopy,
+        cssToCopy);
+
+    private RenderFragment GenBase(string? css, string? style, string text, int height, string? color, string? variableToCopy = null, string? cssToCopy = null) => __builder =>
+    {
+        <div class="px-4 pt-2 text-capitalize flex-grow-1 rounded-0 text-body-2 @css"
+             style="@style position: relative; height: @($"{height}px")">
+            @text.Replace("-", " ")
+            <div style="position: absolute; right: 6px; bottom: 6px; left: 0;"
+                 class="d-flex align-center justify-end">
+                @GenBtn("mdi-eyedropper", color)
+
+                @if (variableToCopy is not null)
+                {
+                    @GenBtn("mdi-variable", $"rgba(var({variableToCopy}))")
+                }
+
+                @GenBtn("$css", cssToCopy)
+            </div>
+        </div>
+    };
+
+    private RenderFragment GenBtn(string icon, string? copyText) => __builder =>
+    {
+        @if (copyText is not null)
+        {
+            <MButton IconName="@icon" Small OnClick="@CopyText">
+                <MTooltip Activator="parent" Text="@copyText"></MTooltip>
+            </MButton>
+        }
+
+        void CopyText()
+        {
+            JSRuntime.InvokeVoidAsync(JsInteropConstants.CopyText, copyText).ConfigureAwait(false);
+        }
+    };
 
 }

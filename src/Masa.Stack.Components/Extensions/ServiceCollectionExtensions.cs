@@ -103,13 +103,13 @@ public static class ServiceCollectionExtensions
             options.ConfigureTheme(theme =>
             {
                 theme.Themes.Light.Primary = "#4318FF";
-                theme.Themes.Light.Accent = "#006c4f";
-                theme.Themes.Light.Error = "#ba1a1a";
+                theme.Themes.Light.Accent = "#4318FF";
+                theme.Themes.Light.Error = "#FF5252";
                 theme.Themes.Light.Success = "#00B42A";
-                theme.Themes.Light.Warning = "#FF5252";
+                theme.Themes.Light.Warning = "#FF7D00";
                 theme.Themes.Light.Info = "#37A7FF";
                 theme.Themes.Light.Surface = "#F0F3FA";
-                // theme.Themes.Light.UserDefined["reminder"] = "#FF7D00";
+                //theme.Themes.Light.UserDefined["reminder"] = "#FF7D00";
             });
             options.Defaults = new Dictionary<string, IDictionary<string, object?>?>
             {
