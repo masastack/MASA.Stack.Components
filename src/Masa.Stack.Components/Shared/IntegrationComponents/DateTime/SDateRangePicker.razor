@@ -14,10 +14,10 @@
                     </MButton>
                 </ActivatorContent>
                 <ChildContent>
-                    <SDatePicker Value=StartTime Max=EndTime ValueChanged=UpdateStartTimeAsync TValue="DateOnly?" OnInput="() => StartTimeVisible = false"/>
+                    <SDatePicker Value=StartTime Max=EndTime ValueChanged=UpdateStartTimeAsync TValue="DateOnly?" OnInput="() => StartTimeVisible = false" Color="primary" />
                 </ChildContent>
             </MMenu>
-            <MDivider Vertical Class="mx-2" Style="align-self: auto; height: 14px;"/>
+            <MDivider Vertical Class="mx-2" Style="align-self: auto; height: 14px;" />
             <MMenu @bind-Value="EndTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition" MaxWidth="290" Attach="Attach">
                 <ActivatorContent>
                     <MButton Text Small Class="@_datetimeEndTextCss"
@@ -27,7 +27,7 @@
                     </MButton>
                 </ActivatorContent>
                 <ChildContent>
-                    <SDatePicker Value=EndTime Min=StartTime ValueChanged=UpdateEndTimeAsync TValue="DateOnly?" OnInput="() => EndTimeVisible = false"/>
+                    <SDatePicker Value=EndTime Min=StartTime ValueChanged=UpdateEndTimeAsync TValue="DateOnly?" OnInput="() => EndTimeVisible = false" Color="primary" />
                 </ChildContent>
             </MMenu>
         </div>
