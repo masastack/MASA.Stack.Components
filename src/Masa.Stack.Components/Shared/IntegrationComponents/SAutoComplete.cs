@@ -13,7 +13,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
 
     [Parameter]
     public bool AutoLabel { get; set; } = true;
-    
+
     private RenderFragment? _requiredLabelContent;
     private string? _fieldName;
 
@@ -40,7 +40,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
         {
             if (Large)
             {
-                MinHeight = 56;
+                Height = 56;
                 if (Class.Contains("m-input--dense-56") is false)
                 {
                     Class += " m-input--dense-56";
@@ -48,7 +48,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
             }
             else if (Medium)
             {
-                MinHeight = 48;
+                Height = 48;
                 if (Class.Contains("m-input--dense-48") is false)
                 {
                     Class += " m-input--dense-48";
@@ -56,7 +56,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
             }
             else if (Small)
             {
-                MinHeight = 40;
+                Height = 40;
                 if (Class.Contains("m-input--dense-40") is false)
                 {
                     Class += " m-input--dense-40";
