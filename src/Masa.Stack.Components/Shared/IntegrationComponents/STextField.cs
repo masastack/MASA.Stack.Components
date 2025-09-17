@@ -90,7 +90,7 @@ public class STextField<TValue> : MTextField<TValue>
                 builder.AddAttribute(3, "Text", InternalAction.Text);
                 builder.AddAttribute(4, "Disabled", InternalAction.Disabled);
                 builder.AddAttribute(5, "Color", InternalAction.Color);
-                builder.AddAttribute(6, "Style", "border:none;border-radius: 0 8px 8px 0 !important;height:100%;");
+                builder.AddAttribute(6, "Style", $"border:none;border-radius: 0 8px 8px 0 !important;height:{Height}px;margin-right: -12px;");
                 builder.AddAttribute(7, "DisableLoading", InternalAction.DisableLoding);
                 builder.AddAttribute(8, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, InternalAction.OnClick));
                 builder.AddAttribute(9, "ChildContent", (RenderFragment)(cb => cb.AddContent(9, InternalAction.Content)));
