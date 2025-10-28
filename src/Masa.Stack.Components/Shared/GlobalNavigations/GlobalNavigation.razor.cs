@@ -59,8 +59,8 @@ public partial class GlobalNavigation : MasaComponentBase
     {
         if (visible)
         {
-            SearchChanged(null);
-
+            _search = string.Empty;
+            OnEnter();
             if (_menu == null)
             {
                 _ = GetRecommendApps();
@@ -72,10 +72,9 @@ public partial class GlobalNavigation : MasaComponentBase
         _visible = visible;
     }
 
-    private void SearchChanged(string? search)
+    private void OnEnter()
     {
-        _search = search;
-        _menu?.SetHiddenBySearch(search, TranslateProvider);
+        _menu?.SetHiddenBySearch(_search, TranslateProvider);
     }
 
     private void MenuItemClickAsync(ExpansionMenu menu)
