@@ -87,7 +87,6 @@ public static class ServiceCollectionExtensions
         mcHost ??= masaStackConfig.GetMcServiceDomain();
         pmHost ??= masaStackConfig.GetPmServiceDomain();
 
-        // Caller 服务注册（会自动通过 Filter 添加语言头处理器）
         services.AddDccClient(dccHost);
         services.AddAuthClient(authHost);
         services.AddSingleton(new McServiceOptions(mcHost));
