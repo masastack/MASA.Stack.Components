@@ -36,6 +36,12 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<LocalStorage>();
         services.TryAddScoped<JsInitVariables>();
 
+        // 注册 Accept-Language 处理器
+        services.AddScoped<AcceptLanguageHandler>();
+
+        // .NET 6/7: 使用 IHttpMessageHandlerBuilderFilter 实现相同效果
+        services.AddSingleton<IHttpMessageHandlerBuilderFilter, AcceptLanguageHandlerFilter>();
+
         // 注册团队状态管理器 - 根据运行时环境选择合适的实现
         services.AddScoped<ITeamStateManager>(sp =>
         {
@@ -80,6 +86,7 @@ public static class ServiceCollectionExtensions
         authHost ??= masaStackConfig.GetAuthServiceDomain();
         mcHost ??= masaStackConfig.GetMcServiceDomain();
         pmHost ??= masaStackConfig.GetPmServiceDomain();
+
         services.AddDccClient(dccHost);
         services.AddAuthClient(authHost);
         services.AddSingleton(new McServiceOptions(mcHost));
