@@ -883,36 +883,28 @@ h1:focus {
     margin-bottom: auto !important;
 }
 
-.ms-breadcrumbs {
+.ms-breadcrumbs.m-breadcrumbs {
     padding: 0 !important;
     margin-left: -4px;
     flex-wrap: nowrap;
 }
 
-.ms-breadcrumbs li {
-    background-color: white;
-    padding: 8px 24px;
-}
+    .ms-breadcrumbs.m-breadcrumbs li {
+        background-color: rgba(var(--m-theme-surface-container));
+        padding: 8px 24px;
+    }
 
-.ms-breadcrumbs li:nth-child(even) {
-    padding: 0;
-}
+    .ms-breadcrumbs.m-breadcrumbs li {
+        clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 50%, calc(100% - 8px) 100%, 0px 100%, 8px 50%);
+    }
 
-.ms-breadcrumbs li:nth-child(odd) {
-    clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 50%, calc(100% - 8px) 100%, 0px 100%, 8px 50%);
-}
-
-.ms-breadcrumbs li:first-child {
-    clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 50%, calc(100% - 8px) 100%, 0px 100%);
-}
-
-.ms-breadcrumbs li:last-child {
-    clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%, 8px 50%);
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    color: grey;
-    overflow-wrap: anywhere;
-}
+        .ms-breadcrumbs.m-breadcrumbs li:last-child {
+            clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%, 8px 50%);
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            color: grey;
+            overflow-wrap: anywhere;
+        }
 
 .m-sheet.m-card {
     border-radius: 20px;
