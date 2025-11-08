@@ -20,7 +20,7 @@ async function UploadImage(imageFiles, ossParamter) {
         // 'x-oss-forbid-overwrite': 'true',
     };
     console.log(ossParamter);
-    return await putObject(client, imageFiles[0], headers, cdnHost, ossParamter.randomName);
+    return await putObject(client, imageFiles[0], headers, cdnHost, ossParamter.randomName, ossParamter.rootDirectory);
 }
 
 function getCdnHost(ossParamter) {
@@ -52,9 +52,14 @@ function formatTime(date) {
     return `${year}${month}${day}${hour}${minute}${second}_${sign}${offset}`;
 }
 
-async function putObject(client, file, headers, cdnHost, randName) {
+async function putObject(client, file, headers, cdnHost, randName, rootDirectory) {
     try {
-        let fileName = getFileName(file, randName);
+        if (!rootDirectory) rootDirectory = '/';
+        else rootDirectory = rootDirectory.trim();
+        if (rootDirectory == '') rootDirectory = '/';
+        else if (rootDirectory[0] != '/') rootDirectory = '/' + rootDirectory;
+        if (rootDirectory[rootDirectory.length - 1] != '/') rootDirectory = rootDirectory + '/';
+        let fileName = `${rootDirectory}${getFileName(file, randName)}`;
         // 填写Object完整路径。Object完整路径中不能包含Bucket名称。
         // 您可以通过自定义文件名（例如exampleobject.txt）或文件完整路径（例如exampledir/exampleobject.txt）的形式实现将数据上传到当前Bucket或Bucket中的指定目录。
         // data对象可以自定义为file对象、Blob数据或者OSS Buffer。
@@ -66,7 +71,7 @@ async function putObject(client, file, headers, cdnHost, randName) {
             }
         );
         console.log(result);
-        let url = cdnHost ? (cdnHost + "/" + result.name) : result.url;
+        let url = cdnHost ? (cdnHost + fileName) : result.url;
         console.log(url)
         return [url];
     } catch (e) {
