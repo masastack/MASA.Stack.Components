@@ -8,6 +8,9 @@ public partial class UploadAvatar : SUploadImage
     [Parameter]
     public bool RandomName { get; set; }
 
+    [Parameter]
+    public string RootDirectory { get; set; } = "/avatar/";
+
     [Inject]
     public IDccClient Client { get; set; } = default!;
 
@@ -45,9 +48,9 @@ public partial class UploadAvatar : SUploadImage
                 response.Bucket,
                 response.StsToken,
                 response.CdnHost,
-                RandomName
+                RandomName,
+                RootDirectory
             });
         await base.UploadAsync();
     }
 }
-
