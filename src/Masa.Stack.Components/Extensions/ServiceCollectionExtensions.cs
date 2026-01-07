@@ -117,6 +117,9 @@ public static class ServiceCollectionExtensions
                 theme.Themes.Light.Info = "#37A7FF";
                 theme.Themes.Light.Surface = "#F0F3FA";
                 //theme.Themes.Light.UserDefined["reminder"] = "#FF7D00";
+
+                theme.Themes.Light.Variables.BorderOpacity = 1f;
+
             });
             options.Defaults = new Dictionary<string, IDictionary<string, object?>?>
             {
