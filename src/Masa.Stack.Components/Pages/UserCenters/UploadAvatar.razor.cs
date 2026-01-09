@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using SecurityTokenModel = Masa.Stack.Components.UserCenters.Models.SecurityTokenModel;
+
 namespace Masa.Stack.Components;
 
 public partial class UploadAvatar : SUploadImage
