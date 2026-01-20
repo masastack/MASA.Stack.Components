@@ -1023,7 +1023,3 @@ h1:focus {
 .s-expandable-autocomplete.m-input--dense .m-input__append-outer {
   margin-top: 6px !important;
 }
-
-.masa-stack-components .m-divider__wrapper {
-    background-color: white !important;
-}

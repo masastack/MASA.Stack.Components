@@ -423,9 +423,6 @@ td.text-center .m-input--checkbox .m-input__slot {
     justify-content: center !important;
 }
 
-.m-divider {
-    border-color: #E9EDF7 !important;
-}
 
 .m-application .elevation-6 {
     box-shadow: 0 18px 40px 0 rgb(112 144 176 / 12%) !important;
