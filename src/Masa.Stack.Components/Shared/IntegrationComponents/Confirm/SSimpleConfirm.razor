@@ -1,6 +1,7 @@
 ﻿@inherits Masa.Blazor.Popup.Components.AlertingPopupComponentBase
 
 <MDialog @bind-Value="@Visible"
+         @bind-Value:after="OnVisibleChanged"
          Class="pa-6"
          ContentClass="pa-6 white rounded-5"
          Width="400">
@@ -69,9 +70,16 @@
     [Parameter]
     public EventCallback OnOk { get; set; }
 
-    private I18n? _languageProvider;
     private string ComputedCancelText => CancelText ?? T("Cancel");
     private string ComputedOkText => OkText ?? T("Ok");
+    
+    private async Task OnVisibleChanged()
+    {
+        if (!Visible)
+        {
+            await SetResult(false);
+        }
+    }
 
     public virtual async Task HandleOnCancel()
     {
