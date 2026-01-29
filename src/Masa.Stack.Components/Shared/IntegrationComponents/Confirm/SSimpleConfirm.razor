@@ -1,7 +1,7 @@
 ﻿@inherits Masa.Blazor.Popup.Components.AlertingPopupComponentBase
 
-<MDialog @bind-Value="@Visible"
-         @bind-Value:after="OnVisibleChanged"
+<MDialog Value="@Visible"
+         ValueChanged="OnVisibleChanged"
          Class="pa-6"
          ContentClass="pa-6 white rounded-5"
          Width="400">
@@ -22,7 +22,7 @@
                     <SIcon>mdi-close</SIcon>
                 </MButton>
             </div>
-        } 
+        }
     </div>
     <div class="regular2--text btn text-start my-3 px-9 @ContentClass">
         @Content
@@ -38,7 +38,7 @@
 
 </MDialog>
 
-    @code {
+@code {
 
     [Parameter]
     public string? Title { get; set; }
@@ -72,9 +72,10 @@
 
     private string ComputedCancelText => CancelText ?? T("Cancel");
     private string ComputedOkText => OkText ?? T("Ok");
-    
-    private async Task OnVisibleChanged()
+
+    private async Task OnVisibleChanged(bool value)
     {
+        Visible = value;
         if (!Visible)
         {
             await SetResult(false);

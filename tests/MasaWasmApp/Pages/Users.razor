@@ -1,6 +1,7 @@
 ﻿@inject MasaBlazor MasaBlazor
 @inject IJSRuntime JSRuntime
 @page "/users"
+@using Masa.Stack.Components.Extensions
 
 <ul>
     <li><a href="/users/1?a=1">User 1</a></li>
@@ -9,6 +10,14 @@
     <li><a href="/users/4">User 4</a></li>
     <li><a href="/users/5">User 5</a></li>
 </ul>
+
+<SButton Icon OnClick="ShowConfirmAsync">
+    <SIcon>
+        mdi-open-in-new
+    </SIcon>
+
+</SButton>
+
 
 
 <SDateTimeRangeToolbar ShowTimeZoneSelector ShowQuickChange></SDateTimeRangeToolbar>
@@ -132,6 +141,8 @@
 </MThemeProvider>
 
 @code {
+    [Inject]
+    IPopupService PopupService { get; set; } = default!;
 
     private StringNumber _themeName = "light";
     private ThemeOptions? _currentThemeOptions;
@@ -211,4 +222,15 @@
         }
     };
 
+    private async Task ShowConfirmAsync()
+    {
+        if (await PopupService.SimpleConfirmAsync("确认提示"))
+        {
+            await PopupService.EnqueueSnackbarAsync("OK");
+        }
+        else
+        {
+            await PopupService.EnqueueSnackbarAsync("Cancel");
+        }
+    }
 }
