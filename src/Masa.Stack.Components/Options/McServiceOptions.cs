@@ -2,12 +2,12 @@
 
 public class McServiceOptions
 {
-    private string _baseAddress;
-
-    public string BaseAddress => _baseAddress;
+    public string BaseAddress { get; private set; }
 
     public McServiceOptions(string baseAddress)
     {
-        _baseAddress = baseAddress;
+        if (baseAddress.EndsWith('/'))
+            baseAddress = baseAddress.TrimEnd('/');
+        BaseAddress = baseAddress;
     }
 }
