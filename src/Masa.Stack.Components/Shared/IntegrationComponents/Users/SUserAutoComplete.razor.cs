@@ -48,6 +48,9 @@ public partial class SUserAutoComplete
     [Parameter]
     public bool Large { get; set; }
 
+    [Parameter]
+    public Func<string, Task<(bool, string)>>? TokenToUserId { get; set; }
+
     public List<UserSelectModel> UserSelect { get; set; } = new();
 
     public string Search { get; set; } = "";
@@ -74,14 +77,19 @@ public partial class SUserAutoComplete
     public async Task OnSearchChanged(string search)
     {
         Search = search.TrimStart(' ').TrimEnd(' ');
+        if (Search.Length > 0 && TokenToUserId != null)
+        {
+            (bool isToken, string userId) = await TokenToUserId.Invoke(Search);
+            if (isToken)
+                Search = !string.IsNullOrEmpty(userId) ? userId : string.Empty;
+        }
+
         if (Search == "")
         {
             UserSelect.Clear();
+            return;
         }
-        else
-        {
-            UserSelect = await AuthClient.UserService.SearchAsync(Search);
-        }
+        UserSelect = await AuthClient.UserService.SearchAsync(Search);
     }
 
     public string TextView(UserSelectModel user)
@@ -94,4 +102,3 @@ public partial class SUserAutoComplete
         return "";
     }
 }
-
