@@ -137,8 +137,8 @@ public partial class GlobalNavigation : MasaComponentBase
 
     private ExpansionMenu ConvertForNav(NavModel navModel, int deep, ExpansionMenu parent, List<string> favorites)
     {
-        var state = favorites.Any(favorite => favorite == navModel.Code) ? ExpansionMenuState.Favorite : ExpansionMenuState.Normal;
-        var menu = new ExpansionMenu(navModel.Code, navModel.Name, ExpansionMenuType.Nav, state, parent.MetaData, parent: parent)
+        var state = favorites.Any(favorite => favorite == navModel.Id.ToString()) ? ExpansionMenuState.Favorite : ExpansionMenuState.Normal;
+        var menu = new ExpansionMenu(navModel.Id.ToString(), navModel.Name, ExpansionMenuType.Nav, state, parent.MetaData, parent: parent)
             .AddData(MENU_URL_NAME, navModel.Url);
         foreach (var childrenNav in navModel.Children)
         {
