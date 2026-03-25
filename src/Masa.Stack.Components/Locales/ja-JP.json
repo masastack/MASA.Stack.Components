@@ -220,5 +220,6 @@
   "NavigationLayerLabel": "メニューディスプレイ",
   "Layer": "レイヤー",
   "HasSelected": "{0}/{1} アイテムが選択されています",
-  "Label": "ラベル"
+  "Label": "ラベル",
+  "InMaintenance": "メンテナンス中"
 }

@@ -1,4 +1,4 @@
-﻿@using Masa.Stack.Components.Layouts
+@using Masa.Stack.Components.Layouts
 @using Microsoft.Extensions.Logging
 @namespace Masa.Stack.Components
 @implements IDisposable
@@ -14,19 +14,38 @@
                          Class="mx-6 masa-app-bar"
                          Elevation="0"
                          Height="96">
-                    <GlobalNavigation ClientId="@ClientId" OnFavoriteAdd="AddFavoriteMenu"
-                                      OnFavoriteRemove="RemoveFavoriteMenu">
-                        <ActivatorContent>
-                            <MButton Icon
-                                     Class="white emphasis2--text"
-                                     Style="z-index: 1; border: 8px solid #F0F3FA !important;"
-                                     Width="64"
-                                     Height="64"
-                                     @attributes="@context.Attrs">
-                                <MIcon>mdi-view-dashboard</MIcon>
-                            </MButton>
-                        </ActivatorContent>
-                    </GlobalNavigation>
+                    @if (UseSappNav)
+                    {
+                        <GlobalNavigationSapp ClientId="@ClientId" OnFavoriteAdd="AddFavoriteMenu"
+                                              OnFavoriteRemove="RemoveFavoriteMenu">
+                            <ActivatorContent>
+                                <MButton Icon
+                                         Class="white emphasis2--text"
+                                         Style="z-index: 1; border: 8px solid #F0F3FA !important;"
+                                         Width="64"
+                                         Height="64"
+                                         @attributes="@context.Attrs">
+                                    <MIcon>mdi-view-dashboard</MIcon>
+                                </MButton>
+                            </ActivatorContent>
+                        </GlobalNavigationSapp>
+                    }
+                    else
+                    {
+                        <GlobalNavigation ClientId="@ClientId" OnFavoriteAdd="AddFavoriteMenu"
+                                          OnFavoriteRemove="RemoveFavoriteMenu">
+                            <ActivatorContent>
+                                <MButton Icon
+                                         Class="white emphasis2--text"
+                                         Style="z-index: 1; border: 8px solid #F0F3FA !important;"
+                                         Width="64"
+                                         Height="64"
+                                         @attributes="@context.Attrs">
+                                    <MIcon>mdi-view-dashboard</MIcon>
+                                </MButton>
+                            </ActivatorContent>
+                        </GlobalNavigation>
+                    }
                     <Breadcrumbs FlattenedNavs="FlattenedAllNavs" @ref="BreadcrumbsComp"></Breadcrumbs>
                     <MSpacer />
                     <Languages OnChange="() => { }" />
@@ -39,7 +58,8 @@
                 <Navigation Items="NavItems"
                             Logo="@Logo"
                             MiniLogo="@MiniLogo"
-                            IsShowEnvironmentSwitch="@IsShowEnvironmentSwitch" />
+                            IsShowEnvironmentSwitch="@IsShowEnvironmentSwitch"
+                            UseSappNav="@UseSappNav" />
 
                 <MMain Class="masa-main">
                     <div class="@($"px-6 pb-6 max-width {@Class}")" style="@Style">

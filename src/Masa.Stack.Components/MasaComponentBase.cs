@@ -1,4 +1,4 @@
-﻿
+
 namespace Masa.Stack.Components;
 
 public abstract class MasaComponentBase : NextTickComponentBase
@@ -17,6 +17,9 @@ public abstract class MasaComponentBase : NextTickComponentBase
 
     [Inject]
     public IPmClient PmClient { get; set; } = null!;
+
+    [Inject]
+    public ISappClient SappClient { get; set; } = null!;
 
     [Inject]
     public MasaUser MasaUser { get; set; } = null!;
@@ -66,6 +69,11 @@ public abstract class MasaComponentBase : NextTickComponentBase
         if (string.IsNullOrEmpty(url))
         {
             return NavigationManager.ProjectPrefix;
+        }
+
+        if (Uri.TryCreate(url, UriKind.Absolute, out _))
+        {
+            return url;
         }
 
         if (url.StartsWith("/"))

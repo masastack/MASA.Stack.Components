@@ -220,5 +220,6 @@
   "NavigationLayerLabel": "Меню Показать",
   "Layer": "Слой",
   "HasSelected": "Выбрано {0}/{1} элементов",
-  "Label": "Метка"
+  "Label": "Метка",
+  "InMaintenance": "Техническое обслуживание"
 }

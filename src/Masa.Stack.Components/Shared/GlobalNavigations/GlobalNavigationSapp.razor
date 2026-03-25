@@ -1,8 +1,6 @@
 @namespace Masa.Stack.Components
 @inherits MasaComponentBase
-@inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
-@inject IWebAssemblyHostEnvironment WebHostEnvironment
-@inject ILogger<GlobalNavigation> Logger
+@inject ILogger<GlobalNavigationSapp> Logger
 
 <MDialog Value="_visible"
          ValueChanged="VisibleChanged"
@@ -48,30 +46,6 @@
                             </div>
                         </div>
 
-                        <div class="global-nav-left__group">
-                            <div class="global-nav-left__title">
-                                @T("PlatformTools")
-                            </div>
-                            <div>
-                                @if (_recommendApps == null)
-                                {
-                                    <MSkeletonLoader Class="transparent" Type="list-item@3" />
-                                }
-                                else
-                                {
-                                    foreach (var item in _recommendApps)
-                                    {
-                                        <MListItem Dense
-                                                   Class="mb-1 full-width rounded-2 masa-text-2-2"
-                                                   Href="@item.Value">
-                                            <MListItemContent>
-                                                <MListItemTitle>@DT(item.Key)</MListItemTitle>
-                                            </MListItemContent>
-                                        </MListItem>
-                                    }
-                                }
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="global-nav-right">
@@ -103,16 +77,44 @@
                             }
                         </div>
                     </div>
-                    <div class="global-nav-content">
+                    <div class="global-nav-content global-nav-content-sapp">
                         @if (_menu is null)
                         {
                             <MSkeletonLoader Type="image,image,image" Class="global-nav-content__loader"></MSkeletonLoader>
-                            <MSkeletonLoader Type="image" Class="global-nav-content__toc-loader"></MSkeletonLoader>
                         }
                         else
                         {
-                            <ExpansionMenuWrapper CssForScroll="global-nav-internal" RenderLayer Value="_menu" OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
+                            <ExpansionMenuWrapper UseSappNav CssForScroll="global-nav-internal" RenderLayer Value="_menu" OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
                         }
+                        <div class="app-box global-nav-app-box global-nav-app-box-sapp">
+                            <div class="h5 emphasis--text">@T("SuperApp")</div>
+                            <MNavigationDrawer Value="true" HideOverlay Floating Right Width="256" Class="toc">
+                                @if (_visibleAppEntries == null)
+                                {
+                                    <MSkeletonLoader Type="list-item@3" Class="transparent mt-3" />
+                                }
+                                else
+                                {
+                                    @foreach (var item in _visibleAppEntries)
+                                    {
+                                        <div class="masa-text-2-2 px-2 py-3 d-flex justify-space-between align-center super-app-item mt-6 cursor-pointer"
+                                             @onclick="@(() => NavigateTo(item.EntryUrl))">
+                                            <div class="d-flex align-center">
+                                                @if (HasWebFullIcon(item))
+                                                {
+                                                    <img class="app-entry-web-full-icon" src="@item.WebFullIcon" alt="@item.Name" />
+                                                }
+                                                else
+                                                {
+                                                    <img class="app-entry-icon" src="@item.Icon" alt="@item.Name" />
+                                                    <span class="ml-2 emphasis--text">@item.Name</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </MNavigationDrawer>
+                        </div>
                     </div>
                 </div>
             </div>

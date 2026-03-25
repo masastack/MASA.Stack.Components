@@ -1,4 +1,4 @@
-﻿namespace Masa.Stack.Components;
+namespace Masa.Stack.Components;
 
 public partial class SLayout
 {
@@ -28,6 +28,12 @@ public partial class SLayout
 
     [Inject]
     public I18nCache I18nCache { get; set; } = default!;
+
+    [Inject]
+    private ISappClient SappClient { get; set; } = null!;
+
+    [Inject]
+    private Extensions.OpenIdConnect.MasaOpenIdConnectOptions? OpenIdConnectOptions { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
@@ -70,6 +76,9 @@ public partial class SLayout
 
     [Parameter]
     public string BaseUri { get; set; } = "/";
+
+    [Parameter]
+    public bool UseSappNav { get; set; }
 
     private Breadcrumbs? _breadcrumbsComp;
     private Action? _breadcrumbSetCallback;
@@ -114,13 +123,19 @@ public partial class SLayout
     {
         get
         {
-            return AppId.IsNullOrEmpty() ? GetAppId() : AppId;
+            if (!AppId.IsNullOrEmpty())
+            {
+                return AppId;
+            }
+
+            return UseSappNav ? OpenIdConnectOptions?.ClientId ?? string.Empty : GetAppId();
         }
     }
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+        I18nCache.UseSappNav = UseSappNav;
         if (WhiteUris.Any() && !WhiteUris.SequenceEqual(_preWhiteUris))
         {
             _preWhiteUris = WhiteUris;
@@ -135,9 +150,10 @@ public partial class SLayout
         if (firstRender)
         {
             GlobalConfig.Initialization();
+            await I18nCache.InitializeAsync();
 
             await JsInitVariables.SetTimezoneOffset();
-            List<MenuModel> menus = new();
+            List<Nav> menus = new();
 
             if (!CheckAuthenticated())
             {
@@ -147,14 +163,25 @@ public partial class SLayout
             try
             {
                 var appId = AppId.IsNullOrEmpty() ? GetAppId() : AppId;
-                menus = await AuthClient.PermissionService.GetMenusAsync(appId);
+                if (UseSappNav)
+                {
+                    var sappMenus = await SappClient.GlobalNavService.GetMenusByPmIdentityAsync(appId);
+                    menus = sappMenus.Adapt<List<Nav>>();
+                }
+                else
+                {
+                    var authMenus = await AuthClient.PermissionService.GetMenusAsync(appId);
+                    menus = authMenus.Adapt<List<Nav>>();
+                }
             }
             catch (Exception e)
             {
-                Logger.LogError(e, "AuthClient.PermissionService.GetMenusAsync");
+                Logger.LogError(e, UseSappNav
+                    ? "SappClient.GlobalNavService.GetMenusByPmIdentityAsync"
+                    : "AuthClient.PermissionService.GetMenusAsync");
             }
 
-            NavItems = menus.Adapt<List<Nav>>();
+            NavItems = menus;
 
 #if DEBUG
             if (Debugger.IsAttached && !NavItems.Any())
@@ -394,12 +421,22 @@ public partial class SLayout
 
     private async Task AddFavoriteMenu(string code)
     {
-        await AuthClient.PermissionService.AddFavoriteMenuAsync(Guid.Parse(code));
+        if (!Guid.TryParse(code, out var menuId) || menuId == Guid.Empty)
+        {
+            return;
+        }
+
+        await AuthClient.PermissionService.AddFavoriteMenuAsync(menuId);
     }
 
     private async Task RemoveFavoriteMenu(string code)
     {
-        await AuthClient.PermissionService.RemoveFavoriteMenuAsync(Guid.Parse(code));
+        if (!Guid.TryParse(code, out var menuId) || menuId == Guid.Empty)
+        {
+            return;
+        }
+
+        await AuthClient.PermissionService.RemoveFavoriteMenuAsync(menuId);
     }
 
     private async Task<bool> OnErrorHandleAsync(Exception exception)

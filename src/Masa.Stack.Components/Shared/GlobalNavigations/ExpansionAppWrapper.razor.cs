@@ -9,6 +9,9 @@ public partial class ExpansionAppWrapper
     public bool RenderLayer { get; set; }
 
     [Parameter]
+    public bool UseSappNav { get; set; }
+
+    [Parameter]
     public EventCallback<ExpansionMenu> OnItemClick { get; set; }
 
     [Parameter]

@@ -221,5 +221,6 @@
   "NavigationLayerLabel": "菜单显示",
   "Layer": "层",
   "HasSelected": "已选择 {0}/{1} 条数据",
-  "Label": "标签"
+  "Label": "标签",
+  "InMaintenance": "维护中"
 }

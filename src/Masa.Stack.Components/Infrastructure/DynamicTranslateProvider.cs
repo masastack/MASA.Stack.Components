@@ -1,4 +1,4 @@
-﻿namespace Masa.Stack.Components.Infrastructure;
+namespace Masa.Stack.Components.Infrastructure;
 
 public class DynamicTranslateProvider : IScopedDependency
 {
@@ -12,7 +12,13 @@ public class DynamicTranslateProvider : IScopedDependency
 
     public string DT(string key)
     {
-        var value = I18nCache.Section?.GetValueOrDefault(key);
+        string? value = null;
+        if (I18nCache.UseSappNav)
+        {
+            value = I18nCache.SappSection?.GetValueOrDefault(key);
+        }
+
+        value ??= I18nCache.Section?.GetValueOrDefault(key);
         return value ?? key;
     }
 }
