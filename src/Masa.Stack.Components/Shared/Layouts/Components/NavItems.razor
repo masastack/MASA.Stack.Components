@@ -1,4 +1,4 @@
-﻿@inherits MasaComponentBase
+@inherits MasaComponentBase
 @namespace Masa.Stack.Components.Layouts
 
 @foreach (var subNav in Data.Children)
@@ -27,6 +27,7 @@
                                        Class="mb-0 rounded-2"
                                        ActiveClass="primary"
                                        Href="@BuildHref(lastNav.Url)"
+                                       Target="@GetNavLinkTarget(lastNav)"
                                        Exact="@lastNav.Exact"
                                        MatchPattern="@lastNav.MatchPattern">
                                 <ItemContent>
@@ -61,6 +62,7 @@
             <SListItem Medium Class="mb-0 rounded-2" 
                        ActiveClass="primary"
                        Href="@BuildHref(subNav.Url)"
+                       Target="@GetNavLinkTarget(subNav)"
                        Exact="@subNav.Exact"
                        MatchPattern="@subNav.MatchPattern">
                 <ItemContent>
@@ -79,6 +81,9 @@
 
     [Parameter, EditorRequired]
     public Nav Data { get; set; } = null!;
+
+    [Parameter]
+    public bool UseSappNav { get; set; }
 
     private List<string> GenGroup(List<Nav> navs)
     {
@@ -99,6 +104,11 @@
         }
 
         return groups;
+    }
+
+    private static string? GetNavLinkTarget(Nav nav)
+    {
+        return nav.OpenType == GlobalNavigationOpenTypes.NewWindow ? "_blank" : null;
     }
 
 }

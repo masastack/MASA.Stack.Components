@@ -1,4 +1,4 @@
-﻿@namespace Masa.Stack.Components.Layouts
+@namespace Masa.Stack.Components.Layouts
 @inherits MasaComponentBase
 @inject GlobalConfig GlobalConfig
 @inject IMultiEnvironmentUserContext MultiEnvironmentUserContext
@@ -37,6 +37,7 @@
                         <SListItem Medium Class="mb-2 rounded-2"
                                    ActiveClass="primary"
                                    Href="@BuildHref(nav.Url)"
+                                   Target="@GetNavLinkTarget(nav)"
                                    Exact="@nav.Exact"
                                    MatchPattern="@nav.MatchPattern"
                                    @attributes="@tooltipContext.Attrs">
@@ -79,13 +80,13 @@
                                 <MIcon Dense Style="margin-left: 6px">@nav.Icon</MIcon>
                             </PrependIconContent>
                             <ChildContent>
-                                <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
+                                <NavItems Data="@nav" UseSappNav="@UseSappNav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
                             </ChildContent>
                         </MListGroup>
                     </ActivatorContent>
                     <ChildContent>
                         <MList Nav Routable>
-                            <NavItems Data="@nav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
+                            <NavItems Data="@nav" UseSappNav="@UseSappNav" Class="@(GlobalConfig.Mini ? "" : "ml-6")"></NavItems>
                         </MList>
                     </ChildContent>
                 </MMenu>
@@ -177,6 +178,9 @@
     [Parameter]
     public bool IsShowEnvironmentSwitch { get; set; } = false;
 
+    [Parameter]
+    public bool UseSappNav { get; set; }
+
     List<EnvironmentModel> _environments = new();
     string _currentEnvironment = "";
 
@@ -243,6 +247,11 @@
         CookieStorage.SetAsync(Consts.ENVIRONMENT, environment);
         await SignOutManager.SetSignOutState();
         NavigationManager.NavigateTo($"/authentication/logout?environment={environment}", true);
+    }
+
+    private static string? GetNavLinkTarget(Nav nav)
+    {
+        return nav.OpenType == GlobalNavigationOpenTypes.NewWindow ? "_blank" : null;
     }
 
 }

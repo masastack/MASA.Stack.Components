@@ -12,7 +12,7 @@
                     <div class="category_title_app @($"{idPrefix}_{category.Id}")">
                         @foreach (var app in category.Children)
                         {
-                            <ExpansionAppWrapper RenderLayer="RenderLayer" Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" />
+                            <ExpansionAppWrapper RenderLayer="RenderLayer" UseSappNav="UseSappNav" Value="app" OnItemClick="ItemClick" OnItemOperClick="ItemOperClick" />
                         }
                     </div>
                 </div>
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="global-nav-content__side">
-        <MNavigationDrawer Value="true" HideOverlay Floating Right Width="256" Class="toc">
+        <MNavigationDrawer Value="true" HideOverlay Floating Right Width="@(UseSappNav ? 180 : 256)" Class="toc">
             <ul>
                 @foreach (var category in Value.Children)
                 {

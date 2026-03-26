@@ -1,35 +1,35 @@
-﻿namespace Masa.Stack.Components;
+namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
     //Consider only one web clearance for now
     public static IServiceCollection AddMasaStackComponent(this IServiceCollection services, MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, bool microFrontend = false, Action<IMasaBlazorBuilder>? masaBalazorAction = default)
+        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, bool microFrontend = false, Action<IMasaBlazorBuilder>? masaBalazorAction = default)
     {
         ArgumentNullException.ThrowIfNull(project);
-        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, microFrontend: microFrontend, masaBalazorAction: masaBalazorAction);
+        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, sappHost, microFrontend: microFrontend, masaBalazorAction: masaBalazorAction);
         AddObservable(services, true, project);
         return services;
     }
 
     public static IServiceCollection AddMasaStackComponentsWithNormalApp(this IServiceCollection services, MasaStackProject project, string otlpUrl, string serviceVersion, string projectName = "default",
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, bool microFrontend = false,
+        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, bool microFrontend = false,
          Action<IMasaBlazorBuilder>? masaBalazorAction = default)
     {
         ArgumentNullException.ThrowIfNull(projectName);
         ArgumentNullException.ThrowIfNull(otlpUrl);
         ArgumentNullException.ThrowIfNull(serviceVersion);
         ArgumentNullException.ThrowIfNull(projectName);
-        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, serviceVersion, microFrontend, masaBalazorAction);
+        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, sappHost, serviceVersion, microFrontend, masaBalazorAction);
         AddObservable(services, false, project: project, serviceVersion: serviceVersion, projectName: projectName, otlpUrl: otlpUrl);
         return services;
     }
 
     private static void AddMasaStackComponentsService(IServiceCollection services, MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? serviceVersion = null, bool microFrontend = false,
+        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, string? serviceVersion = null, bool microFrontend = false,
         Action<IMasaBlazorBuilder>? masaBalazorAction = default)
     {
         services.TryAddScoped<CookieStorage>();
@@ -86,12 +86,14 @@ public static class ServiceCollectionExtensions
         authHost ??= masaStackConfig.GetAuthServiceDomain();
         mcHost ??= masaStackConfig.GetMcServiceDomain();
         pmHost ??= masaStackConfig.GetPmServiceDomain();
+        sappHost ??= masaStackConfig.GetSuperAppServiceDomain();
 
         services.AddDccClient(dccHost);
         services.AddAuthClient(authHost);
         services.AddSingleton(new McServiceOptions(mcHost));
         services.AddMcClient(mcHost);
         services.AddPmClient(pmHost);
+        services.AddSappClient(sappHost);
 
         services.AddScoped((serviceProvider) =>
         {

@@ -135,5 +135,6 @@
   "NavigationLayerLabel": "Menu display",
   "Layer": "layer",
   "HasSelected": "Has selected {0}/{1} items",
-  "Label": "Label"
+  "Label": "Label",
+  "InMaintenance": "In maintenance"
 }

@@ -20,6 +20,9 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
     [Parameter]
     public string? CssForScroll { get; set; }
 
+    [Parameter]
+    public bool UseSappNav { get; set; }
+
     private readonly string idPrefix = "g" + Guid.NewGuid().ToString();
 
     private string CssSelectorForScroll => string.IsNullOrWhiteSpace(CssForScroll) ? string.Empty : "." + CssForScroll;

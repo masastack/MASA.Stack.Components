@@ -5,13 +5,26 @@
     var disableAppOper = Value.MetaData.Situation == ExpansionMenuSituation.Preview || Value.MetaData.Situation == ExpansionMenuSituation.Favorite;
     var indeterminate = Value.State == ExpansionMenuState.Indeterminate;
     var appSelected = Value.State == ExpansionMenuState.Selected;
+    var appIcon = Value.GetData("icon");
+    var appStatus = Value.GetData("status");
 }
 <div class="app"
      style="@GetIsDisplayStyle(!Value.Hidden)">
     <div class="d-flex align-center mx-2 expansion-app @(indeterminate || appSelected ? "active" : null)">
+        @if (UseSappNav && !string.IsNullOrWhiteSpace(appIcon))
+        {
+            <img class="expansion-app__icon mr-2" src="@appIcon" alt="@Value.Name" />
+        }
         <span class="masa-text-2-2 d-inline-block t ext-truncate">
             @Value.Name
         </span>
+        @if (UseSappNav && appStatus == "Maintenance")
+        {
+            <span class="btn ml-5" style="color: #FFB547;">
+                @T("InMaintenance")
+            </span>
+            <SIcon Color="#FFB547" Class="ml-1">mdi-lock</SIcon>
+        }
         @if (!disableAppOper)
         {
             <MSpacer />
@@ -37,6 +50,43 @@
 </div>
 
 @code {
+    private const int LINK_NAVIGATION_TYPE = 2;
+    private const int ROUTE_URL_NAVIGATION_TYPE = 3;
+    private const int NORMAL_NAVIGATION_TYPE = 1;
+
+    private static bool IsLinkNavigation(ExpansionMenu menu)
+    {
+        var rawType = menu.GetData("navigationType");
+        if (string.IsNullOrWhiteSpace(rawType))
+        {
+            return false;
+        }
+
+        if (rawType.Equals("Link", StringComparison.OrdinalIgnoreCase) ||
+            rawType.Equals("RouteUrl", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return int.TryParse(rawType, out var value) &&
+               value is LINK_NAVIGATION_TYPE or ROUTE_URL_NAVIGATION_TYPE;
+    }
+
+    private static bool IsFavoriteSupported(ExpansionMenu menu)
+    {
+        var rawType = menu.GetData("navigationType");
+        if (string.IsNullOrWhiteSpace(rawType))
+        {
+            return true;
+        }
+
+        if (EnumHelper.TryParse(rawType, out GlobalNavigationTypes navigationType))
+        {
+            return navigationType == GlobalNavigationTypes.Normal;
+        }
+
+        return int.TryParse(rawType, out var value) && value == NORMAL_NAVIGATION_TYPE;
+    }
 
     private RenderFragment RenderNestNav(ExpansionMenu menu, int layer = 1) => __builder =>
     {
@@ -62,6 +112,7 @@
         var indeterminate = menu.State == ExpansionMenuState.Indeterminate;
         var selected = menu.State == ExpansionMenuState.Selected;
         var isFavorite = menu.State == ExpansionMenuState.Favorite;
+        var navIcon = menu.GetData("icon");
 
         var classBuilder = new StringBuilder();
         classBuilder.Append("expansion-nav ");
@@ -92,6 +143,14 @@
                 <a class="m-list-item theme--light @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
                    @onclick="@(() => OnItemClick.InvokeAsync(menu))">
                     <div class="d-flex align-center full-width">
+                        @if (UseSappNav && IsLinkNavigation(menu))
+                        {
+                            <SIcon Class="emphasis--text mr-1">mdi-link-variant</SIcon>
+                        }
+                        @if (UseSappNav && !string.IsNullOrWhiteSpace(navIcon))
+                        {
+                            <SIcon Class="expansion-nav__icon mr-2">@navIcon</SIcon>
+                        }
                         <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
                             @DT(menu.Name)
                         </div>
@@ -105,7 +164,7 @@
                                    Class="@($"expansion-nav__action mdi {icon}")">
                             </MIcon>
                         }
-                        else if (menu.MetaData.Situation == ExpansionMenuSituation.Favorite && !menu.Children.Any())
+                        else if (menu.MetaData.Situation == ExpansionMenuSituation.Favorite && !menu.Children.Any() && (!UseSappNav || IsFavoriteSupported(menu)))
                         {
                             <MIcon Small
                                    Color="@(isFavorite ? "#FFB547" : "")"

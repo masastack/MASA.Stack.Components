@@ -1,4 +1,4 @@
-﻿namespace Masa.Stack.Components.Models;
+namespace Masa.Stack.Components.Models;
 
 public class Nav : NavBase
 {
@@ -9,6 +9,8 @@ public class Nav : NavBase
     public string? ParentCode { get; set; }
 
     public string? Url { get; set; }
+
+    public GlobalNavigationOpenTypes OpenType { get; set; } = GlobalNavigationOpenTypes.CurrentPage;
 
     public bool Exact { get; set; }
 
