@@ -141,8 +141,10 @@ public partial class GlobalNavigationSapp : MasaComponentBase
                 menu.AddChild(categoryMenu);
             }
         }
-        catch
+        catch (Exception ex)
         {
+            // Keep the popover renderable even when remote data retrieval fails.
+            Logger.LogWarning(ex, "Sapp global navigation load failed.");
         }
 
         return menu;
@@ -156,7 +158,7 @@ public partial class GlobalNavigationSapp : MasaComponentBase
         StateHasChanged();
     }
 
-    private ExpansionMenu ConvertForNav(GlobalNavigationNodeDto navModel, int deep, ExpansionMenu parent, Guid moduleId, int sort, List<string> favorites)
+    private static ExpansionMenu ConvertForNav(GlobalNavigationNodeDto navModel, int deep, ExpansionMenu parent, Guid moduleId, int sort, List<string> favorites)
     {
         var favoriteId = ResolveFavoriteId(navModel);
         var hasFavoriteId = navModel.NavigationType == GlobalNavigationTypes.Normal && favoriteId != Guid.Empty;
