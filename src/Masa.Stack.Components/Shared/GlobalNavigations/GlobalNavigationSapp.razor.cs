@@ -83,13 +83,10 @@ public partial class GlobalNavigationSapp : MasaComponentBase
         {
             var absoluteUrl = BuildAbsoluteUrl(url);
             await JsRuntime.InvokeVoidAsync("open", absoluteUrl, "_blank");
-            if (ShouldCloseDialog(absoluteUrl))
-            {
-                _visible = false;
-            }
+            
             return;
         }
-
+       
         NavigateTo(url);
     }
 
@@ -220,12 +217,9 @@ public partial class GlobalNavigationSapp : MasaComponentBase
             return;
         }
 
-        if (ShouldCloseDialog(url))
-        {
-            _visible = false;
-        }
+        _visible = false;
 
-        NavigationManager.NavigateTo(url);
+        NavigationManager.OriginalNavigationManager.NavigateTo(url);
     }
 
     private static bool HasWebFullIcon(AppEntryDto app)
