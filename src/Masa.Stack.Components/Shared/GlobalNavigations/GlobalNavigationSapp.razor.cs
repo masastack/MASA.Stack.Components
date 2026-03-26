@@ -117,7 +117,7 @@ public partial class GlobalNavigationSapp : MasaComponentBase
         {
             var apps = await SappClient.GlobalNavService.GetGlobalNavigationsByClientIdAsync(ClientId);
             var categories = apps.GroupBy(a => a.Tag).ToList();
-            var favorites = await FetchFavorites();
+            var favorites = await GlobalNavigationInteractionHelper.FetchFavoritesAsync(AuthClient);
 
             foreach (var category in categories)
             {
@@ -206,16 +206,9 @@ public partial class GlobalNavigationSapp : MasaComponentBase
         return Guid.Empty;
     }
 
-    private async Task<List<string>> FetchFavorites()
-    {
-        return (await AuthClient.PermissionService.GetFavoriteMenuListAsync())
-               .Select(m => m.Value.ToString()).ToList();
-    }
-
     private async Task GetRecentVisits()
     {
-        var visitedList = await AuthClient.UserService.GetVisitedListAsync();
-        _recentVisits = visitedList.Select(v => new ValueTuple<string, string>(v.Name, v.Url)).ToList();
+        _recentVisits = await GlobalNavigationInteractionHelper.FetchRecentVisitsAsync(AuthClient);
 
         StateHasChanged();
     }
@@ -276,31 +269,12 @@ public partial class GlobalNavigationSapp : MasaComponentBase
 
     private async Task FavoriteRemoveAsync(ExpansionMenu nav)
     {
-        var favoriteNav = _favorites.FirstOrDefault(e => e.Id == nav.Id);
-        if (favoriteNav == null)
-        {
-            return;
-        }
-
-        _favorites.Remove(favoriteNav);
-        if (OnFavoriteRemove != null)
-        {
-            await OnFavoriteRemove.Invoke(favoriteNav.Id);
-        }
+        await GlobalNavigationInteractionHelper.RemoveFavoriteAsync(_favorites!, nav, OnFavoriteRemove);
     }
 
     private async Task FavoriteAddAsync(ExpansionMenu nav)
     {
-        if (_favorites.Any(e => e.Id == nav.Id))
-        {
-            return;
-        }
-
-        _favorites.Add(nav);
-        if (OnFavoriteAdd != null)
-        {
-            await OnFavoriteAdd.Invoke(nav.Id);
-        }
+        await GlobalNavigationInteractionHelper.AddFavoriteAsync(_favorites!, nav, OnFavoriteAdd);
     }
 
 }

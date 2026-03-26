@@ -80,6 +80,11 @@
             return true;
         }
 
+        if (EnumHelper.TryParse(rawType, out GlobalNavigationTypes navigationType))
+        {
+            return navigationType == GlobalNavigationTypes.Normal;
+        }
+
         return int.TryParse(rawType, out var value) && value == NORMAL_NAVIGATION_TYPE;
     }
 
