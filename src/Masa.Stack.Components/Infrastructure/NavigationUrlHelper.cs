@@ -8,7 +8,7 @@ internal static class NavigationUrlHelper
         {
             return projectPrefix;
         }
-
+        
         if (TryBuildHrefFromAbsoluteUrl(url, projectPrefix, currentUri, out var absoluteHref))
         {
             return absoluteHref;
@@ -20,6 +20,12 @@ internal static class NavigationUrlHelper
     private static bool TryBuildHrefFromAbsoluteUrl(string url, string projectPrefix, Uri currentUri, out string href)
     {
         href = string.Empty;
+
+        if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
+            !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
 
         if (!Uri.TryCreate(url, UriKind.Absolute, out var absoluteUri))
         {
