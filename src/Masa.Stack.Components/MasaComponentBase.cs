@@ -64,9 +64,6 @@ public abstract class MasaComponentBase : NextTickComponentBase
         return show ? "" : "display:none !important;";
     }
 
-    protected string BuildHref(string? url)
-    {
-        var currentUri = NavigationManager.OriginalNavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        return NavigationUrlHelper.BuildHref(url, NavigationManager.ProjectPrefix, currentUri);
-    }
+    protected string BuildHref(string? url) =>
+        NavigationUrlHelper.BuildHref(url, NavigationManager.ProjectPrefix);
 }

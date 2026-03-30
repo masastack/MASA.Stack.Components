@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 
 namespace Masa.Stack.Components.Layouts
 {
@@ -8,7 +8,16 @@ namespace Masa.Stack.Components.Layouts
         
         [Parameter, EditorRequired] public List<Nav> FlattenedNavs { get; set; } = new();
 
+        /// <summary>
+        /// 微前端（<c>microFrontend: true</c>）时在面包屑路径最前增加当前模块项目展示名。
+        /// </summary>
+        [Parameter] public bool PrependModuleProjectBreadcrumb { get; set; }
+
+        [Parameter] public string? ModuleProjectDisplayName { get; set; }
+
         private List<Nav>? _previousFlattenedNavs;
+        private bool _previousPrependModuleProjectBreadcrumb;
+        private string? _previousModuleProjectDisplayName;
         private string? _prevLocation;
         private Action? _updateLastBreadcrumb;
 
@@ -24,9 +33,13 @@ namespace Masa.Stack.Components.Layouts
         {
             base.OnParametersSet();
 
-            if (_previousFlattenedNavs != FlattenedNavs)
+            if (_previousFlattenedNavs != FlattenedNavs
+                || _previousPrependModuleProjectBreadcrumb != PrependModuleProjectBreadcrumb
+                || _previousModuleProjectDisplayName != ModuleProjectDisplayName)
             {
                 _previousFlattenedNavs = FlattenedNavs;
+                _previousPrependModuleProjectBreadcrumb = PrependModuleProjectBreadcrumb;
+                _previousModuleProjectDisplayName = ModuleProjectDisplayName;
                 UpdateItems();
             }
         }
@@ -143,6 +156,16 @@ namespace Masa.Stack.Components.Layouts
                 Items.Add(new BreadcrumbItem()
                 {
                     Text = HttpUtility.UrlDecode(extra)
+                });
+            }
+
+            if (PrependModuleProjectBreadcrumb && !string.IsNullOrWhiteSpace(ModuleProjectDisplayName))
+            {
+                Items.Insert(0, new BreadcrumbItem()
+                {
+                    Exact = true,
+                    Text = ModuleProjectDisplayName,
+                    Href = null
                 });
             }
 

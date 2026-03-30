@@ -80,6 +80,10 @@ public partial class SLayout
     [Parameter]
     public bool UseSappNav { get; set; }
 
+    /// <summary>微前端时面包屑最前的模块名（Stack 项目枚举名）。</summary>
+    private string? BreadcrumbModuleName =>
+        NavigationManager.IsMicroFrontend ? ProjectApp.Project.ToString() : null;
+
     private Breadcrumbs? _breadcrumbsComp;
     private Action? _breadcrumbSetCallback;
 

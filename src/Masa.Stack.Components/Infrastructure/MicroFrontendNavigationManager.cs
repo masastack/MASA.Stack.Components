@@ -1,4 +1,4 @@
-﻿// Copyright (c) MASA Stack All rights reserved.
+// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 namespace Masa.Stack.Components.Infrastructure;
@@ -8,6 +8,13 @@ public class MicroFrontendNavigationManager : NavigationManager
     public readonly string ProjectPrefix;
 
     public readonly NavigationManager OriginalNavigationManager;
+
+    /// <summary>
+    /// 与注册时 <c>microFrontend: true</c> 一致：<see cref="ProjectPrefix"/> 为 <c>/{project}/</c>；
+    /// 独立应用为 <c>false</c>（前缀为 <c>/</c>）。
+    /// </summary>
+    public bool IsMicroFrontend =>
+        !string.IsNullOrEmpty(ProjectPrefix) && !string.Equals(ProjectPrefix, "/", StringComparison.Ordinal);
 
     public new event EventHandler<LocationChangedEventArgs> LocationChanged
     {
@@ -28,7 +35,7 @@ public class MicroFrontendNavigationManager : NavigationManager
 
     protected override void NavigateToCore(string uri, NavigationOptions options)
     {
-        if (_microFrontend && !IsAbsoluteUrl(uri) && uri.StartsWith("/") && !uri.StartsWith(ProjectPrefix, StringComparison.OrdinalIgnoreCase))
+        if (IsMicroFrontend && !IsAbsoluteUrl(uri) && uri.StartsWith("/") && !uri.StartsWith(ProjectPrefix, StringComparison.OrdinalIgnoreCase))
         {
             uri = $"{ProjectPrefix}{uri.TrimStart("/")}";
         }
@@ -43,11 +50,4 @@ public class MicroFrontendNavigationManager : NavigationManager
         return System.Uri.TryCreate(url, UriKind.Absolute, out result) && (result.Scheme == System.Uri.UriSchemeHttp || result.Scheme == System.Uri.UriSchemeHttps);
     }
 
-    private bool _microFrontend
-    {
-        get
-        {
-            return !string.IsNullOrEmpty(ProjectPrefix) && ProjectPrefix != "/";
-        }
-    }
 }
