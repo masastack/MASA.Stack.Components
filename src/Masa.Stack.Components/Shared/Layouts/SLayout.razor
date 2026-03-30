@@ -46,7 +46,10 @@
                             </ActivatorContent>
                         </GlobalNavigation>
                     }
-                    <Breadcrumbs FlattenedNavs="FlattenedAllNavs" @ref="BreadcrumbsComp"></Breadcrumbs>
+                    <Breadcrumbs FlattenedNavs="FlattenedAllNavs"
+                                 PrependModuleProjectBreadcrumb="NavigationManager.IsMicroFrontend"
+                                 ModuleProjectDisplayName="@BreadcrumbModuleName"
+                                 @ref="BreadcrumbsComp"></Breadcrumbs>
                     <MSpacer />
                     <Languages OnChange="() => { }" />
                     <MSheet Class="d-flex align-center justify-space-around rounded-6 pa-1 mr-n4" Width="100">
