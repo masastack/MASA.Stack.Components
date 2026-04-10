@@ -1,7 +1,3 @@
-using Masa.BuildingBlocks.StackSdks.Config;
-using Masa.Stack.Components.OpenTelemetry.Blazor;
-using Masa.Stack.Components.OpenTelemetry.Options;
-
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddSingleton(sp => builder.Configuration);
 await builder.Services.AddMasaStackConfigAsync(builder.Configuration);

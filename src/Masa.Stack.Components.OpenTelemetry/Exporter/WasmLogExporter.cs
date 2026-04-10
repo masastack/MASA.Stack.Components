@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components.OpenTelemetry.Exporter;
+﻿using OpenTelemetry.Logs;
+
+namespace Masa.Stack.Components.OpenTelemetry.Exporter;
 
 internal class WasmLogExporter(HttpClient httpClient, string url) : BaseExporter<LogRecord>
 {
@@ -36,9 +38,7 @@ internal class WasmLogExporter(HttpClient httpClient, string url) : BaseExporter
                                     severityNumber = MapSeverityNumber(record.LogLevel),
                                     severityText = record.LogLevel.ToString(),
                                     body = new { stringValue = record.FormattedMessage ?? record.Body },
-                                    attributes = record.Attributes?
-                                        .Select(a => new { key = a.Key, value = new { stringValue = a.Value?.ToString() } })
-                                        .ToList(),
+                                    attributes = BuildAttributes(record),
                                     traceId = record.TraceId.ToHexString(),
                                     spanId = record.SpanId.ToHexString()
                                 }
@@ -77,4 +77,45 @@ internal class WasmLogExporter(HttpClient httpClient, string url) : BaseExporter
         LogLevel.Critical => 21,
         _ => 0
     };
+
+    /// <summary>
+    /// 与 OtlpLogRecordTransformer 一致：除 record.Attributes 外，通过 ForEachScope 写入 scope 中的键值（IncludeScopes 时）。
+    /// </summary>
+    private static List<object>? BuildAttributes(LogRecord record)
+    {
+        var acc = new LogAttributeAccumulator();
+
+        if (record.Attributes != null)
+        {
+            foreach (var a in record.Attributes)
+                acc.Add(a.Key, a.Value?.ToString());
+        }
+
+        record.ForEachScope(
+            static (scope, state) =>
+            {
+                foreach (var item in scope)
+                {
+                    if (string.IsNullOrEmpty(item.Key) || item.Key.Equals("{OriginalFormat}", StringComparison.Ordinal))
+                        continue;
+                    state.Add(item.Key, item.Value?.ToString());
+                }
+            },
+            acc);
+
+        return acc.List;
+    }
+
+    private sealed class LogAttributeAccumulator
+    {
+        public List<object>? List { get; private set; }
+
+        public void Add(string key, string? value)
+        {
+            if (string.IsNullOrEmpty(key))
+                return;
+            List ??= new List<object>();
+            List.Add(new { key, value = new { stringValue = value } });
+        }
+    }
 }

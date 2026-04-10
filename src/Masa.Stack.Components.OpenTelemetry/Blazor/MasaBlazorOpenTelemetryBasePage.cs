@@ -138,14 +138,26 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
         return base.DisposeAsyncCore();
     }
 
-    public IDisposable? GetLogScope()
+    public IDisposable? GetLogScope(ILogger? logger = null)
     {
-        return Logger?.BeginScope(GetLogScopeValues());
+        logger ??= Logger;
+        if (logger == null)
+            return null;        
+        var scopeList = BuildLogScopeKeyValueList();
+        return scopeList.Count == 0 ? null : logger.BeginScope(scopeList);
+    }
+
+    private IReadOnlyList<KeyValuePair<string, object?>> BuildLogScopeKeyValueList()
+    {
+        var d = GetLogScopeValues();
+        if (d.Count == 0)
+            return Array.Empty<KeyValuePair<string, object?>>();
+        return d.Select(kv => new KeyValuePair<string, object?>(kv.Key, kv.Value)).ToList();
     }
 
     public IDictionary<string, object> GetLogScopeValues()
     {
-        var currentAcitivity = Activity;
+        var currentAcitivity = Activity ?? MasaBlazorActivityContent.CurrentActivity;
         if (currentAcitivity == null)
             return new Dictionary<string, object>();
         var dicSope = new Dictionary<string, object>();
@@ -167,8 +179,8 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
             if (string.IsNullOrEmpty(value)) continue;
             dicSope.Add(key, value);
         }
-        dicSope.Add("traceid", currentAcitivity.TraceId);
-        dicSope.Add("spanid", currentAcitivity.SpanId);
+        dicSope.Add("traceid", currentAcitivity.TraceId.ToString());
+        dicSope.Add("spanid", currentAcitivity.SpanId.ToString());
         return dicSope;
     }
 }
