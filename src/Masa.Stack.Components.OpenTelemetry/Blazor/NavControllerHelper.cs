@@ -43,18 +43,18 @@ internal static class NavControllerHelper
         activity.SetTag(MasaBlazorWasmConstants.HttpRequestSchema, "http");
         activity.SetTag(MasaBlazorWasmConstants.BlazorClientType, "wasm-blazor");
         activity.SetTag(MasaBlazorWasmConstants.HttpRequestUserAgent, userAgent);
-        //if (MasaBlazorActivityContent.CurrentActivity != null)
-        //{
-        //    activity.SetTag(MasaBlazorWasmConstants.BlazorPageFromPath, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath));
-        //    activity.SetTag(MasaBlazorWasmConstants.BlazorPageFromTitle, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageTitle));
+        if (MasaBlazorActivityContent.CurrentActivity != null)
+        {
+            activity.SetTag(MasaBlazorWasmConstants.BlazorPageFromPath, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath));
+            activity.SetTag(MasaBlazorWasmConstants.BlazorPageFromTitle, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageTitle));
 
-        //    var fromModuleCode = MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageModuleCode)?.ToString();
-        //    if (!string.IsNullOrEmpty(fromModuleCode) && fromModuleCode != RouteUtils.CurrentModule?.Code)
-        //    {
-        //        activity.SetTag(MasaBlazorWasmConstants.BlazorPageModuleFromCode, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageModuleCode));
-        //        activity.SetTag(MasaBlazorWasmConstants.BlazorPageModuleFromVersion, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageModuleVersion));
-        //    }
-        //}
+            var fromModuleCode = MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageModuleCode)?.ToString();
+            if (!string.IsNullOrEmpty(fromModuleCode) && fromModuleCode != RouteUtils.CurrentModule?.Code)
+            {
+                activity.SetTag(MasaBlazorWasmConstants.BlazorPageModuleFromCode, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageModuleCode));
+                activity.SetTag(MasaBlazorWasmConstants.BlazorPageModuleFromVersion, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageModuleVersion));
+            }
+        }
         var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "/");
         activity.SetTag(MasaBlazorWasmConstants.BlazorPagePath, url);
         activity.SetTag(MasaBlazorWasmConstants.HttpRequestTarget, url);
@@ -62,7 +62,9 @@ internal static class NavControllerHelper
         activity.SetTag(MasaBlazorWasmConstants.HttpRequestMethod, "GET");
         SetModule(activity);
         MasaBlazorActivityContent.AddPage(url, page);
-
+        MasaBlazorActivityContent.CurrentActivity = activity;
+        MasaBlazorActivityContent.BlazorPage = page;
+        Activity.Current = activity;
         return activity;
     }
 

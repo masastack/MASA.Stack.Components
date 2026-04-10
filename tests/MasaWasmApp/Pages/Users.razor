@@ -154,6 +154,7 @@
     {
         base.OnInitialized();
         _currentThemeOptions = MasaBlazor.Theme.CurrentTheme;
+        Logger.LogInformation("users OnInitialized");
     }
 
     private void OnThemeChanged()
@@ -222,8 +223,20 @@
         }
     };
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+
+            Logger.LogInformation("users OnAfterRender");
+        }
+    }
+
     private async Task ShowConfirmAsync()
     {
+        using var scoe = GetLogScope();
+        Logger.LogInformation("Users ShowConfirmAsync click");
         if (await PopupService.SimpleConfirmAsync("确认提示"))
         {
             await PopupService.EnqueueSnackbarAsync("OK");

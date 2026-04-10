@@ -4,18 +4,7 @@ public static class MasaBlazorActivityContent
 {
     private static readonly Lazy<HttpClient> _lazyHttpClient = new(() => new HttpClient());
 
-    public static Activity? CurrentActivity
-    {
-        get
-        {
-            return null;
-            var page = GetPage(CurrentUrl!);
-            if (page == null) return default;
-            if (page is MasaBlazorOpenTelemetryBasePage _page)
-                return _page.Activity;
-            return default;
-        }
-    }
+    public static Activity? CurrentActivity { get; set; }
 
     public static string ExternalIp { get; set; } = default!;
 
@@ -23,15 +12,12 @@ public static class MasaBlazorActivityContent
 
     public static object? BlazorPage { get; set; } = default!;
 
-    public static string? CurrentUrl { get; set; }
-
     private static Dictionary<string, object> _blazorPages = [];
 
     internal static string? GetIpUrl { get; set; }
 
     public static void AddPage(string url, object page)
     {
-        CurrentUrl = url;
         var key = url?.ToLower();
         if (string.IsNullOrEmpty(key) || page == null || _blazorPages.ContainsKey(key)) return;
         _blazorPages.Add(key, page);

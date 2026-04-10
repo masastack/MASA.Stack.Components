@@ -119,20 +119,15 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
 
     private void BeforeEnd()
     {
-        var toPath = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "/");
-        var page = MasaBlazorActivityContent.GetPage(MasaBlazorActivityContent.CurrentUrl!);
-        if (page == null)
-            return;
-        if (page == this)
-            return;
-        var activity = ((MasaBlazorOpenTelemetryBasePage)page).Activity;
+        var activity = MasaBlazorActivityContent.CurrentActivity;
         if (activity == null || string.IsNullOrEmpty(activity.Id))
             return;
-        var fromUrl = Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath)?.ToString();
-        if (!string.IsNullOrEmpty(fromUrl) && fromUrl != toPath)
+        var toPath = activity.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath)?.ToString();
+        var currentUrl = Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath)?.ToString();
+        if (!string.IsNullOrEmpty(currentUrl) && currentUrl != toPath)
         {
-            activity?.SetTag(MasaBlazorWasmConstants.BlazorPageFromPath, Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath));
-            activity?.SetTag(MasaBlazorWasmConstants.BlazorPageFromTitle, Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPageTitle));
+            //activity?.SetTag(MasaBlazorWasmConstants.BlazorPageFromPath, Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath));
+            //activity?.SetTag(MasaBlazorWasmConstants.BlazorPageFromTitle, Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPageTitle));
             Activity?.SetTag(MasaBlazorWasmConstants.BlazorPageToPath, toPath);
         }
     }
@@ -143,14 +138,14 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
         return base.DisposeAsyncCore();
     }
 
-    public IDisposable? GetLogScope(ILogger? logger = null)
+    public IDisposable? GetLogScope()
     {
-        return logger?.BeginScope(GetLogScopeValues());
+        return Logger?.BeginScope(GetLogScopeValues());
     }
 
     public IDictionary<string, object> GetLogScopeValues()
     {
-        var currentAcitivity = MasaBlazorActivityContent.CurrentActivity;
+        var currentAcitivity = Activity;
         if (currentAcitivity == null)
             return new Dictionary<string, object>();
         var dicSope = new Dictionary<string, object>();

@@ -10,7 +10,7 @@ internal static class HttpRequestMessageInstrumentation
         if (activity == null) return;
         activity.SetTag(OpenTelemetryAttributeName.Http.SCHEME, requestMessage.RequestUri?.Scheme);
 
-        var blazorAcitivity = (Activity)null;//MasaBlazorActivityContent.CurrentActivity;
+        var blazorAcitivity = MasaBlazorActivityContent.CurrentActivity;
         var sourceUrl = blazorAcitivity?.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath)?.ToString();
         if (!string.IsNullOrEmpty(sourceUrl))
         {

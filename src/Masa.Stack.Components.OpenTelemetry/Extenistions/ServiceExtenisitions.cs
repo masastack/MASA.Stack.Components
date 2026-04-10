@@ -5,7 +5,6 @@ public static class ServiceExtenisitions
     public static IServiceCollection AddMasaBlazorWasmObservable(this IServiceCollection services, ILoggingBuilder loggingBuilder, MasaBlazorWasmObservableOptions options, string otelUrl, string? getClientIpUrl = null)
     {
         Environment.SetEnvironmentVariable("OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION", "true");
-        //Sdk.SetDefaultTextMapPropagator(new NonInjectingTraceContextPropagator());
 
         var resourceBuilder = GetResourceBuilder(options);
         if (!string.IsNullOrEmpty(getClientIpUrl))
