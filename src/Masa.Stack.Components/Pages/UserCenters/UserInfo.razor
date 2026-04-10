@@ -105,13 +105,13 @@
                     </SLabeledRadioGroup>
                     <span>
                         <MButton Rounded Plain Height="40" Width="100" OnClick="CancelAsync">@T("Cancel")</MButton>
-                        <SAutoLoadingButton Rounded
+                        <SBtn Rounded
                                             Disabled="@(string.IsNullOrWhiteSpace(UserDetail.Name))"
                                             Height="40"
                                             Width="100"
                                             OnClick="UpdateBasicInfoAsync">
                             @T("Save")
-                        </SAutoLoadingButton>
+                        </SBtn>
                     </span>
                 </div>
                 <MRow Class="mb-2">
