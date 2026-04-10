@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components.OpenTelemetry.Exporter;
+﻿using System.Diagnostics;
+
+namespace Masa.Stack.Components.OpenTelemetry.Exporter;
 
 internal class WasmTraceExporter(HttpClient httpClient, string url) : BaseExporter<Activity>
 {
@@ -56,13 +58,28 @@ internal class WasmTraceExporter(HttpClient httpClient, string url) : BaseExport
         return ExportResult.Success;
     }
 
+    /// <summary>
+    /// OTLP SpanKind 与 <see cref="ActivityKind"/> 数值不一致，不能直接强转。
+    /// Proto: UNSPECIFIED=0, INTERNAL=1, SERVER=2, CLIENT=3, PRODUCER=4, CONSUMER=5。
+    /// .NET: Internal=0, Server=1, Client=2, Producer=3, Consumer=4。
+    /// </summary>
+    private static int ToOtlpSpanKind(ActivityKind kind) => kind switch
+    {
+        ActivityKind.Internal => 1,
+        ActivityKind.Server => 2,
+        ActivityKind.Client => 3,
+        ActivityKind.Producer => 4,
+        ActivityKind.Consumer => 5,
+        _ => 0
+    };
+
     static object SpanModel(Activity activity) => new
     {
         traceId = activity.TraceId.ToHexString(),
         spanId = activity.SpanId.ToHexString(),
         parentSpanId = activity.ParentSpanId.ToHexString(),
         name = activity.DisplayName,
-        kind = (int)activity.Kind,
+        kind = ToOtlpSpanKind(activity.Kind),
         startTimeUnixNano = (activity.StartTimeUtc.Ticks - 621355968000000000).ToString() + "00", // 轉換為納秒字串
         endTimeUnixNano = ((activity.StartTimeUtc.Ticks + activity.Duration.Ticks - 621355968000000000)).ToString() + "00",
         attributes = activity.TagObjects
