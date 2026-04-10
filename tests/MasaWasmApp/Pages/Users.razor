@@ -1,7 +1,10 @@
-﻿@inject MasaBlazor MasaBlazor
+﻿@inherits MasaComponentBase
+
+@inject MasaBlazor MasaBlazor
 @inject IJSRuntime JSRuntime
 @page "/users"
 @using Masa.Stack.Components.Extensions
+@using Masa.Stack.Components.OpenTelemetry.Blazor
 
 <ul>
     <li><a href="/users/1?a=1">User 1</a></li>
@@ -18,10 +21,7 @@
 
 </SButton>
 
-
-
 <SDateTimeRangeToolbar ShowTimeZoneSelector ShowQuickChange></SDateTimeRangeToolbar>
-
 
 <MButtonGroup @bind-Value="@_themeName" @bind-Value:after="OnThemeChanged" Mandatory Color="primary" Class="mb-4">
     @foreach (var item in themes)
@@ -99,7 +99,7 @@
                         @GenBg("surface-container-lowest", default,
                                                 "--m-theme-surface-container-lowest",
                                                 "surface-container-lowest")
-                        @GenBg("surface-container-low",default,
+                        @GenBg("surface-container-low", default,
                                                 "--m-theme-surface-container-low",
                                                 "surface-container-low")
                         @GenBg("surface-container", _currentThemeOptions?.SurfaceContainer,

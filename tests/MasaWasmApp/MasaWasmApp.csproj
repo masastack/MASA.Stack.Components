@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Masa.Stack.Components.OpenTelemetry\Masa.Stack.Components.OpenTelemetry.csproj" />
     <ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
   </ItemGroup>
 
