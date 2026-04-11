@@ -9,7 +9,7 @@
                HideCloseIcon
                OnCancel="HandleOnCancel"
                OnOk="HandleOnOk">
-    <MForm EnableI18n Model="UpdateUserEmail" @ref="FormRef">
+    <MForm EnableI18n EnableValidation Model="UpdateUserEmail" @ref="FormRef">
         <STextField @bind-Value="UpdateUserEmail.Email"
                     Class="mb-6"
                     Label="@T("EmailAddress")" />
