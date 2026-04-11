@@ -45,22 +45,21 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
         if (isPage && Activity != null)
         {
             var token = await TokenProvider.GetAccessTokenAsync();
-            var masaToken = string.IsNullOrEmpty(token) ? default : TokenProviderExtensions.GetJwtToken(token);
-            if (masaToken != null)
+            bool hasToken = !string.IsNullOrEmpty(token);
+            var masaToken = hasToken ? TokenProviderExtensions.GetJwtToken(token) : default;
+            if (hasToken && masaToken != null)
             {
                 var userId = TokenProviderExtensions.GetUserId(masaToken);
                 var userName = TokenProviderExtensions.GetUserName(masaToken);
-                var hash = string.IsNullOrEmpty(token) ? string.Empty : string.Join("", SHA1.HashData(Encoding.UTF8.GetBytes(token)).Select(a => a.ToString("X2"))).ToLower();
+                var hash = string.Join("", SHA1.HashData(Encoding.UTF8.GetBytes(token)).Select(a => a.ToString("X2"))).ToLower();
                 if (!string.IsNullOrEmpty(userId))
                 {
                     Activity.SetTag(MasaBlazorWasmConstants.LastLoginUserId, userId);
                 }
                 Activity.SetTag(MasaBlazorWasmConstants.SessionUserId, userId);
                 Activity.SetTag(MasaBlazorWasmConstants.SessionUserName, userName);
-                if (!string.IsNullOrEmpty(token))
-                {
-                    Activity.SetTag(MasaBlazorWasmConstants.BlazorPageSessionId, hash);
-                }
+                Activity.SetTag(MasaBlazorWasmConstants.BlazorPageSessionId, hash);
+
                 NavControllerHelper.RefreshCurrentUserId(userId, userName, hash);
 
                 var ip = await MasaBlazorActivityContent.GetIpAsync();

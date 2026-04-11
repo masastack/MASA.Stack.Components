@@ -58,24 +58,25 @@ public static class ServiceExtenisitions
             resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("service.project.name", options.ProjectName)]);
 
         if (!string.IsNullOrEmpty(options.SsoClientId))
-            resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("service.project.name", options.ProjectName)]);
-        if (!string.IsNullOrEmpty(options.SsoClientId))
             resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("sso.client.id", options.SsoClientId)]);
 
-        if (options.Device != null && !string.IsNullOrEmpty(options.Device.Type))
-            resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.type", options.Device.Type)]);
-        if (options.Device != null && !string.IsNullOrEmpty(options.Device.Platform))
-            resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.platform", options.Device.Platform)]);
-        if (options.Device != null && !string.IsNullOrEmpty(options.Device.Version))
-            resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.version", options.Device.Version)]);
-        if (options.Device != null && !string.IsNullOrEmpty(options.Device.Idiom))
-            resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.Idiom", options.Device.Idiom)]);
-        if (options.Device != null && !string.IsNullOrEmpty(options.Device.Model))
-            resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.model", options.Device.Model)]);
-        if (options.Device != null && !string.IsNullOrEmpty(options.Device.Manufacturer))
-            resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.manufacturer", options.Device.Manufacturer)]);
-        if (options.Device != null && !string.IsNullOrEmpty(options.Device.Name))
-            resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.name", options.Device.Name)]);
+        if (options.Device != null)
+        {
+            if (!string.IsNullOrEmpty(options.Device.Type))
+                resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.type", options.Device.Type)]);
+            if (!string.IsNullOrEmpty(options.Device.Platform))
+                resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.platform", options.Device.Platform)]);
+            if (!string.IsNullOrEmpty(options.Device.Version))
+                resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.version", options.Device.Version)]);
+            if (!string.IsNullOrEmpty(options.Device.Idiom))
+                resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.Idiom", options.Device.Idiom)]);
+            if (!string.IsNullOrEmpty(options.Device.Model))
+                resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.model", options.Device.Model)]);
+            if (!string.IsNullOrEmpty(options.Device.Manufacturer))
+                resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.manufacturer", options.Device.Manufacturer)]);
+            if (!string.IsNullOrEmpty(options.Device.Name))
+                resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.name", options.Device.Name)]);
+        }
 
         return resourceBuilder;
     }
