@@ -8,11 +8,11 @@ public sealed class RouteUtils
 
     internal static List<AppModuleDto> Modules { get; private set; } = [];
 
-    internal static Dictionary<Type, List<string>> _routes = GetRoutes();
+    internal static readonly Dictionary<Type, List<string>> _routes = [];
 
-    internal static bool IsPage(Type type, NavigationManager navigation, out string? routeTemplate)
+    internal static bool IsPage(Type type, NavigationManager navigation, string basePrefix, out string? routeTemplate)
     {
-        return IsPage(type, navigation.Uri.Replace(navigation.BaseUri, "/"), out routeTemplate);
+        return IsPage(type, navigation.Uri.Replace(navigation.BaseUri, basePrefix), out routeTemplate);
     }
 
     internal static bool IsPage(Type type, string url, out string? routeTemplate)
@@ -108,13 +108,16 @@ public sealed class RouteUtils
         return default;
     }
 
-    public static void LoadRoutes([NotNull] List<Assembly> assemblies)
+    internal static void LoadRoutes()
     {
-        if (assemblies == null || assemblies.Count == 0)
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+        if (assemblies == null || assemblies.Length == 0)
             return;
         foreach (var assembly in assemblies)
         {
             var routes = GetRoutes(assembly);
+            if (routes == null || routes.Count == 0) continue;
             foreach (var item in routes)
             {
                 if (!_routes.ContainsKey(item.Key))

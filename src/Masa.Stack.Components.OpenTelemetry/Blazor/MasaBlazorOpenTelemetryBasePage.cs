@@ -16,14 +16,16 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
 
     internal Activity? Activity { get; set; } = default;
 
+    protected virtual string BaseUrlPrefix => "/";
+
     private bool isPage = false;
 
     protected override void OnInitialized()
     {
-        if (RouteUtils.IsPage(GetType(), NavigationManager, out var routeTemplate))
+        if (RouteUtils.IsPage(GetType(), NavigationManager, BaseUrlPrefix, out var routeTemplate))
         {
             isPage = true;
-            Activity = NavControllerHelper.StartPageActivity(ActivitySource!, this, NavigationManager, MasaBlazorActivityContent.UserAgent);
+            Activity = NavControllerHelper.StartPageActivity(ActivitySource!, this, NavigationManager, BaseUrlPrefix, MasaBlazorActivityContent.UserAgent);
             if (Activity != null)
             {
                 Activity.SetTag(MasaBlazorWasmConstants.BlazorPageRouter, routeTemplate);
@@ -142,7 +144,7 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
     {
         logger ??= Logger;
         if (logger == null)
-            return null;        
+            return null;
         var scopeList = BuildLogScopeKeyValueList();
         return scopeList.Count == 0 ? null : logger.BeginScope(scopeList);
     }

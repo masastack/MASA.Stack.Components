@@ -1,15 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0</TargetFrameworks>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<Version>3.0.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="TimeAgo" Version="1.0.8" />
-		<PackageReference Include="Mapster" Version="7.3.0" />
+		<PackageReference Include="Mapster" Version="10.0.7" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Caller.Wasm" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Config.Wasm" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Mc.Wasm" Version="$(MasaStackSdksPackageVersion)" />

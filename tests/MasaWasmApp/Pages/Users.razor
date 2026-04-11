@@ -141,9 +141,6 @@
 </MThemeProvider>
 
 @code {
-    [Inject]
-    IPopupService PopupService { get; set; } = default!;
-
     private StringNumber _themeName = "light";
     private ThemeOptions? _currentThemeOptions;
     private (string Role, string Color)? _currentColorRole;

@@ -45,8 +45,7 @@ internal static class StreamExtensions
         }
         catch (Exception ex)
         {
-            //OpenTelemetryInstrumentationOptions.Logger?.LogError(ex, "ReadAsStringAsync Error");
-            throw;
+            HttpRequestMessageInstrumentation.Logger?.LogError(ex, "ReadAsStringAsync Error");
         }
         finally
         {

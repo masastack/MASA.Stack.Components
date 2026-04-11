@@ -2,7 +2,9 @@
 
 internal static class HttpRequestMessageInstrumentation
 {
-    internal const long MaxBodySize = 1024 * 1024;
+    internal static ILogger? Logger { get; set; }
+
+    internal const long MaxBodySize = 4L << 20;//4MB
     private static readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new();
 
     public static void OnHttpMessageRequest(Activity activity, HttpRequestMessage requestMessage)

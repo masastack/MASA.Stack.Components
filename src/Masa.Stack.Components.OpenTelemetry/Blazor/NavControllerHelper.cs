@@ -5,7 +5,6 @@ internal static class NavControllerHelper
     private static string? _currentUserId;
     private static string? _currentUserName;
     private static string? _currentTokenHash;
-    static ILogger? _logger;
 
     public static void RefreshCurrentUserId(string? userId, string? name, string? tokenHash)
     {
@@ -33,13 +32,15 @@ internal static class NavControllerHelper
             activity.SetTag(MasaBlazorWasmConstants.BlazorPageModuleVersion, RouteUtils.CurrentModule.Version);
         }
     }
+
     #region 设置blazor trace
 
-    public static Activity? StartPageActivity(ActivitySource ActivitySource, object page, NavigationManager NavigationManager, string userAgent)
+    public static Activity? StartPageActivity(ActivitySource ActivitySource, object page, NavigationManager NavigationManager, string prefix, string userAgent)
     {
         var activity = ActivitySource?.StartActivity(page.GetType().Name, ActivityKind.Server)!;
         if (activity == null) return default;
-        AfterLocationChangedAsync(NavigationManager.Uri.Replace(NavigationManager.BaseUri, "/"), page);
+        var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, prefix);
+        AfterLocationChangedAsync(url, page);
         activity.SetTag(MasaBlazorWasmConstants.HttpRequestSchema, "http");
         activity.SetTag(MasaBlazorWasmConstants.BlazorClientType, "wasm-blazor");
         activity.SetTag(MasaBlazorWasmConstants.HttpRequestUserAgent, userAgent);
@@ -54,8 +55,7 @@ internal static class NavControllerHelper
                 activity.SetTag(MasaBlazorWasmConstants.BlazorPageModuleFromCode, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageModuleCode));
                 activity.SetTag(MasaBlazorWasmConstants.BlazorPageModuleFromVersion, MasaBlazorActivityContent.CurrentActivity.GetTagItem(MasaBlazorWasmConstants.BlazorPageModuleVersion));
             }
-        }
-        var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "/");
+        }        
         activity.SetTag(MasaBlazorWasmConstants.BlazorPagePath, url);
         activity.SetTag(MasaBlazorWasmConstants.HttpRequestTarget, url);
         activity.SetTag(MasaBlazorWasmConstants.HttpRequestUrlFull, NavigationManager.Uri);
@@ -67,12 +67,6 @@ internal static class NavControllerHelper
         Activity.Current = activity;
         return activity;
     }
-
-    public static long UnixTimespan(DateTime time)
-    {
-        DateTimeOffset offset = new(time.ToLocalTime());
-        return offset.ToUnixTimeMilliseconds();
-    }
     #endregion
 
     #region 小程序采集  
@@ -82,11 +76,7 @@ internal static class NavControllerHelper
         {
             //页面未初始化完成
         }
-        var module = RouteUtils.GetModule(url);
-        if (module == null)
-        {
-            _logger?.LogInformation("AfterLocationChangedAsync未找到路由：{Router}", url);
-        }
+        var module = RouteUtils.GetModule(url);       
 
         //没有发生小程序切换
         if (RouteUtils.CurrentModule?.Code == module?.Code)

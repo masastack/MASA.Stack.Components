@@ -40,6 +40,12 @@ public static class ServiceExtenisitions
                 HttpRequestMessageInstrumentation.GetOtelUrl(otelUrl, isLog: true))));
         });
 
+        _ = Task.Factory.StartNew(() =>
+        {
+            HttpRequestMessageInstrumentation.Logger = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>().CreateLogger("Masa.Stack.Components.OpenTelemetry");
+            RouteUtils.LoadRoutes();
+        });
+
         return services;
     }
 

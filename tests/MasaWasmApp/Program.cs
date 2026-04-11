@@ -17,7 +17,6 @@ builder.Services.AddMasaBlazorWasmObservable(builder.Logging, new MasaBlazorWasm
     SsoClientId = MasaStackConfigConstant.MASA_STACK
 }, otelUrl: masaStackConfig.OtlpUrl);
 
-RouteUtils.LoadRoutes([typeof(Program).Assembly, typeof(MasaComponentBase).Assembly]);
 await builder.AddMasaOpenIdConnectAsync(new MasaOpenIdConnectOptions
 {
     Authority = masaStackConfig.GetSsoDomain(),
