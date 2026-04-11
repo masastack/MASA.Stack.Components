@@ -7,10 +7,20 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var masaStackConfig = builder.Services.GetMasaStackConfig();
+
+builder.Services.AddMasaBlazorWasmObservable(builder.Logging, new MasaBlazorWasmObservableOptions
+{
+    ServiceName = MasaStackConfigConstant.MASA_STACK,
+    ProjectName = MasaStackProject.Auth.Name,
+    ServiceNameSpace = builder.HostEnvironment.Environment,
+    ServiceVersion = masaStackConfig.Version,
+    SsoClientId = MasaStackConfigConstant.MASA_STACK
+}, otelUrl: masaStackConfig.OtlpUrl);
+
 await builder.AddMasaOpenIdConnectAsync(new MasaOpenIdConnectOptions
 {
     Authority = masaStackConfig.GetSsoDomain(),
-    ClientId = masaStackConfig.GetWebId(MasaStackProject.Auth),
+    ClientId = MasaStackConfigConstant.MASA_STACK,
     Scopes = new List<string> { "openid", "profile", "offline_access" }
 });
 

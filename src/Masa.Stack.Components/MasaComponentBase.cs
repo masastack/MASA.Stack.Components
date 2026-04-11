@@ -1,7 +1,8 @@
+using Masa.Stack.Components.OpenTelemetry.Blazor;
 
 namespace Masa.Stack.Components;
 
-public abstract class MasaComponentBase : NextTickComponentBase
+public abstract class MasaComponentBase : MasaBlazorOpenTelemetryBasePage
 {
     [Inject]
     public I18n I18n { get; set; } = null!;
@@ -10,7 +11,7 @@ public abstract class MasaComponentBase : NextTickComponentBase
     private string Culture { get; set; } = null!;
 
     [Inject]
-    public MicroFrontendNavigationManager NavigationManager { get; set; } = null!;
+    public new MicroFrontendNavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
     public IAuthClient AuthClient { get; set; } = null!;
@@ -57,9 +58,9 @@ public abstract class MasaComponentBase : NextTickComponentBase
         return TranslateProvider.DT(key);
     }
 
-    protected const string DateTimeRangeScope= "DateTimeRange";
+    protected const string DateTimeRangeScope = "DateTimeRange";
 
-    protected string GetIsDisplayStyle(bool show)
+    protected static string GetIsDisplayStyle(bool show)
     {
         return show ? "" : "display:none !important;";
     }

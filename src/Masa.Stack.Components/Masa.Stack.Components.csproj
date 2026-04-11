@@ -1,14 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="TimeAgo" Version="1.0.8" />
-		<PackageReference Include="Mapster" Version="7.3.0" />
+		<PackageReference Include="Mapster" Version="10.0.7" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Caller.Wasm" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Config.Wasm" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Mc.Wasm" Version="$(MasaStackSdksPackageVersion)" />
@@ -33,6 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Masa.Stack.Components.Standalone\Masa.Stack.Components.Standalone.csproj" />
+		<ProjectReference Include="..\Masa.Stack.Components.OpenTelemetry\Masa.Stack.Components.OpenTelemetry.csproj" />
+		<ProjectReference Include="..\Masa.Stack.Components.Standalone\Masa.Stack.Components.Standalone.csproj" />
 	</ItemGroup>
 </Project>

@@ -43,9 +43,9 @@
         <div class="d-flex justify-space-around align-center my-@Size">
             @if (!HideCancel)
             {
-                <SAutoLoadingButton Color="primary" Large="!Dense" Rounded Outlined Width="140" OnClick="HandleOnCancel">@ComputedCancelText</SAutoLoadingButton>
+                <SBtn Color="primary" Large="!Dense" Rounded Outlined Width="140" OnClick="HandleOnCancel">@ComputedCancelText</SBtn>
             }
-            <SAutoLoadingButton Color="@OkColor" Class="@OkClass" Rounded Large="!Dense" Disabled="OkDisabled" Width="140" OnClick="HandleOnOk">@ComputedOkText</SAutoLoadingButton>
+            <SBtn Color="@OkColor" Class="@OkClass" Rounded Large="!Dense" Disabled="OkDisabled" Width="140" OnClick="HandleOnOk">@ComputedOkText</SBtn>
         </div>
     }
 </MDialog>

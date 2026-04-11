@@ -1,7 +1,10 @@
-﻿@inject MasaBlazor MasaBlazor
+﻿@inherits MasaComponentBase
+
+@inject MasaBlazor MasaBlazor
 @inject IJSRuntime JSRuntime
 @page "/users"
 @using Masa.Stack.Components.Extensions
+@using Masa.Stack.Components.OpenTelemetry.Blazor
 
 <ul>
     <li><a href="/users/1?a=1">User 1</a></li>
@@ -18,10 +21,7 @@
 
 </SButton>
 
-
-
 <SDateTimeRangeToolbar ShowTimeZoneSelector ShowQuickChange></SDateTimeRangeToolbar>
-
 
 <MButtonGroup @bind-Value="@_themeName" @bind-Value:after="OnThemeChanged" Mandatory Color="primary" Class="mb-4">
     @foreach (var item in themes)
@@ -99,7 +99,7 @@
                         @GenBg("surface-container-lowest", default,
                                                 "--m-theme-surface-container-lowest",
                                                 "surface-container-lowest")
-                        @GenBg("surface-container-low",default,
+                        @GenBg("surface-container-low", default,
                                                 "--m-theme-surface-container-low",
                                                 "surface-container-low")
                         @GenBg("surface-container", _currentThemeOptions?.SurfaceContainer,
@@ -141,9 +141,6 @@
 </MThemeProvider>
 
 @code {
-    [Inject]
-    IPopupService PopupService { get; set; } = default!;
-
     private StringNumber _themeName = "light";
     private ThemeOptions? _currentThemeOptions;
     private (string Role, string Color)? _currentColorRole;
@@ -154,6 +151,7 @@
     {
         base.OnInitialized();
         _currentThemeOptions = MasaBlazor.Theme.CurrentTheme;
+        Logger.LogInformation("users OnInitialized");
     }
 
     private void OnThemeChanged()
@@ -222,8 +220,20 @@
         }
     };
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+
+            Logger.LogInformation("users OnAfterRender");
+        }
+    }
+
     private async Task ShowConfirmAsync()
     {
+        using var scoe = GetLogScope();
+        Logger.LogInformation("Users ShowConfirmAsync click");
         if (await PopupService.SimpleConfirmAsync("确认提示"))
         {
             await PopupService.EnqueueSnackbarAsync("OK");

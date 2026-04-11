@@ -1,9 +1,13 @@
 ﻿<Project>
 	<PropertyGroup>
-		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net6.0'">6.*</MicrosoftPackageVersion>
-		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net7.0'">7.*</MicrosoftPackageVersion>
 		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.*</MicrosoftPackageVersion>
+		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net10.0'">10.*</MicrosoftPackageVersion>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 		<MasaFrameworkPackageVersion>1.2.0-preview.*</MasaFrameworkPackageVersion>
 		<MasaStackSdksPackageVersion>1.2.1-preview.*</MasaStackSdksPackageVersion>
+		<OpenTelemetryPackageVersion>1.9.0</OpenTelemetryPackageVersion>
+		<MasaBlazorPackageVersion>1.11.9</MasaBlazorPackageVersion>
 	</PropertyGroup>
 </Project>
