@@ -4,7 +4,7 @@ internal class WasmTraceExporter(HttpClient httpClient, string url) : BaseExport
 {
     private readonly HttpClient _httpClient = httpClient;
     private readonly string _url = url;
-    private readonly string _scopeVersion = typeof(WasmLogExporter).Assembly.GetName().Version?.ToString()!;
+    private readonly string _scopeVersion = typeof(WasmTraceExporter).Assembly.GetName().Version?.ToString()!;
 
     public override ExportResult Export(in Batch<Activity> batch)
     {
