@@ -58,7 +58,7 @@ internal static class OpenTelemetryAttributeName
     {
         public const string ServerAddress = "server.address";
 
-        public const string ServerPort = "server.address";
+        public const string ServerPort = "server.port";
 
         /// <summary>
         /// The URI scheme identifying the used protocol.
