@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ServiceExtenisitions
+public static class ServiceExtensions
 {
     public static IServiceCollection AddMasaBlazorWasmObservable(this IServiceCollection services, ILoggingBuilder loggingBuilder, MasaBlazorWasmObservableOptions options, string otelUrl, string? getClientIpUrl = null)
     {
