@@ -33,15 +33,13 @@ public sealed class RouteUtils
     static Dictionary<Type, List<string>> GetRoutes(Assembly? assembly = default)
     {
         assembly ??= Assembly.GetExecutingAssembly();
-        var routes = new Dictionary<Type, List<string>>();
-        foreach (var type in assembly.GetTypes())
-        {
-            var attributes = type.GetCustomAttributes<RouteAttribute>();
-            if (attributes.Any())
-            {
-                routes.Add(type, attributes.Select(a => a.Template).ToList());
-            }
-        }
+
+        // 使用 LINQ 简化对类型过滤和字典构建
+        var routes = assembly
+            .GetTypes()
+            .Select(type => new { Type = type, Attributes = type.GetCustomAttributes<RouteAttribute>() })
+            .Where(x => x.Attributes.Any())
+            .ToDictionary(x => x.Type, x => x.Attributes.Select(a => a.Template).ToList());
 
         return routes;
     }
@@ -76,10 +74,6 @@ public sealed class RouteUtils
                 if (routes[routerIndex].EndsWith("?}"))
                 {
                     emptyCount++;
-                    //if (routerIndex > 0)
-                    //    return (true, routerIndex);
-                    //else
-                    //    return (false, 0);
                 }
                 continue;
             }
@@ -118,11 +112,9 @@ public sealed class RouteUtils
         {
             var routes = GetRoutes(assembly);
             if (routes == null || routes.Count == 0) continue;
-            foreach (var item in routes)
-            {
-                if (!_routes.ContainsKey(item.Key))
-                    _routes.Add(item.Key, item.Value);
-            }
+            // 使用 Where 简化过滤已有键的循环
+            foreach (var item in routes.Where(kv => !_routes.ContainsKey(kv.Key)))
+                _routes.Add(item.Key, item.Value);
         }
     }
 }

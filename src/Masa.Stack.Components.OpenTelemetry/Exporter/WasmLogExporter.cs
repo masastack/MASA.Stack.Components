@@ -1,6 +1,4 @@
-﻿using OpenTelemetry.Logs;
-
-namespace Masa.Stack.Components.OpenTelemetry.Exporter;
+﻿namespace Masa.Stack.Components.OpenTelemetry.Exporter;
 
 internal class WasmLogExporter(HttpClient httpClient, string url) : BaseExporter<LogRecord>
 {

@@ -111,7 +111,7 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
             BeforeEnd();
             var url = Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath)?.ToString();
             if (!string.IsNullOrEmpty(Activity?.Id))
-                Activity?.Stop();
+                Activity.Stop();
             if (!string.IsNullOrEmpty(url))
             {
                 MasaBlazorActivityContent.RemovePage(url);
@@ -128,9 +128,7 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
         var currentUrl = Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath)?.ToString();
         if (!string.IsNullOrEmpty(currentUrl) && currentUrl != toPath)
         {
-            //activity?.SetTag(MasaBlazorWasmConstants.BlazorPageFromPath, Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPagePath));
-            //activity?.SetTag(MasaBlazorWasmConstants.BlazorPageFromTitle, Activity?.GetTagItem(MasaBlazorWasmConstants.BlazorPageTitle));
-            Activity?.SetTag(MasaBlazorWasmConstants.BlazorPageToPath, toPath);
+            Activity!.SetTag(MasaBlazorWasmConstants.BlazorPageToPath, toPath);
         }
     }
 

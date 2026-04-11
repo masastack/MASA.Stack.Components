@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Masa.Stack.Components.OpenTelemetry.Exporter;
+﻿namespace Masa.Stack.Components.OpenTelemetry.Exporter;
 
 internal class WasmTraceExporter(HttpClient httpClient, string url) : BaseExporter<Activity>
 {
@@ -81,7 +79,7 @@ internal class WasmTraceExporter(HttpClient httpClient, string url) : BaseExport
         name = activity.DisplayName,
         kind = ToOtlpSpanKind(activity.Kind),
         startTimeUnixNano = (activity.StartTimeUtc.Ticks - 621355968000000000).ToString() + "00", // 轉換為納秒字串
-        endTimeUnixNano = ((activity.StartTimeUtc.Ticks + activity.Duration.Ticks - 621355968000000000)).ToString() + "00",
+        endTimeUnixNano = (activity.StartTimeUtc.Ticks + activity.Duration.Ticks - 621355968000000000).ToString() + "00",
         attributes = activity.TagObjects
                     .Select(t => new { key = t.Key, value = new { stringValue = t.Value?.ToString() } })
                     .ToList(),

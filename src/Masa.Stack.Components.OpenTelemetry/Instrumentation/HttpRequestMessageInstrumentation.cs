@@ -101,7 +101,7 @@ internal static class HttpRequestMessageInstrumentation
             return;
         if (length - MaxBodySize > 0)
         {
-            //OpenTelemetryInstrumentationOptions.Logger?.LogInformation("Request body in base64 encode: {Body}", body);
+            Logger?.LogInformation("Request body in base64 encode: {Body}", body);
         }
         else
         {
