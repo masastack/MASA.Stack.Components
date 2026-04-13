@@ -117,4 +117,14 @@ public sealed class RouteUtils
                 _routes.Add(item.Key, item.Value);
         }
     }
+
+    public static void SetModules(IEnumerable<AppModuleDto> modules)
+    {
+        if (modules == null || !modules.Any())
+        {
+            Modules = [];
+            return;
+        }
+        Modules = [.. modules]!;
+    }
 }
