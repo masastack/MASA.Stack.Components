@@ -51,7 +51,7 @@ public static class ServiceExtensions
 
     private static ResourceBuilder GetResourceBuilder(MasaBlazorWasmObservableOptions options)
     {
-        var resourceBuilder = ResourceBuilder.CreateEmpty()
+        var resourceBuilder = ResourceBuilder.CreateDefault()
                 .AddService(options.ServiceName, options.ServiceNameSpace, options.ServiceVersion, true);
 
         if (!string.IsNullOrEmpty(options.ProjectName))
@@ -77,7 +77,6 @@ public static class ServiceExtensions
             if (!string.IsNullOrEmpty(options.Device.Name))
                 resourceBuilder.AddAttributes([KeyValuePair.Create<string, object>("device.name", options.Device.Name)]);
         }
-
         return resourceBuilder;
     }
 }
