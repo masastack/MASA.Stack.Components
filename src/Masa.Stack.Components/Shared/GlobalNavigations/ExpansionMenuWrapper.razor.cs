@@ -23,6 +23,9 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
     [Parameter]
     public bool UseSappNav { get; set; }
 
+    [Parameter]
+    public int SappNavSideWidth { get; set; } = 180;
+
     private readonly string idPrefix = "g" + Guid.NewGuid().ToString();
 
     private string CssSelectorForScroll => string.IsNullOrWhiteSpace(CssForScroll) ? string.Empty : "." + CssForScroll;
@@ -57,6 +60,11 @@ public partial class ExpansionMenuWrapper : MasaComponentBase
 
     protected virtual async Task ItemClick(ExpansionMenu menu)
     {
+        if (Value is null)
+        {
+            return;
+        }
+
         if (Value.MetaData.Situation == ExpansionMenuSituation.Authorization)
         {
             await menu.ChangeStateAsync();
