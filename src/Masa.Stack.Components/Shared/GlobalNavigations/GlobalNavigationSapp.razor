@@ -2,6 +2,11 @@
 @inherits MasaComponentBase
 @inject ILogger<GlobalNavigationSapp> Logger
 
+@{
+    var showAppEntryBox = _visibleAppEntries is null || _visibleAppEntries.Count > 0;
+    var sappSideWidth = showAppEntryBox ? 180 : 256;
+}
+
 <MDialog Value="_visible"
          ValueChanged="VisibleChanged"
          Fullscreen
@@ -84,37 +89,46 @@
                         }
                         else
                         {
-                            <ExpansionMenuWrapper UseSappNav CssForScroll="global-nav-internal" RenderLayer Value="_menu" OnItemClick="MenuItemClickAsync" OnItemOperClick="MenuItemOperClickAsync" />
+                            <ExpansionMenuWrapper UseSappNav
+                                                  SappNavSideWidth="@sappSideWidth"
+                                                  CssForScroll="global-nav-internal"
+                                                  RenderLayer
+                                                  Value="_menu"
+                                                  OnItemClick="MenuItemClickAsync"
+                                                  OnItemOperClick="MenuItemOperClickAsync" />
                         }
-                        <div class="app-box global-nav-app-box global-nav-app-box-sapp">
-                            <div class="h5 emphasis--text">@T("SuperApp")</div>
-                            <MNavigationDrawer Value="true" HideOverlay Floating Right Width="256" Class="toc">
-                                @if (_visibleAppEntries == null)
-                                {
-                                    <MSkeletonLoader Type="list-item@3" Class="transparent mt-3" />
-                                }
-                                else
-                                {
-                                    @foreach (var item in _visibleAppEntries)
+                        @if (showAppEntryBox)
+                        {
+                            <div class="app-box global-nav-app-box global-nav-app-box-sapp">
+                                <div class="h5 emphasis--text">@T("SuperApp")</div>
+                                <MNavigationDrawer Value="true" HideOverlay Floating Right Width="256" Class="toc">
+                                    @if (_visibleAppEntries == null)
                                     {
-                                        <div class="masa-text-2-2 px-2 py-3 d-flex justify-space-between align-center super-app-item mt-6 cursor-pointer"
-                                             @onclick="@(() => NavigateTo(item.EntryUrl))">
-                                            <div class="d-flex align-center">
-                                                @if (HasWebFullIcon(item))
-                                                {
-                                                    <img class="app-entry-web-full-icon" src="@item.WebFullIcon" alt="@item.Name" />
-                                                }
-                                                else
-                                                {
-                                                    <img class="app-entry-icon" src="@item.Icon" alt="@item.Name" />
-                                                    <span class="ml-2 emphasis--text">@item.Name</span>
-                                                }
-                                            </div>
-                                        </div>
+                                        <MSkeletonLoader Type="list-item@3" Class="transparent mt-3" />
                                     }
-                                }
-                            </MNavigationDrawer>
-                        </div>
+                                    else
+                                    {
+                                        @foreach (var item in _visibleAppEntries)
+                                        {
+                                            <div class="masa-text-2-2 px-2 py-3 d-flex justify-space-between align-center super-app-item mt-6 cursor-pointer"
+                                                 @onclick="@(() => NavigateTo(item.EntryUrl))">
+                                                <div class="d-flex align-center">
+                                                    @if (HasWebFullIcon(item))
+                                                    {
+                                                        <img class="app-entry-web-full-icon" src="@item.WebFullIcon" alt="@item.Name" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="app-entry-icon" src="@item.Icon" alt="@item.Name" />
+                                                        <span class="ml-2 emphasis--text">@item.Name</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </MNavigationDrawer>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
