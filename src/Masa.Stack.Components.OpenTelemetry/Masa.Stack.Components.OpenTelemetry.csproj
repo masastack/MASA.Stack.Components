@@ -6,9 +6,9 @@
 	<ItemGroup>
 		<PackageReference Include="Masa.Blazor" Version="$(MasaBlazorPackageVersion)" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.*" />
-		<PackageReference Include="OpenTelemetry" Version="$(OpenTelemetryPackageVersion)" />
-		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryPackageVersion)" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryPackageVersion)" />
+		<PackageReference Include="OpenTelemetry" Version="1.15.3" />
+		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.15.3" />
+		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.15.1" />
 		<PackageReference Include="Masa.BuildingBlocks.StackSdks.Config" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Caller.Wasm" Version="$(MasaStackSdksPackageVersion)" />
 	</ItemGroup>
