@@ -69,13 +69,44 @@ internal static class HttpRequestMessageInstrumentation
         activity.SetTag(MasaBlazorWasmConstants.HttpResponseStatusCode, (int)httpResponseMessage.StatusCode);
         if (httpResponseMessage.StatusCode - 299 == 0 || httpResponseMessage.StatusCode - 599 == 0)
         {
-            var text = httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            if (httpResponseMessage.Content == null)
+                return;
+
+            var text = ReadAndReplaceResponseBody(httpResponseMessage);
             if (httpResponseMessage.StatusCode - 599 == 0)
             {
                 var result = JsonSerializer.Deserialize<LonsidUserFriendlyDto>(text, MasaBlazorWasmConstants.JsonSerializerOptions)!;
                 activity.SetTag(MasaBlazorWasmConstants.HttpRequestUserFriendlyResult, result.Error.Message);
             }
         }
+    }
+
+    /// <summary>
+    /// 读取响应体并替换为可重复读取的 <see cref="HttpContent"/>，避免插桩消费流导致调用方无法再读。
+    /// </summary>
+    private static string ReadAndReplaceResponseBody(HttpResponseMessage response)
+    {
+        var content = response.Content!;
+        var bytes = content.ReadAsByteArrayAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        var replacement = new ByteArrayContent(bytes);
+        if (content.Headers.ContentType != null)
+            replacement.Headers.ContentType = content.Headers.ContentType;
+
+        foreach (var header in content.Headers)
+        {
+            if (header.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase))
+                continue;
+            replacement.Headers.TryAddWithoutValidation(header.Key, header.Value);
+        }
+
+        response.Content = replacement;
+
+        if (bytes.Length == 0)
+            return string.Empty;
+
+        var charset = content.Headers.ContentType?.CharSet;
+        var encoding = string.IsNullOrEmpty(charset) ? Encoding.UTF8 : Encoding.GetEncoding(charset);
+        return encoding.GetString(bytes);
     }
 
     private static Encoding? GetHttpRequestMessageEncoding(HttpRequestMessage httpRequest)
