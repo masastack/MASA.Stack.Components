@@ -57,6 +57,9 @@ public partial class SUpload : IAsyncDisposable
 
     [Parameter]
     public bool WhenFileChangeUpload { get; set; }
+    
+    [Parameter]
+    public bool ShowUploadLoading { get; set; } = true;
 
     [Parameter]
     public EventCallback<InputFileChangeEventArgs> OnChange { get; set; }
@@ -64,6 +67,8 @@ public partial class SUpload : IAsyncDisposable
     public InputFile? InputFileRef { get; set; }
 
     public IReadOnlyList<IBrowserFile> Files { get; set; } = new List<IBrowserFile>();
+
+    public bool IsUploading { get; private set; }
 
     IJSObjectReference? UploadJs { get; set; }
 
@@ -107,23 +112,41 @@ public partial class SUpload : IAsyncDisposable
 
     public virtual async Task UploadAsync()
     {
-        var values = new List<string>();
         if (OnInputFileUpload is null) return;
-        if (OnInputFileUpload.IsJsCallback)
-        {
-            var multipleValue = await UploadJs!.InvokeAsync<List<string>>("InputFileUpload", InputFileRef?.Element, OnInputFileUpload.JsCallback, OnInputFileUpload.JsCallBackParamter);
-            values.AddRange(multipleValue);
-        }
-        else if (OnInputFileUpload.IsDelegateCallback)
-        {
-            values.AddRange(await OnInputFileUpload.DelegateCallback(Files));
-        }
-        else if (OnInputFileUpload.IsEventCallback)
-        {
-            await OnInputFileUpload.EventCallback.InvokeAsync((Files, value => values = value));
-        }
 
-        await SetValueAsync(values);
+        var values = new List<string>();
+        try
+        {
+            if (ShowUploadLoading)
+            {
+                IsUploading = true;
+                StateHasChanged();
+            }
+
+            if (OnInputFileUpload.IsJsCallback)
+            {
+                var multipleValue = await UploadJs!.InvokeAsync<List<string>>("InputFileUpload", InputFileRef?.Element, OnInputFileUpload.JsCallback, OnInputFileUpload.JsCallBackParamter);
+                values.AddRange(multipleValue);
+            }
+            else if (OnInputFileUpload.IsDelegateCallback)
+            {
+                values.AddRange(await OnInputFileUpload.DelegateCallback(Files));
+            }
+            else if (OnInputFileUpload.IsEventCallback)
+            {
+                await OnInputFileUpload.EventCallback.InvokeAsync((Files, value => values = value));
+            }
+
+            await SetValueAsync(values);
+        }
+        finally
+        {
+            if (ShowUploadLoading && IsUploading)
+            {
+                IsUploading = false;
+                StateHasChanged();
+            }
+        }
     }
 
     protected async Task SetValueAsync(List<string> values)
