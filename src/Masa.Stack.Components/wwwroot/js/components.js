@@ -1,5 +1,14 @@
 window.MasaStackComponents = {}
 
+window.MasaStackComponents.clearOidcTokenCache = () => {
+    for (let i = sessionStorage.length - 1; i >= 0; i--) {
+        const key = sessionStorage.key(i);
+        if (key && key.startsWith('oidc.user:')) {
+            sessionStorage.removeItem(key);
+        }
+    }
+}
+
 window.MasaStackComponents.scrollTo = (target, inside = 'window') => {
     const targetElement = document.querySelector(target)
     if (!targetElement) return;
