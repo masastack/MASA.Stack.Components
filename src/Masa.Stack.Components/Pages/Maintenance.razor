@@ -37,13 +37,4 @@
 
     [SupplyParameterFromQuery]
     public string? End { get; set; }
-
-    private bool HasMaintenanceWindow =>
-        DateTime.TryParse(Start, out _) && DateTime.TryParse(End, out _);
-
-    private string StartTimeDisplay =>
-        DateTime.TryParse(Start, out var start) ? start.ToLocalTime().ToString("g") : string.Empty;
-
-    private string EndTimeDisplay =>
-        DateTime.TryParse(End, out var end) ? end.ToLocalTime().ToString("g") : string.Empty;
 }

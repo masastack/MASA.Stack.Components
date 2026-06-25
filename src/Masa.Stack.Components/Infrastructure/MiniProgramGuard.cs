@@ -13,7 +13,6 @@ internal class MiniProgramGuard
     private readonly IMultiEnvironmentMasaStackConfig _multiEnvironmentMasaStackConfig;
     private readonly IMultiEnvironmentUserContext _multiEnvironmentUserContext;
     private readonly MiniProgramAccessState _accessState;
-    private readonly ILogger<MiniProgramGuard> _logger;
 
     public MiniProgramGuard(
         SappNavigationContext sappNavigationContext,
@@ -23,8 +22,7 @@ internal class MiniProgramGuard
         ProjectAppOptions projectApp,
         IMultiEnvironmentMasaStackConfig multiEnvironmentMasaStackConfig,
         IMultiEnvironmentUserContext multiEnvironmentUserContext,
-        MiniProgramAccessState accessState,
-        ILogger<MiniProgramGuard> logger)
+        MiniProgramAccessState accessState)
     {
         _sappNavigationContext = sappNavigationContext;
         _sappClient = sappClient;
@@ -34,7 +32,6 @@ internal class MiniProgramGuard
         _multiEnvironmentMasaStackConfig = multiEnvironmentMasaStackConfig;
         _multiEnvironmentUserContext = multiEnvironmentUserContext;
         _accessState = accessState;
-        _logger = logger;
     }
 
     /// <summary>
