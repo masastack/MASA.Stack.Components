@@ -140,5 +140,6 @@
   "Layer": "layer",
   "HasSelected": "Has selected {0}/{1} items",
   "Label": "Label",
-  "InMaintenance": "In maintenance"
+  "InMaintenance": "In maintenance",
+  "AppInMaintenanceTips": "This application is under maintenance and cannot be accessed at the moment."
 }

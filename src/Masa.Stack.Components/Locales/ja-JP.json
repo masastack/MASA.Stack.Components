@@ -225,5 +225,6 @@
   "Layer": "レイヤー",
   "HasSelected": "{0}/{1} アイテムが選択されています",
   "Label": "ラベル",
-  "InMaintenance": "メンテナンス中"
+  "InMaintenance": "メンテナンス中",
+  "AppInMaintenanceTips": "このアプリはメンテナンス中のため、現在アクセスできません。"
 }

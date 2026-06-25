@@ -226,5 +226,6 @@
   "Layer": "层",
   "HasSelected": "已选择 {0}/{1} 条数据",
   "Label": "标签",
-  "InMaintenance": "维护中"
+  "InMaintenance": "维护中",
+  "AppInMaintenanceTips": "该应用正在维护中，暂时无法访问。"
 }
