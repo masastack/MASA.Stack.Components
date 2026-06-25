@@ -7,6 +7,7 @@
     var appSelected = Value.State == ExpansionMenuState.Selected;
     var appIcon = Value.GetData("icon");
     var appStatus = Value.GetData("status");
+    bool isMaintenance=UseSappNav && appStatus == "Maintenance";
 }
 <div class="app"
      style="@GetIsDisplayStyle(!Value.Hidden)">
@@ -18,7 +19,7 @@
         <span class="masa-text-2-2 d-inline-block t ext-truncate">
             @Value.Name
         </span>
-        @if (UseSappNav && appStatus == "Maintenance")
+        @if (isMaintenance)
         {
             <span class="btn ml-5" style="color: #FFB547;">
                 @T("InMaintenance")
@@ -141,7 +142,7 @@
             @if (menu.Type == ExpansionMenuType.Nav)
             {
                 <a class="m-list-item theme--light @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
-                   @onclick="@(() => OnItemClick.InvokeAsync(menu))">
+                   @onclick="@(() => ItemClick(menu))">
                     <div class="d-flex align-center full-width">
                         @if (UseSappNav && IsLinkNavigation(menu))
                         {
@@ -181,7 +182,7 @@
             {
                 <div class="m-list-item theme--light @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
                      style="@GetIsDisplayStyle(menu.MetaData.Situation != ExpansionMenuSituation.Favorite)"
-                     @onclick="@(() => OnItemClick.InvokeAsync(menu))">
+                     @onclick="@(() => ItemClick(menu))">
                     <div class="d-flex align-center full-width">
                         <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
                             @DT(menu.Name)
@@ -204,5 +205,4 @@
             }
         </div>
     };
-
 }
