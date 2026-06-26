@@ -45,19 +45,15 @@ public static class ServiceCollectionExtensions
         // 注册团队状态管理器 - 根据运行时环境选择合适的实现
         services.AddScoped<ITeamStateManager>(sp =>
         {
-            // 检测是否为 WASM 模式
             if (IsWebAssemblyEnvironment(sp))
             {
-                // WASM 模式：使用 refresh token 获取最新的 token 和 claims
-                var authStateProvider = sp.GetRequiredService<AuthenticationStateProvider>();
                 var navigationManager = sp.GetRequiredService<NavigationManager>();
-                var tokenProvider = sp.GetRequiredService<IAccessTokenProvider>();
+                var jsRuntime = sp.GetRequiredService<IJSRuntime>();
                 var logger = sp.GetRequiredService<ILogger<WasmTeamStateManager>>();
-                return new WasmTeamStateManager(authStateProvider, navigationManager, tokenProvider, logger);
+                return new WasmTeamStateManager(navigationManager, jsRuntime, logger);
             }
             else
             {
-                // Server 模式：直接操作身份验证状态
                 var authStateManager = sp.GetRequiredService<AuthenticationStateManager>();
                 var authStateProvider = sp.GetRequiredService<AuthenticationStateProvider>();
                 return new ServerTeamStateManager(authStateManager, authStateProvider);
@@ -79,6 +75,8 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
         services.AddSingleton(sp => new ProjectAppOptions(project, serviceVersion));
+        services.AddScoped<MiniProgramAccessState>();
+        services.AddScoped<MiniProgramGuard>();
 
         var masaStackConfig = services.GetMasaStackConfig();
 

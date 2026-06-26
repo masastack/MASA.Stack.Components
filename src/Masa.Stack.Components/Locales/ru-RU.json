@@ -217,9 +217,14 @@
   "403Tips": "У вас нет разрешения!",
   "404Tips": "Не найден запрашиваемый URL.",
   "BackToHome": "Вернуться на главную",
+  "MiniProgramNotFound": "Мини-приложение не существует.",
+  "MiniProgramNotListed": "Мини-приложение не опубликовано.",
+  "MaintenancePageTitle": "Техническое обслуживание",
+  "MaintenanceTimeRange": "Время обслуживания: {0} - {1}",
   "NavigationLayerLabel": "Меню Показать",
   "Layer": "Слой",
   "HasSelected": "Выбрано {0}/{1} элементов",
   "Label": "Метка",
-  "InMaintenance": "Техническое обслуживание"
+  "InMaintenance": "Техническое обслуживание",
+  "AppInMaintenanceTips": "Приложение находится на техническом обслуживании и временно недоступно."
 }

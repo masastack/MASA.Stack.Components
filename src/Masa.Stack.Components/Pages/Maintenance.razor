@@ -1,0 +1,40 @@
+@page "/maintenance"
+@namespace Masa.Stack.Components
+@inherits MasaComponentBase
+
+<PageTitle>@I18n.T("MaintenancePageTitle")</PageTitle>
+
+<MRow Class="d-flex flex-column justify-center" Style="height:calc(100vh - 132px);">
+    <MContainer Class="d-flex flex-column justify-space-between align-center" Style="max-width: 520px;">
+        <MIcon Size="120" Color="#FFB547">mdi-wrench-clock</MIcon>
+        <MRow NoGutters Class="mt-8 text-h6 emphasis--text text-center">@I18n.T("MaintenancePageTitle")</MRow>
+        @if (!string.IsNullOrWhiteSpace(Reason))
+        {
+            <MRow NoGutters Class="mt-4 text-body-1 neutral-lighten-2--text text-center">@Reason</MRow>
+        }
+        @if (HasMaintenanceWindow)
+        {
+            <MRow NoGutters Class="mt-4 text-body-2 neutral-lighten-2--text text-center">
+                @I18n.T("MaintenanceTimeRange", StartTimeDisplay, EndTimeDisplay)
+            </MRow>
+        }
+        <MButton Class="rounded-pill mt-8"
+                 Dark
+                 Tile
+                 Href="/"
+                 Color="primary">
+            @I18n.T("BackToHome")
+        </MButton>
+    </MContainer>
+</MRow>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? Reason { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? Start { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? End { get; set; }
+}
