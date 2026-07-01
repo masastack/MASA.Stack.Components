@@ -66,16 +66,7 @@ internal static class HttpRequestMessageInstrumentation
     {
         if (activity == null) return;
         activity.SetTag(OpenTelemetryAttributeName.Host.NAME, Dns.GetHostName());
-        activity.SetTag(MasaBlazorWasmConstants.HttpResponseStatusCode, (int)httpResponseMessage.StatusCode);
-        if (httpResponseMessage.StatusCode - 299 == 0 || httpResponseMessage.StatusCode - 599 == 0)
-        {
-            var text = httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            if (httpResponseMessage.StatusCode - 599 == 0)
-            {
-                var result = JsonSerializer.Deserialize<LonsidUserFriendlyDto>(text, MasaBlazorWasmConstants.JsonSerializerOptions)!;
-                activity.SetTag(MasaBlazorWasmConstants.HttpRequestUserFriendlyResult, result.Error.Message);
-            }
-        }
+        activity.SetTag(MasaBlazorWasmConstants.HttpResponseStatusCode, (int)httpResponseMessage.StatusCode);        
     }
 
     private static Encoding? GetHttpRequestMessageEncoding(HttpRequestMessage httpRequest)
