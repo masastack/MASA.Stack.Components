@@ -41,6 +41,9 @@ public partial class SDateTimeRangePicker
     [Parameter]
     public bool Clearable { get; set; } = false;
 
+    [Parameter]
+    public bool ShowTime { get; set; } = true;
+
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
@@ -67,6 +70,7 @@ public partial class SDateTimeRangePicker
     private DateTimeOffset? _lastEndDateTime;
 
     private static readonly TimeOnly DefaultTimeOnly = new(0, 0, 0);
+    private static readonly TimeOnly EndOfDayTime = new(23, 59, 59);
 
     private bool HasTimeChange => _lastStartDateTime != _internalStartDateTime || _lastEndDateTime != _internalEndDateTime;
 
@@ -76,7 +80,18 @@ public partial class SDateTimeRangePicker
     private string DateTimeButtonStyle => $"font-size: 14px; width: calc(100% - {(ShowTimeZoneSelector ? 66 : 24) - (Clearable ? 0 : 24)}px  )";
 
 
-    private string MinWidth => ShowTimeZoneSelector ? "447px" : "405px";
+    private string MinWidth
+    {
+        get
+        {
+            if (ShowTime)
+            {
+                return ShowTimeZoneSelector ? "447px" : "405px";
+            }
+
+            return ShowTimeZoneSelector ? "360px" : "318px";
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -150,10 +165,13 @@ public partial class SDateTimeRangePicker
         _internalStartDate = val;
         if (val != null)
         {
+            var startTime = ShowTime
+                ? new TimeOnly(_internalStartDateTime?.Hour ?? 0, _internalStartDateTime?.Minute ?? 0, _internalStartDateTime?.Second ?? 0)
+                : DefaultTimeOnly;
             _internalStartDateTime = new DateTimeOffset(val.Value.Year, val.Value.Month, val.Value.Day,
-                _internalStartDateTime?.Hour ?? 0,
-                _internalStartDateTime?.Minute ?? 0,
-                _internalStartDateTime?.Second ?? 0,
+                startTime.Hour,
+                startTime.Minute,
+                startTime.Second,
                 _internalOffset);
         }
         else
@@ -168,10 +186,11 @@ public partial class SDateTimeRangePicker
         _internalEndDate = val;
         if (val != null)
         {
+            var endTime = ShowTime ? _internalEndTime : EndOfDayTime;
             _internalEndDateTime = new DateTimeOffset(val.Value.Year, val.Value.Month, val.Value.Day,
-                _internalEndTime.Hour,
-                _internalEndTime.Minute,
-                _internalEndTime.Second,
+                endTime.Hour,
+                endTime.Minute,
+                endTime.Second,
                 _internalOffset);
         }
         else
@@ -218,22 +237,25 @@ public partial class SDateTimeRangePicker
 
     private async Task HandleOnConfirm()
     {
+        var startDateTime = NormalizeDateTimeByShowTime(_internalStartDateTime, isEndDateTime: false);
+        var endDateTime = NormalizeDateTimeByShowTime(_internalEndDateTime, isEndDateTime: true);
+
         if (StartDateTimeChanged.HasDelegate)
         {
-            await StartDateTimeChanged.InvokeAsync(_internalStartDateTime);
+            await StartDateTimeChanged.InvokeAsync(startDateTime);
         }
         else
         {
-            StartDateTime = _internalStartDateTime;
+            StartDateTime = startDateTime;
         }
 
         if (EndDateTimeChanged.HasDelegate)
         {
-            await EndDateTimeChanged.InvokeAsync(_internalEndDateTime);
+            await EndDateTimeChanged.InvokeAsync(endDateTime);
         }
         else
         {
-            EndDateTime = _internalEndDateTime;
+            EndDateTime = endDateTime;
         }
 
         if (HasTimeZoneChange && OnTimeZoneInfoChange.HasDelegate)
@@ -303,12 +325,26 @@ public partial class SDateTimeRangePicker
 
     private string FormatDateTime(DateTimeOffset? dateTime, string placeholder = "")
     {
-        var result = dateTime?.ToString(I18n.T("$DateTimeFormat"));
+        var result = ShowTime
+            ? dateTime?.ToString(I18n.T("$DateTimeFormat"))
+            : dateTime?.ToString("yyyy-MM-dd");
         if (string.IsNullOrEmpty(result))
         {
             return placeholder;
         }
         return result;
+    }
+
+    private DateTimeOffset? NormalizeDateTimeByShowTime(DateTimeOffset? dateTime, bool isEndDateTime)
+    {
+        if (ShowTime || dateTime is null)
+        {
+            return dateTime;
+        }
+
+        var normalizedTime = isEndDateTime ? EndOfDayTime : DefaultTimeOnly;
+        return new DateTimeOffset(dateTime.Value.Year, dateTime.Value.Month, dateTime.Value.Day,
+            normalizedTime.Hour, normalizedTime.Minute, normalizedTime.Second, dateTime.Value.Offset);
     }
 
     private TimeZoneInfo GetSelectTimeZone()

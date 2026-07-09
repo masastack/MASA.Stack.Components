@@ -37,7 +37,10 @@
                          NoTitle FullWidth
                          Class="mr-1 ml-n2"
                          AllowedDates="val => StartTimeLimit?.Invoke(val, _internalEndDate) ?? (_internalEndDate is null || val <= _internalEndDate)">
-                <STimeSelector Value="@_internalStartTime" ValueChanged="InternalStartTimeChanged"></STimeSelector>
+                @if (ShowTime)
+                {
+                    <STimeSelector Value="@_internalStartTime" ValueChanged="InternalStartTimeChanged"></STimeSelector>
+                }
             </MDatePicker>
             <MDatePicker Value="@_internalEndDate"
                          Color="primary"
@@ -47,7 +50,10 @@
                          FullWidth
                          Class="ml-1 mr-n2"
                          AllowedDates="val => EndTimeLimit?.Invoke(val, _internalStartDate) ?? (_internalStartDate is null || val >= _internalStartDate)">
-                <STimeSelector Value="@_internalEndTime" ValueChanged="InternalEndTimeChanged"></STimeSelector>
+                @if (ShowTime)
+                {
+                    <STimeSelector Value="@_internalEndTime" ValueChanged="InternalEndTimeChanged"></STimeSelector>
+                }
             </MDatePicker>
         </div>
         @if (ShowTimeZoneSelector)
