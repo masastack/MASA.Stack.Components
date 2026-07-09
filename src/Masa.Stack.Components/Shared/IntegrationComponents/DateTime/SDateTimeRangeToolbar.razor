@@ -13,6 +13,7 @@
                           MaxPickerWidth="MaxPickerWidth"
                           OnTimeZoneInfoChange="OnTimeZoneInfoChange"
                           ShowTimeZoneSelector="ShowTimeZoneSelector"
+                          ShowTime="ShowTime"
                           Clearable="Clearable" />
     @if (ShowQuickChange)
     {
@@ -97,6 +98,9 @@
 
     [Parameter]
     public bool ShowTimeZoneSelector { get; set; } = false;
+
+    [Parameter]
+    public bool ShowTime { get; set; } = true;
 
     [Parameter]
     public DateTimeOffset? StartDateTime { get; set; }

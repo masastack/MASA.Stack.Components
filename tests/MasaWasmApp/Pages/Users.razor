@@ -21,7 +21,15 @@
 
 </SButton>
 
-<SDateTimeRangeToolbar ShowTimeZoneSelector ShowQuickChange></SDateTimeRangeToolbar>
+<SDateTimeRangeToolbar ShowTimeZoneSelector ShowQuickChange OnUpdate="TimeChange"></SDateTimeRangeToolbar>
+<SDateTimeRangeToolbar ShowTimeZoneSelector ShowQuickChange ShowTime="false" OnUpdate="TimeChange"></SDateTimeRangeToolbar>
+
+<div>
+    _start:@_start?.ToString("yyyy-MM-dd HH:mm")
+</div>
+<div>
+    _end:@_end?.ToString("yyyy-MM-dd HH:mm")
+</div>
 
 <MButtonGroup @bind-Value="@_themeName" @bind-Value:after="OnThemeChanged" Mandatory Color="primary" Class="mb-4">
     @foreach (var item in themes)
@@ -146,6 +154,14 @@
     private (string Role, string Color)? _currentColorRole;
 
     string[] themes = new[] { "light", "dadada" };
+
+    private DateTimeOffset? _start, _end;
+
+    private void TimeChange((DateTimeOffset? start, DateTimeOffset? end) time)
+    {
+        _start = time.start;
+        _end = time.end;
+    }
 
     protected override void OnInitialized()
     {
