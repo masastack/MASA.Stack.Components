@@ -57,7 +57,7 @@ public partial class SLayout
     internal ProjectAppOptions ProjectApp { get; set; } = default!;
 
     [Parameter]
-    public Func<bool>? OnSignOut { get; set; }
+    public Func<Task>? BeforeSignOut { get; set; }
 
     [Parameter]
     public Func<Exception, Task>? OnErrorAsync { get; set; }

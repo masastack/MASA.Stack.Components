@@ -2,7 +2,7 @@
 @using Masa.Stack.Components.Models
 @inherits LayoutComponentBase
 
-<SLayout AppId="auth-web-dev" OnSignOut="SignOut" WhiteUris="_whiteUris" TeamRouteFormat="team/{0}" IsShowEnvironmentSwitch=true
+<SLayout AppId="auth-web-dev" BeforeSignOut="SignOut" WhiteUris="_whiteUris" TeamRouteFormat="team/{0}" IsShowEnvironmentSwitch=true
          Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
          MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png"
          Class="fill-height">
@@ -17,9 +17,9 @@
         _whiteUris = new List<string> { "http://www.baidu.com", "/users/*", "/products/details/*" };
     }
 
-    private bool SignOut()
+    private Task SignOut()
     {
-        return false;
+        return Task.CompletedTask;
     }
 
 }
