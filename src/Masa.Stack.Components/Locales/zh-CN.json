@@ -218,9 +218,14 @@
   "403Tips": "您未经授权！",
   "404Tips": "找不到请求的URL。",
   "BackToHome": "回到主页",
+  "MiniProgramNotFound": "小程序不存在",
+  "MiniProgramNotListed": "小程序未上架",
+  "MaintenancePageTitle": "系统维护中",
+  "MaintenanceTimeRange": "维护时间：{0} - {1}",
   "NavigationLayerLabel": "菜单显示",
   "Layer": "层",
   "HasSelected": "已选择 {0}/{1} 条数据",
   "Label": "标签",
-  "InMaintenance": "维护中"
+  "InMaintenance": "维护中",
+  "AppInMaintenanceTips": "该应用正在维护中，暂时无法访问。"
 }

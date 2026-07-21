@@ -8,6 +8,14 @@
 
 <CascadingValue Value="this" IsFixed>
     <CascadingValue Value="@I18n.Culture.ToString()" Name="Culture">
+        @if (UseMinimalLayout)
+        {
+            <MApp Class="masa masa-stack-components">
+                @ChildContent
+            </MApp>
+        }
+        else
+        {
         <MApp Class="masa masa-stack-components">
             <MErrorHandler ErrorContent="@ErrorContent" OnHandle="@OnErrorHandleAsync">
                 <MAppBar App
@@ -73,5 +81,6 @@
                 </MMain>
             </MErrorHandler>
         </MApp>
+        }
     </CascadingValue>
 </CascadingValue>

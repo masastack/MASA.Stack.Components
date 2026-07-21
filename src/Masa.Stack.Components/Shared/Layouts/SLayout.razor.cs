@@ -33,6 +33,15 @@ public partial class SLayout
     private ISappClient SappClient { get; set; } = null!;
 
     [Inject]
+    private MiniProgramAccessState MiniProgramAccessState { get; set; } = null!;
+
+    [Inject]
+    private MiniProgramGuard MiniProgramGuard { get; set; } = null!;
+
+    [Inject]
+    private SappNavigationContext SappNavigationContext { get; set; } = null!;
+
+    [Inject]
     private Extensions.OpenIdConnect.MasaOpenIdConnectOptions? OpenIdConnectOptions { get; set; }
 
     [Parameter]
@@ -105,6 +114,10 @@ public partial class SLayout
     [Parameter]
     public string? AppId { get; set; }
 
+    private bool IsMiniProgramBlocked => UseSappNav && MiniProgramAccessState.IsBlocked;
+
+    private bool UseMinimalLayout => IsMiniProgramBlocked && MiniProgramGuard.IsOnMiniProgramBlockPage();
+
     public string GetAppId() => MultiEnvironmentMasaStackConfig.SetEnvironment(MultiEnvironmentUserContext.Environment ?? "").GetWebId(ProjectApp.Project);
 
     List<Nav> NavItems = new();
@@ -117,11 +130,11 @@ public partial class SLayout
 
     List<string> _whiteUriList = new List<string>
     {
-        "403", "404", "user-center",
+        "403", "404", "maintenance", "user-center",
         "notification-center"
     };
 
- 
+
 
     string ClientId
     {
@@ -139,6 +152,7 @@ public partial class SLayout
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+        SappNavigationContext.Update(UseSappNav, AppId);
         I18nCache.UseSappNav = UseSappNav;
         if (WhiteUris.Any() && !WhiteUris.SequenceEqual(_preWhiteUris))
         {
@@ -150,7 +164,7 @@ public partial class SLayout
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-
+        Logger.LogInformation("SLayout OnAfterRenderAsync");
         if (firstRender)
         {
             GlobalConfig.Initialization();
@@ -161,12 +175,34 @@ public partial class SLayout
 
             if (!CheckAuthenticated())
             {
+                Logger.LogInformation("not CheckAuthenticated");
+                return;
+            }
+
+            if (UseSappNav)
+            {
+                try
+                {
+                    await MiniProgramGuard.ValidateAndRedirectAsync();
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError(e, "MiniProgramGuard.ValidateAndRedirectAsync");
+                }
+            }
+
+            if (IsMiniProgramBlocked)
+            {
+                if (!MiniProgramGuard.IsOnMiniProgramBlockPage())
+                    MiniProgramGuard.RedirectToBlockedPage();
+
+                _navInit = true;
                 return;
             }
 
             try
             {
-                var appId = AppId.IsNullOrEmpty() ? GetAppId() : AppId;
+                var appId = MiniProgramGuard.ResolveAppId();
                 if (UseSappNav)
                 {
                     var sappMenus = await SappClient.GlobalNavService.GetMenusByPmIdentityAsync(appId);
@@ -377,7 +413,7 @@ public partial class SLayout
 
     private void HandleSectionUpdated()
     {
-        InvokeAsync(StateHasChanged); 
+        InvokeAsync(StateHasChanged);
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -385,6 +421,12 @@ public partial class SLayout
         var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
         if (!CheckAuthenticated())
         {
+            return;
+        }
+
+        if (IsMiniProgramBlocked && !MiniProgramGuard.IsOnMiniProgramBlockPage())
+        {
+            MiniProgramGuard.RedirectToBlockedPage();
             return;
         }
 

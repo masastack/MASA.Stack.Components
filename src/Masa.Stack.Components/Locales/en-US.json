@@ -132,9 +132,14 @@
   "403Tips": "You are not authorized! ",
   "404Tips": "The requested URL was not found.",
   "BackToHome": "Back to home",
+  "MiniProgramNotFound": "The mini program does not exist.",
+  "MiniProgramNotListed": "The mini program is not published.",
+  "MaintenancePageTitle": "Under maintenance",
+  "MaintenanceTimeRange": "Maintenance window: {0} - {1}",
   "NavigationLayerLabel": "Menu display",
   "Layer": "layer",
   "HasSelected": "Has selected {0}/{1} items",
   "Label": "Label",
-  "InMaintenance": "In maintenance"
+  "InMaintenance": "In maintenance",
+  "AppInMaintenanceTips": "This application is under maintenance and cannot be accessed at the moment."
 }

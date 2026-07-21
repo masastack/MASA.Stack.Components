@@ -75,6 +75,8 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
         services.AddSingleton(sp => new ProjectAppOptions(project, serviceVersion));
+        services.AddScoped<MiniProgramAccessState>();
+        services.AddScoped<MiniProgramGuard>();
 
         var masaStackConfig = services.GetMasaStackConfig();
 

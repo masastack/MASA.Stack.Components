@@ -1,7 +1,12 @@
+using Masa.Stack.Components.Shared.IntegrationComponents.Confirm;
+
 namespace Masa.Stack.Components.Shared.GlobalNavigations;
 
 public partial class ExpansionAppWrapper
 {
+    private const string AppStatusKey = "status";
+    private const string MaintenanceStatus = "Maintenance";
+
     [Parameter]
     public ExpansionMenu Value { get; set; } = default!;
 
@@ -20,6 +25,9 @@ public partial class ExpansionAppWrapper
     [Inject]
     public GlobalConfig GlobalConfig { get; set; } = null!;
 
+    private bool IsAppInMaintenance =>
+        UseSappNav && string.Equals(Value.GetData(AppStatusKey), MaintenanceStatus, StringComparison.OrdinalIgnoreCase);
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -30,9 +38,35 @@ public partial class ExpansionAppWrapper
         }
     }
 
+    private async Task ItemClick(ExpansionMenu menu)
+    {
+        if (IsAppInMaintenance)
+        {
+            await ShowMaintenanceAlertAsync();
+            return;
+        }
+
+        if (OnItemClick.HasDelegate)
+        {
+            await OnItemClick.InvokeAsync(menu);
+        }
+    }
+
     private async Task ItemOperClick()
     {
         await OnItemOperClick.InvokeAsync(Value);
+    }
+
+    private async Task ShowMaintenanceAlertAsync()
+    {
+        await PopupService.OpenAsync(typeof(SSimpleConfirm), new Dictionary<string, object?>
+        {
+            { nameof(SSimpleConfirm.Type), AlertTypes.Warning },
+            { nameof(SSimpleConfirm.Title), T("MaintenancePageTitle") },
+            { nameof(SSimpleConfirm.Content), T("AppInMaintenanceTips") },
+            { nameof(SSimpleConfirm.HideCancel), true },
+            { nameof(SSimpleConfirm.ContentClass), "text-break" }
+        });
     }
     
     private static string GetClass(ExpansionMenu menu)
