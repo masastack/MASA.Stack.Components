@@ -24,13 +24,17 @@ jobs:
         include-prerelease: true
 
     - name: restore
-      run: dotnet restore 
+      run: dotnet restore src/Masa.Stack.Components/Masa.Stack.Components.csproj
 
     - name: build
       run: dotnet build src/Masa.Stack.Components/Masa.Stack.Components.csproj --configuration Release --no-restore /p:ContinuousIntegrationBuild=true
 
     - name: pack
-      run: dotnet pack --configuration Release --include-symbols  -p:PackageVersion=0.0.$GITHUB_RUN_NUMBER
+      run: |
+        VERSION=0.0.$GITHUB_RUN_NUMBER
+        # 只打包库项目，避免解决方案内 MasaWasmApp 需要 wasm-tools 工作负载
+        dotnet pack src/Masa.Stack.Components.Standalone/Masa.Stack.Components.Standalone.csproj --configuration Release --no-restore --include-symbols -p:PackageVersion=$VERSION
+        dotnet pack src/Masa.Stack.Components/Masa.Stack.Components.csproj --configuration Release --no-restore --include-symbols -p:PackageVersion=$VERSION
     
     - name: package push
       run: dotnet nuget push "**/*.symbols.nupkg" -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json
