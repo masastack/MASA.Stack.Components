@@ -168,9 +168,9 @@
 
     private async Task HandleSignOut()
     {
-        if (Layout.OnSignOut != null && Layout.OnSignOut.Invoke())
+        if (Layout.BeforeSignOut is not null)
         {
-            return;
+            await Layout.BeforeSignOut();
         }
 
         await SignOutManager.SetSignOutState();
