@@ -182,7 +182,6 @@ public partial class GlobalNavigationSapp : MasaComponentBase
             menu.AddChild(ConvertForNav(childrenNav, deep++, menu, moduleId, childSort++, favorites));
         }
 
-        menu.Disabled = menu.Children.Count > 0;
         return menu;
     }
 
