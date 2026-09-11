@@ -167,7 +167,7 @@ public partial class SLayout
         Logger.LogInformation("SLayout OnAfterRenderAsync");
         if (firstRender)
         {
-            GlobalConfig.Initialization();
+            await GlobalConfig.InitializationAsync();
             await I18nCache.InitializeAsync();
 
             await JsInitVariables.SetTimezoneOffset();

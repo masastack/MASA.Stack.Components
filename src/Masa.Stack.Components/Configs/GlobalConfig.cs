@@ -129,7 +129,7 @@ public class GlobalConfig : IScopedDependency
         }
     }
 
-    public async void Initialization()
+    public async Task InitializationAsync()
     {
         _dark = Convert.ToBoolean(await _localStore.GetItemAsync(DarkStoreKey));
         bool.TryParse(await _localStore.GetItemAsync(MiniStoreKey), out _mini);

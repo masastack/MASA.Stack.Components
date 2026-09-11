@@ -8,6 +8,7 @@ public class I18nCache : IScopedDependency
     private readonly IDccClient _dccClient;
     private readonly ISappClient _sappClient;
     private readonly Extensions.OpenIdConnect.MasaOpenIdConnectOptions? _openIdOptions;
+    private int _initializationVersion;
 
     public bool UseSappNav { get; set; }
 
@@ -32,15 +33,18 @@ public class I18nCache : IScopedDependency
 
     public virtual async Task InitializeAsync()
     {
+        var initializationVersion = Interlocked.Increment(ref _initializationVersion);
         var culture = _i18N.Culture.Name;
+        Dictionary<string, string> section;
+        Dictionary<string, string> sappSection;
 
         try
         {
-            Section = await _dccClient.OpenApiService.GetI18NConfigAsync(culture);
+            section = await _dccClient.OpenApiService.GetI18NConfigAsync(culture);
         }
         catch (Exception)
         {
-            Section = new();
+            section = new();
         }
 
         if (UseSappNav)
@@ -48,20 +52,27 @@ public class I18nCache : IScopedDependency
             try
             {
                 var clientId = _openIdOptions?.ClientId ?? string.Empty;
-                SappSection = string.IsNullOrWhiteSpace(clientId)
+                sappSection = string.IsNullOrWhiteSpace(clientId)
                     ? new()
                     : await _sappClient.GlobalNavService.GetI18NConfigByClientIdAsync(clientId, culture);
             }
             catch (Exception)
             {
-                SappSection = new();
+                sappSection = new();
             }
         }
         else
         {
-            SappSection = new();
+            sappSection = new();
         }
 
+        if (initializationVersion != Volatile.Read(ref _initializationVersion))
+        {
+            return;
+        }
+
+        Section = section;
+        SappSection = sappSection;
         OnSectionUpdated?.Invoke();
     }
 }
