@@ -4,7 +4,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-<!--      <ProjectReference Include="..\..\src\Masa.Stack.Components.Standalone\Masa.Stack.Components.Standalone.csproj" />-->
       <ProjectReference Include="..\..\src\Masa.Stack.Components\Masa.Stack.Components.csproj" />
     </ItemGroup>
 </Project>
