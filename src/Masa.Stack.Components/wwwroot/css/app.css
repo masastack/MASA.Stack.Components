@@ -891,11 +891,7 @@ h1:focus {
 
 .ms-breadcrumbs li {
     background-color: white;
-    padding: 8px 24px;
-}
-
-.ms-breadcrumbs li:nth-child(even) {
-    padding: 0;
+    padding: 8px 24px !important;
 }
 
 .ms-breadcrumbs li:nth-child(odd) {
