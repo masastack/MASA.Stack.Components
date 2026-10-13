@@ -2,8 +2,8 @@
 global using Masa.Contrib.StackSdks.Config;
 global using Masa.Stack.Components;
 global using Masa.Stack.Components.Extensions.OpenIdConnect;
-global using Masa.Stack.Components.OpenTelemetry.Blazor;
 global using Masa.Stack.Components.OpenTelemetry.Options;
+global using Masa.Stack.Components.Options;
 global using MasaWasmApp;
 global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

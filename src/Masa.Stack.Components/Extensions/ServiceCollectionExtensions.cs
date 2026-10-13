@@ -2,7 +2,7 @@ namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddMasaStackComponentsService(IServiceCollection services, MasaStackComponentOptions options)
+    public static void AddMasaStackComponent(this IServiceCollection services, MasaStackComponentOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(options.Project);
