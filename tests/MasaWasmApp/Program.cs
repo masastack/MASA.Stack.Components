@@ -24,7 +24,11 @@ await builder.AddMasaOpenIdConnectAsync(new MasaOpenIdConnectOptions
     Scopes = new List<string> { "openid", "profile", "offline_access" }
 });
 
-builder.Services.AddMasaStackComponent(MasaStackProject.Auth, "", microFrontend: false);
+builder.Services.AddMasaStackComponent(new MasaStackComponentOptions(MasaStackProject.Auth)
+{
+    I18nDirectoryPath = string.Empty,
+    IsMicroFrontend = false
+});
 var host = builder.Build();
 await host.Services.InitializeMasaStackApplicationAsync();
 await host.RunAsync();

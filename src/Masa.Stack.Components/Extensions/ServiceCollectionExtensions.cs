@@ -2,36 +2,12 @@ namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
-    //Consider only one web clearance for now
-    public static IServiceCollection AddMasaStackComponent(this IServiceCollection services, MasaStackProject project,
-        string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, bool microFrontend = false, Action<IMasaBlazorBuilder>? masaBalazorAction = default)
+    public static void AddMasaStackComponent(this IServiceCollection services, MasaStackComponentOptions options)
     {
-        ArgumentNullException.ThrowIfNull(project);
-        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, sappHost, microFrontend: microFrontend, masaBalazorAction: masaBalazorAction);
-        AddObservable(services, true, project);
-        return services;
-    }
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(options.Project);
+        ArgumentNullException.ThrowIfNull(options.Project.Name);
 
-    public static IServiceCollection AddMasaStackComponentsWithNormalApp(this IServiceCollection services, MasaStackProject project, string otlpUrl, string serviceVersion, string projectName = "default",
-        string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, bool microFrontend = false,
-         Action<IMasaBlazorBuilder>? masaBalazorAction = default)
-    {
-        ArgumentNullException.ThrowIfNull(projectName);
-        ArgumentNullException.ThrowIfNull(otlpUrl);
-        ArgumentNullException.ThrowIfNull(serviceVersion);
-        ArgumentNullException.ThrowIfNull(projectName);
-        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, sappHost, serviceVersion, microFrontend, masaBalazorAction);
-        AddObservable(services, false, project: project, serviceVersion: serviceVersion, projectName: projectName, otlpUrl: otlpUrl);
-        return services;
-    }
-
-    private static void AddMasaStackComponentsService(IServiceCollection services, MasaStackProject project,
-        string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, string? serviceVersion = null, bool microFrontend = false,
-        Action<IMasaBlazorBuilder>? masaBalazorAction = default)
-    {
         services.TryAddScoped<CookieStorage>();
         services.TryAddScoped<LocalStorage>();
         services.TryAddScoped<JsInitVariables>();
@@ -74,24 +50,24 @@ public static class ServiceCollectionExtensions
             options.Mapping(nameof(MasaUser.PhoneNumber), IdentityClaimConsts.PHONE_NUMBER);
             options.Mapping(nameof(MasaUser.Email), IdentityClaimConsts.EMAIL);
         });
-        services.AddSingleton(sp => new ProjectAppOptions(project, serviceVersion));
+        services.AddSingleton(sp => new ProjectAppOptions(options.Project, options.ServiceVersion));
         services.AddScoped<MiniProgramAccessState>();
         services.AddScoped<MiniProgramGuard>();
 
         var masaStackConfig = services.GetMasaStackConfig();
 
-        var dccHost = masaStackConfig.GetDccServiceDomain();
-        authHost ??= masaStackConfig.GetAuthServiceDomain();
-        mcHost ??= masaStackConfig.GetMcServiceDomain();
-        pmHost ??= masaStackConfig.GetPmServiceDomain();
-        sappHost ??= masaStackConfig.GetSuperAppServiceDomain();
+        options.DccHost ??= masaStackConfig.GetDccServiceDomain();
+        options.AuthHost ??= masaStackConfig.GetAuthServiceDomain();
+        options.McHost ??= masaStackConfig.GetMcServiceDomain();
+        options.PmHost ??= masaStackConfig.GetPmServiceDomain();
+        options.SappHost ??= masaStackConfig.GetSuperAppServiceDomain();
 
-        services.AddDccClient(dccHost);
-        services.AddAuthClient(authHost);
-        services.AddSingleton(new McServiceOptions(mcHost));
-        services.AddMcClient(mcHost);
-        services.AddPmClient(pmHost);
-        services.AddSappClient(sappHost);
+        services.AddDccClient(options.DccHost);
+        services.AddAuthClient(options.AuthHost);
+        services.AddSingleton(new McServiceOptions(options.McHost));
+        services.AddMcClient(options.McHost);
+        services.AddPmClient(options.PmHost);
+        services.AddSappClient(options.SappHost);
 
         services.AddScoped((serviceProvider) =>
         {
@@ -102,12 +78,12 @@ public static class ServiceCollectionExtensions
         services.AddScoped(sp =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
-            return new MicroFrontendNavigationManager(navigationManager, microFrontend ? $"/{project.Name.ToLower()}/" : "/");
+            return new MicroFrontendNavigationManager(navigationManager, options.IsMicroFrontend ? $"/{options.Project.Name.ToLower()}/" : "/");
         });
 
-        var masaBuilder = services.AddMasaBlazor(options =>
+        var masaBuilder = services.AddMasaBlazor(masaBlazorOptions =>
         {
-            options.ConfigureTheme(theme =>
+            masaBlazorOptions.ConfigureTheme(theme =>
             {
                 theme.Themes.Light.Primary = "#4318FF";
                 theme.Themes.Light.Accent = "#006c4f";
@@ -121,7 +97,7 @@ public static class ServiceCollectionExtensions
                 //theme.Themes.Light.Variables.BorderOpacity = 1f;
 
             });
-            options.Defaults = new Dictionary<string, IDictionary<string, object?>?>
+            masaBlazorOptions.Defaults = new Dictionary<string, IDictionary<string, object?>?>
             {
                 {
                     PopupComponents.SNACKBAR, new Dictionary<string, object?>
@@ -130,40 +106,18 @@ public static class ServiceCollectionExtensions
                     }
                 }
             };
+            options.MasaBlazorOptionsAction?.Invoke(masaBlazorOptions);
         })
         .AddI18n(GetLocales().ToArray());
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), ServiceLifetime.Scoped, null, includeInternalTypes: true);
 
-        if (i18nDirectoryPath is not null)
+        if (options.I18nDirectoryPath is not null)
         {
-            masaBuilder.AddI18nForWasmAsync(i18nDirectoryPath);
+            masaBuilder.AddI18nForWasmAsync(options.I18nDirectoryPath);
         }
 
-        masaBalazorAction?.Invoke(masaBuilder);
-    }
-
-    private static void AddObservable(IServiceCollection services, bool isMasa, MasaStackProject project, string? serviceVersion = null, string? projectName = null, string? otlpUrl = null)
-    {
-        services.AddLogging(configure =>
-        {
-            var masaStackConfig = services.GetMasaStackConfig();
-            // 创建配置构建器
-            //IConfiguration configuration = new ConfigurationBuilder()
-            //    .AddEnvironmentVariables()
-            //    .Build();
-
-            //var masaSericeName = isMasa ? masaStackConfig.GetWebId(project) : project.Name;
-            //ArgumentNullException.ThrowIfNull(masaSericeName);
-            //services.AddObservable(configure, () => new MasaObservableOptions
-            //{
-            //    ServiceNameSpace = masaStackConfig.Environment,
-            //    ServiceVersion = isMasa ? masaStackConfig.Version : serviceVersion!,
-            //    ServiceName = masaSericeName,
-            //    Layer = isMasa ? masaStackConfig.Namespace : projectName!,
-            //    ServiceInstanceId = configuration.GetValue<string>("HOSTNAME")!
-            //}, () => isMasa ? masaStackConfig.OtlpUrl : otlpUrl!, true);
-        });
+        options.MasaBlazorAction?.Invoke(masaBuilder);
     }
 
     private static IEnumerable<(string cultureName, Dictionary<string, string> map)> GetLocales()

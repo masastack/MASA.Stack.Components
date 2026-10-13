@@ -26,10 +26,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Options\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\Masa.Stack.Components.OpenTelemetry\Masa.Stack.Components.OpenTelemetry.csproj" />
 		<ProjectReference Include="..\Masa.Stack.Components.Standalone\Masa.Stack.Components.Standalone.csproj" />
 	</ItemGroup>
