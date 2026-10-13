@@ -2,6 +2,11 @@
 
 public sealed class MasaStackComponentOptions
 {
+    public MasaStackComponentOptions(MasaStackProject project)
+    {
+        Project = project;
+    }
+
     public string I18nDirectoryPath { get; set; } = "wwwroot/i18n";
 
     public string? AuthHost { get; set; }
@@ -16,7 +21,7 @@ public sealed class MasaStackComponentOptions
 
     public bool IsMicroFrontend { get; set; } = false;
 
-    public MasaStackProject Project { get; set; } = default!;
+    public MasaStackProject Project { get; set; }
 
     public string? ServiceVersion { get; set; }
 
