@@ -2,35 +2,53 @@ namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
 {
-    //Consider only one web clearance for now
-    public static IServiceCollection AddMasaStackComponent(this IServiceCollection services, MasaStackProject project,
+    public static IServiceCollection AddMasaStackComponent(this IServiceCollection services,
+        MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, bool microFrontend = false, Action<IMasaBlazorBuilder>? masaBalazorAction = default)
+        string? authHost = null,
+        string? mcHost = null,
+        string? pmHost = null,
+        string? sappHost = null,
+        bool microFrontend = false,
+        Action<IMasaBlazorBuilder>? masaBalazorAction = default,
+        Action<MasaBlazorOptions>? masaBlazorOptionsAction = default)
     {
         ArgumentNullException.ThrowIfNull(project);
-        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, sappHost, microFrontend: microFrontend, masaBalazorAction: masaBalazorAction);
-        AddObservable(services, true, project);
+        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, sappHost, microFrontend: microFrontend, masaBalazorAction: masaBalazorAction, masaBlazorOptionsAction: masaBlazorOptionsAction);
         return services;
     }
 
-    public static IServiceCollection AddMasaStackComponentsWithNormalApp(this IServiceCollection services, MasaStackProject project, string otlpUrl, string serviceVersion, string projectName = "default",
+    public static IServiceCollection AddMasaStackComponentsWithNormalApp(this IServiceCollection services,
+        MasaStackProject project,
+        string serviceVersion,
+        string projectName = "default",
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, bool microFrontend = false,
-         Action<IMasaBlazorBuilder>? masaBalazorAction = default)
+        string? authHost = null,
+        string? mcHost = null,
+        string? pmHost = null,
+        string? sappHost = null,
+        bool microFrontend = false,
+         Action<IMasaBlazorBuilder>? masaBalazorAction = default,
+         Action<MasaBlazorOptions>? masaBlazorOptionsAction = default)
     {
         ArgumentNullException.ThrowIfNull(projectName);
-        ArgumentNullException.ThrowIfNull(otlpUrl);
         ArgumentNullException.ThrowIfNull(serviceVersion);
         ArgumentNullException.ThrowIfNull(projectName);
-        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, sappHost, serviceVersion, microFrontend, masaBalazorAction);
-        AddObservable(services, false, project: project, serviceVersion: serviceVersion, projectName: projectName, otlpUrl: otlpUrl);
+        AddMasaStackComponentsService(services, project, i18nDirectoryPath, authHost, mcHost, pmHost, sappHost, serviceVersion, microFrontend, masaBalazorAction, masaBlazorOptionsAction);
         return services;
     }
 
-    private static void AddMasaStackComponentsService(IServiceCollection services, MasaStackProject project,
+    private static void AddMasaStackComponentsService(IServiceCollection services,
+        MasaStackProject project,
         string? i18nDirectoryPath = "wwwroot/i18n",
-        string? authHost = null, string? mcHost = null, string? pmHost = null, string? sappHost = null, string? serviceVersion = null, bool microFrontend = false,
-        Action<IMasaBlazorBuilder>? masaBalazorAction = default)
+        string? authHost = null,
+        string? mcHost = null,
+        string? pmHost = null,
+        string? sappHost = null,
+        string? serviceVersion = null,
+        bool microFrontend = false,
+        Action<IMasaBlazorBuilder>? masaBalazorAction = default,
+        Action<MasaBlazorOptions>? masaBlazorOptionsAction = default)
     {
         services.TryAddScoped<CookieStorage>();
         services.TryAddScoped<LocalStorage>();
@@ -130,6 +148,7 @@ public static class ServiceCollectionExtensions
                     }
                 }
             };
+            masaBlazorOptionsAction?.Invoke(options);
         })
         .AddI18n(GetLocales().ToArray());
 
@@ -141,29 +160,6 @@ public static class ServiceCollectionExtensions
         }
 
         masaBalazorAction?.Invoke(masaBuilder);
-    }
-
-    private static void AddObservable(IServiceCollection services, bool isMasa, MasaStackProject project, string? serviceVersion = null, string? projectName = null, string? otlpUrl = null)
-    {
-        services.AddLogging(configure =>
-        {
-            var masaStackConfig = services.GetMasaStackConfig();
-            // 创建配置构建器
-            //IConfiguration configuration = new ConfigurationBuilder()
-            //    .AddEnvironmentVariables()
-            //    .Build();
-
-            //var masaSericeName = isMasa ? masaStackConfig.GetWebId(project) : project.Name;
-            //ArgumentNullException.ThrowIfNull(masaSericeName);
-            //services.AddObservable(configure, () => new MasaObservableOptions
-            //{
-            //    ServiceNameSpace = masaStackConfig.Environment,
-            //    ServiceVersion = isMasa ? masaStackConfig.Version : serviceVersion!,
-            //    ServiceName = masaSericeName,
-            //    Layer = isMasa ? masaStackConfig.Namespace : projectName!,
-            //    ServiceInstanceId = configuration.GetValue<string>("HOSTNAME")!
-            //}, () => isMasa ? masaStackConfig.OtlpUrl : otlpUrl!, true);
-        });
     }
 
     private static IEnumerable<(string cultureName, Dictionary<string, string> map)> GetLocales()
