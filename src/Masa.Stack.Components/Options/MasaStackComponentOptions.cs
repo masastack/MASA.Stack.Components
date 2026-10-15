@@ -28,4 +28,8 @@ public sealed class MasaStackComponentOptions
     public Action<IMasaBlazorBuilder>? MasaBlazorAction { get; set; }
 
     public Action<MasaBlazorOptions>? MasaBlazorOptionsAction { get; set; }
+
+    public List<MasaStackSkin> Skins { get; } = new();
+
+    public string? DefaultSkinId { get; set; }
 }

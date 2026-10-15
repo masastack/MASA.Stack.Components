@@ -15,6 +15,9 @@ public partial class SLayout
     private I18n I18n { get; set; } = null!;
 
     [Inject]
+    private SkinManager SkinManager { get; set; } = null!;
+
+    [Inject]
     private MasaUser MasaUser { get; set; } = null!;
 
     [Inject]
@@ -168,6 +171,7 @@ public partial class SLayout
         if (firstRender)
         {
             await GlobalConfig.InitializationAsync();
+            await SkinManager.InitializeAsync();
             await I18nCache.InitializeAsync();
 
             await JsInitVariables.SetTimezoneOffset();
