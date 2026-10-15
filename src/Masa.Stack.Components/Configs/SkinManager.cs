@@ -20,8 +20,8 @@ public sealed class SkinManager : IAsyncDisposable
         _masa = masa;
         _js = js;
         _config = config;
-        Skins = skins.ToArray();
-        Current = Skins.FirstOrDefault(s => s.Id == defaultSkinId) ?? Skins.FirstOrDefault();
+        Skins = skins.Prepend(MasaStackSkin.Default).DistinctBy(s => s.Id).ToArray();
+        Current = Skins.FirstOrDefault(s => s.Id == defaultSkinId) ?? MasaStackSkin.Default;
     }
 
     public async Task InitializeAsync()
