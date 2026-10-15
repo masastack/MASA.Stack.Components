@@ -1,26 +1,63 @@
 @namespace Masa.Stack.Components.Layouts
 @implements IDisposable
 @inject SkinManager SkinManager
+@inject I18n I18n
 
-@if (SkinManager.Skins.Count > 1)
-{
-    <MMenu OffsetY Bottom Attach="@true" Eager>
+    <AppearanceMenu @ref="_menu" OffsetY Bottom Left AppSelector="@AppSelector" NudgeBottom="8" Origin="top right" Eager CloseOnContentClick="false"
+                    ContentClass="masa-appearance-menu" ContentStyle="width: 320px; max-width: calc(100vw - 24px); box-sizing: border-box;">
         <ActivatorContent>
-            <MButton Icon Class="emphasis2--text mr-2" Title="皮肤" aria-label="皮肤" @attributes="@context.Attrs">
+            <MButton Icon Width="48" Height="48" MinWidth="48" MaxWidth="48" MinHeight="48" MaxHeight="48"
+                     Class="emphasis2--text mr-2" Title="@T("Title")" aria-label="@T("Title")" @attributes="@context.Attrs">
                 <MIcon Size="20">mdi-palette-outline</MIcon>
             </MButton>
         </ActivatorContent>
         <ChildContent>
-            <div style="max-height: 480px; overflow-y: auto;">
-                <MList Class="py-0">
+            <div class="masa-appearance surface">
+                <div class="masa-appearance-controls">
+                    <div class="text-subtitle-2 mb-2">@T("Mode")</div>
+                    <div class="masa-appearance-modes" role="group" aria-label="@T("Mode")">
+                        <MButton Text Color="@(SkinManager.IsDark ? null : "primary")" aria-pressed="@(SkinManager.IsDark ? "false" : "true")" OnClick="() => SkinManager.SetDarkAsync(false)">
+                            <MIcon Left Size="18">mdi-white-balance-sunny</MIcon>@T("Light")
+                        </MButton>
+                        <MButton Text Color="@(SkinManager.IsDark ? "primary" : null)" aria-pressed="@(SkinManager.IsDark ? "true" : "false")" OnClick="() => SkinManager.SetDarkAsync(true)">
+                            <MIcon Left Size="18">mdi-weather-night</MIcon>@T("Dark")
+                        </MButton>
+                    </div>
+                    <div class="text-subtitle-2 mt-4 mb-2">@T("PrimaryColor")</div>
+                    <div class="masa-appearance-swatches" role="group" aria-label="@T("Presets")">
+                        @foreach (var color in Presets)
+                        {
+                            <button type="button" class="masa-appearance-swatch" style="@($"background-color: {color};")"
+                                    title="@color" aria-label="@color" aria-pressed="@(IsSelected(color) ? "true" : "false")" @onclick="() => SkinManager.SetPrimaryColorAsync(color)">
+                                @if (IsSelected(color))
+                                {
+                                    <MIcon Size="18" Color="@(color is "#FAAD14" or "#FA8C16" or "#52C41A" or "#13C2C2" ? "black" : "white")">mdi-check</MIcon>
+                                }
+                            </button>
+                        }
+                    </div>
+                    <div class="masa-appearance-custom mt-3">
+                        <MTextField TValue="string" Type="color" Label="@T("Custom")" Value="@PickerColor" ValueChanged="SetPickerColor" HideDetails="@true" Outlined Dense aria-label="@T("Custom")" />
+                        <MTextField TValue="string" Label="@T("Hex")" Value="@_hex" ValueChanged="SetHex" OnFocus="() => _editingHex = true" OnBlur="FinishHex" Error="@_invalidHex" HideDetails="@true" Outlined Dense maxlength="7" aria-label="@T("Hex")" />
+                    </div>
+                    @if (_invalidHex)
+                    {
+                        <div role="alert" class="error--text text-caption mt-1">@T("InvalidHex")</div>
+                    }
+                    <MButton Text Small Class="mt-2" Disabled="@(SkinManager.CustomPrimaryColor is null)" OnClick="() => SkinManager.SetPrimaryColorAsync(null)">
+                        <MIcon Left Size="16">mdi-restore</MIcon>@T("Restore")
+                    </MButton>
+                    <div class="text-subtitle-2 mt-3">@T("Skin")</div>
+                </div>
+                <MList Class="masa-appearance-skins py-0" Dense>
                     @foreach (var skin in SkinManager.Skins)
                     {
-                        <MListItem Link OnClick="() => SkinManager.SelectAsync(skin.Id)">
+                        <MListItem Link OnClick="() => SkinManager.SelectAsync(skin.Id)" aria-current="@(skin == SkinManager.Current ? "true" : "false")" data-skin-id="@skin.Id">
                             <ItemContent>
                                 <MListItemContent>
-                                    <span class="d-flex align-center" style="gap: 10px; min-width: 200px;">
-                                        <span aria-hidden="true" style="@($"width: 14px; height: 14px; flex: none; border-radius: 50%; background: {skin.PrimaryColor};")"></span>
-                                        <span>@skin.DisplayName</span>
+                                    <span class="masa-appearance-skin">
+                                        <span aria-hidden="true" class="masa-appearance-skin-color" style="@($"background-color: {skin.PrimaryColor};")"></span>
+                                        <span>@(skin.Id == MasaStackSkin.Default.Id ? T("DefaultSkin") : skin.DisplayName)</span>
                                         @if (skin == SkinManager.Current)
                                         {
                                             <MIcon Size="18" Class="ml-auto">mdi-check</MIcon>
@@ -33,13 +70,68 @@
                 </MList>
             </div>
         </ChildContent>
-    </MMenu>
-}
+    </AppearanceMenu>
 
 @code {
-    protected override void OnInitialized() => SkinManager.Changed += OnChanged;
+    [CascadingParameter]
+    private SLayout? Layout { get; set; }
 
-    private void OnChanged() => _ = InvokeAsync(StateHasChanged);
+    private string? AppSelector => Layout is null ? null : $"#{Layout.AppearanceId}";
+
+    [CascadingParameter(Name = "Culture")]
+    private string? Culture { get; set; }
+
+    private string T(string key) => I18n.T("Appearance." + key);
+
+    private static readonly string[] Presets = { "#4318FF", "#1677FF", "#13C2C2", "#52C41A", "#FAAD14", "#FA8C16", "#F5222D", "#EB2F96" };
+    private string _hex = "";
+    private bool _invalidHex;
+    private bool _editingHex;
+    private AppearanceMenu? _menu;
+    private bool _updateMenuPosition;
+    private string PickerColor => SkinManager.CustomPrimaryColor ?? SkinManager.EffectivePrimaryColor;
+    private bool IsSelected(string color) => string.Equals(PickerColor, color, StringComparison.OrdinalIgnoreCase);
+
+    protected override void OnInitialized()
+    {
+        _hex = PickerColor;
+        SkinManager.Changed += OnChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_updateMenuPosition && _menu is not null)
+        {
+            _updateMenuPosition = false;
+            await _menu.UpdatePositionAsync();
+        }
+    }
+
+    private Task SetPickerColor(string color) => SkinManager.SetPrimaryColorAsync(color);
+
+    private async Task SetHex(string value)
+    {
+        _hex = value;
+        _invalidHex = !Regex.IsMatch(value ?? "", "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", RegexOptions.None, TimeSpan.FromMilliseconds(100));
+        if (!_invalidHex) await SkinManager.SetPrimaryColorAsync(value);
+    }
+
+    private void FinishHex()
+    {
+        _editingHex = false;
+        if (!_invalidHex) _hex = PickerColor;
+    }
+
+    private void OnChanged() => _ = InvokeAsync(() =>
+    {
+        _updateMenuPosition = true;
+        if (!_editingHex)
+        {
+            _hex = PickerColor;
+            _invalidHex = false;
+        }
+        StateHasChanged();
+    });
 
     public void Dispose() => SkinManager.Changed -= OnChanged;
 }
