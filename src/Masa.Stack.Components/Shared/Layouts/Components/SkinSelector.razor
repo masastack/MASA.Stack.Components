@@ -112,7 +112,7 @@
     private async Task SetHex(string value)
     {
         _hex = value;
-        _invalidHex = !Regex.IsMatch(value ?? "", "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$");
+        _invalidHex = !Regex.IsMatch(value ?? "", "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", RegexOptions.None, TimeSpan.FromMilliseconds(100));
         if (!_invalidHex) await SkinManager.SetPrimaryColorAsync(value);
     }
 
