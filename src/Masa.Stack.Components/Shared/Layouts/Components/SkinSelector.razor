@@ -1,0 +1,45 @@
+@namespace Masa.Stack.Components.Layouts
+@implements IDisposable
+@inject SkinManager SkinManager
+
+@if (SkinManager.Skins.Count > 1)
+{
+    <MMenu OffsetY Bottom Attach="@true" Eager>
+        <ActivatorContent>
+            <MButton Icon Class="emphasis2--text mr-2" Title="皮肤" aria-label="皮肤" @attributes="@context.Attrs">
+                <MIcon Size="20">mdi-palette-outline</MIcon>
+            </MButton>
+        </ActivatorContent>
+        <ChildContent>
+            <div style="max-height: 480px; overflow-y: auto;">
+                <MList Class="py-0">
+                    @foreach (var skin in SkinManager.Skins)
+                    {
+                        <MListItem Link OnClick="() => SkinManager.SelectAsync(skin.Id)">
+                            <ItemContent>
+                                <MListItemContent>
+                                    <span class="d-flex align-center" style="gap: 10px; min-width: 200px;">
+                                        <span aria-hidden="true" style="@($"width: 14px; height: 14px; flex: none; border-radius: 50%; background: {skin.PrimaryColor};")"></span>
+                                        <span>@skin.DisplayName</span>
+                                        @if (skin == SkinManager.Current)
+                                        {
+                                            <MIcon Size="18" Class="ml-auto">mdi-check</MIcon>
+                                        }
+                                    </span>
+                                </MListItemContent>
+                            </ItemContent>
+                        </MListItem>
+                    }
+                </MList>
+            </div>
+        </ChildContent>
+    </MMenu>
+}
+
+@code {
+    protected override void OnInitialized() => SkinManager.Changed += OnChanged;
+
+    private void OnChanged() => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose() => SkinManager.Changed -= OnChanged;
+}

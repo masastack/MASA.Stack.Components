@@ -11,6 +11,12 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<CookieStorage>();
         services.TryAddScoped<LocalStorage>();
         services.TryAddScoped<JsInitVariables>();
+        services.AddScoped(sp => new SkinManager(
+            sp.GetRequiredService<MasaBlazor>(),
+            sp.GetRequiredService<IJSRuntime>(),
+            sp.GetRequiredService<GlobalConfig>(),
+            options.Skins,
+            options.DefaultSkinId));
 
         // 注册 Accept-Language 处理器
         services.AddScoped<AcceptLanguageHandler>();
