@@ -17,6 +17,8 @@ public partial class SLayout
     [Inject]
     private SkinManager SkinManager { get; set; } = null!;
 
+    internal string AppearanceId { get; } = "masa-appearance-" + Guid.NewGuid().ToString("N");
+
     [Inject]
     private MasaUser MasaUser { get; set; } = null!;
 
@@ -121,6 +123,8 @@ public partial class SLayout
 
     private bool UseMinimalLayout => IsMiniProgramBlocked && MiniProgramGuard.IsOnMiniProgramBlockPage();
 
+    private ElementReference _appearanceAnchor;
+
     public string GetAppId() => MultiEnvironmentMasaStackConfig.SetEnvironment(MultiEnvironmentUserContext.Environment ?? "").GetWebId(ProjectApp.Project);
 
     List<Nav> NavItems = new();
@@ -171,7 +175,7 @@ public partial class SLayout
         if (firstRender)
         {
             await GlobalConfig.InitializationAsync();
-            await SkinManager.InitializeAsync();
+            await SkinManager.InitializeAsync(_appearanceAnchor);
             await I18nCache.InitializeAsync();
 
             await JsInitVariables.SetTimezoneOffset();

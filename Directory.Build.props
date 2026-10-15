@@ -8,6 +8,6 @@
 		<MasaFrameworkPackageVersion>1.2.0-preview.*</MasaFrameworkPackageVersion>
 		<MasaStackSdksPackageVersion>1.2.1-preview.*</MasaStackSdksPackageVersion>
 		<OpenTelemetryPackageVersion>1.9.0</OpenTelemetryPackageVersion>
-		<MasaBlazorPackageVersion>1.11.9</MasaBlazorPackageVersion>
+		<MasaBlazorPackageVersion>1.12.0-alpha.2</MasaBlazorPackageVersion>
 	</PropertyGroup>
 </Project>

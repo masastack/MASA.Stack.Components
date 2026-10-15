@@ -80,6 +80,12 @@ public class GlobalConfig : IScopedDependency
         }
     }
 
+    public async Task SetDarkAsync(bool dark)
+    {
+        _dark = dark;
+        await _localStore.SetItemAsync(DarkStoreKey, dark);
+    }
+
     public List<Nav> Menus { get; set; }
 
     public bool Mini
