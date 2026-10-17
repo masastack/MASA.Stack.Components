@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Stack.Components.Stand
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Stack.Components.OpenTelemetry", "src\Masa.Stack.Components.OpenTelemetry\Masa.Stack.Components.OpenTelemetry.csproj", "{1BFA1BA3-0AE1-445E-A04C-E0E8BCF1EA9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasaStack.Blazor", "src\MasaStack.Blazor\MasaStack.Blazor.csproj", "{BE9EF1F8-C75B-4821-8E63-C20464CF79DB}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Stack.Components.Tests", "tests\Masa.Stack.Components.Tests\Masa.Stack.Components.Tests.csproj", "{4D66BA67-69D3-4B9E-8107-93EED621FA2F}"
@@ -43,6 +45,10 @@ Global
 		{1BFA1BA3-0AE1-445E-A04C-E0E8BCF1EA9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BFA1BA3-0AE1-445E-A04C-E0E8BCF1EA9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BFA1BA3-0AE1-445E-A04C-E0E8BCF1EA9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE9EF1F8-C75B-4821-8E63-C20464CF79DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE9EF1F8-C75B-4821-8E63-C20464CF79DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE9EF1F8-C75B-4821-8E63-C20464CF79DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE9EF1F8-C75B-4821-8E63-C20464CF79DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D66BA67-69D3-4B9E-8107-93EED621FA2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D66BA67-69D3-4B9E-8107-93EED621FA2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D66BA67-69D3-4B9E-8107-93EED621FA2F}.Release|Any CPU.ActiveCfg = Release|Any CPU

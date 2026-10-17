@@ -1,0 +1,95 @@
+/* MASA Stack's original control geometry, expressed through semantic theme tokens. */
+.m-application[data-skin="masa-stack"],
+.m-application.theme--masa-stack-light,
+.m-application.theme--masa-stack-dark {
+    --m-radius-sm: 4px;
+    --m-radius-md: 8px;
+    --m-radius-lg: 12px;
+    --m-radius-xl: 20px;
+    --m-radius-pill: 9999px;
+    --m-shadow-0: 0 0 0 rgba(var(--m-theme-on-surface), 0);
+    --m-shadow-1: 0 1px 2px rgba(var(--m-theme-on-surface), 0.08);
+    --m-shadow-2: 0 2px 8px rgba(var(--m-theme-on-surface), 0.12);
+    --m-shadow-3: 0 4px 16px rgba(var(--m-theme-on-surface), 0.16);
+    --m-shadow-dropdown: 0 18px 40px rgba(var(--m-theme-on-surface), 0.12);
+    --m-type-family: roboto, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    --m-type-size-xs: 12px;
+    --m-type-size-sm: 13px;
+    --m-type-size-md: 14px;
+    --m-type-size-lg: 16px;
+    --m-type-weight-regular: 400;
+    --m-type-weight-medium: 500;
+    --m-type-weight-bold: 700;
+    font-family: var(--m-type-family);
+}
+
+.m-application[data-skin="masa-stack"][data-theme="light"] {
+    --m-border-opacity: 0.12;
+    --m-idle-opacity: 0.04;
+    --m-hover-opacity: 0.04;
+    --m-focus-opacity: 0.12;
+    --m-disabled-opacity: 0.38;
+    --m-activated-opacity: 0.12;
+    --m-highlight-opacity: 0.16;
+    --m-high-emphasis-opacity: 0.87;
+    --m-medium-emphasis-opacity: 0.6;
+    --m-low-emphasis-opacity: 0.38;
+}
+
+.m-application[data-skin="masa-stack"][data-theme="dark"] {
+    --m-border-opacity: 0.5;
+    --m-idle-opacity: 0.04;
+    --m-hover-opacity: 0.08;
+    --m-focus-opacity: 0.5;
+    --m-disabled-opacity: 0.5;
+    --m-activated-opacity: 0.2;
+    --m-highlight-opacity: 0.5;
+    --m-high-emphasis-opacity: 1;
+    --m-medium-emphasis-opacity: 0.7;
+    --m-low-emphasis-opacity: 0.5;
+}
+
+.m-application[data-skin="masa-stack"] .m-btn--round {
+    border-radius: 50%;
+}
+
+.m-application[data-skin="masa-stack"] .m-menu__content:not(.m-ellipsis-text__tooltip) {
+    border-radius: var(--m-radius-lg, 12px);
+    box-shadow: var(--m-shadow-dropdown, 0 18px 40px rgba(var(--m-theme-on-surface), 0.12));
+}
+
+.m-application[data-skin="masa-stack"] .m-card {
+    border-radius: var(--m-radius-xl, 20px);
+}
+
+.m-application[data-skin="masa-stack"] .m-dialog:not(.m-dialog--fullscreen):not(.m-dialog--drawer),
+.m-application[data-skin="masa-stack"] .m-dialog .m-card {
+    border-radius: var(--m-radius-xl, 20px);
+}
+
+.m-application[data-skin="masa-stack"] .m-text-field--outlined fieldset {
+    border-color: rgba(var(--m-theme-outline-variant));
+}
+
+.m-application[data-skin="masa-stack"] .m-data-table > .m-data-table__wrapper > table > tbody > tr:hover:not(.m-data-table__expanded__content):not(.m-data-table__empty-wrapper) {
+    background-color: rgba(var(--m-theme-surface-container-low));
+}
+
+.m-application[data-skin="masa-stack"] ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.m-application[data-skin="masa-stack"] ::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--m-theme-on-surface), var(--m-low-emphasis-opacity));
+    border-radius: var(--m-radius-sm, 4px);
+}
+
+.m-application[data-skin="masa-stack"] ::-webkit-scrollbar-track {
+    background-color: rgba(var(--m-theme-surface-container));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="dark"] .m-overlay__scrim,
+.theme--masa-stack-dark .m-overlay__scrim {
+    filter: brightness(0);
+}
