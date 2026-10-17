@@ -35,30 +35,36 @@ public static class MasaStackBlazorExtensions
     {
         theme.Primary = DefaultPrimaryColor;
         theme.OnPrimary = "#FFFFFF";
-        theme.Secondary = "#485585";
+        theme.Secondary = "#323D6F";
         theme.OnSecondary = "#FFFFFF";
         theme.Accent = DefaultPrimaryColor;
         theme.OnAccent = "#FFFFFF";
         theme.Error = "#FF5252";
-        theme.OnError = "#1B2559";
+        theme.OnError = "#FFFFFF";
         theme.Info = "#37A7FF";
-        theme.OnInfo = "#1B2559";
+        theme.OnInfo = "#FFFFFF";
         theme.Success = "#00B42A";
-        theme.OnSuccess = "#1B2559";
+        theme.OnSuccess = "#FFFFFF";
         theme.Warning = "#FF7D00";
-        theme.OnWarning = "#1B2559";
+        theme.OnWarning = "#FFFFFF";
         theme.Surface = "#F0F3FA";
         theme.SurfaceDim = "#E9EDF7";
         theme.SurfaceBright = "#FFFFFF";
         theme.SurfaceContainerLowest = "#FFFFFF";
-        theme.SurfaceContainerLow = "#F6F8FD";
-        theme.SurfaceContainer = "#F0F3FA";
-        theme.SurfaceContainerHigh = "#E9EDF7";
-        theme.SurfaceContainerHighest = "#E2E7F4";
+        theme.SurfaceContainerLow = "#FFFFFF";
+        theme.SurfaceContainer = "#FFFFFF";
+        theme.SurfaceContainerHigh = "#F5F5F5";
+        theme.SurfaceContainerHighest = "#E0E0E0";
         theme.OnSurface = "#1B2559";
         theme.InverseSurface = "#1B2559";
         theme.InverseOnSurface = "#FFFFFF";
         theme.InversePrimary = "#6956FF";
+        theme.UserDefined["stack-text-secondary"] = new ColorPairing("#485585");
+        theme.UserDefined["stack-text-muted"] = new ColorPairing("#7681AB");
+        theme.UserDefined["stack-text-disabled"] = new ColorPairing("#A3AED0");
+        theme.UserDefined["stack-divider"] = new ColorPairing("#E4E8F3");
+        theme.UserDefined["stack-breadcrumb"] = new ColorPairing("#808080");
+        theme.UserDefined["stack-tooltip"] = new ColorPairing("#302F3B", "#F3EEFF");
     }
 
     private static void ApplyDarkTheme(ThemeOptions theme)
@@ -89,5 +95,12 @@ public static class MasaStackBlazorExtensions
         theme.InverseSurface = "#F6F8FD";
         theme.InverseOnSurface = "#141726";
         theme.InversePrimary = "#A18BFF";
+        theme.UserDefined["stack-text-secondary"] = new ColorPairing("#C3C8DB");
+        theme.UserDefined["stack-text-muted"] = new ColorPairing("#A3AED0");
+        theme.UserDefined["stack-text-disabled"] = new ColorPairing("#7681AB");
+        theme.UserDefined["stack-divider"] = new ColorPairing("#485585");
+        theme.UserDefined["stack-breadcrumb"] = new ColorPairing("#C3C8DB");
+        theme.UserDefined["stack-tooltip"] = new ColorPairing("#F3EEFF", "#302F3B");
     }
+
 }

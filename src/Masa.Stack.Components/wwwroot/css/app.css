@@ -9,7 +9,7 @@ h1:focus {
     outline: none;
 }
 
-    .masa-stack-components .m-app-bar {
+    .masa-stack-components .m-app-bar.m-toolbar.m-sheet {
         background-color: transparent;
     }
 
@@ -356,6 +356,14 @@ h1:focus {
 
     .masa-stack-components .navigation .m-list-group--active > .m-list-group__items {
         margin-bottom: 8px;
+    }
+
+    .masa-stack-components .ms-navigation__label--inactive {
+        color: rgba(var(--m-theme-on-surface), var(--m-medium-emphasis-opacity));
+    }
+
+    .masa-stack-components .ms-navigation__icon--inactive {
+        color: rgba(var(--m-theme-on-surface), var(--m-disabled-opacity));
     }
 
     .masa-stack-components .m-list--nav .m-list-item, .m-list--nav .m-list-item:before {
@@ -891,6 +899,14 @@ h1:focus {
             color: rgba(var(--m-theme-on-surface), var(--m-medium-emphasis-opacity));
             overflow-wrap: anywhere;
         }
+
+    .masa-stack-components .ms-breadcrumbs__label {
+        color: rgba(var(--m-theme-on-surface), var(--m-medium-emphasis-opacity));
+    }
+
+    .masa-stack-components .ms-breadcrumbs__label--current {
+        color: rgba(var(--m-theme-on-surface));
+    }
 
 .m-sheet.m-card {
     border-radius: 20px;

@@ -11,7 +11,7 @@
                 var isLast = i == Items.Count - 1;
                 <MBreadcrumbsItem @key="@item"
                                   Href="@(isLast ? null : BuildHref(item.Href))">
-                    <span class="@(isLast ? "text--primary" : "text--secondary")">@DT(item.Text)</span>
+                    <span class="ms-breadcrumbs__label @(isLast ? "ms-breadcrumbs__label--current" : null)">@DT(item.Text)</span>
                 </MBreadcrumbsItem>
             }
         </ChildContent>

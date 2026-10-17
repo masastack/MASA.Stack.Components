@@ -23,25 +23,31 @@
     font-family: var(--m-type-family);
 }
 
-.m-application[data-skin="masa-stack"][data-theme="light"] {
-    --m-border-opacity: 0.12;
-    --m-idle-opacity: 0.04;
-    --m-hover-opacity: 0.04;
-    --m-focus-opacity: 0.12;
-    --m-disabled-opacity: 0.38;
-    --m-activated-opacity: 0.12;
-    --m-highlight-opacity: 0.16;
-    --m-high-emphasis-opacity: 0.87;
-    --m-medium-emphasis-opacity: 0.6;
-    --m-low-emphasis-opacity: 0.38;
-}
-
-.m-application[data-skin="masa-stack"][data-theme="dark"] {
+.m-application[data-skin="masa-stack"][data-theme="light"],
+.m-application[data-skin="masa-stack"][data-theme="light"] .theme--masa-stack-light {
+    --m-theme-outline: 226, 231, 244;
+    --m-theme-outline-variant: 233, 237, 247;
+    --ms-box-shadow-color: 112, 144, 176;
+    --m-shadow-dropdown: 0 18px 40px rgba(112, 144, 176, 0.12);
     --m-border-opacity: 0.5;
     --m-idle-opacity: 0.04;
     --m-hover-opacity: 0.08;
     --m-focus-opacity: 0.5;
-    --m-disabled-opacity: 0.5;
+    --m-disabled-opacity: 0.4;
+    --m-activated-opacity: 0.12;
+    --m-highlight-opacity: 0.5;
+    --m-high-emphasis-opacity: 1;
+    --m-medium-emphasis-opacity: 0.7;
+    --m-low-emphasis-opacity: 0.5;
+}
+
+.m-application[data-skin="masa-stack"][data-theme="dark"],
+.m-application[data-skin="masa-stack"][data-theme="dark"] .theme--masa-stack-dark {
+    --m-border-opacity: 0.5;
+    --m-idle-opacity: 0.04;
+    --m-hover-opacity: 0.08;
+    --m-focus-opacity: 0.5;
+    --m-disabled-opacity: 0.6;
     --m-activated-opacity: 0.2;
     --m-highlight-opacity: 0.5;
     --m-high-emphasis-opacity: 1;
@@ -67,8 +73,53 @@
     border-radius: var(--m-radius-xl, 20px);
 }
 
-.m-application[data-skin="masa-stack"] .m-text-field--outlined fieldset {
-    border-color: rgba(var(--m-theme-outline-variant));
+.m-application[data-skin="masa-stack"][data-theme="light"] .m-text-field--outlined fieldset {
+    border-color: rgba(var(--m-theme-surface-dim));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="dark"] .m-text-field--outlined fieldset {
+    border-color: rgba(var(--m-theme-surface-container-high));
+}
+
+.theme--masa-stack-light.m-text-field--outlined:not(.m-input--is-focused):not(.m-input--has-state) > .m-input__control > .m-input__slot fieldset {
+    color: rgba(var(--m-theme-surface-dim));
+}
+
+.theme--masa-stack-dark.m-text-field--outlined:not(.m-input--is-focused):not(.m-input--has-state) > .m-input__control > .m-input__slot fieldset {
+    color: rgba(var(--m-theme-surface-container-high));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="light"] .nav-trigger {
+    border-color: rgba(var(--m-theme-surface));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="light"] .ms-navigation__label--inactive {
+    color: rgba(var(--m-theme-stack-text-muted));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="light"] .ms-navigation__icon--inactive {
+    color: rgba(var(--m-theme-stack-text-disabled));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="light"] .ms-breadcrumbs__label {
+    color: rgba(var(--m-theme-stack-breadcrumb));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="light"] .table-border-head .m-data-table__wrapper table thead tr:not(.m-data-table__progress) th {
+    color: rgba(var(--m-theme-stack-text-disabled));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="light"] .table-border-head .m-data-table__wrapper table thead {
+    box-shadow: inset 0 -1px rgba(var(--m-theme-stack-divider));
+}
+
+.m-application[data-skin="masa-stack"][data-theme="dark"] .table-border-head .m-data-table__wrapper table thead th {
+    color: rgba(var(--m-theme-on-surface), 0.6);
+}
+
+.m-application[data-skin="masa-stack"][data-theme="light"] .m-tooltip__content:not(.m-ellipsis-text__tooltip) {
+    color: rgba(var(--m-theme-on-stack-tooltip));
+    background-color: rgba(var(--m-theme-stack-tooltip));
 }
 
 .m-application[data-skin="masa-stack"] .m-data-table > .m-data-table__wrapper > table > tbody > tr:hover:not(.m-data-table__expanded__content):not(.m-data-table__empty-wrapper) {
@@ -89,7 +140,8 @@
     background-color: rgba(var(--m-theme-surface-container));
 }
 
-.m-application[data-skin="masa-stack"][data-theme="dark"] .m-overlay__scrim,
+.m-application[data-skin="masa-stack"] .m-overlay__scrim,
+.theme--masa-stack-light .m-overlay__scrim,
 .theme--masa-stack-dark .m-overlay__scrim {
     filter: brightness(0);
 }

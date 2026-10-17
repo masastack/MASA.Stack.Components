@@ -45,12 +45,12 @@
                                 <MListItemIcon>
                                     <MIcon Dense
                                            Style="margin-left:6px"
-                                           Class="@(context.Active ? null : "text--disabled")">
+                                           Class="@($"ms-navigation__icon {(context.Active ? null : "ms-navigation__icon--inactive")}")">
                                         @nav.Icon
                                     </MIcon>
                                 </MListItemIcon>
                                 <MListItemContent>
-                                    <div class="ml-1 text-truncate @(context.Active ? null : "text--secondary")">
+                                    <div class="ms-navigation__label ml-1 text-truncate @(context.Active ? null : "ms-navigation__label--inactive")">
                                         @DT(nav.Name)
                                     </div>
                                 </MListItemContent>
@@ -73,7 +73,7 @@
                                     @attributes="@menuContext.Attrs">
                             <ActivatorContent>
                                 <MListItemContent>
-                                    <div class="ml-1 text-truncate text--secondary">@DT(nav.Name)</div>
+                                    <div class="ms-navigation__label ms-navigation__label--inactive ml-1 text-truncate">@DT(nav.Name)</div>
                                 </MListItemContent>
                             </ActivatorContent>
                             <PrependIconContent>
