@@ -1,9 +1,9 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<div class="d-flex px-2 fill dateRangePicker @Class" style="@Style;">
+<div class="d-flex px-2 surface-container-lowest dateRangePicker @Class" style="@Style;">
     <div class="my-auto d-inline-flex" style="height:20px; min-width: 194px; width: 100%">
-        <MIcon Size=20 Color="emphasis2">mdi-calendar-month</MIcon>
+        <MIcon Size=20 Class="text--primary">mdi-calendar-month</MIcon>
         <div class="ml-2 d-flex align-center" style="width: calc(100% - 28px)">
             <MMenu @bind-Value="StartTimeVisible" CloseOnContentClick="false" OffsetY Transition="scale-transition" MaxWidth="290" Attach="Attach">
                 <ActivatorContent>

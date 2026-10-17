@@ -1,21 +1,21 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
 
-<div class="@Class d-flex">
-    <div class="d-flex" style="height: 30px !important;">
+<div class="s-pagination @Class d-flex">
+    <div class="s-pagination__summary d-flex" style="height: 30px !important;">
         <SPaginationSelect Value="PageSize"
                            ValueChanged="HandlePageSizeChanged"
                            Items="@PageSizeSelect" />
-        <div class="ml-2 mt-1 block-center caption regular3--text">
+        <div class="ml-2 mt-1 block-center caption text--disabled">
             @T("Rows per page")
         </div>
-        <div class="ml-2 mt-1 block-center caption regular3--text">
+        <div class="ml-2 mt-1 block-center caption text--disabled">
             <span>@T("Total") @Total @T("Item")</span>
         </div>
     </div>
-    <div class="ml-auto d-flex">
+    <div class="s-pagination__controls ml-auto d-flex">
         <MButton IconName="mdi-chevron-left" Disabled="PreviousDisabled" OnClick="@Previous"></MButton>
-        <div class="mx-4 my-auto regular--text overline">@Page/@TotalPage</div>
+        <div class="mx-4 my-auto text--secondary overline">@Page/@TotalPage</div>
         <MButton IconName="mdi-chevron-right" Disabled="NextDisabled" OnClick="@Next"></MButton>
     </div>
 </div>

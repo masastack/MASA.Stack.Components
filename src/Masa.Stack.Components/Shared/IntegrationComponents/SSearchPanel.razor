@@ -1,12 +1,14 @@
-﻿<div class="d-flex @Class">
-    @ChildContent
+﻿<div class="s-search-panel d-flex @Class">
+    <div class="s-search-panel__content">
+        @ChildContent
+    </div>
     <MSpacer></MSpacer>
-    <div class="d-flex">
-        <SSearch Value="@Value" ValueChanged="ValueChanged" BackgroundColor="white" OnEnter="OnEnter" OnClearClick="OnClearClick" />
+    <div class="s-search-panel__actions d-flex">
+        <SSearch Value="@Value" ValueChanged="ValueChanged" OnEnter="OnEnter" OnClearClick="OnClearClick" />
         @if (Advanced)
         {
-            <div @onclick="ToggleAdvanced" class="ml-6 d-flex filter-button fill">
-                <SIcon Class="ma-auto" Color="emphasis2" Size=20>
+            <div @onclick="ToggleAdvanced" class="ml-6 d-flex filter-button surface-container-lowest">
+                <SIcon Class="ma-auto text--primary" Size=20>
                     @(_advanced ? IconConstants.FilterOff : IconConstants.Filter)
                 </SIcon>
             </div>
@@ -17,9 +19,9 @@
         }
         else if (OnClick.HasDelegate)
         {
-            <SButton Small BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="OnClick">
+            <SButton Small BorderRadiusClass="rounded-lg" Class="s-search-panel__create ml-6" OnClick="OnClick">
                 <SIcon Size=18 IsDefaultToolTip=false>@IconConstants.Add</SIcon>
-                <span class="ml-2 btn">@ComputedButtonText</span>
+                <span class="s-search-panel__create-label ml-2 btn">@ComputedButtonText</span>
             </SButton>
         }
     </div>

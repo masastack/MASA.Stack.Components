@@ -30,8 +30,8 @@
                                               OnFavoriteRemove="RemoveFavoriteMenu">
                             <ActivatorContent>
                                 <MButton Icon
-                                         Class="white emphasis2--text"
-                                         Style="z-index: 1; border: 8px solid #F0F3FA !important;"
+                                         Class="surface-container-lowest text--primary"
+                                         Style="z-index: 1; border: 8px solid rgba(var(--m-theme-surface-container));"
                                          Width="64"
                                          Height="64"
                                          @attributes="@context.Attrs">
@@ -46,8 +46,8 @@
                                           OnFavoriteRemove="RemoveFavoriteMenu">
                             <ActivatorContent>
                                 <MButton Icon
-                                         Class="white emphasis2--text"
-                                         Style="z-index: 1; border: 8px solid #F0F3FA !important;"
+                                         Class="surface-container-lowest text--primary"
+                                         Style="z-index: 1; border: 8px solid rgba(var(--m-theme-surface-container));"
                                          Width="64"
                                          Height="64"
                                          @attributes="@context.Attrs">
@@ -63,7 +63,7 @@
                     <MSpacer />
                     <SkinSelector />
                     <Languages OnChange="() => { }" />
-                    <MSheet Class="d-flex align-center justify-space-around rounded-6 pa-1 mr-n4" Width="100">
+                    <MSheet Class="masa-user-actions d-flex align-center justify-space-around rounded-6 pa-1 mr-n4" Width="100">
                         <Notification />
                         <User />
                     </MSheet>

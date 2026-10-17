@@ -1,9 +1,9 @@
 .labeled-radio-group {
-    background-color: #F0F3FA !important;
+    background-color: rgba(var(--m-theme-surface-container));
     padding: 2px;
 }
 
-.labeled-radio-group .theme--light.m-btn--active:hover::before, .labeled-radio-group .theme--light.m-btn--active::before {
+.labeled-radio-group .m-btn--active:hover::before, .labeled-radio-group .m-btn--active::before {
     opacity: 0;
 }
 
@@ -47,9 +47,9 @@
 }
 
 .delete-btn:hover {
-    color: #FF8A80 !important;
+    color: rgba(var(--m-theme-error), var(--m-high-emphasis-opacity));
 }
 
 .delete-btn:active {
-    color: #B71C1C !important;
+    color: rgba(var(--m-theme-error));
 }

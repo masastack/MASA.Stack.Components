@@ -10,12 +10,12 @@
             <MButton Icon
                      Width="40"
                      Height="40"
-                     Class="emphasis2--text"
+                     Class="text--primary"
                      OnClick="HandleOpenOnClick"
                      @attributes="@(_showMenu?context.Attrs:null)">
                 @if (!NoticeState.IsRead)
                 {
-                    <MBadge Bordered OverLap Dot Color="red">
+                    <MBadge Bordered OverLap Dot Color="error">
                         <MIcon>
                             mdi-bell
                         </MIcon>
@@ -35,7 +35,7 @@
                     <MButton Icon Class="ml-0" Small>
                         <MIcon>mdi-bell-outline</MIcon>
                     </MButton>
-                    <MToolbarTitle Class="h7 fill--text pl-2">@T("DisplayName.Notice.Title")</MToolbarTitle>
+                    <MToolbarTitle Class="h7 pl-2">@T("DisplayName.Notice.Title")</MToolbarTitle>
                     <MSpacer></MSpacer>
                 </MToolbar>
 
@@ -50,28 +50,28 @@
                                 }
                                 else
                                 {
-                                    <MBadge Bordered Color="pink" Dot OffsetX="10" OffsetY="10">
+                                    <MBadge Bordered Color="error" Dot OffsetX="10" OffsetY="10">
                                         <SEmptyAvatar Value="@item.Channel?.DisplayName" Size="40" />
                                     </MBadge>
                                 }
                             </MListItemAvatar>
 
                             <MListItemContent>
-                                <MListItemTitle Class="btn emphasis--text">@item.Channel?.DisplayName</MListItemTitle>
-                                <MListItemSubtitle Class="caption regular2--text mt-1">@item.Title</MListItemSubtitle>
-                                <MListItemSubtitle Class="overline regular3--text mt-1">@item.SendTime.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemSubtitle>
+                                <MListItemTitle Class="btn text--primary">@item.Channel?.DisplayName</MListItemTitle>
+                                <MListItemSubtitle Class="caption text--secondary mt-1">@item.Title</MListItemSubtitle>
+                                <MListItemSubtitle Class="overline text--disabled mt-1">@item.SendTime.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemSubtitle>
                             </MListItemContent>
                         </MListItem>
                     }
                 </MList>
                 <MList Dense>
-                    <MListItem Link Class="pt-2" Style="box-shadow: inset 0px 1px 0px #E9EDF7" OnClick="()=>NavigateToNotificationCenter(null)">
+                    <MListItem Link Class="pt-2" Style="box-shadow: inset 0 1px 0 rgba(var(--m-theme-outline-variant))" OnClick="()=>NavigateToNotificationCenter(null)">
                         <MListItemIcon Class="mr-0">
-                            <MIcon Size="16" Color="regular2" Class="pr-3">mdi-keyboard-backspace</MIcon>
+                            <MIcon Size="16" Class="pr-3 text--secondary">mdi-keyboard-backspace</MIcon>
                         </MListItemIcon>
 
                         <MListItemContent>
-                            <MListItemTitle Class="caption regular2--text">@T("Description.Notice.MoreTips")</MListItemTitle>
+                            <MListItemTitle Class="caption text--secondary">@T("Description.Notice.MoreTips")</MListItemTitle>
                         </MListItemContent>
                     </MListItem>
                 </MList>

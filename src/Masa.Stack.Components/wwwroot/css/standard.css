@@ -7,67 +7,7 @@
   font-size: 16px;
 }
 
-    .masa.m-application .default {
-      background-color: #000000 !important;
-    }
-
-    .masa.m-application .emphasis {
-      background-color: #1B2559 !important;
-    }
-
-    .masa.m-application .emphasis2 {
-      background-color: #323D6F !important;
-    }
-
-    .masa.m-application .regular {
-      background-color: #485585 !important;
-    }
-
-    .masa.m-application .regular2 {
-      background-color: #7681AB !important;
-    }
-
-    .masa.m-application .regular3 {
-      background-color: #A3AED0 !important;
-    }
-
-    .masa.m-application .fill {
-      background-color: #FFFFFF !important;
-    }    
-    /*
-    color of text
-    */
-
-    .masa.m-application .default--text {
-      color: #000000 !important;
-    }
-
-    .masa.m-application .emphasis--text {
-      color: #1B2559 !important;
-    }
-
-    .masa.m-application .emphasis2--text {
-      color: #323D6F !important;
-    }
-
-    .masa.m-application .regular--text {
-      color: #485585 !important;
-    }
-
-    .masa.m-application .regular2--text {
-      color: #7681AB !important;
-    }
-
-    .masa.m-application .regular3--text {
-      color: #A3AED0 !important;
-    }
-
-    .masa.m-application .fill--text {
-      color: #FFFFFF !important;
-    }
-    /*
-    font
-    */
+    /* font */
     .masa.m-application .h1 {
       font-size: 6rem !important;
       font-weight: 300 !important;

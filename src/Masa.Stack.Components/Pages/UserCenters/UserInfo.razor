@@ -16,21 +16,21 @@
                           WhenFileChangeUpload />
             @if (!UpdateUserNickNameVisible)
             {
-                <PBlockText Primary="@UserDetail.DisplayName" PrimaryClass="font-20-bold emphasis2--text"
+                <PBlockText Primary="@UserDetail.DisplayName" PrimaryClass="font-20-bold text--primary"
                         Secondary="@UserDetail.Account"
-                        SecondaryClass="regular3--text font-14 full-width"
+                        SecondaryClass="text--disabled font-14 full-width"
                         Style="height:40px;flex-wrap: wrap;">
                         <SecondaryContent>
                             <MButton Icon Small OnClick="EnableUpdateNickName" Style="height:24px">
-                                <SIcon Size="15" Class="regular--text">mdi-pencil</SIcon>
+                                <SIcon Size="15" Class="text--secondary">mdi-pencil</SIcon>
                             </MButton>
                         </SecondaryContent>
                 </PBlockText>
             }
             else
             {
-                <PBlockText PrimaryClass="font-20-bold emphasis2--text"
-                        SecondaryClass="regular3--text font-14 full-width"
+                <PBlockText PrimaryClass="font-20-bold text--primary"
+                        SecondaryClass="text--disabled font-14 full-width"
                         Style="height:40px;flex-wrap: wrap;">
                         <SecondaryContent>
                         <MRow Class="mb-2 align-center">
@@ -39,7 +39,7 @@
                                 </MCol>
                                 <MCol Cols="2">
                                 <MButton Class="mr-4" OnClickStopPropagation Icon OnClick="UpdateNickNameCancelAsync">
-                                    <SIcon Tooltip="@T("Cancel")" Color="#323D6F">mdi-close-thick</SIcon>
+                                    <SIcon Tooltip="@T("Cancel")" Class="text--primary">mdi-close-thick</SIcon>
                                 </MButton>
                                 </MCol>
                                 <MCol Cols="2">
@@ -67,15 +67,15 @@
             <MWindowItem>
                 <div class="d-flex mb-4" style="justify-content: space-between;">
                     <PBlockText Primary="@UserDetail.Name"
-                                PrimaryClass="font-20-bold regular--text"
-                                SecondaryClass="caption regular3--text d-flex"
+                                PrimaryClass="font-20-bold text--secondary"
+                                SecondaryClass="caption text--disabled d-flex"
                                 SecondaryStyle="align-items:center;">
                         <SecondaryContent>
                             @T(UserDetail.Gender.ToString())
                         </SecondaryContent>
                     </PBlockText>
                     <MButton Icon Small OnClick="() => _windowValue=1">
-                        <SIcon Size="15" Class="regular--text">mdi-pencil</SIcon>
+                        <SIcon Size="15" Class="text--secondary">mdi-pencil</SIcon>
                     </MButton>
                 </div>
                 <SDefinitions Items="@PreviewItems"
@@ -85,12 +85,12 @@
                               Md="12"
                               NoGutters
                               ItemStyle="@(_ => "justify-content: space-between; align-items: center;min-height: 56px;")"
-                              TermClass="@(_ => "font-14 regular--text")"
-                              DetailClass="@(_ => "overline regular3--text")">
+                              TermClass="@(_ => "font-14 text--secondary")"
+                              DetailClass="@(_ => "overline text--disabled")">
                     <TermContent>
                         @{
                             var (icon, value) = (ValueTuple<string, string>)context.Value;
-                            <MIcon Size="13" Class="regular3--text mr-2">@icon</MIcon>
+                            <MIcon Size="13" Class="text--disabled mr-2">@icon</MIcon>
                             <span>@value</span>
                         }
                     </TermContent>
@@ -157,12 +157,12 @@
                       Md="12"
                       NoGutters
                       ItemStyle="@(_ => "justify-content: space-between; align-items: center;min-height: 56px;")"
-                      TermClass="@(_ => "font-14 regular--text")"
-                      DetailClass="@(_ => "overline regular3--text")">
+                      TermClass="@(_ => "font-14 text--secondary")"
+                      DetailClass="@(_ => "overline text--disabled")">
             <TermContent>
                 @{
                     var (icon, value) = (ValueTuple<string, string>)context.Value;
-                    <MIcon Size="13" Class="regular3--text mr-2">@icon</MIcon>
+                    <MIcon Size="13" Class="text--disabled mr-2">@icon</MIcon>
                     <span>@value</span>
                 }
             </TermContent>

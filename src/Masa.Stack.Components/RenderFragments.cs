@@ -34,7 +34,7 @@ public static class RenderFragments
                 sb.AddAttribute(2, "ChildContent", (RenderFragment)(title =>
                 {
                     title.OpenElement(0, "span");
-                    title.AddAttribute(1, "Class", "subtitle2 emphasis2--text");
+                    title.AddAttribute(1, "Class", "subtitle2 text--primary");
                     title.AddContent(2, title1);
                     title.CloseElement();
 
@@ -47,7 +47,7 @@ public static class RenderFragments
                         title.CloseComponent();
 
                         title.OpenElement(6, "span");
-                        title.AddAttribute(7, "Class", "regular2--text");
+                        title.AddAttribute(7, "Class", "text--secondary");
                         title.AddContent(8, title2);
                         title.CloseElement();
                     }
@@ -57,7 +57,7 @@ public static class RenderFragments
                 if (!string.IsNullOrWhiteSpace(subtitle1))
                 {
                     sb.OpenComponent<MListItemSubtitle>(3);
-                    sb.AddAttribute(4, "Class", " regular2--text");
+                    sb.AddAttribute(4, "Class", " text--secondary");
                     sb.AddAttribute(5, "Style", "font-weight: normal");
                     sb.AddAttribute(6, "ChildContent", (RenderFragment)(subtitle =>
                     {

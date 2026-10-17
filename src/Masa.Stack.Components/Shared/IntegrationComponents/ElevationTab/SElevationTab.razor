@@ -15,7 +15,7 @@
             {
                 var tab = Tabs[i];
                 <SLabeledRadio MinWidth="@TabMinWidth" Value="@(IndexTab ? i.ToString() : tab)">
-                    <span class="@(Tab == tab ? "subtitle2 emphasis2--text" : "btn regular2--text")">@T(tab)</span>
+                    <span class="@(Tab == tab ? "subtitle2 text--primary" : "btn text--secondary")">@T(tab)</span>
                 </SLabeledRadio>
             }
         </SLabeledRadioGroup>

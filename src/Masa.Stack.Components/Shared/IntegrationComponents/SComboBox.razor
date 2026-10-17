@@ -12,7 +12,7 @@
         </Element>
     </ActivatorContent>
     <ChildContent>
-        <MVirtualScroll MaxHeight="MaxHeight" OverscanCount=5 TItem="TItem" Items="items" Style="background: #FFFFFF;">
+        <MVirtualScroll MaxHeight="MaxHeight" OverscanCount=5 TItem="TItem" Items="items" Class="surface-container-lowest">
             <ItemContent>
                 <div @onclick="async ()=> await SelectAsync(ConvertValue(context))">
                     @if (ItemContent is not null)
@@ -21,7 +21,7 @@
                     }
                     else
                     {
-                        <div class="px-4 py-3 btn emphasis2--text combox">
+                        <div class="px-4 py-3 btn text--primary combox">
                             @ConvertValue(context)
                         </div>
                     }

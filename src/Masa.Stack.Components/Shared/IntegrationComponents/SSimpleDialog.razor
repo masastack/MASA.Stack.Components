@@ -5,12 +5,12 @@
          ValueChanged="ValueChanged"
          Persistent="_persistent"
          Class="pa-6"
-         ContentClass="pa-6 white rounded-5"
+         ContentClass="pa-6 surface-container-lowest rounded-5"
          Width="400">
     @if (!HideCloseIcon)
     {
         <div class="d-flex justify-end">
-            <MButton Small Icon Color="emphasis" OnClick="HandleOnCancel">
+            <MButton Small Icon Class="text--primary" OnClick="HandleOnCancel">
                 <SIcon IsDefaultToolTip="false">mdi-close</SIcon>
             </MButton>
         </div>
@@ -20,12 +20,12 @@
         <div class="d-flex flex-column justify-center align-center my-@Size @HeaderClass">
             @if (!string.IsNullOrWhiteSpace(IconOfTitle))
             {
-                <span class="primary d-flex justify-center align-center mb-3"
-              style="height: 52px;width: 52px;border-radius: 50%;border: 4px solid #ECE8FF !important;">
-                    <MIcon Color="white">@IconOfTitle</MIcon>
+                <span class="primary outline-variant d-flex justify-center align-center mb-3"
+                      style="height: 52px;width: 52px;border-radius: 50%;border-width: 4px;border-style: solid;">
+                    <MIcon Style="color: rgba(var(--m-theme-on-primary));">@IconOfTitle</MIcon>
                 </span>
             }
-            <span class="h6 emphasis2--text">
+            <span class="h6 text--primary">
                 @Title
             </span>
         </div>

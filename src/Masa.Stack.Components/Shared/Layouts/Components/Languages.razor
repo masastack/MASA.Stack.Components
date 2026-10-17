@@ -5,7 +5,7 @@
 
 <MMenu OffsetY Bottom>
     <ActivatorContent>
-        <MButton Icon Class="emphasis2--text mr-6" @attributes="@context.Attrs">
+        <MButton Icon Class="masa-language-trigger text--primary mr-6" @attributes="@context.Attrs">
             <MIcon Size="20">
                 mdi-google-translate
             </MIcon>
@@ -19,7 +19,7 @@
                     <MListItem OnClick="async () => await OnLanguageChangeAsync(culture)" Value="(StringNumber)culture.Name">
                         <ItemContent>
                             <MListItemContent>
-                                <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") btn">
+                                <span Class="@(context.Active ? null : "text--secondary") btn">
                                     @culture.NativeName
                                 </span>
                             </MListItemContent>

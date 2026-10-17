@@ -14,7 +14,7 @@
                         AppendIcon="mdi-menu-down">
                 <ActivatorContent>
                     <MListItemContent>
-                        <div class="text-truncate regular2--text">@DT(subNav.Name)</div>
+                        <div class="text-truncate text--secondary">@DT(subNav.Name)</div>
                     </MListItemContent>
                 </ActivatorContent>
                 <ChildContent>
@@ -32,7 +32,7 @@
                                        MatchPattern="@lastNav.MatchPattern">
                                 <ItemContent>
                                     <MListItemContent>
-                                        <div class="text-truncate ml-3 @(context.Active ? "white--text" : "text-btn regular2--text")">
+                                        <div class="text-truncate ml-3 @(context.Active ? null : "text-btn text--secondary")">
                                             @DT(lastNav.Name)
                                         </div>
                                     </MListItemContent>
@@ -67,7 +67,7 @@
                        MatchPattern="@subNav.MatchPattern">
                 <ItemContent>
                     <MListItemContent>
-                        <div class="text-truncate @(context.Active ? "white--text" : "text-btn regular2--text")">
+                        <div class="text-truncate @(context.Active ? null : "text-btn text--secondary")">
                             @DT(subNav.Name)
                         </div>
                     </MListItemContent>

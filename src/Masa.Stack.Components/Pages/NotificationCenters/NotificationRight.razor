@@ -14,7 +14,7 @@
                         }
                         else if (_entities.Result != null && _entities.Result.Any(x => !x.IsRead))
                         {
-                            <MBadge Bordered Dot Color="pink" OffsetX="10" OffsetY="10">
+                            <MBadge Bordered Dot Color="error" OffsetX="10" OffsetY="10">
                                 <SEmptyAvatar Value="@Channel?.DisplayName" />
                             </MBadge>
                         }
@@ -24,7 +24,7 @@
                         }
                     </MListItemAvatar>
                     <MListItemContent>
-                        <MListItemTitle Class="h7 emphasis--text">@(Channel!=null?Channel.DisplayName:T("DisplayName.AllWebsiteMessage"))</MListItemTitle>
+                        <MListItemTitle Class="h7 text--primary">@(Channel!=null?Channel.DisplayName:T("DisplayName.AllWebsiteMessage"))</MListItemTitle>
                     </MListItemContent>
                 </MListItem>
                 <MSpacer />
@@ -44,29 +44,29 @@
                 </SSelect>
                 <MMenu OffsetY Left NudgeRight="16">
                     <ActivatorContent>
-                        <SButton Outlined Fab Small Icon Color="fill-line" Class="ml-6" @attributes="@context.Attrs">
-                            <SIcon Class="ma-auto" Color="emphasis2" Size=20>
+                        <SButton Outlined Fab Small Icon Color="rgba(var(--m-theme-on-surface), var(--m-medium-emphasis-opacity))" Class="ml-6 outline" @attributes="@context.Attrs">
+                            <SIcon Class="ma-auto text--primary" Size=20>
                                 mdi-dots-horizontal
                             </SIcon>
                         </SButton>
                     </ActivatorContent>
                     <ChildContent>
                         <MList>
-                            <MListItem Link OnClick="HandleMarkAllRead" Class="mx-2 rounded-sm-before body emphasis2--text" >
+                            <MListItem Link OnClick="HandleMarkAllRead" Class="mx-2 rounded-sm-before body text--primary" >
                                 <MListItemContent>
                                     <MListItemTitle>
 					@T("DisplayName.WebsiteMessageAction.MarkAllRead")
                                     </MListItemTitle>
                                 </MListItemContent>
                             </MListItem>
-                            <MListItem Link OnClick="HandleShowAll" Class="mx-2 rounded-sm-before body emphasis2--text">
+                            <MListItem Link OnClick="HandleShowAll" Class="mx-2 rounded-sm-before body text--primary">
                                 <MListItemContent>
                                     <MListItemTitle>
                                         @T("DisplayName.WebsiteMessageAction.ShowAll")
                                     </MListItemTitle>
                                 </MListItemContent>
                             </MListItem>
-                            <MListItem Link OnClick="HandleShowUnread" Class="mx-2  rounded-sm-before body emphasis2--text">
+                            <MListItem Link OnClick="HandleShowUnread" Class="mx-2  rounded-sm-before body text--primary">
                                 <MListItemContent>
                                     <MListItemTitle>
                                         @T("DisplayName.WebsiteMessageAction.ShowUnread")
@@ -84,19 +84,19 @@
                 {
                     <MListItem Link OnClick="()=>HandleOnClick(item)">
                         <MListItemContent Class="pt-0">
-                            <MListItemTitle Class="py-2 h7 emphasis2--text">@item.Title</MListItemTitle>
+                            <MListItemTitle Class="py-2 h7 text--primary">@item.Title</MListItemTitle>
 
-                            <MListItemSubtitle Class="body2 regular2--text text-truncate" Style="width:400px">
+                            <MListItemSubtitle Class="body2 text--secondary text-truncate" Style="width:400px">
                                 @if (!item.IsRead)
                                 {
-                                    <MAvatar Color="red" Size="8" Class="mr-2">
+                                    <MAvatar Color="error" Size="8" Class="mr-2">
                                     </MAvatar>
                                 }
                                 @item.Abstract
                             </MListItemSubtitle>
                         </MListItemContent>
                         <MListItemAction Class="align-self-start">
-                            <MListItemActionText Class="caption regular2--text">@item.SendTime.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemActionText>
+                            <MListItemActionText Class="caption text--secondary">@item.SendTime.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$MonthDayFormat"))</MListItemActionText>
                         </MListItemAction>
                     </MListItem>
                 }

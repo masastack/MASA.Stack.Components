@@ -4,7 +4,7 @@
 @inject IMcClient McClient
 @inject GlobalConfig GlobalConfig
 <MCard Class="mx-auto d-flex full-height flex-column rounded-5">
-    <MCardTitle Class="h5 emphasis2--text pa-6">
+    <MCardTitle Class="h5 text--primary pa-6">
         @T("Permission.WebsiteMessageManagement")
     </MCardTitle>
     <MCardText Class="pa-0 overflow-y-auto full-height">
@@ -16,7 +16,7 @@
                 </MListItemAvatar>
 
                 <MListItemContent>
-                    <MListItemTitle Class="subtitle emphasis--text">@T("DisplayName.AllWebsiteMessage")</MListItemTitle>
+                    <MListItemTitle Class="subtitle text--primary">@T("DisplayName.AllWebsiteMessage")</MListItemTitle>
                 </MListItemContent>
             </MListItem>
 
@@ -31,20 +31,20 @@
                         }
                         else
                         {
-                            <MBadge Bordered Color="pink" Dot OffsetX="10" OffsetY="10">
+                            <MBadge Bordered Color="error" Dot OffsetX="10" OffsetY="10">
                                 <SEmptyAvatar Value="@item.Channel?.DisplayName" />
                             </MBadge>
                         }
                     </MListItemAvatar>
 
                     <MListItemContent Class="pt-0">
-                        <MListItemTitle Class="py-2 subtitle emphasis--text">@item.Channel?.DisplayName</MListItemTitle>
+                        <MListItemTitle Class="py-2 subtitle text--primary">@item.Channel?.DisplayName</MListItemTitle>
 
-                        <MListItemSubtitle Class="caption regular2--text">@item.Title</MListItemSubtitle>
+                        <MListItemSubtitle Class="caption text--secondary">@item.Title</MListItemSubtitle>
                     </MListItemContent>
 
                     <MListItemAction Class="align-self-start">
-                        <MListItemActionText Class="overline regular2--text">@item.SendTime.LocalDateTime.TimeAgo(GlobalConfig.Culture)</MListItemActionText>
+                        <MListItemActionText Class="overline text--secondary">@item.SendTime.LocalDateTime.TimeAgo(GlobalConfig.Culture)</MListItemActionText>
                     </MListItemAction>
                 </MListItem>
             }

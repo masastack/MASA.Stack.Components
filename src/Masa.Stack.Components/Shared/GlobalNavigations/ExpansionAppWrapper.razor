@@ -16,15 +16,15 @@
         {
             <img class="expansion-app__icon mr-2" src="@appIcon" alt="@Value.Name" />
         }
-        <span class="masa-text-2-2 d-inline-block t ext-truncate">
+        <span class="text--secondary d-inline-block text-truncate">
             @Value.Name
         </span>
         @if (isMaintenance)
         {
-            <span class="btn ml-5" style="color: #FFB547;">
+            <span class="btn ml-5 warning--text">
                 @T("InMaintenance")
             </span>
-            <SIcon Color="#FFB547" Class="ml-1">mdi-lock</SIcon>
+            <SIcon Color="warning" Class="ml-1">mdi-lock</SIcon>
         }
         @if (!disableAppOper)
         {
@@ -43,7 +43,7 @@
     <div Class="mt-4">
         @foreach (var navGroup in Value.Children)
         {
-            <div class="nav m-list--dense" style="background:white; @GetIsDisplayStyle(!navGroup.Hidden)">
+            <div class="nav m-list--dense surface-container-lowest" style="@GetIsDisplayStyle(!navGroup.Hidden)">
                 @RenderNestNav(navGroup)
             </div>
         }
@@ -141,18 +141,17 @@
              style="@GetIsDisplayStyle(!menu.Hidden)">
             @if (menu.Type == ExpansionMenuType.Nav)
             {
-                <a class="m-list-item theme--light @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
-                   @onclick="@(() => ItemClick(menu))">
-                    <div class="d-flex align-center full-width">
+                <MListItem Disabled="menu.Disabled" Class="@GetClass(menu)" OnClick="@(() => ItemClick(menu))">
+                    <MListItemContent Class="d-flex align-center full-width">
                         @if (UseSappNav && IsLinkNavigation(menu))
                         {
-                            <SIcon Class="emphasis--text mr-1">mdi-link-variant</SIcon>
+                            <SIcon Class="text--primary mr-1">mdi-link-variant</SIcon>
                         }
                         @if (UseSappNav && !string.IsNullOrWhiteSpace(navIcon))
                         {
                             <SIcon Class="expansion-nav__icon mr-2">@navIcon</SIcon>
                         }
-                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
+                        <div class="@(selected ? "text--primary" : "text--secondary")" style="font-weight: 500; font-size: 14px;">
                             @DT(menu.Name)
                         </div>
                         <MSpacer />
@@ -168,23 +167,24 @@
                         else if (menu.MetaData.Situation == ExpansionMenuSituation.Favorite && !menu.Children.Any() && (!UseSappNav || IsFavoriteSupported(menu)))
                         {
                             <MIcon Small
-                                   Color="@(isFavorite ? "#FFB547" : "")"
+                                   Color="@(isFavorite ? "warning" : null)"
                                    Class="expansion-nav__action"
                                    OnClick="@(() => OnItemOperClick.InvokeAsync(menu))"
                                    OnClickStopPropagation>
                                 mdi-star
                             </MIcon>
                         }
-                    </div>
-                </a>
+                    </MListItemContent>
+                </MListItem>
             }
             else if (menu.Type == ExpansionMenuType.Element)
             {
-                <div class="m-list-item theme--light @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
-                     style="@GetIsDisplayStyle(menu.MetaData.Situation != ExpansionMenuSituation.Favorite)"
-                     @onclick="@(() => ItemClick(menu))">
-                    <div class="d-flex align-center full-width">
-                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
+                <MListItem Disabled="menu.Disabled"
+                           Class="@GetClass(menu)"
+                           Style="@GetIsDisplayStyle(menu.MetaData.Situation != ExpansionMenuSituation.Favorite)"
+                           OnClick="@(() => ItemClick(menu))">
+                    <MListItemContent Class="d-flex align-center full-width">
+                        <div class="@(selected ? "text--primary" : "text--secondary")" style="font-weight: 500; font-size: 14px;">
                             @DT(menu.Name)
                         </div>
                         <MSpacer />
@@ -195,13 +195,13 @@
                                    Class="@($"expansion-nav__action mdi {(selected ? "mdi-check" : "mdi-checkbox-blank-outline")}")">
                             </MIcon>
                         }
-                    </div>
-                </div>
+                    </MListItemContent>
+                </MListItem>
             }
 
             @if (menu.GetNavDeep() == 0 && menu.Children.Any(child => !child.Hidden))
             {
-                <div class="mx-2" data-count="@menu.Children.Count(child => !child.Hidden)" style="border: 1px dashed #E4E8F3;"></div>
+                <div class="mx-2 outline-variant" data-count="@menu.Children.Count(child => !child.Hidden)" style="border-width: 1px; border-style: dashed;"></div>
             }
         </div>
     };

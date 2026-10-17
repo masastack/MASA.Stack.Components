@@ -14,9 +14,9 @@
                         <MIcon Size=16 Color="@(IconColor)">
                             @Icon
                         </MIcon>
-                        <label class="white--text ml-2" style="font-style: normal;font-weight: 700;font-size: 20px;line-height: 30px;">@Title</label>
+                        <label class="ml-2" style="color: rgba(var(--m-theme-inverse-on-surface));font-style: normal;font-weight: 700;font-size: 20px;line-height: 30px;">@Title</label>
                     </div>
-                    <MIcon Color="white" OnClick="OnClose" Class="close-icon" OnClickStopPropagation>mdi-close</MIcon>
+                    <MIcon Style="color: rgba(var(--m-theme-inverse-on-surface));" OnClick="OnClose" Class="close-icon" OnClickStopPropagation>mdi-close</MIcon>
                 </div>
             }
             else
@@ -82,7 +82,7 @@
     public int HeaderHeight { get; set; } = 64;
 
     [Parameter]
-    public string IconColor { get; set; } = "#05CD99";
+    public string IconColor { get; set; } = "success";
 
     [Parameter]
     public string Icon { get; set; } = "mdi-circle";

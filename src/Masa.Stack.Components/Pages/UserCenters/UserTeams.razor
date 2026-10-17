@@ -11,12 +11,12 @@
                         <MImage Src="@team.Avatar" alt="avatar"></MImage>
                     </MAvatar>
                     <PBlockText Primary="@team.Name"
-                            PrimaryClass="emphasis--text font-18-medium"
+                            PrimaryClass="text--primary font-18-medium"
                             Secondary="@($"{T("NumberOfPeople")}：{team.MemberCount}")"
-                            SecondaryClass="regular3--text font-14">
+                            SecondaryClass="text--disabled font-14">
                     </PBlockText>
                 </div>
-                <div class="body2 regular2--text">
+                <div class="body2 text--secondary">
                     @team.Description
                 </div>
 
@@ -25,7 +25,7 @@
                     <MChip Style="position:absolute; bottom:24px; right:24px;"
                         Label 
                         Small
-                        Class="fill-background emphasis2--text">
+                        Class="surface-container text--primary">
                         @team.Role
                     </MChip>
                 }

@@ -3,7 +3,7 @@
 
 <MMenu Value="_menuValue" ValueChanged="MenuValueChanged"
        OffsetY NudgeBottom="8" OpenOnClick CloseOnContentClick="false"
-       ContentClass="px-6 py-4 white" ContentStyle="border-radius:16px;"
+       ContentClass="px-6 py-4 surface-container-lowest" ContentStyle="border-radius:16px;"
        MaxWidth="MaxPickerWidth"
        >
     <ActivatorContent>
@@ -20,7 +20,7 @@
             </MButton>
             @if (Clearable && (StartDateTime.HasValue || EndDateTime.HasValue))
             {
-                <SIcon ToolTip="@T(scope : DateTimeRangeScope,"Clear")" IsDefaultToolTip="false" OnClick="ClearClick" OnClickPreventDefault OnClickStopPropagation Class="mr-1" Color="grey lighten-2">mdi-close-circle</SIcon>
+                <SIcon ToolTip="@T(scope : DateTimeRangeScope,"Clear")" IsDefaultToolTip="false" OnClick="ClearClick" OnClickPreventDefault OnClickStopPropagation Class="mr-1 text--disabled">mdi-close-circle</SIcon>
             }
             @if (ShowTimeZoneSelector)
             {

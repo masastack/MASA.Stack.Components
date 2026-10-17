@@ -3,7 +3,7 @@
 <MDialog Value="@Visible"
          ValueChanged="OnVisibleChanged"
          Class="pa-6"
-         ContentClass="pa-6 white rounded-5"
+         ContentClass="pa-6 surface-container-lowest rounded-5"
          Width="400">
     <div class="d-flex justify-space-between">
         <div class="d-flex">
@@ -11,20 +11,20 @@
             {
                 <MIcon Color="@ComputedIconColor" Class="mr-3">@ComputedIcon</MIcon>
             }
-            <span class="h6 emphasis2--text">
+            <span class="h6 text--primary">
                 @(Title ?? T("OperationConfirmation"))
             </span>
         </div>
         @if (!HideCloseIcon)
         {
             <div class="d-flex">
-                <MButton Small Icon Color="emphasis" OnClick="HandleOnCancel">
+                <MButton Small Icon Class="text--primary" OnClick="HandleOnCancel">
                     <SIcon>mdi-close</SIcon>
                 </MButton>
             </div>
         }
     </div>
-    <div class="regular2--text btn text-start my-3 px-9 @ContentClass">
+    <div class="text--secondary btn text-start my-3 px-9 @ContentClass">
         @Content
     </div>
 
@@ -33,7 +33,7 @@
         {
             <SBtn Color="primary" Large Rounded Outlined Width="150" OnClick="HandleOnCancel">@ComputedCancelText</SBtn>
         }
-        <SBtn Color="@ComputedIconColor" Class="fill--text" Rounded Large Width="150" OnClick="HandleOnOk">@ComputedOkText</SBtn>
+        <SBtn Color="@ComputedIconColor" Rounded Large Width="150" OnClick="HandleOnOk">@ComputedOkText</SBtn>
     </div>
 
 </MDialog>

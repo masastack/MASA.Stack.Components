@@ -19,21 +19,21 @@
         <MList>
             <SListItem Medium OnClick="OnUserInfoClick">
                 <MListItemIcon Class="mr-4">
-                    <SIcon Color="emphasis2" IsDefaultToolTip="false">mdi-account-circle</SIcon>
+                    <SIcon Class="text--primary" IsDefaultToolTip="false">mdi-account-circle</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
-                        <span class="regular--text body">@T("UserInfo")</span>
+                        <span class="text--secondary body">@T("UserInfo")</span>
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
             <SListItem Medium OnClick="() => { UpdatePasswordDialogVisible = true; MenuVisible = false; }">
                 <MListItemIcon Class="mr-4">
-                    <SIcon Color="emphasis2" IsDefaultToolTip="false">mdi-pencil</SIcon>
+                    <SIcon Class="text--primary" IsDefaultToolTip="false">mdi-pencil</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
-                        <span class="regular--text body">@T("UpdatePassword")</span>
+                        <span class="text--secondary body">@T("UpdatePassword")</span>
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>
@@ -83,11 +83,11 @@
             <MDivider></MDivider>
             <SListItem Medium OnClick="HandleSignOut">
                 <MListItemIcon Class="mr-4">
-                    <SIcon Color="emphasis2" IsDefaultToolTip="false">mdi-logout</SIcon>
+                    <SIcon Class="text--primary" IsDefaultToolTip="false">mdi-logout</SIcon>
                 </MListItemIcon>
                 <MListItemContent>
                     <MListItemTitle>
-                        <span class="regular--text body">@T("Logout")</span>
+                        <span class="text--secondary body">@T("Logout")</span>
                     </MListItemTitle>
                 </MListItemContent>
             </SListItem>

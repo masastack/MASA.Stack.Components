@@ -33,13 +33,13 @@
                                     @foreach (var item in _favorites)
                                     {
                                         <MListItem Dense
-                                                   Class="mb-1 full-width rounded-2 masa-text-2-2"
+                                                   Class="mb-1 full-width rounded-2 text--secondary"
                                                    OnClick="@(() => NavigateTo(item.GetData(MENU_URL_NAME)))">
                                             <MListItemContent>
                                                 <MListItemTitle>@DT(item.Name)</MListItemTitle>
                                             </MListItemContent>
                                             <MListItemAction Class="ma-0">
-                                                <SBtn Icon Small Color="#FFB547"
+                                                <SBtn Icon Small Color="warning"
                                                                     OnClick="@(() => FavoriteRemoveAsync(item))"
                                                                     OnClickStopPropagation>
                                                     <SIcon Small Tooltip="@T("CancelFavorite")">mdi-star</SIcon>
@@ -67,7 +67,7 @@
                             </MButton>
                         </div>
                         <div class="mt-4">
-                            <span class="masa-text-3-1 mb-2">@T("RecentVisits")</span>
+                            <span class="text--disabled mb-2">@T("RecentVisits")</span>
 
                             @if (_recentVisits == null)
                             {
@@ -77,7 +77,7 @@
                             {
                                 foreach (var (name, url) in _recentVisits)
                                 {
-                                    <MChip Class="masa-text-2-1 ml-4" Color="#F6F8FD" OnClick="() => NavigateTo(url)">@DT(name)</MChip>
+                                    <MChip Class="text--secondary ml-4" Color="surface-container-low" OnClick="() => NavigateTo(url)">@DT(name)</MChip>
                                 }
                             }
                         </div>
@@ -100,7 +100,7 @@
                         @if (showAppEntryBox)
                         {
                             <div class="app-box global-nav-app-box global-nav-app-box-sapp">
-                                <div class="h5 emphasis--text">@T("SuperApp")</div>
+                                <div class="h5 text--primary">@T("SuperApp")</div>
                                 <MNavigationDrawer Value="true" HideOverlay Floating Right Width="256" Class="toc">
                                     @if (_visibleAppEntries == null)
                                     {
@@ -110,7 +110,7 @@
                                     {
                                         @foreach (var item in _visibleAppEntries)
                                         {
-                                            <div class="masa-text-2-2 px-2 py-3 d-flex justify-space-between align-center super-app-item mt-6 cursor-pointer"
+                                            <div class="text--secondary px-2 py-3 d-flex justify-space-between align-center super-app-item mt-6 cursor-pointer"
                                                  @onclick="@(() => NavigateTo(item.EntryUrl))">
                                                 <div class="d-flex align-center">
                                                     @if (HasWebFullIcon(item))
@@ -120,7 +120,7 @@
                                                     else
                                                     {
                                                         <img class="app-entry-icon" src="@item.Icon" alt="@item.Name" />
-                                                        <span class="ml-2 emphasis--text">@item.Name</span>
+                                                        <span class="ml-2 text--primary">@item.Name</span>
                                                     }
                                                 </div>
                                             </div>

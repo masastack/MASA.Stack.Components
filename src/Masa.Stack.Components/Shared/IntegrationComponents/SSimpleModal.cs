@@ -28,9 +28,9 @@ public class SSimpleModal : PModal
         }
 
         HeaderClass ??= string.Empty;
-        if (!HeaderClass.Contains(" h6 emphasis--text pa-0"))
+        if (!HeaderClass.Contains(" h6 text--primary pa-0"))
         {
-            HeaderClass += " h6 emphasis--text pa-0";
+            HeaderClass += " h6 text--primary pa-0";
         }
 
         ContentStyle ??= string.Empty;
@@ -72,11 +72,12 @@ public class SSimpleModal : PModal
                 builder.AddAttribute(1, "Fab", true);
                 builder.AddAttribute(2, "Small", true);
                 builder.AddAttribute(3, "Outlined", true);
-                builder.AddAttribute(4, "Color", "emphasis");
-                builder.AddAttribute(5, "Style", "border-color: #E2E7F4;width:32px;height:32px");
-                builder.AddAttribute(6, "OnClick",
+                builder.AddAttribute(4, "Color", "rgba(var(--m-theme-on-surface), var(--m-medium-emphasis-opacity))");
+                builder.AddAttribute(5, "Class", "outline");
+                builder.AddAttribute(6, "Style", "width:32px;height:32px");
+                builder.AddAttribute(7, "OnClick",
                     EventCallback.Factory.Create<MouseEventArgs>(this, e => callback(e)));
-                builder.AddAttribute(7, "ChildContent", (RenderFragment)(subBuilder =>
+                builder.AddAttribute(8, "ChildContent", (RenderFragment)(subBuilder =>
                 {
                     subBuilder.OpenComponent<MIcon>(0);
                     subBuilder.AddAttribute(1, "Size", (StringNumber)24);

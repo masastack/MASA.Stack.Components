@@ -24,9 +24,9 @@ public class SModal : PModal
         }
 
         HeaderClass ??= string.Empty;
-        if (!HeaderClass.Contains("pa-6 font-20-bold emphasis2--text"))
+        if (!HeaderClass.Contains("pa-6 font-20-bold text--primary"))
         {
-            HeaderClass += " pa-6 font-20-bold emphasis2--text";
+            HeaderClass += " pa-6 font-20-bold text--primary";
         }
 
         ActionsClass ??= string.Empty;
