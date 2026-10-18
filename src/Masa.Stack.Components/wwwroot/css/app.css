@@ -366,6 +366,16 @@ h1:focus {
         color: rgba(var(--m-theme-on-surface), var(--m-disabled-opacity));
     }
 
+    .masa-stack-components .ms-navigation__version,
+    .masa-stack-components .s-search-panel__filter-icon {
+        color: rgba(var(--m-theme-on-surface), var(--m-medium-emphasis-opacity));
+    }
+
+    .masa-stack-components .ms-navigation__item--active {
+        color: rgba(var(--m-theme-on-primary));
+        background-color: rgba(var(--m-theme-primary));
+    }
+
     .masa-stack-components .m-list--nav .m-list-item, .m-list--nav .m-list-item:before {
         border-radius: 8px;
     }

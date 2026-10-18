@@ -35,7 +35,7 @@
                 <STooltip Disabled="!GlobalConfig.Mini">
                     <ActivatorContent Context="tooltipContext">
                         <SListItem Medium Class="mb-2 rounded-2"
-                                   ActiveClass="primary"
+                                   ActiveClass="ms-navigation__item--active"
                                    Href="@BuildHref(nav.Url)"
                                    Target="@GetNavLinkTarget(nav)"
                                    Exact="@nav.Exact"
@@ -137,7 +137,7 @@
         @if (!GlobalConfig.Mini)
         {
             <p>
-                <MChip Class="mt-3 text--secondary" Small Outlined>
+                <MChip Class="ms-navigation__version mt-3" Small Outlined>
                     @(string.IsNullOrEmpty(ProjectApp.ServiceVersion) ? MasaStackConfig.Version : ProjectApp.ServiceVersion)
                 </MChip>
             </p>
