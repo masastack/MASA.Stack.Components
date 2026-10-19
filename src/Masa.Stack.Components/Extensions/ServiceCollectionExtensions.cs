@@ -120,7 +120,9 @@ public static class ServiceCollectionExtensions
 
         if (options.I18nDirectoryPath is not null)
         {
-            masaBuilder.AddI18nForWasmAsync(options.I18nDirectoryPath);
+            // 加载任务需要在 InitializeMasaStackApplicationAsync 中等待完成,避免首屏渲染时多语言还未就绪
+            var loadingTask = masaBuilder.AddI18nForWasmAsync(options.I18nDirectoryPath);
+            services.AddSingleton(new I18nLoadingState(loadingTask));
         }
 
         options.MasaBlazorAction?.Invoke(masaBuilder);
@@ -167,9 +169,33 @@ public static class ServiceCollectionExtensions
         }
     }
 
+    private static async Task WaitForI18nLoadingAsync(IServiceProvider serviceProvider)
+    {
+        var state = serviceProvider.GetService<I18nLoadingState>();
+        if (state is null)
+        {
+            return;
+        }
+
+        try
+        {
+            await state.LoadingTask;
+        }
+        catch (Exception ex)
+        {
+            // 与之前 fire-and-forget 的行为保持一致:多语言加载失败不阻塞应用启动,只记录日志
+            serviceProvider.GetService<ILoggerFactory>()
+                           ?.CreateLogger(typeof(ServiceCollectionExtensions))
+                           .LogError(ex, "Failed to load i18n files from I18nDirectoryPath");
+        }
+    }
+
     public static async Task InitializeMasaStackApplicationAsync(
         [NotNull] this IServiceProvider serviceProvider)
     {
+        // 必须先等待多语言文件加载完成,再创建 I18n 实例(I18n 会在构造时对 Locale 取快照)
+        await WaitForI18nLoadingAsync(serviceProvider);
+
         await serviceProvider.InitializeApplicationAsync();
         await serviceProvider.GetRequiredService<IClientScopeServiceProviderAccessor>().ServiceProvider.GetRequiredService<MasaStackConfigCache>().InitializeAsync();
         var IMasaStackConfig = serviceProvider.GetRequiredService<IMasaStackConfig>();
