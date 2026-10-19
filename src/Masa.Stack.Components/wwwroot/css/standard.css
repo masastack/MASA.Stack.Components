@@ -7,6 +7,70 @@
   font-size: 16px;
 }
 
+    /*
+    shared Stack color utilities
+
+    Skins can provide exact product palette values through the --ms-background-*
+    and --ms-text-* tokens. The MASA role-based fallbacks keep every utility
+    theme-aware when a skin does not provide a Stack-specific palette.
+    */
+
+    .masa.m-application .default {
+      background-color: var(--ms-background-default, rgba(var(--m-theme-inverse-surface))) !important;
+    }
+
+    .masa.m-application .emphasis {
+      background-color: var(--ms-background-emphasis, rgba(var(--m-theme-inverse-surface))) !important;
+    }
+
+    .masa.m-application .emphasis2 {
+      background-color: var(--ms-background-emphasis2, rgba(var(--m-theme-secondary))) !important;
+    }
+
+    .masa.m-application .regular {
+      background-color: var(--ms-background-regular, rgba(var(--m-theme-on-surface), var(--m-medium-emphasis-opacity))) !important;
+    }
+
+    .masa.m-application .regular2 {
+      background-color: var(--ms-background-regular2, rgba(var(--m-theme-on-surface), var(--m-low-emphasis-opacity))) !important;
+    }
+
+    .masa.m-application .regular3 {
+      background-color: var(--ms-background-regular3, rgba(var(--m-theme-on-surface), var(--m-disabled-opacity))) !important;
+    }
+
+    .masa.m-application .fill {
+      background-color: var(--ms-background-fill, rgba(var(--m-theme-surface-container-lowest))) !important;
+    }
+
+    .masa.m-application .default--text {
+      color: var(--ms-text-default, rgba(var(--m-theme-on-surface))) !important;
+    }
+
+    .masa.m-application .emphasis--text {
+      color: var(--ms-text-emphasis, rgba(var(--m-theme-on-surface))) !important;
+    }
+
+    .masa.m-application .emphasis2--text {
+      color: var(--ms-text-emphasis2, rgba(var(--m-theme-secondary))) !important;
+    }
+
+    .masa.m-application .regular--text {
+      color: var(--ms-text-regular, rgba(var(--m-theme-on-surface), var(--m-medium-emphasis-opacity))) !important;
+    }
+
+    .masa.m-application .regular2--text {
+      color: var(--ms-text-regular2, rgba(var(--m-theme-on-surface), var(--m-low-emphasis-opacity))) !important;
+    }
+
+    .masa.m-application .regular3--text {
+      color: var(--ms-text-regular3, rgba(var(--m-theme-on-surface), var(--m-disabled-opacity))) !important;
+    }
+
+    .masa.m-application .fill--text {
+      color: var(--ms-text-fill, rgba(var(--m-theme-on-primary))) !important;
+    }
+
     /* font */
     .masa.m-application .h1 {
       font-size: 6rem !important;
