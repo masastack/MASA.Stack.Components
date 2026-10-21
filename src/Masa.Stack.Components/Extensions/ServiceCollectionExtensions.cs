@@ -99,6 +99,11 @@ public static class ServiceCollectionExtensions
                 theme.Themes.Light.Info = "#37A7FF";
                 theme.Themes.Light.Surface = "#F0F3FA";
                 theme.Themes.Light.Secondary = "#424242";
+
+                // The brand primary (#4318FF) is too dark on dark surfaces, so the dark theme gets a lighter tone
+                // with a matching foreground. Other dark tokens keep the MASA Blazor defaults.
+                theme.Themes.Dark.Primary = "#CFBCFF";
+                theme.Themes.Dark.OnPrimary = "#381E72";
                 //theme.Themes.Light.UserDefined["reminder"] = "#FF7D00";
                 //theme.Themes.Light.Variables.BorderOpacity = 1f;
 

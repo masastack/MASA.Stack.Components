@@ -45,12 +45,12 @@
                                 <MListItemIcon>
                                     <MIcon Dense
                                            Style="margin-left:6px"
-                                           Color="@(context.Active ? "white" : "regular3--text")">
+                                           Class="@(context.Active ? "on-primary--text" : "regular3--text")">
                                         @nav.Icon
                                     </MIcon>
                                 </MListItemIcon>
                                 <MListItemContent>
-                                    <div class="ml-1 text-truncate @(context.Active ? "white--text" : "regular2--text")">
+                                    <div class="ml-1 text-truncate @(context.Active ? "on-primary--text" : "regular2--text")">
                                         @DT(nav.Name)
                                     </div>
                                 </MListItemContent>
@@ -64,7 +64,7 @@
             }
             else
             {
-                <MMenu Disabled="!GlobalConfig.Mini" OffsetY OpenOnHover CloseOnContentClick="false" ContentClass="white pa-2 subtitle2" MinWidth="250">
+                <MMenu Disabled="!GlobalConfig.Mini" OffsetY OpenOnHover CloseOnContentClick="false" ContentClass="fill pa-2 subtitle2" MinWidth="250">
                     <ActivatorContent Context="menuContext">
                         <MListGroup Group="@GenGroup(nav.Children)"
                                     NoAction
@@ -145,7 +145,7 @@
     </div>
 </MNavigationDrawer>
 
-<SIconBtn Class="nav-trigger medium-button white"
+<SIconBtn Class="nav-trigger medium-button fill"
           Style="@($"{(GlobalConfig.Mini ? "left:76px;" : "left:280px;")}")"
           OnClick="() => GlobalConfig.Mini = !GlobalConfig.Mini">
     <MIcon Color="primary">

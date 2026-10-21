@@ -37,6 +37,7 @@ public class STextField<TValue> : MTextField<TValue>
         Dense = true;
         HideDetails = "auto";
         Outlined = true;
+        BackgroundColor = "fill";
 
         await base.SetParametersAsync(parameters);
     }
@@ -44,6 +45,12 @@ public class STextField<TValue> : MTextField<TValue>
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+
+        // keep the background radius consistent with the 8px outline
+        if (Style?.Contains("border-radius") is not true)
+        {
+            Style = $"border-radius:8px;{Style}";
+        }
 
         // TODO: refactor the following code about css
         Class ??= "";

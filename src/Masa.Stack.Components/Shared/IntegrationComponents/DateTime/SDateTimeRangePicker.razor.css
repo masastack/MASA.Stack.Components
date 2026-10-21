@@ -1,4 +1,4 @@
-﻿.date-time-range-picker__content ::deep .m-date-picker-table {
+.date-time-range-picker__content ::deep .m-date-picker-table {
     height: unset;
     padding: 0;
 }
@@ -16,7 +16,7 @@
     padding: 0;
     font-family: 'Roboto';
     line-height: 21px;
-    color: #485585;
+    color: var(--ms-text-regular);
     font-size: 14px;
     display: inline-flex;
     justify-content: center;

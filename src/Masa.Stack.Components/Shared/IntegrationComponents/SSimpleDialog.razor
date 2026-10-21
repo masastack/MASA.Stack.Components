@@ -5,7 +5,7 @@
          ValueChanged="ValueChanged"
          Persistent="_persistent"
          Class="pa-6"
-         ContentClass="pa-6 white rounded-5"
+         ContentClass="pa-6 fill rounded-5"
          Width="400">
     @if (!HideCloseIcon)
     {
@@ -21,8 +21,8 @@
             @if (!string.IsNullOrWhiteSpace(IconOfTitle))
             {
                 <span class="primary d-flex justify-center align-center mb-3"
-              style="height: 52px;width: 52px;border-radius: 50%;border: 4px solid #ECE8FF !important;">
-                    <MIcon Color="white">@IconOfTitle</MIcon>
+              style="height: 52px;width: 52px;border-radius: 50%;border: 4px solid rgba(var(--m-theme-primary), .16) !important;background-clip: padding-box;">
+                    <MIcon Class="on-primary--text">@IconOfTitle</MIcon>
                 </span>
             }
             <span class="h6 emphasis2--text">

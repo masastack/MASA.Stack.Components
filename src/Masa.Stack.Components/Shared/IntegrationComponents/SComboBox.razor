@@ -12,7 +12,7 @@
         </Element>
     </ActivatorContent>
     <ChildContent>
-        <MVirtualScroll MaxHeight="MaxHeight" OverscanCount=5 TItem="TItem" Items="items" Style="background: #FFFFFF;">
+        <MVirtualScroll MaxHeight="MaxHeight" OverscanCount=5 TItem="TItem" Items="items" Style="background: var(--ms-surface);">
             <ItemContent>
                 <div @onclick="async ()=> await SelectAsync(ConvertValue(context))">
                     @if (ItemContent is not null)

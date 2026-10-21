@@ -26,7 +26,7 @@ await builder.AddMasaOpenIdConnectAsync(new MasaOpenIdConnectOptions
 
 builder.Services.AddMasaStackComponent(new MasaStackComponentOptions(MasaStackProject.Auth)
 {
-    I18nDirectoryPath = string.Empty,
+    //I18nDirectoryPath = string.Empty,
     IsMicroFrontend = false
 });
 var host = builder.Build();

@@ -2,7 +2,7 @@
     @ChildContent
     <MSpacer></MSpacer>
     <div class="d-flex">
-        <SSearch Value="@Value" ValueChanged="ValueChanged" BackgroundColor="white" OnEnter="OnEnter" OnClearClick="OnClearClick" />
+        <SSearch Value="@Value" ValueChanged="ValueChanged" BackgroundColor="fill" OnEnter="OnEnter" OnClearClick="OnClearClick" />
         @if (Advanced)
         {
             <div @onclick="ToggleAdvanced" class="ml-6 d-flex filter-button fill">

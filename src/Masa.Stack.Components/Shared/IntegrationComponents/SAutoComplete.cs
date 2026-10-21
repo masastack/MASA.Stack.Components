@@ -26,6 +26,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
         Color = "primary";
         Style = "";
         Class = "";
+        BackgroundColor = "fill";
 
         await base.SetParametersAsync(parameters);
     }
@@ -33,6 +34,12 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+
+        // keep the background radius consistent with the 8px outline
+        if (Style?.Contains("border-radius") is not true)
+        {
+            Style = $"border-radius:8px;{Style}";
+        }
 
         Class ??= "";
         if (Large is false && Small is false) Medium = true;

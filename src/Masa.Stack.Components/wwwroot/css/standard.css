@@ -1,12 +1,70 @@
 ﻿/*
-    color of background
+    Theme tokens
+
+    Light values keep the original brand palette. Dark values are derived from the MASA Blazor theme
+    tokens (--m-theme-*) so they follow the active theme. The dark branch matches both the data-theme
+    attribute written by skin.js and the theme--dark class MApp renders.
 */
+
+:root,
+:is(.masa, .masa-stack-components) {
+  --ms-box-shadow-color: 112, 144, 176;
+
+  --ms-text-default: #000000;
+  --ms-text-emphasis: #1B2559;
+  --ms-text-emphasis2: #323D6F;
+  --ms-text-regular: #485585;
+  --ms-text-regular2: #7681AB;
+  --ms-text-regular3: #A3AED0;
+  --ms-text-content: #333333;
+  --ms-text-disabled: rgba(0, 0, 0, 0.38);
+
+  --ms-surface: #FFFFFF;
+  --ms-bg-subtle: #F6F8FD;
+  --ms-bg-muted: #F0F3FA;
+  --ms-bg-active: #E2E7F4;
+  --ms-ring: #F0F3FA;
+  --ms-border: #E2E7F4;
+  --ms-border-2: #E9EDF7;
+  --ms-border-3: #E4E8F3;
+  --ms-divider: rgba(0, 0, 0, 0.12);
+  --ms-scrollbar-thumb: #A3AED0;
+}
+
+:is(.masa, .masa-stack-components):is([data-theme="dark"], .theme--dark) {
+  --ms-box-shadow-color: 0, 0, 0;
+
+  --ms-text-default: rgb(var(--m-theme-on-surface));
+  --ms-text-emphasis: rgb(var(--m-theme-on-surface));
+  --ms-text-emphasis2: rgba(var(--m-theme-on-surface), 0.87);
+  --ms-text-regular: rgba(var(--m-theme-on-surface), 0.74);
+  --ms-text-regular2: rgba(var(--m-theme-on-surface), 0.6);
+  --ms-text-regular3: rgba(var(--m-theme-on-surface), 0.45);
+  --ms-text-content: rgba(var(--m-theme-on-surface), 0.87);
+  --ms-text-disabled: rgba(var(--m-theme-on-surface), 0.38);
+
+  --ms-surface: rgb(var(--m-theme-surface-container));
+  --ms-bg-subtle: rgb(var(--m-theme-surface-container-high));
+  --ms-bg-muted: rgb(var(--m-theme-surface-container-highest));
+  --ms-bg-active: rgb(var(--m-theme-surface-container-highest));
+  --ms-ring: rgb(var(--m-theme-surface));
+  --ms-border: rgb(var(--m-theme-outline-variant));
+  --ms-border-2: rgb(var(--m-theme-outline-variant));
+  --ms-border-3: rgb(var(--m-theme-outline-variant));
+  --ms-divider: rgba(var(--m-theme-on-surface), 0.12);
+  --ms-scrollbar-thumb: rgba(var(--m-theme-on-surface), 0.38);
+}
 
 .masa.m-application {
   font-family: roboto,"Noto Sans SC","Microsoft YaHei" !important;
   font-size: 16px;
 }
 
+    /*
+    color of background
+    The solid brand backgrounds stay constant (tooltips, chips, dividers use them with light text).
+    .fill is the exception: it is the card/panel surface and follows the theme.
+    */
     .masa.m-application .default {
       background-color: #000000 !important;
     }
@@ -32,38 +90,45 @@
     }
 
     .masa.m-application .fill {
-      background-color: #FFFFFF !important;
-    }    
+      background-color: var(--ms-surface) !important;
+    }
     /*
     color of text
     */
 
     .masa.m-application .default--text {
-      color: #000000 !important;
+      color: var(--ms-text-default) !important;
     }
 
     .masa.m-application .emphasis--text {
-      color: #1B2559 !important;
+      color: var(--ms-text-emphasis) !important;
     }
 
     .masa.m-application .emphasis2--text {
-      color: #323D6F !important;
+      color: var(--ms-text-emphasis2) !important;
     }
 
     .masa.m-application .regular--text {
-      color: #485585 !important;
+      color: var(--ms-text-regular) !important;
     }
 
     .masa.m-application .regular2--text {
-      color: #7681AB !important;
+      color: var(--ms-text-regular2) !important;
     }
 
     .masa.m-application .regular3--text {
-      color: #A3AED0 !important;
+      color: var(--ms-text-regular3) !important;
     }
 
+    /* Text drawn on top of a solid color (buttons, chips): stays light in both modes. */
     .masa.m-application .fill--text {
       color: #FFFFFF !important;
+    }
+
+    /* Text drawn on top of the primary color; follows the contrast color computed for the active primary. */
+    .masa.m-application .on-primary--text,
+    .masa-stack-components .on-primary--text {
+      color: rgb(var(--m-theme-on-primary, 255, 255, 255)) !important;
     }
     /*
     font

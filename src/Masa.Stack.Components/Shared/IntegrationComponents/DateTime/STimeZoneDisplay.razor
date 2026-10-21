@@ -1,9 +1,10 @@
 ﻿@namespace Masa.Stack.Components
 @inherits MasaComponentBase
+@inject GlobalConfig GlobalConfig
 
 <MTooltip Top>
     <ActivatorContent>
-        <span class="m-chip m-size--small m-chip--label theme--light secondary @Class" @attributes="@context.Attrs">@(Offset.Hours > 0 ? $"+{Offset.Hours}" : Offset.Hours.ToString())</span>
+        <span class="m-chip m-size--small m-chip--label @(GlobalConfig.Dark ? "theme--dark" : "theme--light") secondary @Class" @attributes="@context.Attrs">@(Offset.Hours > 0 ? $"+{Offset.Hours}" : Offset.Hours.ToString())</span>
     </ActivatorContent>
     <ChildContent>
         <span>@(T(scope: DateTimeRangeScope, "Current Selected TimeZone"))</span>

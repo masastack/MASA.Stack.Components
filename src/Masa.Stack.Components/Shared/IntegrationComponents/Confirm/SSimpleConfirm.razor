@@ -3,7 +3,7 @@
 <MDialog Value="@Visible"
          ValueChanged="OnVisibleChanged"
          Class="pa-6"
-         ContentClass="pa-6 white rounded-5"
+         ContentClass="pa-6 fill rounded-5"
          Width="400">
     <div class="d-flex justify-space-between">
         <div class="d-flex">
@@ -33,7 +33,7 @@
         {
             <SBtn Color="primary" Large Rounded Outlined Width="150" OnClick="HandleOnCancel">@ComputedCancelText</SBtn>
         }
-        <SBtn Color="@ComputedIconColor" Class="fill--text" Rounded Large Width="150" OnClick="HandleOnOk">@ComputedOkText</SBtn>
+        <SBtn Color="@ComputedIconColor" Class="@(ComputedIconColor == "primary" ? "on-primary--text" : "fill--text")" Rounded Large Width="150" OnClick="HandleOnOk">@ComputedOkText</SBtn>
     </div>
 
 </MDialog>

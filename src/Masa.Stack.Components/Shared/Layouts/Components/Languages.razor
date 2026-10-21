@@ -19,7 +19,7 @@
                     <MListItem OnClick="async () => await OnLanguageChangeAsync(culture)" Value="(StringNumber)culture.Name">
                         <ItemContent>
                             <MListItemContent>
-                                <span Class="@(context.Active ? "white--text" : "default-lighten-4--text") btn">
+                                <span Class="@(context.Active ? "on-primary--text" : "default-lighten-4--text") btn">
                                     @culture.NativeName
                                 </span>
                             </MListItemContent>

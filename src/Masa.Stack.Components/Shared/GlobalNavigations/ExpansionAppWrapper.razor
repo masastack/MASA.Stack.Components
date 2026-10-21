@@ -43,7 +43,7 @@
     <div Class="mt-4">
         @foreach (var navGroup in Value.Children)
         {
-            <div class="nav m-list--dense" style="background:white; @GetIsDisplayStyle(!navGroup.Hidden)">
+            <div class="nav m-list--dense" style="background: var(--ms-surface); @GetIsDisplayStyle(!navGroup.Hidden)">
                 @RenderNestNav(navGroup)
             </div>
         }
@@ -51,6 +51,8 @@
 </div>
 
 @code {
+    private string ThemeClass => GlobalConfig.Dark ? "theme--dark" : "theme--light";
+
     private const int LINK_NAVIGATION_TYPE = 2;
     private const int ROUTE_URL_NAVIGATION_TYPE = 3;
     private const int NORMAL_NAVIGATION_TYPE = 1;
@@ -141,7 +143,7 @@
              style="@GetIsDisplayStyle(!menu.Hidden)">
             @if (menu.Type == ExpansionMenuType.Nav)
             {
-                <a class="m-list-item theme--light @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
+                <a class="m-list-item @ThemeClass @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
                    @onclick="@(() => ItemClick(menu))">
                     <div class="d-flex align-center full-width">
                         @if (UseSappNav && IsLinkNavigation(menu))
@@ -152,7 +154,7 @@
                         {
                             <SIcon Class="expansion-nav__icon mr-2">@navIcon</SIcon>
                         }
-                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
+                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: var(--ms-text-emphasis2);" : "")">
                             @DT(menu.Name)
                         </div>
                         <MSpacer />
@@ -180,11 +182,11 @@
             }
             else if (menu.Type == ExpansionMenuType.Element)
             {
-                <div class="m-list-item theme--light @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
+                <div class="m-list-item @ThemeClass @(menu.Disabled ? "m-list-item--disabled" : "") @GetClass(menu)"
                      style="@GetIsDisplayStyle(menu.MetaData.Situation != ExpansionMenuSituation.Favorite)"
                      @onclick="@(() => ItemClick(menu))">
                     <div class="d-flex align-center full-width">
-                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
+                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: var(--ms-text-emphasis2);" : "")">
                             @DT(menu.Name)
                         </div>
                         <MSpacer />
@@ -201,7 +203,7 @@
 
             @if (menu.GetNavDeep() == 0 && menu.Children.Any(child => !child.Hidden))
             {
-                <div class="mx-2" data-count="@menu.Children.Count(child => !child.Hidden)" style="border: 1px dashed #E4E8F3;"></div>
+                <div class="mx-2" data-count="@menu.Children.Count(child => !child.Hidden)" style="border: 1px dashed var(--ms-border-3);"></div>
             }
         </div>
     };
