@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Stack.Components.Extensions;
+
+namespace Masa.Stack.Components;
 
 public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TItemValue, TValue>
 {
@@ -36,10 +38,7 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
         base.OnParametersSet();
 
         // keep the background radius consistent with the 8px outline
-        if (Style?.Contains("border-radius") is not true)
-        {
-            Style = $"border-radius:8px;{Style}";
-        }
+        Style = Style.WithDefaultBorderRadius();
 
         Class ??= "";
         if (Large is false && Small is false) Medium = true;

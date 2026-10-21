@@ -1,4 +1,5 @@
-﻿using Masa.Stack.Components.Standalone;
+﻿using Masa.Stack.Components.Extensions;
+using Masa.Stack.Components.Standalone;
 
 namespace Masa.Stack.Components;
 
@@ -47,10 +48,7 @@ public class STextField<TValue> : MTextField<TValue>
         base.OnParametersSet();
 
         // keep the background radius consistent with the 8px outline
-        if (Style?.Contains("border-radius") is not true)
-        {
-            Style = $"border-radius:8px;{Style}";
-        }
+        Style = Style.WithDefaultBorderRadius();
 
         // TODO: refactor the following code about css
         Class ??= "";
