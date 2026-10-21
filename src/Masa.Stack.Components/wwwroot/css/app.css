@@ -819,9 +819,9 @@ h1:focus {
     color: var(--ms-text-regular2);
 }
 
-/* Dark: typed text follows the theme text color, same as MTextarea. !important so a primary--text color (skin / focused state) cannot tint it. */
+/* Dark: typed text follows the theme text color, same as MTextarea. */
 :is(.masa, .masa-stack-components):is([data-theme="dark"], .theme--dark) .m-text-field.m-input input {
-    color: rgba(var(--m-theme-on-surface)) !important;
+    color: rgba(var(--m-theme-on-surface));
 }
 
 /*
@@ -833,7 +833,8 @@ h1:focus {
 }
 
 :is(.masa, .masa-stack-components):is([data-theme="dark"], .theme--dark) .m-input--switch.m-input--is-disabled:not(.m-input--is-dirty) .m-input--switch__thumb {
-    color: color-mix(in srgb, rgb(var(--m-theme-on-surface)) 38%, transparent) !important;
+    /* MSwitch paints the disabled thumb with !important; override the color variable it reads instead. */
+    --m-theme-surface-container-lowest: var(--m-theme-on-surface);
 }
 
 .masa-stack-components .rounded-sm-before::before {
@@ -844,13 +845,13 @@ h1:focus {
     padding-bottom: 2px;
 }
 
-.masa-stack-components .m-input.name-textfield .m-input__slot::before {
-    border-color: var(--ms-border) !important;
+body .masa-stack-components .m-input.name-textfield .m-input__slot::before {
+    border-color: var(--ms-border);
 }
 
-.masa-stack-components .m-input.name-textfield .m-text-field__slot input {
+body .masa-stack-components .m-input.name-textfield .m-text-field__slot input {
     text-align: center;
-    color: var(--ms-text-emphasis2) !important;
+    color: var(--ms-text-emphasis2);
     font-family: Roboto !important;
     font-size: 1.25rem !important;
     font-style: normal !important;
@@ -859,8 +860,8 @@ h1:focus {
     letter-spacing: 0em !important;
 }
 
-    .masa-stack-components .m-input.name-textfield .m-text-field__slot input::placeholder {
-        color: var(--ms-text-regular3) !important;
+    body .masa-stack-components .m-input.name-textfield .m-text-field__slot input::placeholder {
+        color: var(--ms-text-regular3);
         text-align: center;
         font-family: Roboto !important;
         font-size: 1.25rem !important;
@@ -1099,7 +1100,11 @@ h1:focus {
 /*
     Dark mode: chips built as "{color} lighten-5 {color}--text" (SStatefulChip, SColorChip) would otherwise
     render as bright pastel blocks. Tint the surface with the chip's own text color instead.
+    Masa sets the pastel through background-color (!important), so it is covered by background-image layers:
+    a translucent tint of the chip text color over an opaque theme surface.
 */
 :is(.masa, .masa-stack-components):is([data-theme="dark"], .theme--dark) .m-chip.lighten-5 {
-    background-color: color-mix(in srgb, currentColor 18%, transparent) !important;
+    background-image:
+        linear-gradient(color-mix(in srgb, currentColor 18%, transparent), color-mix(in srgb, currentColor 18%, transparent)),
+        linear-gradient(var(--ms-surface), var(--ms-surface));
 }

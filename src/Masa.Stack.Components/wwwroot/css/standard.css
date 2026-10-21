@@ -90,34 +90,34 @@
     }
 
     .masa.m-application .fill {
-      background-color: var(--ms-surface) !important;
+      background-color: var(--ms-surface);
     }
     /*
     color of text
     */
 
     .masa.m-application .default--text {
-      color: var(--ms-text-default) !important;
+      color: var(--ms-text-default);
     }
 
     .masa.m-application .emphasis--text {
-      color: var(--ms-text-emphasis) !important;
+      color: var(--ms-text-emphasis);
     }
 
     .masa.m-application .emphasis2--text {
-      color: var(--ms-text-emphasis2) !important;
+      color: var(--ms-text-emphasis2);
     }
 
     .masa.m-application .regular--text {
-      color: var(--ms-text-regular) !important;
+      color: var(--ms-text-regular);
     }
 
     .masa.m-application .regular2--text {
-      color: var(--ms-text-regular2) !important;
+      color: var(--ms-text-regular2);
     }
 
     .masa.m-application .regular3--text {
-      color: var(--ms-text-regular3) !important;
+      color: var(--ms-text-regular3);
     }
 
     /* Text drawn on top of a solid color (buttons, chips): stays light in both modes. */
@@ -128,7 +128,7 @@
     /* Text drawn on top of the primary color; follows the contrast color computed for the active primary. */
     .masa.m-application .on-primary--text,
     .masa-stack-components .on-primary--text {
-      color: rgb(var(--m-theme-on-primary, 255, 255, 255)) !important;
+      color: rgb(var(--m-theme-on-primary, 255, 255, 255));
     }
     /*
     font
