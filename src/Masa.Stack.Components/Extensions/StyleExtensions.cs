@@ -9,4 +9,12 @@ public static class StyleExtensions
     {
         return style?.Contains("border-radius") is true ? style : $"border-radius:{radius}px;{style}";
     }
+
+    /// <summary>
+    /// Appends a css class name unless it is already present.
+    /// </summary>
+    public static string WithClass(this string? classes, string name)
+    {
+        return classes?.Contains(name) is true ? classes : $"{classes} {name}";
+    }
 }

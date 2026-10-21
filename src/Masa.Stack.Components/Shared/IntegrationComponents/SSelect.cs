@@ -1,4 +1,6 @@
-﻿namespace Masa.Stack.Components;
+﻿using Masa.Stack.Components.Extensions;
+
+namespace Masa.Stack.Components;
 
 public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TValue>
 {
@@ -47,33 +49,11 @@ public class SSelect<TItem, TItemValue, TValue> : MSelect<TItem, TItemValue, TVa
         {
             Class += " s-select";
         }
-        if (Large is false && Small is false) Medium = true;
         if (Dense is true)
         {
-            if (Large)
-            {
-                MinHeight = 56;
-                if (Class.Contains("m-input--dense-56") is false)
-                {
-                    Class += " m-input--dense-56";
-                }
-            }
-            else if (Medium)
-            {
-                MinHeight = 48;
-                if (Class.Contains("m-input--dense-48") is false)
-                {
-                    Class += " m-input--dense-48";
-                }
-            }
-            else if (Small)
-            {
-                MinHeight = 40;
-                if (Class.Contains("m-input--dense-40") is false)
-                {
-                    Class += " m-input--dense-40";
-                }
-            }
+            var (height, cssClass) = DenseSize.Resolve(Large, Medium, Small);
+            MinHeight = height;
+            Class = Class.WithClass(cssClass);
         }
 
         if (!string.IsNullOrWhiteSpace(Tooltip) && AppendOuterContent == default)

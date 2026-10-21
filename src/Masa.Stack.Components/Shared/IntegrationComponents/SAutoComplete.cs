@@ -41,33 +41,11 @@ public class SAutoComplete<TItem, TItemValue, TValue> : MAutocomplete<TItem, TIt
         Style = Style.WithDefaultBorderRadius();
 
         Class ??= "";
-        if (Large is false && Small is false) Medium = true;
         if (Dense is true)
         {
-            if (Large)
-            {
-                Height = 56;
-                if (Class.Contains("m-input--dense-56") is false)
-                {
-                    Class += " m-input--dense-56";
-                }
-            }
-            else if (Medium)
-            {
-                Height = 48;
-                if (Class.Contains("m-input--dense-48") is false)
-                {
-                    Class += " m-input--dense-48";
-                }
-            }
-            else if (Small)
-            {
-                Height = 40;
-                if (Class.Contains("m-input--dense-40") is false)
-                {
-                    Class += " m-input--dense-40";
-                }
-            }
+            var (height, cssClass) = DenseSize.Resolve(Large, Medium, Small);
+            Height = height;
+            Class = Class.WithClass(cssClass);
         }
 
         if (Required && LabelContent == default)

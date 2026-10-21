@@ -52,33 +52,11 @@ public class STextField<TValue> : MTextField<TValue>
 
         // TODO: refactor the following code about css
         Class ??= "";
-        if (Large is false && Small is false) Medium = true;
         if (Dense is true)
         {
-            if (Large)
-            {
-                Height = 56;
-                if (Class.Contains("m-input--dense-56") is false)
-                {
-                    Class += " m-input--dense-56";
-                }
-            }
-            else if (Medium)
-            {
-                Height = 48;
-                if (Class.Contains("m-input--dense-48") is false)
-                {
-                    Class += " m-input--dense-48";
-                }
-            }
-            else if (Small)
-            {
-                Height = 40;
-                if (Class.Contains("m-input--dense-40") is false)
-                {
-                    Class += " m-input--dense-40";
-                }
-            }
+            var (height, cssClass) = DenseSize.Resolve(Large, Medium, Small);
+            Height = height;
+            Class = Class.WithClass(cssClass);
         }
 
         if (Action is not null)
