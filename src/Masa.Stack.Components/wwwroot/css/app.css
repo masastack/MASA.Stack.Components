@@ -383,7 +383,7 @@ h1:focus {
         border-radius: 8px;
     }
 
-    .masa-stack-components .m-menu__content:not(.m-ellipsis-text__tooltip) {
+    :where(.masa-stack-components) .m-menu__content:not(.m-ellipsis-text__tooltip) {
         background: rgba(var(--m-theme-surface-container));
         box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
         border-radius: 12px;
@@ -522,8 +522,11 @@ h1:focus {
 /*
     DefaultTextField
  */
+:where(.masa-stack-components) .m-text-field--outlined:not(.m-text-field--rounded, .m-text-field--shaped) {
+    border-radius: 8px;
+}
+
 .masa-stack-components .m-input fieldset {
-    border-radius: 8px !important;
     border: 1px solid;
 }
 
@@ -780,8 +783,8 @@ h1:focus {
         margin-left: 0em !important;
     }
 
-.masa-stack-components .m-dialog:not(.m-dialog--fullscreen):not(.m-dialog--drawer) {
-    border-radius: 20px !important;
+:where(.masa-stack-components) .m-dialog:not(.m-dialog--fullscreen, .m-dialog--drawer, .m-bottom-sheet) {
+    border-radius: 20px;
 }
 
 .masa-stack-components .m-dialog--drawer {
@@ -1075,7 +1078,7 @@ h1:focus {
     border-radius: 4px;
 }
 
-.m-btn:not(.m-btn--round) {
+.m-btn:not(.m-btn--round, .m-btn--rounded, .m-btn--tile) {
     border-radius: 8px;
 }
 
