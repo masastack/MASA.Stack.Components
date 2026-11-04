@@ -57,7 +57,7 @@
                                 <MListItemContent>
                                     <span class="masa-appearance-skin">
                                         <span aria-hidden="true" class="masa-appearance-skin-color" style="@($"background-color: {skin.PrimaryColor};")"></span>
-                                        <span>@(skin.Id == MasaStackSkin.Default.Id ? T("DefaultSkin") : skin.DisplayName)</span>
+                                        <span>@(skin.IsDefault ? T("DefaultSkin") : skin.DisplayName)</span>
                                         @if (skin == SkinManager.Current)
                                         {
                                             <MIcon Size="18" Class="ml-auto">mdi-check</MIcon>

@@ -11,14 +11,12 @@
         @if (UseMinimalLayout)
         {
             <MApp id="@AppearanceId" Class="masa masa-stack-components">
-                <span hidden @ref="_appearanceAnchor"></span>
                 @ChildContent
             </MApp>
         }
         else
         {
         <MApp id="@AppearanceId" Class="masa masa-stack-components">
-            <span hidden @ref="_appearanceAnchor"></span>
             <MErrorHandler ErrorContent="@ErrorContent" OnHandle="@OnErrorHandleAsync">
                 <MAppBar App
                          Class="mx-6 masa-app-bar"

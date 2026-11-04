@@ -15,8 +15,7 @@ public static class ServiceCollectionExtensions
             sp.GetRequiredService<MasaBlazor>(),
             sp.GetRequiredService<IJSRuntime>(),
             sp.GetRequiredService<GlobalConfig>(),
-            options.Skins,
-            options.DefaultSkinId));
+            options.SkinCatalog));
 
         // 注册 Accept-Language 处理器
         services.AddScoped<AcceptLanguageHandler>();
