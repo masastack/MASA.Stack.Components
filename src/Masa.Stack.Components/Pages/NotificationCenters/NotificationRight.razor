@@ -14,7 +14,7 @@
                         }
                         else if (_entities.Result != null && _entities.Result.Any(x => !x.IsRead))
                         {
-                            <MBadge Bordered Dot Color="pink" OffsetX="10" OffsetY="10">
+                            <MBadge Bordered Dot Color="error" OffsetX="10" OffsetY="10">
                                 <SEmptyAvatar Value="@Channel?.DisplayName" />
                             </MBadge>
                         }
@@ -89,7 +89,7 @@
                             <MListItemSubtitle Class="body2 regular2--text text-truncate" Style="width:400px">
                                 @if (!item.IsRead)
                                 {
-                                    <MAvatar Color="red" Size="8" Class="mr-2">
+                                    <MAvatar Color="error" Size="8" Class="mr-2">
                                     </MAvatar>
                                 }
                                 @item.Abstract

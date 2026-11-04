@@ -32,7 +32,7 @@
                                        MatchPattern="@lastNav.MatchPattern">
                                 <ItemContent>
                                     <MListItemContent>
-                                        <div class="text-truncate ml-3 @(context.Active ? "white--text" : "text-btn regular2--text")">
+                                        <div class="text-truncate ml-3 @(context.Active ? "on-primary--text" : "text-btn regular2--text")">
                                             @DT(lastNav.Name)
                                         </div>
                                     </MListItemContent>
@@ -67,7 +67,7 @@
                        MatchPattern="@subNav.MatchPattern">
                 <ItemContent>
                     <MListItemContent>
-                        <div class="text-truncate @(context.Active ? "white--text" : "text-btn regular2--text")">
+                        <div class="text-truncate @(context.Active ? "on-primary--text" : "text-btn regular2--text")">
                             @DT(subNav.Name)
                         </div>
                     </MListItemContent>

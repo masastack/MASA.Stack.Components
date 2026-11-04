@@ -3,67 +3,67 @@
 */
 
 .masa.m-application {
-  font-family: roboto,"Noto Sans SC","Microsoft YaHei" !important;
+  font-family: var(--ms-font-sans) !important;
   font-size: 16px;
 }
 
     .masa.m-application .default {
-      background-color: #000000 !important;
+      background-color: rgba(var(--m-theme-on-surface)) !important;
     }
 
     .masa.m-application .emphasis {
-      background-color: #1B2559 !important;
+      background-color: var(--ms-color-emphasis) !important;
     }
 
     .masa.m-application .emphasis2 {
-      background-color: #323D6F !important;
+      background-color: var(--ms-color-emphasis2) !important;
     }
 
     .masa.m-application .regular {
-      background-color: #485585 !important;
+      background-color: var(--ms-color-regular) !important;
     }
 
     .masa.m-application .regular2 {
-      background-color: #7681AB !important;
+      background-color: var(--ms-color-regular2) !important;
     }
 
     .masa.m-application .regular3 {
-      background-color: #A3AED0 !important;
+      background-color: var(--ms-color-regular3) !important;
     }
 
     .masa.m-application .fill {
-      background-color: #FFFFFF !important;
+      background-color: rgba(var(--m-theme-surface-container)) !important;
     }    
     /*
     color of text
     */
 
     .masa.m-application .default--text {
-      color: #000000 !important;
+      color: rgba(var(--m-theme-on-surface)) !important;
     }
 
     .masa.m-application .emphasis--text {
-      color: #1B2559 !important;
+      color: var(--ms-color-emphasis) !important;
     }
 
     .masa.m-application .emphasis2--text {
-      color: #323D6F !important;
+      color: var(--ms-color-emphasis2) !important;
     }
 
     .masa.m-application .regular--text {
-      color: #485585 !important;
+      color: var(--ms-color-regular) !important;
     }
 
     .masa.m-application .regular2--text {
-      color: #7681AB !important;
+      color: var(--ms-color-regular2) !important;
     }
 
     .masa.m-application .regular3--text {
-      color: #A3AED0 !important;
+      color: var(--ms-color-regular3) !important;
     }
 
     .masa.m-application .fill--text {
-      color: #FFFFFF !important;
+      color: rgba(var(--m-theme-on-primary)) !important;
     }
     /*
     font
