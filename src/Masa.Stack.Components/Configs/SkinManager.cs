@@ -135,6 +135,13 @@ public sealed class SkinManager : IAsyncDisposable
     {
         var skin = Current!;
         var entry = _catalog is not null && _entries.TryGetValue(skin.Id, out var e) ? e : null;
+        var tokens = entry is null || string.IsNullOrEmpty(entry.Css) ? string.Empty : _assetDirectory + entry.Css;
+        var baseCss = entry is null || string.IsNullOrEmpty(_catalog!.Base) ? string.Empty : _assetDirectory + _catalog.Base;
+
+        // Wait for the stylesheets first; this changes nothing on screen. Everything below runs in one task, so the roles
+        // MASA writes and the appearance channel the skin css keys on become visible in the same frame.
+        await _module!.InvokeVoidAsync("prepareSkin", tokens, baseCss);
+
         _masa.UpdateTheme(theme =>
         {
             if (entry is not null)
@@ -164,8 +171,6 @@ public sealed class SkinManager : IAsyncDisposable
         });
         _masa.SetTheme(IsDark ? DarkTheme : LightTheme);
 
-        var tokens = entry is null || string.IsNullOrEmpty(entry.Css) ? string.Empty : _assetDirectory + entry.Css;
-        var baseCss = entry is null || string.IsNullOrEmpty(_catalog!.Base) ? string.Empty : _assetDirectory + _catalog.Base;
         await _module!.InvokeVoidAsync("applySkin", skin.Id, ProfileName(skin.Profile), tokens, baseCss, IsDark, persist,
             CustomPrimaryColor, _masa.Theme.CurrentTheme.OnPrimary);
         Changed?.Invoke();

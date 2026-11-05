@@ -32,7 +32,7 @@ function hrefMatches(link, href) {
 function ensureStylesheet(kind, href) {
     const existing = [...document.querySelectorAll(`link[data-masa-skin-css="${kind}"]`)].find(l => hrefMatches(l, href));
     if (existing) {
-        existing.disabled = false;
+        if (existing.disabled) existing.disabled = false;
         return existing.sheet ? Promise.resolve() : new Promise(resolve => {
             existing.addEventListener('load', resolve, { once: true });
             existing.addEventListener('error', resolve, { once: true });
@@ -68,16 +68,28 @@ function primaryStyle(primary, onPrimary) {
     document.head.appendChild(style);
 }
 
-export async function applySkin(id, profile, tokensHref, baseHref, dark, persist, primary = null, onPrimary = '#FFFFFF') {
+/**
+ * Step 1 of a switch: get the stylesheets of the target skin into the document and wait until they have loaded.
+ * It has no visible effect (the skin css is scoped to its own html[data-skin], the base css to the themed profile),
+ * so a slow network only delays the switch instead of painting a half-switched page.
+ */
+export async function prepareSkin(tokensHref, baseHref) {
     const pending = [];
     if (baseHref) pending.push(ensureStylesheet('base', baseHref));
     if (tokensHref) pending.push(ensureStylesheet('tokens', tokensHref));
-    for (const link of document.querySelectorAll('link[data-masa-skin-css="tokens"]')) {
-        link.disabled = !tokensHref || !hrefMatches(link, tokensHref);
-    }
     await Promise.all(pending);
+}
 
-    // Flip the channel only after the stylesheet is in, so the page changes from one skin to the next in one step.
+/**
+ * Step 2: flip the page. SkinManager calls this in the same task in which it hands the roles to MASA, and nothing in
+ * here awaits, so the new role colours and the new appearance channel reach the screen in the same frame.
+ */
+export function applySkin(id, profile, tokensHref, baseHref, dark, persist, primary = null, onPrimary = '#FFFFFF') {
+    for (const link of document.querySelectorAll('link[data-masa-skin-css="tokens"]')) {
+        const off = !tokensHref || !hrefMatches(link, tokensHref);
+        if (link.disabled !== off) link.disabled = off;
+    }
+
     const root = document.documentElement;
     root.dataset.skin = id;
     root.dataset.theme = dark ? 'dark' : 'light';
