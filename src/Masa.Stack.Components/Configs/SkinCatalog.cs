@@ -52,8 +52,22 @@ internal sealed class SkinCatalogEntry
     [JsonPropertyName("css")]
     public string Css { get; set; } = "";
 
+    /// <summary>The optional component layer of the skin (<c>components.css</c>); <c>null</c> when the skin has none.</summary>
+    [JsonPropertyName("components")]
+    public SkinCatalogComponents? Components { get; set; }
+
     [JsonPropertyName("themes")]
     public Dictionary<string, SkinCatalogTheme> Themes { get; set; } = new();
+}
+
+/// <summary>Where the optional component layer of a skin lives, relative to the asset root of the catalog package.</summary>
+internal sealed class SkinCatalogComponents
+{
+    [JsonPropertyName("css")]
+    public string Css { get; set; } = "";
+
+    [JsonPropertyName("bytes")]
+    public int Bytes { get; set; }
 }
 
 internal sealed class SkinCatalogTheme

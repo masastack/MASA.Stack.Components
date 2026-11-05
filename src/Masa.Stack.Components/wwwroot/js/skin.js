@@ -4,6 +4,8 @@
 // MASA Blazor itself receives the roles from SkinManager.UpdateTheme. Nothing here recolours components.
 const skinKey = 'masa-skin:skin-pref';
 const primaryKey = 'masa-skin:primary-color';
+// "1" / "0": the user's (or host's) opt-in to the optional component layer of a skin; absent = the host default.
+const componentsKey = 'masa-skin:components-pref';
 // Read by skin-boot.js before the first paint of the next page load.
 const bootKey = 'masa-skin:boot';
 
@@ -15,6 +17,10 @@ export function getSavedSkin() {
 
 export function getSavedPrimaryColor() {
     try { return localStorage.getItem(primaryKey); } catch { return null; }
+}
+
+export function getSavedComponentLayer() {
+    try { return localStorage.getItem(componentsKey); } catch { return null; }
 }
 
 /** Fetches skins.json and returns its text; SkinManager parses and validates it. */
@@ -73,10 +79,12 @@ function primaryStyle(primary, onPrimary) {
  * It has no visible effect (the skin css is scoped to its own html[data-skin], the base css to the themed profile),
  * so a slow network only delays the switch instead of painting a half-switched page.
  */
-export async function prepareSkin(tokensHref, baseHref) {
+export async function prepareSkin(tokensHref, baseHref, componentsHref = '') {
     const pending = [];
     if (baseHref) pending.push(ensureStylesheet('base', baseHref));
     if (tokensHref) pending.push(ensureStylesheet('tokens', tokensHref));
+    // Appended after the tokens, so the optional component layer never loses a source-order tie to them.
+    if (componentsHref) pending.push(ensureStylesheet('components', componentsHref));
     await Promise.all(pending);
 }
 
@@ -84,9 +92,16 @@ export async function prepareSkin(tokensHref, baseHref) {
  * Step 2: flip the page. SkinManager calls this in the same task in which it hands the roles to MASA, and nothing in
  * here awaits, so the new role colours and the new appearance channel reach the screen in the same frame.
  */
-export function applySkin(id, profile, tokensHref, baseHref, dark, persist, primary = null, onPrimary = '#FFFFFF') {
+export function applySkin(id, profile, tokensHref, baseHref, dark, persist, primary = null, onPrimary = '#FFFFFF',
+    componentsHref = '', componentLayer = false) {
     for (const link of document.querySelectorAll('link[data-masa-skin-css="tokens"]')) {
         const off = !tokensHref || !hrefMatches(link, tokensHref);
+        if (link.disabled !== off) link.disabled = off;
+    }
+    // The optional component layer: its rules are scoped to html[data-skin="<id>"][data-skin-components], so with the
+    // attribute absent (or the sheet disabled) the page is exactly what the catalog's tokens and base css describe.
+    for (const link of document.querySelectorAll('link[data-masa-skin-css="components"]')) {
+        const off = !componentsHref || !hrefMatches(link, componentsHref);
         if (link.disabled !== off) link.disabled = off;
     }
 
@@ -94,14 +109,18 @@ export function applySkin(id, profile, tokensHref, baseHref, dark, persist, prim
     root.dataset.skin = id;
     root.dataset.theme = dark ? 'dark' : 'light';
     root.dataset.skinProfile = profile;
+    if (componentsHref) root.setAttribute('data-skin-components', '');
+    else root.removeAttribute('data-skin-components');
     primaryStyle(primary, onPrimary);
 
     try {
         localStorage.setItem(bootKey, JSON.stringify({
             id, profile, dark, tokens: tokensHref || '', base: baseHref || '', primary: primary || '', onPrimary,
+            components: componentsHref || '',
         }));
         if (persist) {
             localStorage.setItem(skinKey, id);
+            localStorage.setItem(componentsKey, componentLayer ? '1' : '0');
             if (primary) localStorage.setItem(primaryKey, primary);
             else localStorage.removeItem(primaryKey);
         }

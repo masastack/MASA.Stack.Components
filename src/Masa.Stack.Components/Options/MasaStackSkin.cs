@@ -34,6 +34,12 @@ public sealed class MasaStackSkin
     /// <summary>The skin stylesheet relative to the host's asset root; empty when the skin needs none.</summary>
     public string CssHref { get; init; } = string.Empty;
 
+    /// <summary>
+    /// The skin ships an optional component layer (<c>components.css</c>, scoped to <c>html[data-skin][data-skin-components]</c>).
+    /// It is loaded only while <see cref="Configs.SkinManager.ComponentLayerEnabled"/> is on.
+    /// </summary>
+    public bool HasComponentLayer { get; init; }
+
     public bool IsDefault => Id == DefaultId;
 }
 

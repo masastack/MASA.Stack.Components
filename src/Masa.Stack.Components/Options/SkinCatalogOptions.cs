@@ -15,6 +15,13 @@ public sealed class SkinCatalogOptions
     /// </summary>
     public string? DefaultSkinId { get; set; }
 
+    /// <summary>
+    /// Whether the optional component layer of a skin (its component-level tweaks: font stacks, link colour, picker contrast, ...)
+    /// is on until the user or host code decides otherwise (<see cref="Configs.SkinManager.SetComponentLayerAsync"/>; the choice is
+    /// remembered). Off by default: the shared geometry of the catalog is the whole skin, and the layer stays unloaded.
+    /// </summary>
+    public bool ComponentLayer { get; set; }
+
     /// <summary>Limits the skins offered to the user. <c>null</c> offers the whole catalog; the default skin is always offered.</summary>
     public ISet<string>? Include { get; set; }
 }

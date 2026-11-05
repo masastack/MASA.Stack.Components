@@ -25,6 +25,7 @@ public class SkinManagerTests
         },
         {
           "id": "test", "name": "Test", "profile": "themed", "css": "skins/test/tokens.css",
+          "components": { "css": "skins/test/components.css", "bytes": 100 },
           "themes": {
             "light": { "roles": { "primary": "#1677FF", "on-primary": "#123456", "surface": "#FFFFFF", "future-role": "#000000" }, "opacities": { "hover-opacity": 0.08 } },
             "dark":  { "roles": { "primary": "#112233", "on-primary": "#ABCDEF", "surface": "#000000" }, "opacities": { "hover-opacity": 0.08 } }
@@ -124,6 +125,65 @@ public class SkinManagerTests
         Assert.Equal("identity", fixture.Js.LastApply![1]);
         Assert.Equal("test", fixture.Manager.Skins.Single(s => s.Id == "test").Id);
         Assert.Equal("#1677FF", fixture.Manager.Skins.Single(s => s.Id == "test").PrimaryColor);
+    }
+
+    [Fact]
+    public async Task ComponentLayerIsOffByDefaultAndNothingIsRequestedForIt()
+    {
+        await using var fixture = new Fixture();
+        await fixture.Manager.SelectAsync("test");
+        Assert.False(fixture.Manager.ComponentLayerEnabled);
+        Assert.False(fixture.Manager.ComponentLayerActive);
+        Assert.Equal(string.Empty, fixture.Js.LastPrepare![2]);
+        Assert.Equal(string.Empty, fixture.Js.LastApply![8]);
+        Assert.Equal(false, fixture.Js.LastApply![9]);
+        // The catalog tells which skins have a layer; the others never do.
+        Assert.True(fixture.Manager.Skins.Single(s => s.Id == "test").HasComponentLayer);
+        Assert.False(fixture.Manager.Skins.Single(s => s.Id == "other").HasComponentLayer);
+        Assert.False(fixture.Manager.Skins.Single(s => s.Id == "masa-design").HasComponentLayer);
+    }
+
+    [Fact]
+    public async Task OptingInLoadsTheLayerOnlyForSkinsThatHaveOneAndIsRemembered()
+    {
+        await using var fixture = new Fixture();
+        var manager = fixture.Manager;
+        await manager.SelectAsync("test");
+        await manager.SetComponentLayerAsync(true);
+        Assert.True(manager.ComponentLayerActive);
+        Assert.Equal("_content/Masa.Stack.Skins/skins/test/components.css", fixture.Js.LastPrepare![2]);
+        Assert.Equal("_content/Masa.Stack.Skins/skins/test/components.css", fixture.Js.LastApply![8]);
+        Assert.Equal(true, fixture.Js.LastApply![9]);
+        Assert.True(fixture.Js.LastApplyPersisted);
+
+        // A skin without a layer: the opt-in stays, nothing is requested.
+        await manager.SelectAsync("other");
+        Assert.True(manager.ComponentLayerEnabled);
+        Assert.False(manager.ComponentLayerActive);
+        Assert.Equal(string.Empty, fixture.Js.LastApply![8]);
+
+        await manager.SelectAsync("test");
+        Assert.True(manager.ComponentLayerActive);
+        await manager.SetComponentLayerAsync(false);
+        Assert.False(manager.ComponentLayerActive);
+        Assert.Equal(string.Empty, fixture.Js.LastApply![8]);
+        Assert.Equal(false, fixture.Js.LastApply![9]);
+    }
+
+    [Theory]
+    [InlineData(null, false, false)]
+    [InlineData(null, true, true)]
+    [InlineData("1", false, true)]
+    [InlineData("0", true, false)]
+    public async Task SavedChoiceOfTheComponentLayerBeatsTheHostDefault(string? saved, bool hostDefault, bool expected)
+    {
+        await using var fixture = new Fixture(configure: o => o.ComponentLayer = hostDefault);
+        fixture.Js.SavedComponentLayer = saved;
+        fixture.Js.SavedSkin = "test";
+        await fixture.Manager.InitializeAsync();
+        Assert.Equal(expected, fixture.Manager.ComponentLayerEnabled);
+        Assert.Equal(expected, fixture.Manager.ComponentLayerActive);
+        Assert.False(fixture.Js.LastApplyPersisted);
     }
 
     [Fact]
@@ -244,8 +304,8 @@ public class SkinManagerTests
     {
         public int Imports, CatalogLoads, MaxConcurrent;
         private int _active;
-        public string? SavedSkin, SavedPrimary, CatalogJson;
-        public object?[]? LastApply;
+        public string? SavedSkin, SavedPrimary, SavedComponentLayer, CatalogJson;
+        public object?[]? LastApply, LastPrepare;
         public bool LastApplyPersisted;
 
         public ValueTask<T> InvokeAsync<T>(string identifier, object?[]? args) => InvokeAsync<T>(identifier, default, args);
@@ -255,6 +315,8 @@ public class SkinManagerTests
             if (identifier == "import") { Imports++; return (T)(object)this; }
             if (identifier == "getSavedSkin") return (T)(object?)SavedSkin!;
             if (identifier == "getSavedPrimaryColor") return (T)(object?)SavedPrimary!;
+            if (identifier == "getSavedComponentLayer") return (T)(object?)SavedComponentLayer!;
+            if (identifier == "prepareSkin") LastPrepare = args;
             if (identifier == "loadCatalog") { CatalogLoads++; return (T)(object)CatalogJson!; }
             if (identifier == "applySkin")
             {

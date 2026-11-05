@@ -35,6 +35,15 @@ public sealed class SkinManager : IAsyncDisposable
 
     public string? CustomPrimaryColor { get; private set; }
 
+    /// <summary>
+    /// Whether the optional component layer is wanted (opt-in; <see cref="SkinCatalogOptions.ComponentLayer"/> is the initial value, the
+    /// saved choice wins). It only has an effect for skins with <see cref="MasaStackSkin.HasComponentLayer"/>.
+    /// </summary>
+    public bool ComponentLayerEnabled { get; private set; }
+
+    /// <summary>The component layer is loaded and switched on for the current skin.</summary>
+    public bool ComponentLayerActive => ComponentLayerEnabled && Current is { HasComponentLayer: true };
+
     public string EffectivePrimaryColor => _masa.Theme.CurrentTheme.Primary ?? MasaStackSkin.Default.PrimaryColor;
 
     /// <summary>Why the catalog could not be used (the default skin stays active); <c>null</c> when there is no problem.</summary>
@@ -66,6 +75,14 @@ public sealed class SkinManager : IAsyncDisposable
         await ApplyAsync(persist: true);
     });
 
+    /// <summary>Opts in or out of the optional component layer of the current (and every later) skin.</summary>
+    public Task SetComponentLayerAsync(bool enabled) => ExecuteAsync(async () =>
+    {
+        if (ComponentLayerEnabled == enabled) return;
+        ComponentLayerEnabled = enabled;
+        await ApplyAsync(persist: true);
+    });
+
     public Task SetPrimaryColorAsync(string? color) => ExecuteAsync(async () =>
     {
         var normalized = NormalizeColor(color);
@@ -91,6 +108,12 @@ public sealed class SkinManager : IAsyncDisposable
         _module ??= await _js.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Stack.Components/js/skin.js");
         var saved = NormalizeId(await _module.InvokeAsync<string?>("getSavedSkin"));
         CustomPrimaryColor = NormalizeColor(await _module.InvokeAsync<string?>("getSavedPrimaryColor"));
+        ComponentLayerEnabled = await _module.InvokeAsync<string?>("getSavedComponentLayer") switch
+        {
+            "1" => true,
+            "0" => false,
+            _ => _options?.ComponentLayer ?? false,
+        };
 
         foreach (var name in new[] { LightTheme, DarkTheme })
         {
@@ -138,9 +161,12 @@ public sealed class SkinManager : IAsyncDisposable
         var tokens = entry is null || string.IsNullOrEmpty(entry.Css) ? string.Empty : _assetDirectory + entry.Css;
         var baseCss = entry is null || string.IsNullOrEmpty(_catalog!.Base) ? string.Empty : _assetDirectory + _catalog.Base;
 
+        // The optional component layer (opt-in) is a third lazy stylesheet; it is only requested while it is wanted and exists.
+        var componentsCss = ComponentLayerEnabled && entry?.Components is { Css.Length: > 0 } layer ? _assetDirectory + layer.Css : string.Empty;
+
         // Wait for the stylesheets first; this changes nothing on screen. Everything below runs in one task, so the roles
         // MASA writes and the appearance channel the skin css keys on become visible in the same frame.
-        await _module!.InvokeVoidAsync("prepareSkin", tokens, baseCss);
+        await _module!.InvokeVoidAsync("prepareSkin", tokens, baseCss, componentsCss);
 
         _masa.UpdateTheme(theme =>
         {
@@ -172,7 +198,7 @@ public sealed class SkinManager : IAsyncDisposable
         _masa.SetTheme(IsDark ? DarkTheme : LightTheme);
 
         await _module!.InvokeVoidAsync("applySkin", skin.Id, ProfileName(skin.Profile), tokens, baseCss, IsDark, persist,
-            CustomPrimaryColor, _masa.Theme.CurrentTheme.OnPrimary);
+            CustomPrimaryColor, _masa.Theme.CurrentTheme.OnPrimary, componentsCss, ComponentLayerEnabled);
         Changed?.Invoke();
     }
 
@@ -197,6 +223,7 @@ public sealed class SkinManager : IAsyncDisposable
             ? p
             : MasaStackSkin.Default.PrimaryColor,
         CssHref = string.IsNullOrEmpty(entry.Css) ? string.Empty : assetDirectory + entry.Css,
+        HasComponentLayer = entry.Components is { Css.Length: > 0 },
     };
 
     private static string ProfileName(SkinProfile profile) => profile == SkinProfile.Identity ? "identity" : "themed";

@@ -19,7 +19,9 @@
         root.dataset.theme = boot.dark ? 'dark' : 'light';
         root.dataset.skinProfile = boot.profile === 'identity' ? 'identity' : 'themed';
 
-        [['base', boot.base], ['tokens', boot.tokens]].forEach(function (entry) {
+        if (boot.components) root.setAttribute('data-skin-components', '');
+
+        [['base', boot.base], ['tokens', boot.tokens], ['components', boot.components]].forEach(function (entry) {
             if (!entry[1]) return;
             var link = document.createElement('link');
             link.rel = 'stylesheet';
