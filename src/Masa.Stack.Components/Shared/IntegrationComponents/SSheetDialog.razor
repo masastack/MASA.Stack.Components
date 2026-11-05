@@ -1,4 +1,4 @@
-﻿@namespace Masa.Stack.Components
+@namespace Masa.Stack.Components
 @inherits NextTickComponentBase
 
 <MBottomSheet HideOverlay
@@ -14,9 +14,9 @@
                         <MIcon Size=16 Color="@(IconColor)">
                             @Icon
                         </MIcon>
-                        <label class="on-primary--text ml-2" style="font-style: normal;font-weight: 700;font-size: 20px;line-height: 30px;">@Title</label>
+                        <label class="white--text ml-2" style="font-style: normal;font-weight: 700;font-size: 20px;line-height: 30px;">@Title</label>
                     </div>
-                    <MIcon Color="on-primary" OnClick="OnClose" Class="close-icon" OnClickStopPropagation>mdi-close</MIcon>
+                    <MIcon Color="white" OnClick="OnClose" Class="close-icon" OnClickStopPropagation>mdi-close</MIcon>
                 </div>
             }
             else

@@ -1,4 +1,4 @@
-﻿@using System.Globalization
+@using System.Globalization
 @namespace Masa.Stack.Components.Layouts
 @inject GlobalConfig GlobalConfig
 @inject I18n I18n
@@ -19,7 +19,7 @@
                     <MListItem OnClick="async () => await OnLanguageChangeAsync(culture)" Value="(StringNumber)culture.Name">
                         <ItemContent>
                             <MListItemContent>
-                                <span Class="@(context.Active ? "on-primary--text" : "default-lighten-4--text") btn">
+                                <span Class="@(context.Active ? "fill--text" : "default-lighten-4--text") btn">
                                     @culture.NativeName
                                 </span>
                             </MListItemContent>

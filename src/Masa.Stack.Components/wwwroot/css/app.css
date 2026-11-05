@@ -833,6 +833,7 @@ h1:focus {
 /* avatar */
 .masa-stack-components .avatar-overlay-tips {
     background: color-mix(in srgb, var(--ms-color-emphasis) 50%, transparent);
+    color: rgba(var(--m-theme-surface-container));
 }
 
     .masa-stack-components .avatar-overlay-tips:active {
