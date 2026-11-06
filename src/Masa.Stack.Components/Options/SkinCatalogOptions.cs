@@ -1,13 +1,13 @@
 namespace Masa.Stack.Components.Options;
 
-/// <summary>Options for the <c>Masa.Stack.Skins</c> catalog. See <see cref="MasaStackComponentOptions.UseSkinCatalog"/>.</summary>
+/// <summary>Options for the <c>Masa.Skins</c> catalog. See <see cref="MasaStackComponentOptions.UseSkinCatalog"/>.</summary>
 public sealed class SkinCatalogOptions
 {
     /// <summary>
     /// Where the catalog is served, relative to the host's asset root. The default is correct when the host
-    /// references the <c>Masa.Stack.Skins</c> package.
+    /// references the <c>Masa.Skins</c> package.
     /// </summary>
-    public string CatalogPath { get; set; } = "_content/Masa.Stack.Skins/skins.json";
+    public string CatalogPath { get; set; } = "_content/Masa.Skins/skins.json";
 
     /// <summary>
     /// The skin used until the user picks one. <c>null</c>, empty or the legacy value <c>"default"</c> mean the

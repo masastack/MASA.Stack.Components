@@ -1,6 +1,6 @@
 // Browser side of SkinManager. The only thing the page ever learns about a skin is the appearance channel
 //   <html data-skin="<id>" data-theme="light|dark" data-skin-profile="identity|themed">
-// plus one lazily loaded stylesheet per skin. Colours and geometry live in the skin catalog (Masa.Stack.Skins);
+// plus one lazily loaded stylesheet per skin. Colours and geometry live in the skin catalog (Masa.Skins);
 // MASA Blazor itself receives the roles from SkinManager.UpdateTheme. Nothing here recolours components.
 const skinKey = 'masa-skin:skin-pref';
 const primaryKey = 'masa-skin:primary-color';

@@ -9,7 +9,7 @@ namespace Masa.Stack.Components.Tests;
 
 public class SkinManagerTests
 {
-    // A catalog in the shape of Masa.Stack.Skins/wwwroot/skins.json, reduced to the roles these tests look at.
+    // A catalog in the shape of Masa.Skins/wwwroot/skins.json, reduced to the roles these tests look at.
     private const string CatalogJson = """
     {
       "schema": 1,
@@ -115,8 +115,8 @@ public class SkinManagerTests
         var args = fixture.Js.LastApply!;
         Assert.Equal("test", args[0]);
         Assert.Equal("themed", args[1]);
-        Assert.Equal("_content/Masa.Stack.Skins/skins/test/tokens.css", args[2]);
-        Assert.Equal("_content/Masa.Stack.Skins/base.css", args[3]);
+        Assert.Equal("_content/Masa.Skins/skins/test/tokens.css", args[2]);
+        Assert.Equal("_content/Masa.Skins/base.css", args[3]);
         Assert.Equal(false, args[4]);
         Assert.Equal(true, args[5]);
         Assert.Null(args[6]);
@@ -151,8 +151,8 @@ public class SkinManagerTests
         await manager.SelectAsync("test");
         await manager.SetComponentLayerAsync(true);
         Assert.True(manager.ComponentLayerActive);
-        Assert.Equal("_content/Masa.Stack.Skins/skins/test/components.css", fixture.Js.LastPrepare![2]);
-        Assert.Equal("_content/Masa.Stack.Skins/skins/test/components.css", fixture.Js.LastApply![8]);
+        Assert.Equal("_content/Masa.Skins/skins/test/components.css", fixture.Js.LastPrepare![2]);
+        Assert.Equal("_content/Masa.Skins/skins/test/components.css", fixture.Js.LastApply![8]);
         Assert.Equal(true, fixture.Js.LastApply![9]);
         Assert.True(fixture.Js.LastApplyPersisted);
 

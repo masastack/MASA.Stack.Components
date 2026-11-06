@@ -1,4 +1,4 @@
-// First-paint helper for hosts that use the Masa.Stack.Skins catalog. Include it as a plain (not async, not
+// First-paint helper for hosts that use the Masa.Skins catalog. Include it as a plain (not async, not
 // deferred, not module) script in <head>:
 //   <script src="_content/Masa.Stack.Components/js/skin-boot.js"></script>
 // It restores the appearance channel and the stylesheet of the skin that was active on the previous visit,

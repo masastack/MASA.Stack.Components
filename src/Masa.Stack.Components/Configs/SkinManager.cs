@@ -1,7 +1,7 @@
 namespace Masa.Stack.Components.Configs;
 
 /// <summary>
-/// Applies a skin from the <c>Masa.Stack.Skins</c> catalog. It is the only writer of the appearance channel
+/// Applies a skin from the <c>Masa.Skins</c> catalog. It is the only writer of the appearance channel
 /// <c>&lt;html data-skin data-theme data-skin-profile&gt;</c> and the only place that registers skin colours with MASA Blazor,
 /// so host projects never write either.
 /// </summary>

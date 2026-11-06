@@ -1,7 +1,7 @@
 namespace Masa.Stack.Components.Options;
 
 /// <summary>
-/// A selectable skin. Skins come from the <c>Masa.Stack.Skins</c> catalog (see
+/// A selectable skin. Skins come from the <c>Masa.Skins</c> catalog (see
 /// <see cref="MasaStackComponentOptions.UseSkinCatalog"/>); without the catalog only <see cref="Default"/> exists.
 /// </summary>
 public sealed class MasaStackSkin

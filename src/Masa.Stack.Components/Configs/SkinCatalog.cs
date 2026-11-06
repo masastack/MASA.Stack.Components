@@ -1,6 +1,6 @@
 namespace Masa.Stack.Components.Configs;
 
-/// <summary>The parsed <c>skins.json</c> of the <c>Masa.Stack.Skins</c> package (schema 1).</summary>
+/// <summary>The parsed <c>skins.json</c> of the <c>Masa.Skins</c> package (schema 1).</summary>
 internal sealed class SkinCatalog
 {
     public const int SupportedSchema = 1;
