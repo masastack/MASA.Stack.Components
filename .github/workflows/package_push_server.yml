@@ -9,6 +9,9 @@ jobs:
   package-push:
     name: package push
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      
     steps:
     - name: git pull
       uses: actions/checkout@v2
