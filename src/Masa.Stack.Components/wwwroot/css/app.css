@@ -9,378 +9,412 @@ h1:focus {
     outline: none;
 }
 
-    .masa-stack-components .m-app-bar {
-        background-color: transparent !important;
+.masa-stack-components .m-app-bar {
+    background-color: transparent !important;
+}
+
+    .masa-stack-components .m-app-bar .m-toolbar__content {
+        background-color: inherit;
     }
 
-        .masa-stack-components .m-app-bar .m-toolbar__content {
-            background-color: inherit;
-        }
+.masa-stack-components .global-nav {
+    display: flex;
+    height: 100vh;
+}
 
-    .masa-stack-components .global-nav {
-        display: flex;
-        height: 100vh;
-    }
-
-        .masa-stack-components .global-nav .global-nav-left {
-            width: 300px;
-            padding: 24px;
-        }
-
-        .global-nav .m-skeleton-loader__list-item {
-            background: transparent !important;
-        }
-        
-        .global-nav .m-skeleton-loader__chip {
-            margin-right: 8px;
-        }
-
-        .masa-stack-components .global-nav .global-nav-left__title {
-            color: #A3AED0;
-            margin-bottom: 8px;
-        }
-
-        .masa-stack-components .global-nav .global-nav-left__content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 20px;
-            height: 100%;
-            background: #F6F8FD;
-            border-radius: 20px;
-        }
-
-        .masa-stack-components .global-nav .global-nav-left__favorite-item {
-        }
-
-        .masa-stack-components .global-nav .global-nav-left__content .m-list-item:hover::before {
-            border-radius: 8px;
-        }
-
-        .masa-stack-components .global-nav .global-nav-right {
-            width: calc(100% - 300px);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .masa-stack-components .global-nav .global-nav-header {
-            padding: 24px 24px 24px 0;
-        }
-
-        .masa-stack-components .global-nav .global-nav-header__title {
-            font-weight: 700;
-            font-size: 24px;
-        }
-        
-        .global-nav-left__group {
-            width: 100%;
-            margin-bottom: 24px;
-        }
-
-        .masa-stack-components .global-nav .global-nav-content {
-            display: flex;
-            height: 100%;
-            padding-right: 24px;
-            padding-bottom: 24px;
-        }
-
-        .global-nav-content__wrapper {
-            width: 100%;
-            height: calc(100vh - 158px);
-            overflow-y: auto;
-        }
-
-        .masa-stack-components .global-nav .global-nav-content__main {
-            /*-moz-column-count: 3;*/ /* Firefox */
-            /*-webkit-column-count: 3;*/ /* Safari 和 Chrome */
-            /*column-count: 3;
-            -moz-column-gap: 24px;*/ /* Firefox */
-            /*-webkit-column-gap: 24px;*/ /* Safari 和 Chrome */
-            /*column-gap: 24px;*/
-        }
-
-            .masa-stack-components .global-nav .global-nav-content__main .title_category_active {
-                color: #4318FF !important;
-            }
-
-            .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar {
-                width: 8px;
-            }
-
-            .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar-thumb {
-                background: #A3AED0;
-                border-radius: 4px;
-            }
-
-            .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar-track {
-                background: #F0F3FA;
-                border-radius: 6px;
-            }
-
-            .masa-stack-components .global-nav .global-nav-content__main .m-list-item.fill-hover {
-                background-color: transparent !important;
-            }
-
-    .masa-stack-components .global-nav-content__main .app {
-        -webkit-column-break-inside: avoid;
-        page-break-inside: avoid;
-        break-inside: avoid-column;
-        background: #F6F8FD;
-        padding: 16px;
-
-        width: calc(33.33% - 16px);
-        margin-bottom: 24px;
-    }
-
-    .masa-stack-components .global-nav-content__main .category_title_app {
-        -webkit-column-break-inside: avoid;
-        page-break-inside: avoid;
-        break-inside: avoid-column;
-
-        display: flex;
-        flex-wrap: wrap;
-        gap: 24px; /* 设置行间距和列间距 */
-    }
-
-    .masa-stack-components .global-nav .apps .category_title_app :not([style*="display:none"]).app {
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
-    }
-
-    .masa-stack-components .global-nav .apps .category_title_app .app:not([style*="display:none"]) {
-        border-bottom-right-radius: 20px;
-        border-bottom-left-radius: 20px;
-    }
-
-    .masa-stack-components .global-nav .nav {
-        margin-bottom: 16px;
-        border: 1px solid #E2E7F4;
-        border-radius: 8px;
-    }
-
-        .masa-stack-components .global-nav .nav:last-child {
-            margin-bottom: 0;
-        }
-
-        .masa-stack-components .global-nav .nav .nav-item {
-            padding: 0 8px;
-            color: #7681AB;
-        }
-
-            .masa-stack-components .global-nav .nav .nav-item .m-ripple__container {
-                border-radius: 8px;
-            }
-
-            .masa-stack-components .global-nav .nav .nav-item .m-list-item__title {
-                font-size: 14px;
-            }
-
-        .masa-stack-components .global-nav .nav .sub-nav-item {
-            padding: 0 8px 0 16px;
-            color: #7681AB;
-        }
-
-        .masa-stack-components .global-nav .nav .action-item {
-            padding: 0 8px 0 24px;
-            color: #7681AB;
-        }
-
-        .masa-stack-components .global-nav .nav .action-item2 {
-            padding: 0 8px 0 32px;
-            color: #7681AB;
-        }
-
-    .masa-stack-components .global-nav .m-timeline {
-        margin-left: -36px;
-        padding-top: 0;
-        margin-top: 16px;
-        font-size: 12px;
-    }
-
-    .masa-stack-components .global-nav .m-timeline--dense .m-timeline-item__body {
-        min-width: calc(100% - 73px);
-    }
-
-    .masa-stack-components .global-nav .m-timeline-item {
-        align-items: start;
-    }
-
-    .masa-stack-components .global-nav .m-timeline-item__divider {
-        min-width: 50px;
-    }
-
-    .masa-stack-components .global-nav .m-timeline-item__dot--small {
-        height: 16px;
-        width: 16px;
-    }
-
-    .masa-stack-components .global-nav .m-input--selection-controls__input:hover .mdi-checkbox-blank-outline {
-        color: inherit !important;
-        caret-color: inherit !important;
-    }
-
-    .masa-stack-components .global-nav .toc ul {
-        list-style-type: none;
-        padding-left: 8px;
-    }
-
-    .masa-stack-components .global-nav .toc li {
-        border-left: 1px solid #E2E7F4;
-        height: 40px;
-        line-height: 24px;
-        cursor: pointer;
-        position: relative;
-    }
-
-        .masa-stack-components .global-nav .toc li .dot {
-            position: absolute;
-            left: -10px;
-            top: 11px;
-            display: none;
-        }
-
-    .masa-stack-components .global-nav .toc .category_side_active .dot {
-        display: flex;
-    }
-
-    .masa-stack-components .global-nav .toc .category_side_active span {
-        color: #4318FF !important;
-    }
-
-    .masa-stack-components .global-nav .toc li span {
-        margin-left: 4px;
-    }
-
-    .masa-stack-components .clear-before-opacity:hover::before {
-        opacity: 0;
-    }
-
-    .masa-stack-components .clear-before-opacity::before {
-        opacity: 0;
-    }
-
-    .masa-stack-components .masa-icon-size-20 .m-icon {
-        font-size: 20px;
-    }
-
-    .masa-stack-components .user-info {
-        display: flex;
-        height: 100%;
+    .masa-stack-components .global-nav .global-nav-left {
+        width: 300px;
         padding: 24px;
     }
 
-    .masa-stack-components .user-info__left {
-        position: relative;
-        height: 100%;
-        width: 300px;
-        min-width: 300px;
+.global-nav .m-skeleton-loader__list-item {
+    background: transparent !important;
+}
+
+.global-nav .m-skeleton-loader__chip {
+    margin-right: 8px;
+}
+
+.masa-stack-components .global-nav .global-nav-left__title {
+    color: #A3AED0;
+    margin-bottom: 8px;
+}
+
+.masa-stack-components .global-nav .global-nav-left__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    height: 100%;
+    background: #F6F8FD;
+    border-radius: 20px;
+}
+
+.masa-stack-components .global-nav .global-nav-left__favorite-item {
+}
+
+.masa-stack-components .global-nav .global-nav-left__content .m-list-item:hover::before {
+    border-radius: 8px;
+}
+
+.masa-stack-components .global-nav .global-nav-right {
+    width: calc(100% - 300px);
+    display: flex;
+    flex-direction: column;
+}
+
+.masa-stack-components .global-nav .global-nav-header {
+    padding: 24px 24px 24px 0;
+}
+
+.masa-stack-components .global-nav .global-nav-header__title {
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.global-nav-left__group {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.masa-stack-components .global-nav .global-nav-content {
+    display: flex;
+    height: 100%;
+    padding-right: 24px;
+    padding-bottom: 24px;
+}
+
+.masa-stack-components .global-nav .global-nav-content-sapp .global-nav-content__wrapper {
+    padding-right: 8px;
+}
+
+.masa-stack-components .global-nav .global-nav-app-box {
+    width: 256px;
+    margin-left: 24px;
+}
+
+.masa-stack-components .global-nav .global-nav-app-box-sapp {
+    width: 270px;
+}
+
+.masa-stack-components .global-nav .global-nav-app-box .super-app-item {
+    width: 224px;
+    height: 60px;
+    background-color: #F6F8FD;
+}
+
+.masa-stack-components .global-nav .global-nav-app-box .app-entry-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    max-width: 24px;
+    max-height: 24px;
+}
+
+.masa-stack-components .global-nav .global-nav-app-box .app-entry-web-full-icon {
+    max-width: 100%;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.global-nav-content__wrapper {
+    width: 100%;
+    height: calc(100vh - 158px);
+    overflow-y: auto;
+}
+
+.masa-stack-components .global-nav .global-nav-content__main {
+    /*-moz-column-count: 3;*/ /* Firefox */
+    /*-webkit-column-count: 3;*/ /* Safari 和 Chrome */
+    /*column-count: 3;
+            -moz-column-gap: 24px;*/ /* Firefox */
+    /*-webkit-column-gap: 24px;*/ /* Safari 和 Chrome */
+    /*column-gap: 24px;*/
+}
+
+    .masa-stack-components .global-nav .global-nav-content__main .title_category_active {
+        color: #4318FF !important;
     }
 
-        .masa-stack-components .user-info__left .avatar {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+    .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar-thumb {
+        background: #A3AED0;
+        border-radius: 4px;
+    }
+
+    .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar-track {
+        background: #F0F3FA;
+        border-radius: 6px;
+    }
+
+    .masa-stack-components .global-nav .global-nav-content__main .m-list-item.fill-hover {
+        background-color: transparent !important;
+    }
+
+.masa-stack-components .global-nav-content__main .app {
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid-column;
+    background: #F6F8FD;
+    padding: 16px;
+    width: calc(33.33% - 16px);
+    margin-bottom: 24px;
+}
+
+.masa-stack-components .global-nav-content__main .category_title_app {
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid-column;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px; /* 设置行间距和列间距 */
+}
+
+.masa-stack-components .global-nav .apps .category_title_app :not([style*="display:none"]).app {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.masa-stack-components .global-nav .apps .category_title_app .app:not([style*="display:none"]) {
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.masa-stack-components .global-nav .nav {
+    margin-bottom: 16px;
+    border: 1px solid #E2E7F4;
+    border-radius: 8px;
+}
+
+    .masa-stack-components .global-nav .nav:last-child {
+        margin-bottom: 0;
+    }
+
+    .masa-stack-components .global-nav .nav .nav-item {
+        padding: 0 8px;
+        color: #7681AB;
+    }
+
+        .masa-stack-components .global-nav .nav .nav-item .m-ripple__container {
+            border-radius: 8px;
         }
 
-        .masa-stack-components .user-info__left .auths {
-            position: absolute;
-            bottom: 24px;
-            width: 100%
+        .masa-stack-components .global-nav .nav .nav-item .m-list-item__title {
+            font-size: 14px;
         }
 
-            .masa-stack-components .user-info__left .auths > div:not(:last-child) {
-                margin-bottom: 16px;
-            }
+    .masa-stack-components .global-nav .nav .sub-nav-item {
+        padding: 0 8px 0 16px;
+        color: #7681AB;
+    }
 
-    .masa-stack-components .user-info__right {
+    .masa-stack-components .global-nav .nav .action-item {
+        padding: 0 8px 0 28px;
+        color: #7681AB;
+    }
+
+    .masa-stack-components .global-nav .nav .action-item2 {
+        padding: 0 8px 0 40px;
+        color: #7681AB;
+    }
+
+.masa-stack-components .global-nav .m-timeline {
+    margin-left: -36px;
+    padding-top: 0;
+    margin-top: 16px;
+    font-size: 12px;
+}
+
+.masa-stack-components .global-nav .m-timeline--dense .m-timeline-item__body {
+    min-width: calc(100% - 73px);
+}
+
+.masa-stack-components .global-nav .m-timeline-item {
+    align-items: start;
+}
+
+.masa-stack-components .global-nav .m-timeline-item__divider {
+    min-width: 50px;
+}
+
+.masa-stack-components .global-nav .m-timeline-item__dot--small {
+    height: 16px;
+    width: 16px;
+}
+
+.masa-stack-components .global-nav .m-input--selection-controls__input:hover .mdi-checkbox-blank-outline {
+    color: inherit !important;
+    caret-color: inherit !important;
+}
+
+.masa-stack-components .global-nav .toc ul {
+    list-style-type: none;
+    padding-left: 8px;
+}
+
+.masa-stack-components .global-nav .toc li {
+    border-left: 1px solid #E2E7F4;
+    height: 40px;
+    line-height: 24px;
+    cursor: pointer;
+    position: relative;
+}
+
+    .masa-stack-components .global-nav .toc li .dot {
+        position: absolute;
+        left: -10px;
+        top: 11px;
+        display: none;
+    }
+
+.masa-stack-components .global-nav .toc .category_side_active .dot {
+    display: flex;
+}
+
+.masa-stack-components .global-nav .toc .category_side_active span {
+    color: #4318FF !important;
+}
+
+.masa-stack-components .global-nav .toc li span {
+    margin-left: 4px;
+}
+
+.masa-stack-components .clear-before-opacity:hover::before {
+    opacity: 0;
+}
+
+.masa-stack-components .clear-before-opacity::before {
+    opacity: 0;
+}
+
+.masa-stack-components .masa-icon-size-20 .m-icon {
+    font-size: 20px;
+}
+
+.masa-stack-components .user-info {
+    display: flex;
+    height: 100%;
+    padding: 24px;
+}
+
+.masa-stack-components .user-info__left {
+    position: relative;
+    height: 100%;
+    width: 300px;
+    min-width: 300px;
+}
+
+    .masa-stack-components .user-info__left .avatar {
         height: 100%;
-        width: 100%;
-        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 
-    .masa-stack-components .nav-trigger {
-        position: fixed;
-        z-index: 6;
-        top: 28px;
-        border: 4px solid #F0F3FA !important;
+    .masa-stack-components .user-info__left .auths {
+        position: absolute;
+        bottom: 24px;
+        width: 100%
     }
 
-    .masa-stack-components .m-application--is-ltr .m-list-item__action:first-child, .m-application--is-ltr .m-list-item__icon:first-child {
-        margin-right: 8px;
-    }
+        .masa-stack-components .user-info__left .auths > div:not(:last-child) {
+            margin-bottom: 16px;
+        }
 
-    .masa-stack-components .m-list-item--medium .m-list-item__icon {
-        height: 24px;
-        margin-top: 12px;
-        margin-bottom: 12px;
-    }
+.masa-stack-components .user-info__right {
+    height: 100%;
+    width: 100%;
+    margin-top: 24px;
+}
 
-    .masa-stack-components .navigation .m-list-group--active > .m-list-group__items {
-        margin-bottom: 8px;
-    }
+.masa-stack-components .nav-trigger {
+    position: fixed;
+    z-index: 6;
+    top: 28px;
+    border: 4px solid #F0F3FA !important;
+}
 
-    .masa-stack-components .m-list--nav .m-list-item, .m-list--nav .m-list-item:before {
-        border-radius: 8px;
-    }
+.masa-stack-components .m-application--is-ltr .m-list-item__action:first-child, .m-application--is-ltr .m-list-item__icon:first-child {
+    margin-right: 8px;
+}
 
-    .masa-stack-components .m-menu__content:not(.m-ellipsis-text__tooltip) {
-        background: #FFFFFF;
-        box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
-        border-radius: 12px;
-    }
+.masa-stack-components .m-list-item--medium .m-list-item__icon {
+    height: 24px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
 
-    .masa-stack-components .masa-text-highlight-2 {
-        color: #323D6F !important;
-        font-weight: 500 !important;
-    }
+.masa-stack-components .navigation .m-list-group--active > .m-list-group__items {
+    margin-bottom: 8px;
+}
 
-    .masa-stack-components .masa-text-highlight-1 {
-        color: #1B2559 !important;
-        font-weight: 700 !important;
-    }
+.masa-stack-components .m-list--nav .m-list-item, .m-list--nav .m-list-item:before {
+    border-radius: 8px;
+}
 
-    .masa-stack-components .masa-text-3-1 {
-        color: #A3AED0 !important;
-        font-weight: 400 !important;
-    }
+.masa-stack-components .m-menu__content:not(.m-ellipsis-text__tooltip) {
+    background: #FFFFFF;
+    box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+    border-radius: 12px;
+}
 
-    .masa-stack-components .masa-text-2-1 {
-        color: #485585 !important;
-        font-weight: 400 !important;
-    }
+.masa-stack-components .masa-text-highlight-2 {
+    color: #323D6F !important;
+    font-weight: 500 !important;
+}
 
-    .masa-stack-components .masa-text-2-2 {
-        color: #7681AB !important;
-        font-weight: 500 !important;
-    }
+.masa-stack-components .masa-text-highlight-1 {
+    color: #1B2559 !important;
+    font-weight: 700 !important;
+}
 
-    .masa-stack-components .masa-text-1-1 {
-        color: #1B2559 !important;
-        font-weight: 500 !important;
-    }
+.masa-stack-components .masa-text-3-1 {
+    color: #A3AED0 !important;
+    font-weight: 400 !important;
+}
 
-    .masa-stack-components .masa-text-1-2 {
-        color: #323D6F !important;
-        font-weight: 500 !important;
-    }
+.masa-stack-components .masa-text-2-1 {
+    color: #485585 !important;
+    font-weight: 400 !important;
+}
 
-    .masa-stack-components .masa-text-1-2__title {
-        color: #323D6F !important;
-        font-size: 24px !important;
-        font-weight: 700 !important;
-    }
+.masa-stack-components .masa-text-2-2 {
+    color: #7681AB !important;
+    font-weight: 500 !important;
+}
 
-    .masa-stack-components .masa-text {
-        color: #000000 !important;
-        font-weight: 700 !important;
-    }
+.masa-stack-components .masa-text-1-1 {
+    color: #1B2559 !important;
+    font-weight: 500 !important;
+}
 
-    .masa-stack-components .masa-fill-clicked {
-        background-color: #E9EDF7;
-    }
+.masa-stack-components .masa-text-1-2 {
+    color: #323D6F !important;
+    font-weight: 500 !important;
+}
+
+.masa-stack-components .masa-text-1-2__title {
+    color: #323D6F !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
+
+.masa-stack-components .masa-text {
+    color: #000000 !important;
+    font-weight: 700 !important;
+}
+
+.masa-stack-components .masa-fill-clicked {
+    background-color: #E9EDF7;
+}
 
 .elevation-tab {
     background-color: #F0F3FA !important;
@@ -858,6 +892,7 @@ h1:focus {
     left: 50%;
     transform: translate(-50%, 0);
 }
+
 .masa-stack-components .navigation.m-navigation-drawer--mini-variant .isolation p {
     visibility: hidden;
 }
@@ -883,40 +918,40 @@ h1:focus {
     margin-bottom: auto !important;
 }
 
-.ms-breadcrumbs {
+.ms-breadcrumbs.m-breadcrumbs {
     padding: 0 !important;
     margin-left: -4px;
     flex-wrap: nowrap;
 }
 
-.ms-breadcrumbs li {
-    background-color: white;
-    padding: 8px 24px !important;
-}
+    /* 分隔符已不再渲染，所有 li 都是条目，需统一内边距。
+       :nth-child(n) 把特异性提到 (0,3,1)，压过 MASA.Blazor 的
+       .m-breadcrumbs li:nth-child(even) { padding: 0 12px }，不再依赖 CSS 加载顺序。 */
+    .ms-breadcrumbs.m-breadcrumbs li:nth-child(n) {
+        background-color: rgba(var(--m-theme-surface-container));
+        padding: 8px 24px;
+        clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 50%, calc(100% - 8px) 100%, 0px 100%, 8px 50%);
+    }
 
-.ms-breadcrumbs li:nth-child(odd) {
-    clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 50%, calc(100% - 8px) 100%, 0px 100%, 8px 50%);
-}
+    .ms-breadcrumbs.m-breadcrumbs li:first-child {
+        clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 50%, calc(100% - 8px) 100%, 0px 100%);
+    }
 
-.ms-breadcrumbs li:first-child {
-    clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 50%, calc(100% - 8px) 100%, 0px 100%);
-}
-
-.ms-breadcrumbs li:last-child {
-    clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%, 8px 50%);
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    color: grey;
-    overflow-wrap: anywhere;
-}
+    .ms-breadcrumbs.m-breadcrumbs li:last-child {
+        clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%, 8px 50%);
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        color: grey;
+        overflow-wrap: anywhere;
+    }
 
 .m-sheet.m-card {
     border-radius: 20px;
 }
 
-.m-sheet.m-card:not(.m-sheet--outlined) {
-    box-shadow: none;
-}
+    .m-sheet.m-card:not(.m-sheet--outlined) {
+        box-shadow: none;
+    }
 
 .m-sheet.m-card--hover:not(.m-sheet--outlined):focus, .m-sheet.m-card--hover:not(.m-sheet--outlined):hover {
     box-shadow: 0 5px 5px -3px rgba(var(--ms-box-shadow-color),.2),0 8px 10px 1px rgba(var(--ms-box-shadow-color),.14),0 3px 14px 2px rgba(var(--ms-box-shadow-color),.12);
@@ -971,37 +1006,57 @@ h1:focus {
 }
 
 .expansion-nav__checkbox {
-    margin-right: -6px ;
+    margin-right: -6px;
+}
+
+.expansion-app__icon {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    object-fit: contain;
+}
+
+.expansion-nav__icon {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .global-nav-content__loader {
     display: flex;
     height: 100%;
-    width: calc(100% - 256px);;
+    width: calc(100% - 256px);
+    ;
 }
 
-.global-nav-content__loader .m-skeleton-loader__image {
-    height: 100%;
-    width: 100%;
-    margin-right: 8px;
-    border-radius: 4px;
-}
+    .global-nav-content__loader .m-skeleton-loader__image {
+        height: 100%;
+        width: 100%;
+        margin-right: 8px;
+        border-radius: 4px;
+    }
 
-.global-nav-content__loader .m-skeleton-loader__image:last-child {
-    margin-right: 0;
-}
+        .global-nav-content__loader .m-skeleton-loader__image:last-child {
+            margin-right: 0;
+        }
 
 .global-nav-content__toc-loader {
     width: 256px;
     height: 100%;
 }
 
-.global-nav-content__toc-loader .m-skeleton-loader__image {
-    height: 100%;
-    width: 100%;
-    margin-left: 8px;
-    border-radius: 4px;
-}
+    .global-nav-content__toc-loader .m-skeleton-loader__image {
+        height: 100%;
+        width: 100%;
+        margin-left: 8px;
+        border-radius: 4px;
+    }
 
 .m-btn:not(.m-btn--round) {
     border-radius: 8px;
@@ -1011,8 +1066,19 @@ h1:focus {
     .masa-app-bar:not(.app--sized) {
         left: 300px !important;
     }
-    
+
     .masa-main:not(.app--sized) {
         padding-left: 300px !important;
     }
+}
+
+/* expandable-autocomplete */
+
+.s-expandable-autocomplete .m-input__append-outer {
+    margin-top: 10px !important;
+    margin-left: 4px !important;
+}
+
+.s-expandable-autocomplete.m-input--dense .m-input__append-outer {
+    margin-top: 6px !important;
 }
