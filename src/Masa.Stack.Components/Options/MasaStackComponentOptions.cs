@@ -54,7 +54,8 @@ public sealed class MasaStackComponentOptions
 
     /// <summary>
     /// Offers the skins of the <c>Masa.Skins</c> package. The host must reference that package (its
-    /// <c>skins.json</c> and <c>skins/**</c> are static web assets) and, to avoid a flash of the default look on
+    /// <c>skins.json</c> and <c>skins/**</c> are static web assets), except a micro frontend (<see cref="IsMicroFrontend"/>),
+    /// which reads the app-shell's copy by default (<see cref="SkinCatalogOptions.CatalogPath"/>), and, to avoid a flash of the default look on
     /// reload, include <c>_content/Masa.Stack.Components/js/skin-boot.js</c> in the page head.
     /// </summary>
     public MasaStackComponentOptions UseSkinCatalog(Action<SkinCatalogOptions>? configure = null)

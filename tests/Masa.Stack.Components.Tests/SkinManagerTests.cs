@@ -128,9 +128,30 @@ public class SkinManagerTests
     }
 
     [Fact]
-    public async Task ComponentLayerIsOffByDefaultAndNothingIsRequestedForIt()
+    public async Task ComponentLayerIsOnByDefaultAndRequestedOnlyForTheActiveSkinThatHasOne()
     {
         await using var fixture = new Fixture();
+        await fixture.Manager.SelectAsync("test");
+        Assert.True(fixture.Manager.ComponentLayerEnabled);
+        Assert.True(fixture.Manager.ComponentLayerActive);
+        Assert.Equal("_content/Masa.Skins/skins/test/components.css", fixture.Js.LastPrepare![2]);
+        Assert.Equal("_content/Masa.Skins/skins/test/components.css", fixture.Js.LastApply![8]);
+        Assert.Equal(true, fixture.Js.LastApply![9]);
+
+        // A skin without a layer, and the default skin: the layer stays wanted, nothing is requested.
+        await fixture.Manager.SelectAsync("other");
+        Assert.True(fixture.Manager.ComponentLayerEnabled);
+        Assert.False(fixture.Manager.ComponentLayerActive);
+        Assert.Equal(string.Empty, fixture.Js.LastPrepare![2]);
+        Assert.Equal(string.Empty, fixture.Js.LastApply![8]);
+        await fixture.Manager.SelectAsync("masa-design");
+        Assert.Equal(string.Empty, fixture.Js.LastApply![8]);
+    }
+
+    [Fact]
+    public async Task AHostCanStartWithoutTheComponentLayerAndNothingIsRequestedForIt()
+    {
+        await using var fixture = new Fixture(configure: o => o.ComponentLayer = false);
         await fixture.Manager.SelectAsync("test");
         Assert.False(fixture.Manager.ComponentLayerEnabled);
         Assert.False(fixture.Manager.ComponentLayerActive);
@@ -146,7 +167,7 @@ public class SkinManagerTests
     [Fact]
     public async Task OptingInLoadsTheLayerOnlyForSkinsThatHaveOneAndIsRemembered()
     {
-        await using var fixture = new Fixture();
+        await using var fixture = new Fixture(configure: o => o.ComponentLayer = false);
         var manager = fixture.Manager;
         await manager.SelectAsync("test");
         await manager.SetComponentLayerAsync(true);
@@ -260,6 +281,39 @@ public class SkinManagerTests
         Assert.Contains("schema", fixture.Manager.CatalogError);
     }
 
+    [Fact]
+    public async Task AHostThatRunsOnItsOwnReadsTheCatalogOfItsOwnPackage()
+    {
+        await using var fixture = new Fixture();
+        await fixture.Manager.SelectAsync("test");
+        Assert.Equal("_content/Masa.Skins/skins.json", fixture.Js.LastCatalogPath);
+        Assert.Equal("_content/Masa.Skins/skins/test/tokens.css", fixture.Js.LastPrepare![0]);
+        Assert.Equal("_content/Masa.Skins/base.css", fixture.Js.LastPrepare![1]);
+        Assert.Equal("_content/Masa.Skins/skins/test/components.css", fixture.Js.LastPrepare![2]);
+    }
+
+    [Fact]
+    public async Task AMicroFrontendReadsTheCatalogFromTheAppShell()
+    {
+        await using var fixture = new Fixture(isMicroFrontend: true);
+        await fixture.Manager.SelectAsync("test");
+        Assert.Equal("/_content/Masa.Skins/skins.json", fixture.Js.LastCatalogPath);
+        // Every stylesheet of the skin resolves against the origin root as well, and the first-paint helper stores the same paths.
+        Assert.Equal("/_content/Masa.Skins/skins/test/tokens.css", fixture.Js.LastPrepare![0]);
+        Assert.Equal("/_content/Masa.Skins/base.css", fixture.Js.LastPrepare![1]);
+        Assert.Equal("/_content/Masa.Skins/skins/test/components.css", fixture.Js.LastPrepare![2]);
+        Assert.Equal("/_content/Masa.Skins/skins/test/tokens.css", fixture.Js.LastApply![2]);
+    }
+
+    [Fact]
+    public async Task AnExplicitCatalogPathWinsOverTheMode()
+    {
+        await using var fixture = new Fixture(isMicroFrontend: true, configure: options => options.CatalogPath = SkinCatalogOptions.HostCatalogPath);
+        await fixture.Manager.SelectAsync("test");
+        Assert.Equal("_content/Masa.Skins/skins.json", fixture.Js.LastCatalogPath);
+        Assert.Equal("_content/Masa.Skins/skins/test/tokens.css", fixture.Js.LastPrepare![0]);
+    }
+
     private sealed class Fixture : IAsyncDisposable
     {
         private readonly ServiceProvider _provider;
@@ -267,7 +321,7 @@ public class SkinManagerTests
         public MasaBlazor Masa { get; }
         public SkinManager Manager { get; }
 
-        public Fixture(bool catalog = true, Action<SkinCatalogOptions>? configure = null)
+        public Fixture(bool catalog = true, Action<SkinCatalogOptions>? configure = null, bool isMicroFrontend = false)
         {
             var services = new ServiceCollection();
             services.AddLogging();
@@ -290,7 +344,7 @@ public class SkinManagerTests
                 options = holder.SkinCatalog;
             }
 
-            Manager = new SkinManager(Masa, Js, new GlobalConfig(null!, new LocalStorage(Js)), options);
+            Manager = new SkinManager(Masa, Js, new GlobalConfig(null!, new LocalStorage(Js)), options, isMicroFrontend);
         }
 
         public async ValueTask DisposeAsync()
@@ -304,7 +358,7 @@ public class SkinManagerTests
     {
         public int Imports, CatalogLoads, MaxConcurrent;
         private int _active;
-        public string? SavedSkin, SavedPrimary, SavedComponentLayer, CatalogJson;
+        public string? SavedSkin, SavedPrimary, SavedComponentLayer, CatalogJson, LastCatalogPath;
         public object?[]? LastApply, LastPrepare;
         public bool LastApplyPersisted;
 
@@ -317,7 +371,7 @@ public class SkinManagerTests
             if (identifier == "getSavedPrimaryColor") return (T)(object?)SavedPrimary!;
             if (identifier == "getSavedComponentLayer") return (T)(object?)SavedComponentLayer!;
             if (identifier == "prepareSkin") LastPrepare = args;
-            if (identifier == "loadCatalog") { CatalogLoads++; return (T)(object)CatalogJson!; }
+            if (identifier == "loadCatalog") { CatalogLoads++; LastCatalogPath = (string?)args![0]; return (T)(object)CatalogJson!; }
             if (identifier == "applySkin")
             {
                 MaxConcurrent = Math.Max(MaxConcurrent, ++_active);

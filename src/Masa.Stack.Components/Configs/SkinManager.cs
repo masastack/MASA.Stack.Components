@@ -19,6 +19,7 @@ public sealed class SkinManager : IAsyncDisposable
     private readonly IJSRuntime _js;
     private readonly GlobalConfig _config;
     private readonly SkinCatalogOptions? _options;
+    private readonly bool _isMicroFrontend;
     private readonly System.Threading.SemaphoreSlim _gate = new(1, 1);
     private readonly Dictionary<string, (string? Primary, string? OnPrimary)> _originalPrimaries = new();
     private Dictionary<string, SkinCatalogEntry> _entries = new();
@@ -36,7 +37,7 @@ public sealed class SkinManager : IAsyncDisposable
     public string? CustomPrimaryColor { get; private set; }
 
     /// <summary>
-    /// Whether the optional component layer is wanted (opt-in; <see cref="SkinCatalogOptions.ComponentLayer"/> is the initial value, the
+    /// Whether the optional component layer is wanted (<see cref="SkinCatalogOptions.ComponentLayer"/> is the initial value, on by default; the
     /// saved choice wins). It only has an effect for skins with <see cref="MasaStackSkin.HasComponentLayer"/>.
     /// </summary>
     public bool ComponentLayerEnabled { get; private set; }
@@ -51,12 +52,13 @@ public sealed class SkinManager : IAsyncDisposable
 
     public event Action? Changed;
 
-    public SkinManager(MasaBlazor masa, IJSRuntime js, GlobalConfig config, SkinCatalogOptions? options = null)
+    public SkinManager(MasaBlazor masa, IJSRuntime js, GlobalConfig config, SkinCatalogOptions? options = null, bool isMicroFrontend = false)
     {
         _masa = masa;
         _js = js;
         _config = config;
         _options = options;
+        _isMicroFrontend = isMicroFrontend;
     }
 
     public Task InitializeAsync() => ExecuteAsync(() => Task.CompletedTask);
@@ -135,9 +137,10 @@ public sealed class SkinManager : IAsyncDisposable
     {
         try
         {
-            var json = await _module!.InvokeAsync<string>("loadCatalog", _options!.CatalogPath);
+            var catalogPath = _options!.ResolveCatalogPath(_isMicroFrontend);
+            var json = await _module!.InvokeAsync<string>("loadCatalog", catalogPath);
             var catalog = SkinCatalog.Parse(json);
-            _assetDirectory = _options.CatalogPath[..(_options.CatalogPath.LastIndexOf('/') + 1)];
+            _assetDirectory = catalogPath[..(catalogPath.LastIndexOf('/') + 1)];
             _entries = catalog.Skins.ToDictionary(s => s.Id);
             Skins = catalog.Skins
                 .Where(s => s.Id == catalog.Default || _options.Include is null || _options.Include.Contains(s.Id))
