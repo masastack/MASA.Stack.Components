@@ -47,6 +47,12 @@
                     <MButton Text Small Class="mt-2" Disabled="@(SkinManager.CustomPrimaryColor is null)" OnClick="() => SkinManager.SetPrimaryColorAsync(null)">
                         <MIcon Left Size="16">mdi-restore</MIcon>@T("Restore")
                     </MButton>
+                    @if (SkinManager.Skins.Any(s => s.HasComponentLayer))
+                    {
+                        <MSwitch TValue="bool" Class="masa-appearance-layer mt-3 pt-0" Value="SkinManager.ComponentLayerEnabled" ValueChanged="SetComponentLayer"
+                                 Label="@T("ComponentLayer")" Dense Inset HideDetails="@true" aria-label="@T("ComponentLayer")" />
+                        <div class="text-caption text--secondary">@T(SkinManager.Current is { HasComponentLayer: true } ? "ComponentLayerHint" : "ComponentLayerNoneHint")</div>
+                    }
                     <div class="text-subtitle-2 mt-3">@T("Skin")</div>
                 </div>
                 <MList Class="masa-appearance-skins py-0" Dense>
@@ -108,6 +114,8 @@
     }
 
     private Task SetPickerColor(string color) => SkinManager.SetPrimaryColorAsync(color);
+
+    private Task SetComponentLayer(bool enabled) => SkinManager.SetComponentLayerAsync(enabled);
 
     private async Task SetHex(string value)
     {
