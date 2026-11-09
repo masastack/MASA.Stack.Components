@@ -39,7 +39,7 @@
                                    Href="@BuildHref(nav.Url)"
                                    Target="@GetNavLinkTarget(nav)"
                                    Exact="@nav.Exact"
-                                   MatchPattern="@nav.MatchPattern"
+                                   MatchPattern="@BuildMatchPattern(nav.Url, nav.Exact, nav.MatchPattern)"
                                    @attributes="@tooltipContext.Attrs">
                             <ItemContent>
                                 <MListItemIcon>
