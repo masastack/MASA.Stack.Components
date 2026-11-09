@@ -236,3 +236,13 @@
     .masa.m-application .full-height {
       height: 100% !important;
     }
+
+/*
+    stepper divider
+    Masa.Blazor 1.12 colours the stepper divider with --m-theme-outline-variant, which already carries
+    --m-border-opacity, and .m-divider applies --m-border-opacity once more as opacity (about 1.4% ink).
+    Draw it at the 1.11 weight (about 4.5%) from public tokens, so every skin and both schemes follow.
+*/
+.m-stepper .m-stepper__header .m-divider {
+  border-color: rgba(var(--m-theme-on-surface), var(--m-low-emphasis-opacity));
+}
