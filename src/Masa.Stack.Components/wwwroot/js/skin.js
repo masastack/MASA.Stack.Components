@@ -1,137 +1,128 @@
-const storageKey = 'masa-skin:skin-pref';
-const primaryStorageKey = 'masa-skin:primary-color';
-const apps = new WeakMap();
-let nextScope = 0;
+// Browser side of SkinManager. The only thing the page ever learns about a skin is the appearance channel
+//   <html data-skin="<id>" data-theme="light|dark" data-skin-profile="identity|themed">
+// plus one lazily loaded stylesheet per skin. Colours and geometry live in the skin catalog (Masa.Skins);
+// MASA Blazor itself receives the roles from SkinManager.UpdateTheme. Nothing here recolours components.
+const skinKey = 'masa-skin:skin-pref';
+const primaryKey = 'masa-skin:primary-color';
+// "1" / "0": the user's (or host's) opt-in to the optional component layer of a skin; absent = the host default.
+const componentsKey = 'masa-skin:components-pref';
+// Read by skin-boot.js before the first paint of the next page load.
+const bootKey = 'masa-skin:boot';
+
+const assetBase = import.meta.url.split('_content/Masa.Stack.Components/')[0];
 
 export function getSavedSkin() {
-    try { return localStorage.getItem(storageKey); } catch { return null; }
+    try { return localStorage.getItem(skinKey); } catch { return null; }
 }
 
 export function getSavedPrimaryColor() {
-    try { return localStorage.getItem(primaryStorageKey); } catch { return null; }
+    try { return localStorage.getItem(primaryKey); } catch { return null; }
 }
 
-function findApp(anchor) {
-    return anchor?.closest?.('.m-application') ?? document.querySelector('.m-application.masa-stack-components');
+export function getSavedComponentLayer() {
+    try { return localStorage.getItem(componentsKey); } catch { return null; }
 }
 
-function mix(color, target, amount) {
-    return '#' + color.match(/\w\w/g).map((part, i) => Math.round(parseInt(part, 16) * (1 - amount) + target[i] * amount)
-        .toString(16).padStart(2, '0')).join('');
+/** Fetches skins.json and returns its text; SkinManager parses and validates it. */
+export async function loadCatalog(path) {
+    const response = await fetch(new URL(path, assetBase).href, { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`Cannot load the skin catalog (${response.status}): ${path}`);
+    return await response.text();
 }
 
-function primaryCss(scope, id, color, foreground, dark) {
-    const rgb = color.match(/\w\w/g).map(part => parseInt(part, 16)).join(', ');
-    const onRgb = foreground.match(/\w\w/g).map(part => parseInt(part, 16)).join(', ');
-    const hover = mix(color, dark ? [255, 255, 255] : [0, 0, 0], .12);
-    const active = mix(color, dark ? [255, 255, 255] : [0, 0, 0], .24);
-    // Nested themed controls can redeclare tokens, so bridge them as well as the app and its attached overlays.
-    const tokens = `${scope}, ${scope} [class*="theme--"]`;
-    const primary = ':is(.primary, .Primary)';
-    const text = ':is(.primary--text, .Primary--text)';
-    const filled = `.m-btn${primary}:not(.m-btn--text):not(.m-btn--outlined):not(.m-btn--disabled)`;
-    const interactive = `${scope} :is(.m-list-item--active, .m-tab--active):not(.error--text):not(.success--text):not(.warning--text)`;
-    return `
-${tokens} {
-  --m-theme-primary: ${rgb} !important; --m-theme-on-primary: ${onRgb} !important;
-  --m-text-primary: ${rgb} !important; --m-text-on-primary: ${onRgb} !important;
-  --${id}-link-color: ${color} !important;
-  --antd-snapshot-color-primary: ${color} !important;
-  --antd-snapshot-color-primary-hover: ${hover} !important;
-  --antd-snapshot-color-primary-active: ${active} !important;
-  --antd-snapshot-color-primary-bg: rgba(${rgb}, .12) !important;
-  --p2e-primary: ${color} !important; --p2e-primary-dark: ${active} !important;
-  --p2e-primary-rgb: ${rgb} !important; --p2e-primary-500: ${color} !important;
-  --p2e-on-primary: ${foreground} !important;
-  --p2e-focus-ring: ${color} !important; --p2e-focus: ${color} !important;
-  --p2e-focus-color: ${color} !important;
-}
-${scope} ${primary}:not(.m-btn--disabled):not(.m-btn--text):not(.m-btn--outlined) { background-color: ${color} !important; border-color: ${color} !important; color: ${foreground} !important; }
-${scope} ${text} { color: ${color} !important; caret-color: ${color} !important; }
-${scope} .m-btn:is(.primary, .Primary, .primary--text, .Primary--text):is(.m-btn--outlined, .m-btn--text):not(.m-btn--disabled) { background-color: transparent !important; color: ${color} !important; }
-${scope} ${filled} { background-color: ${color} !important; color: ${foreground} !important; border-color: ${color} !important; }
-${scope} ${filled}:hover { background-color: ${hover} !important; border-color: ${hover} !important; }
-${scope} ${filled}:active { background-color: ${active} !important; border-color: ${active} !important; }
-${scope} :is(.m-btn:not(.m-btn--text):not(.m-btn--outlined):not(.m-btn--disabled), .m-list-item, .m-tab)${primary} .white--text { color: ${foreground} !important; }
-${scope} .m-btn${text}:is(.m-btn--outlined, .m-btn--text):hover { background-color: rgba(${rgb}, .10) !important; }
-${scope} .m-btn${text}:is(.m-btn--outlined, .m-btn--text):active { background-color: rgba(${rgb}, .18) !important; }
-${interactive} { color: ${color} !important; background-color: rgba(${rgb}, .12) !important; }
-${interactive}:hover { background-color: rgba(${rgb}, .18) !important; }
-${interactive}:active { background-color: rgba(${rgb}, .24) !important; }
-${interactive}${primary} { color: ${foreground} !important; background-color: ${color} !important; }
-${interactive}${primary}:hover { background-color: ${hover} !important; }
-${interactive}${primary}:active { background-color: ${active} !important; }
-${scope} :is(.m-input--is-focused, .m-input--is-dirty)${text}:not(.error--text) { color: ${color} !important; }
-${scope} :is(.m-btn, .m-list-item, input):focus-visible { outline-color: ${color}; }
-`;
+function hrefMatches(link, href) {
+    return new URL(link.href).pathname.endsWith('/' + href.replace(/^\//, ''));
 }
 
-export async function applySkin(id, href, registeredHrefs, dark, persist, primary = null, onPrimary = '#FFFFFF', anchor = null) {
-    const app = findApp(anchor);
-    if (!app) return;
-    const root = app.getRootNode();
-    let state = apps.get(app);
-    if (!state) {
-        state = { scope: `masa-${++nextScope}`, style: null };
-        apps.set(app, state);
-        app.dataset.masaAppearance = state.scope;
+/** Adds the stylesheet once and resolves when it has loaded (or failed; the page stays usable on defaults). */
+function ensureStylesheet(kind, href) {
+    const existing = [...document.querySelectorAll(`link[data-masa-skin-css="${kind}"]`)].find(l => hrefMatches(l, href));
+    if (existing) {
+        if (existing.disabled) existing.disabled = false;
+        return existing.sheet ? Promise.resolve() : new Promise(resolve => {
+            existing.addEventListener('load', resolve, { once: true });
+            existing.addEventListener('error', resolve, { once: true });
+        });
     }
-    const links = [...root.querySelectorAll('link[rel="stylesheet"]')];
-    const skinHrefs = registeredHrefs.filter(path => path);
-    const matches = (link, path) => new URL(link.href).pathname.endsWith('/' + path.replace(/^\//, ''));
+    return new Promise(resolve => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = new URL(href, assetBase).href;
+        link.dataset.masaSkinCss = kind;
+        link.addEventListener('load', resolve, { once: true });
+        link.addEventListener('error', resolve, { once: true });
+        document.head.appendChild(link);
+    });
+}
 
-    let skinReady = Promise.resolve();
-    if (href) {
-        const assetBase = import.meta.url.split('_content/Masa.Stack.Components/')[0];
-        if (!links.some(link => matches(link, href))) {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = new URL(href, assetBase).href;
-            skinReady = new Promise(resolve => {
-                const complete = () => {
-                    link.removeEventListener('load', complete);
-                    link.removeEventListener('error', complete);
-                    resolve();
-                };
-                link.addEventListener('load', complete);
-                link.addEventListener('error', complete);
-            });
-            if (root === document) document.head.appendChild(link);
-            else root.appendChild(link);
-            links.push(link);
+/**
+ * Custom primary colour. The catalog mirrors the role colours under html[data-skin][data-theme] .theme--*,
+ * which outranks the runtime theme MASA writes, so a user-chosen primary needs the same selectors. It is
+ * a plain override of three variables (no !important, no component selectors) and is re-appended after every
+ * skin stylesheet so source order decides between equal selectors.
+ */
+function primaryStyle(primary, onPrimary) {
+    let style = document.querySelector('style[data-masa-skin-primary]');
+    if (!primary) { style?.remove(); return; }
+    const rgb = value => value.replace('#', '').match(/\w\w/g).map(part => parseInt(part, 16)).join(', ');
+    const scope = 'html[data-skin][data-theme]';
+    style ??= document.createElement('style');
+    style.dataset.masaSkinPrimary = '';
+    style.textContent = `${scope}, ${scope} .m-application, ${scope} [class*="theme--"] {
+  --m-theme-primary: ${rgb(primary)}; --m-theme-primary-text: ${rgb(primary)}; --m-theme-on-primary: ${rgb(onPrimary)};
+}`;
+    document.head.appendChild(style);
+}
+
+/**
+ * Step 1 of a switch: get the stylesheets of the target skin into the document and wait until they have loaded.
+ * It has no visible effect (the skin css is scoped to its own html[data-skin], the base css to the themed profile),
+ * so a slow network only delays the switch instead of painting a half-switched page.
+ */
+export async function prepareSkin(tokensHref, baseHref, componentsHref = '') {
+    const pending = [];
+    if (baseHref) pending.push(ensureStylesheet('base', baseHref));
+    if (tokensHref) pending.push(ensureStylesheet('tokens', tokensHref));
+    // Appended after the tokens, so the optional component layer never loses a source-order tie to them.
+    if (componentsHref) pending.push(ensureStylesheet('components', componentsHref));
+    await Promise.all(pending);
+}
+
+/**
+ * Step 2: flip the page. SkinManager calls this in the same task in which it hands the roles to MASA, and nothing in
+ * here awaits, so the new role colours and the new appearance channel reach the screen in the same frame.
+ */
+export function applySkin(id, profile, tokensHref, baseHref, dark, persist, primary = null, onPrimary = '#FFFFFF',
+    componentsHref = '', componentLayer = false) {
+    for (const link of document.querySelectorAll('link[data-masa-skin-css="tokens"]')) {
+        const off = !tokensHref || !hrefMatches(link, tokensHref);
+        if (link.disabled !== off) link.disabled = off;
+    }
+    // The optional component layer: its rules are scoped to html[data-skin="<id>"][data-skin-components], so with the
+    // attribute absent (or the sheet disabled) the page is exactly what the catalog's tokens and base css describe.
+    for (const link of document.querySelectorAll('link[data-masa-skin-css="components"]')) {
+        const off = !componentsHref || !hrefMatches(link, componentsHref);
+        if (link.disabled !== off) link.disabled = off;
+    }
+
+    const root = document.documentElement;
+    root.dataset.skin = id;
+    root.dataset.theme = dark ? 'dark' : 'light';
+    root.dataset.skinProfile = profile;
+    if (componentsHref) root.setAttribute('data-skin-components', '');
+    else root.removeAttribute('data-skin-components');
+    primaryStyle(primary, onPrimary);
+
+    try {
+        localStorage.setItem(bootKey, JSON.stringify({
+            id, profile, dark, tokens: tokensHref || '', base: baseHref || '', primary: primary || '', onPrimary,
+            components: componentsHref || '',
+        }));
+        if (persist) {
+            localStorage.setItem(skinKey, id);
+            localStorage.setItem(componentsKey, componentLayer ? '1' : '0');
+            if (primary) localStorage.setItem(primaryKey, primary);
+            else localStorage.removeItem(primaryKey);
         }
-    }
-
-    for (const link of links) {
-        if (skinHrefs.some(path => matches(link, path))) link.disabled = !href || !matches(link, href);
-    }
-    await skinReady;
-    app.dataset.skin = id;
-    app.dataset.theme = dark ? 'dark' : 'light';
-    if (primary) {
-        state.style ??= document.createElement('style');
-        state.style.dataset.masaPrimary = state.scope;
-        // Extra specificity beats the skins' fixed primary rules without changing semantic colors.
-        const scope = `.masa-stack-components[data-masa-appearance="${state.scope}"][data-masa-appearance="${state.scope}"]`;
-        state.style.textContent = primaryCss(scope, id, primary, onPrimary, dark);
-        (root === document ? document.head : root).appendChild(state.style);
-    } else {
-        state.style?.remove();
-        state.style = null;
-    }
-    if (persist) {
-        try {
-            localStorage.setItem(storageKey, id);
-            if (primary) localStorage.setItem(primaryStorageKey, primary);
-            else localStorage.removeItem(primaryStorageKey);
-        } catch { /* Storage can be disabled. */ }
-    }
-}
-
-export function releaseApp(anchor) {
-    const app = findApp(anchor);
-    if (!app) return;
-    apps.get(app)?.style?.remove();
-    apps.delete(app);
-    delete app.dataset.masaAppearance;
+    } catch { /* Storage can be disabled. */ }
 }

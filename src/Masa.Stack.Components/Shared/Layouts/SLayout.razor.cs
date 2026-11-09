@@ -123,8 +123,6 @@ public partial class SLayout
 
     private bool UseMinimalLayout => IsMiniProgramBlocked && MiniProgramGuard.IsOnMiniProgramBlockPage();
 
-    private ElementReference _appearanceAnchor;
-
     public string GetAppId() => MultiEnvironmentMasaStackConfig.SetEnvironment(MultiEnvironmentUserContext.Environment ?? "").GetWebId(ProjectApp.Project);
 
     List<Nav> NavItems = new();
@@ -175,7 +173,7 @@ public partial class SLayout
         if (firstRender)
         {
             await GlobalConfig.InitializationAsync();
-            await SkinManager.InitializeAsync(_appearanceAnchor);
+            await SkinManager.InitializeAsync();
             await I18nCache.InitializeAsync();
 
             await JsInitVariables.SetTimezoneOffset();

@@ -43,7 +43,7 @@
     <div Class="mt-4">
         @foreach (var navGroup in Value.Children)
         {
-            <div class="nav m-list--dense" style="background:white; @GetIsDisplayStyle(!navGroup.Hidden)">
+            <div class="nav m-list--dense" style="background: rgba(var(--m-theme-surface-container)); @GetIsDisplayStyle(!navGroup.Hidden)">
                 @RenderNestNav(navGroup)
             </div>
         }
@@ -152,7 +152,7 @@
                         {
                             <SIcon Class="expansion-nav__icon mr-2">@navIcon</SIcon>
                         }
-                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
+                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: var(--ms-color-emphasis2);" : "")">
                             @DT(menu.Name)
                         </div>
                         <MSpacer />
@@ -184,7 +184,7 @@
                      style="@GetIsDisplayStyle(menu.MetaData.Situation != ExpansionMenuSituation.Favorite)"
                      @onclick="@(() => ItemClick(menu))">
                     <div class="d-flex align-center full-width">
-                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: #323D6F;" : "")">
+                        <div style="font-weight: 500; font-size: 14px; @(menu.State == ExpansionMenuState.Selected ? "color: var(--ms-color-emphasis2);" : "")">
                             @DT(menu.Name)
                         </div>
                         <MSpacer />
@@ -201,7 +201,7 @@
 
             @if (menu.GetNavDeep() == 0 && menu.Children.Any(child => !child.Hidden))
             {
-                <div class="mx-2" data-count="@menu.Children.Count(child => !child.Hidden)" style="border: 1px dashed #E4E8F3;"></div>
+                <div class="mx-2" data-count="@menu.Children.Count(child => !child.Hidden)" style="border: 1px dashed var(--ms-border);"></div>
             }
         </div>
     };

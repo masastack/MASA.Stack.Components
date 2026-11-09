@@ -73,7 +73,7 @@ public class SSimpleModal : PModal
                 builder.AddAttribute(2, "Small", true);
                 builder.AddAttribute(3, "Outlined", true);
                 builder.AddAttribute(4, "Color", "emphasis");
-                builder.AddAttribute(5, "Style", "border-color: #E2E7F4;width:32px;height:32px");
+                builder.AddAttribute(5, "Style", "border-color: var(--ms-border);width:32px;height:32px");
                 builder.AddAttribute(6, "OnClick",
                     EventCallback.Factory.Create<MouseEventArgs>(this, e => callback(e)));
                 builder.AddAttribute(7, "ChildContent", (RenderFragment)(subBuilder =>

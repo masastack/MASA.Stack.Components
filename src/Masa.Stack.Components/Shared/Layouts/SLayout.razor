@@ -11,14 +11,12 @@
         @if (UseMinimalLayout)
         {
             <MApp id="@AppearanceId" Class="masa masa-stack-components">
-                <span hidden @ref="_appearanceAnchor"></span>
                 @ChildContent
             </MApp>
         }
         else
         {
         <MApp id="@AppearanceId" Class="masa masa-stack-components">
-            <span hidden @ref="_appearanceAnchor"></span>
             <MErrorHandler ErrorContent="@ErrorContent" OnHandle="@OnErrorHandleAsync">
                 <MAppBar App
                          Class="mx-6 masa-app-bar"
@@ -30,8 +28,8 @@
                                               OnFavoriteRemove="RemoveFavoriteMenu">
                             <ActivatorContent>
                                 <MButton Icon
-                                         Class="white emphasis2--text"
-                                         Style="z-index: 1; border: 8px solid #F0F3FA !important;"
+                                         Class="surface-container emphasis2--text"
+                                         Style="z-index: 1; border: 8px solid rgba(var(--m-theme-surface)) !important;"
                                          Width="64"
                                          Height="64"
                                          @attributes="@context.Attrs">
@@ -46,8 +44,8 @@
                                           OnFavoriteRemove="RemoveFavoriteMenu">
                             <ActivatorContent>
                                 <MButton Icon
-                                         Class="white emphasis2--text"
-                                         Style="z-index: 1; border: 8px solid #F0F3FA !important;"
+                                         Class="surface-container emphasis2--text"
+                                         Style="z-index: 1; border: 8px solid rgba(var(--m-theme-surface)) !important;"
                                          Width="64"
                                          Height="64"
                                          @attributes="@context.Attrs">

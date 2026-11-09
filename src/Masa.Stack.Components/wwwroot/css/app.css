@@ -1,8 +1,29 @@
 @import url(standard.css);
 @import url(pure-components.css);
 
-:root {
+/* Default Stack token values (baseline). Skins override on html[data-skin][data-theme]; do not use !important. */
+html {
+    /* G3 — Stack baseline palette */
+    --ms-color-emphasis: #1B2559;
+    --ms-color-emphasis2: #323D6F;
+    --ms-color-regular: #485585;
+    --ms-color-regular2: #7681AB;
+    --ms-color-regular3: #A3AED0;
+    --ms-surface-subtle: #F6F8FD;
+    --ms-border: #E4E8F3;
     --ms-box-shadow-color: 112, 144, 176;
+
+    /* G2 — shape & typography */
+    --ms-radius-sm: 2px;
+    --ms-radius-md: 4px;
+    --ms-radius-lg: 8px;
+    --ms-font-sans: roboto, "Noto Sans SC", "Microsoft YaHei";
+    /* masa-blazor.css .elevation-2 */
+    --ms-shadow-1: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    /* masa-blazor.css .elevation-8 */
+    --ms-shadow-2: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    /* masa-blazor.css .elevation-16 */
+    --ms-shadow-3: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12);
 }
 
 h1:focus {
@@ -36,7 +57,7 @@ h1:focus {
         }
 
         .masa-stack-components .global-nav .global-nav-left__title {
-            color: #A3AED0;
+            color: var(--ms-color-regular3);
             margin-bottom: 8px;
         }
 
@@ -46,7 +67,7 @@ h1:focus {
             align-items: flex-start;
             padding: 20px;
             height: 100%;
-            background: #F6F8FD;
+            background: var(--ms-surface-subtle);
             border-radius: 20px;
         }
 
@@ -100,7 +121,7 @@ h1:focus {
         .masa-stack-components .global-nav .global-nav-app-box .super-app-item {
             width: 224px;
             height: 60px;
-            background-color: #F6F8FD;
+            background-color: var(--ms-surface-subtle);
         }
 
         .masa-stack-components .global-nav .global-nav-app-box .app-entry-icon {
@@ -136,7 +157,7 @@ h1:focus {
         }
 
             .masa-stack-components .global-nav .global-nav-content__main .title_category_active {
-                color: #4318FF !important;
+                color: rgba(var(--m-theme-primary)) !important;
             }
 
             .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar {
@@ -144,12 +165,12 @@ h1:focus {
             }
 
             .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar-thumb {
-                background: #A3AED0;
+                background: var(--ms-color-regular3);
                 border-radius: 4px;
             }
 
             .masa-stack-components .global-nav .global-nav-content__main::-webkit-scrollbar-track {
-                background: #F0F3FA;
+                background: rgba(var(--m-theme-surface));
                 border-radius: 6px;
             }
 
@@ -161,7 +182,7 @@ h1:focus {
         -webkit-column-break-inside: avoid;
         page-break-inside: avoid;
         break-inside: avoid-column;
-        background: #F6F8FD;
+        background: var(--ms-surface-subtle);
         padding: 16px;
 
         width: calc(33.33% - 16px);
@@ -190,7 +211,7 @@ h1:focus {
 
     .masa-stack-components .global-nav .nav {
         margin-bottom: 16px;
-        border: 1px solid #E2E7F4;
+        border: 1px solid var(--ms-border);
         border-radius: 8px;
     }
 
@@ -200,7 +221,7 @@ h1:focus {
 
         .masa-stack-components .global-nav .nav .nav-item {
             padding: 0 8px;
-            color: #7681AB;
+            color: var(--ms-color-regular2);
         }
 
             .masa-stack-components .global-nav .nav .nav-item .m-ripple__container {
@@ -213,17 +234,17 @@ h1:focus {
 
         .masa-stack-components .global-nav .nav .sub-nav-item {
             padding: 0 8px 0 16px;
-            color: #7681AB;
+            color: var(--ms-color-regular2);
         }
 
         .masa-stack-components .global-nav .nav .action-item {
             padding: 0 8px 0 28px;
-            color: #7681AB;
+            color: var(--ms-color-regular2);
         }
 
         .masa-stack-components .global-nav .nav .action-item2 {
             padding: 0 8px 0 40px;
-            color: #7681AB;
+            color: var(--ms-color-regular2);
         }
 
     .masa-stack-components .global-nav .m-timeline {
@@ -261,7 +282,7 @@ h1:focus {
     }
 
     .masa-stack-components .global-nav .toc li {
-        border-left: 1px solid #E2E7F4;
+        border-left: 1px solid var(--ms-border);
         height: 40px;
         line-height: 24px;
         cursor: pointer;
@@ -280,7 +301,7 @@ h1:focus {
     }
 
     .masa-stack-components .global-nav .toc .category_side_active span {
-        color: #4318FF !important;
+        color: rgba(var(--m-theme-primary)) !important;
     }
 
     .masa-stack-components .global-nav .toc li span {
@@ -341,7 +362,7 @@ h1:focus {
         position: fixed;
         z-index: 6;
         top: 28px;
-        border: 4px solid #F0F3FA !important;
+        border: 4px solid rgba(var(--m-theme-surface)) !important;
     }
 
     .masa-stack-components .m-application--is-ltr .m-list-item__action:first-child, .m-application--is-ltr .m-list-item__icon:first-child {
@@ -362,69 +383,69 @@ h1:focus {
         border-radius: 8px;
     }
 
-    .masa-stack-components .m-menu__content:not(.m-ellipsis-text__tooltip) {
-        background: #FFFFFF;
-        box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+    :where(.masa-stack-components) .m-menu__content:not(.m-ellipsis-text__tooltip) {
+        background: rgba(var(--m-theme-surface-container));
+        box-shadow: 0px 18px 40px rgba(var(--ms-box-shadow-color), 0.12);
         border-radius: 12px;
     }
 
     .masa-stack-components .masa-text-highlight-2 {
-        color: #323D6F !important;
+        color: var(--ms-color-emphasis2) !important;
         font-weight: 500 !important;
     }
 
     .masa-stack-components .masa-text-highlight-1 {
-        color: #1B2559 !important;
+        color: var(--ms-color-emphasis) !important;
         font-weight: 700 !important;
     }
 
     .masa-stack-components .masa-text-3-1 {
-        color: #A3AED0 !important;
+        color: var(--ms-color-regular3) !important;
         font-weight: 400 !important;
     }
 
     .masa-stack-components .masa-text-2-1 {
-        color: #485585 !important;
+        color: var(--ms-color-regular) !important;
         font-weight: 400 !important;
     }
 
     .masa-stack-components .masa-text-2-2 {
-        color: #7681AB !important;
+        color: var(--ms-color-regular2) !important;
         font-weight: 500 !important;
     }
 
     .masa-stack-components .masa-text-1-1 {
-        color: #1B2559 !important;
+        color: var(--ms-color-emphasis) !important;
         font-weight: 500 !important;
     }
 
     .masa-stack-components .masa-text-1-2 {
-        color: #323D6F !important;
+        color: var(--ms-color-emphasis2) !important;
         font-weight: 500 !important;
     }
 
     .masa-stack-components .masa-text-1-2__title {
-        color: #323D6F !important;
+        color: var(--ms-color-emphasis2) !important;
         font-size: 24px !important;
         font-weight: 700 !important;
     }
 
     .masa-stack-components .masa-text {
-        color: #000000 !important;
+        color: rgba(var(--m-theme-on-surface)) !important;
         font-weight: 700 !important;
     }
 
     .masa-stack-components .masa-fill-clicked {
-        background-color: #E9EDF7;
+        background-color: var(--ms-border);
     }
 
 .elevation-tab {
-    background-color: #F0F3FA !important;
+    background-color: rgba(var(--m-theme-surface)) !important;
     padding: 3px;
 }
 
 .m-item-group.elevation-tab .m-btn.m-btn--has-bg.m-btn--active {
-    background-color: white !important;
+    background-color: rgba(var(--m-theme-surface-container)) !important;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
@@ -436,7 +457,7 @@ h1:focus {
     letter-spacing: 0.1px;
     /* text/1-2强调 */
 
-    color: #323D6F;
+    color: var(--ms-color-emphasis2);
 }
 
 .elevation-tab .theme--light.m-btn--active:hover::before, .elevation-tab .theme--light.m-btn--active::before {
@@ -444,7 +465,7 @@ h1:focus {
 }
 
 .m-item-group.elevation-tab .m-btn.m-btn--has-bg {
-    background-color: #F0F3FA !important;
+    background-color: rgba(var(--m-theme-surface)) !important;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
@@ -457,7 +478,7 @@ h1:focus {
     text-align: center;
     /* text/2-2正文 */
 
-    color: #7681AB;
+    color: var(--ms-color-regular2);
 }
 
 /*
@@ -501,8 +522,11 @@ h1:focus {
 /*
     DefaultTextField
  */
+:where(.masa-stack-components) .m-text-field--outlined:not(.m-text-field--rounded, .m-text-field--shaped) {
+    border-radius: 8px;
+}
+
 .masa-stack-components .m-input fieldset {
-    border-radius: 8px !important;
     border: 1px solid;
 }
 
@@ -511,7 +535,7 @@ h1:focus {
 }
 
 .masa-stack-components .m-input:not(.m-input--is-focused,.m-input--has-state) fieldset {
-    border-color: #E9EDF7;
+    border-color: var(--ms-border);
 }
 
 .masa-stack-components .m-input .m-text-field__details {
@@ -568,11 +592,11 @@ h1:focus {
     default dataTable
 */
 .masa-stack-components .table-border-head .m-data-table__wrapper table thead tr:not(.m-data-table__progress) th {
-    border-bottom: solid 0.5px #E4E8F3 !important;
+    border-bottom: solid 0.5px var(--ms-border) !important;
     box-shadow: none !important;
     padding-top: 20px !important;
     padding-bottom: 20px !important;
-    color: #A3AED0 !important;
+    color: var(--ms-color-regular3) !important;
     font-size: 0.875rem !important;
     font-weight: 400 !important;
     line-height: 1.3125rem !important;
@@ -597,14 +621,14 @@ h1:focus {
 }
 
 .masa-stack-components .table-border-head .m-data-table__wrapper table tbody tr:hover {
-    background-color: #F6F8FD !important;
+    background-color: var(--ms-surface-subtle) !important;
 }
 
 .masa-stack-components .table-border-head .m-data-table__wrapper table tr td:first-child {
     font-style: normal !important;
     font-weight: 500 !important;
     font-size: 1rem !important;
-    color: #1B2559 !important;
+    color: var(--ms-color-emphasis) !important;
     line-height: 1.5rem !important;
     letter-spacing: 0em !important;
 }
@@ -613,7 +637,7 @@ h1:focus {
     font-style: normal !important;
     font-weight: 400 !important;
     font-size: 1rem !important;
-    color: #485585 !important;
+    color: var(--ms-color-regular) !important;
     line-height: 1.5rem !important;
     letter-spacing: 0em !important;
 }
@@ -640,7 +664,7 @@ h1:focus {
 */
 
 .masa-stack-components .combox:hover {
-    background-color: #F6F8FD;
+    background-color: var(--ms-surface-subtle);
     cursor: pointer;
 }
 
@@ -682,8 +706,8 @@ h1:focus {
 .masa-stack-components .page-select {
     width: 90px;
     height: 30px;
-    background: #FFFFFF;
-    border: 1px solid #E9EDF7;
+    background: rgba(var(--m-theme-surface-container));
+    border: 1px solid var(--ms-border);
     border-radius: 4px;
     box-sizing: border-box;
 }
@@ -691,7 +715,7 @@ h1:focus {
     .masa-stack-components .page-select .icon {
         width: 30px;
         height: 30px;
-        box-shadow: inset 0.5px 0px 0px #E2E7F4;
+        box-shadow: inset 0.5px 0px 0px var(--ms-border);
     }
 
 /*
@@ -703,14 +727,14 @@ h1:focus {
     width: 350px;
     height: 40px;
     flex-direction: row;
-    border: 1px solid #E4E8F3;
+    border: 1px solid var(--ms-border);
     border-radius: 8px;
 }
 
     .masa-stack-components .dateRangePicker .separator {
         width: 1px;
         height: 24px;
-        border: 1px solid #E4E8F3;
+        border: 1px solid var(--ms-border);
         margin-left: 8px !important;
     }
 
@@ -729,8 +753,8 @@ h1:focus {
 
 .masa-stack-components .relativeTime {
     display: inline-block !important;
-    background: #FFFFFF;
-    border: 1px solid #FFFFFF;
+    background: rgba(var(--m-theme-surface-container));
+    border: 1px solid rgba(var(--m-theme-surface-container));
     border-radius: 8px;
     height: 40px;
     padding-top: 0px !important;
@@ -741,7 +765,7 @@ h1:focus {
 */
 
 .masa-stack-components .hoverBg {
-    background: #e1daff !important;
+    background: rgba(var(--m-theme-primary), var(--m-highlight-opacity)) !important;
 }
 
 /*
@@ -749,7 +773,7 @@ h1:focus {
 */
 
 .avatar-list-stacked .m-avatar {
-    box-shadow: 0 0 0 2px #fff;
+    box-shadow: 0 0 0 2px rgba(var(--m-theme-surface-container));
     margin-left: -0.4em !important;
     user-select: none;
     display: inline-grid;
@@ -759,8 +783,8 @@ h1:focus {
         margin-left: 0em !important;
     }
 
-.masa-stack-components .m-dialog:not(.m-dialog--fullscreen):not(.m-dialog--drawer) {
-    border-radius: 20px !important;
+:where(.masa-stack-components) .m-dialog:not(.m-dialog--fullscreen, .m-dialog--drawer, .m-bottom-sheet) {
+    border-radius: 20px;
 }
 
 .masa-stack-components .m-dialog--drawer {
@@ -808,15 +832,16 @@ h1:focus {
 
 /* avatar */
 .masa-stack-components .avatar-overlay-tips {
-    background: rgba(27, 37, 89, 0.5);
+    background: color-mix(in srgb, var(--ms-color-emphasis) 50%, transparent);
+    color: rgba(var(--m-theme-surface-container));
 }
 
     .masa-stack-components .avatar-overlay-tips:active {
-        background: rgba(27, 37, 89, 0.8);
+        background: color-mix(in srgb, var(--ms-color-emphasis) 80%, transparent);
     }
 
 .masa-stack-components .s-auto-complete input {
-    color: #7681AB;
+    color: var(--ms-color-regular2);
 }
 
 .masa-stack-components .rounded-sm-before::before {
@@ -828,12 +853,12 @@ h1:focus {
 }
 
 .masa-stack-components .m-input.name-textfield .m-input__slot::before {
-    border-color: #E2E7F4 !important;
+    border-color: var(--ms-border) !important;
 }
 
 .masa-stack-components .m-input.name-textfield .m-text-field__slot input {
     text-align: center;
-    color: #323D6F !important;
+    color: var(--ms-color-emphasis2) !important;
     font-family: Roboto !important;
     font-size: 1.25rem !important;
     font-style: normal !important;
@@ -843,7 +868,7 @@ h1:focus {
 }
 
     .masa-stack-components .m-input.name-textfield .m-text-field__slot input::placeholder {
-        color: #A3AED0 !important;
+        color: var(--ms-color-regular3) !important;
         text-align: center;
         font-family: Roboto !important;
         font-size: 1.25rem !important;
@@ -908,7 +933,7 @@ h1:focus {
 .masa-stack-components .filter-button {
     min-width: 40px;
     min-height: 40px;
-    border: 1px solid #F0F3FA;
+    border: 1px solid rgba(var(--m-theme-surface));
     box-sizing: border-box;
     border-radius: 10px;
     cursor: pointer;
@@ -942,7 +967,7 @@ h1:focus {
         clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%, 8px 50%);
         border-top-right-radius: 8px;
         border-bottom-right-radius: 8px;
-        color: grey;
+        color: var(--ms-color-regular2);
         overflow-wrap: anywhere;
     }
 
@@ -1058,7 +1083,7 @@ h1:focus {
     border-radius: 4px;
 }
 
-.m-btn:not(.m-btn--round) {
+.m-btn:not(.m-btn--round, .m-btn--rounded, .m-btn--tile) {
     border-radius: 8px;
 }
 

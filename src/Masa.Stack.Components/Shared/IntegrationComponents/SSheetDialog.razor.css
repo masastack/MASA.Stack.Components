@@ -14,7 +14,7 @@
     }
     
     .m-sheet-dialog-overlay:hover ::deep .close-icon {
-        background: white;
+        background: rgba(var(--m-theme-surface-container));
         border-radius: 50%;
         color: #141726 !important;
     }

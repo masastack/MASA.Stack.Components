@@ -1,62 +1,71 @@
 namespace Masa.Stack.Components.Configs;
 
+/// <summary>
+/// Applies a skin from the <c>Masa.Skins</c> catalog. It is the only writer of the appearance channel
+/// <c>&lt;html data-skin data-theme data-skin-profile&gt;</c> and the only place that registers skin colours with MASA Blazor,
+/// so host projects never write either.
+/// </summary>
+/// <remarks>
+/// Without <see cref="MasaStackComponentOptions.UseSkinCatalog"/> only the default skin exists: no catalog is read and
+/// only the dark mode and the custom primary colour are handled.
+/// </remarks>
 public sealed class SkinManager : IAsyncDisposable
 {
+    private const string LegacyDefaultId = "default";
+    private const string LightTheme = "light";
+    private const string DarkTheme = "dark";
+
     private readonly MasaBlazor _masa;
     private readonly IJSRuntime _js;
     private readonly GlobalConfig _config;
-    private IJSObjectReference? _module;
+    private readonly SkinCatalogOptions? _options;
+    private readonly bool _isMicroFrontend;
     private readonly System.Threading.SemaphoreSlim _gate = new(1, 1);
-    private readonly Dictionary<string, (string Primary, string OnPrimary)> _originalColors = new();
+    private readonly Dictionary<string, (string? Primary, string? OnPrimary)> _originalPrimaries = new();
+    private Dictionary<string, SkinCatalogEntry> _entries = new();
+    private IJSObjectReference? _module;
+    private SkinCatalog? _catalog;
+    private string _assetDirectory = string.Empty;
     private bool _initialized;
-    private ElementReference? _anchor;
 
-    public IReadOnlyList<MasaStackSkin> Skins { get; }
+    public IReadOnlyList<MasaStackSkin> Skins { get; private set; } = new[] { MasaStackSkin.Default };
 
-    public MasaStackSkin? Current { get; private set; }
+    public MasaStackSkin? Current { get; private set; } = MasaStackSkin.Default;
 
     public bool IsDark => _config.Dark;
 
     public string? CustomPrimaryColor { get; private set; }
 
-    public string EffectivePrimaryColor => _masa.Theme.CurrentTheme.Primary;
+    /// <summary>
+    /// Whether the optional component layer is wanted (<see cref="SkinCatalogOptions.ComponentLayer"/> is the initial value, on by default; the
+    /// saved choice wins). It only has an effect for skins with <see cref="MasaStackSkin.HasComponentLayer"/>.
+    /// </summary>
+    public bool ComponentLayerEnabled { get; private set; }
+
+    /// <summary>The component layer is loaded and switched on for the current skin.</summary>
+    public bool ComponentLayerActive => ComponentLayerEnabled && Current is { HasComponentLayer: true };
+
+    public string EffectivePrimaryColor => _masa.Theme.CurrentTheme.Primary ?? MasaStackSkin.Default.PrimaryColor;
+
+    /// <summary>Why the catalog could not be used (the default skin stays active); <c>null</c> when there is no problem.</summary>
+    public string? CatalogError { get; private set; }
 
     public event Action? Changed;
 
-    public SkinManager(MasaBlazor masa, IJSRuntime js, GlobalConfig config,
-        IEnumerable<MasaStackSkin> skins, string? defaultSkinId)
+    public SkinManager(MasaBlazor masa, IJSRuntime js, GlobalConfig config, SkinCatalogOptions? options = null, bool isMicroFrontend = false)
     {
         _masa = masa;
         _js = js;
         _config = config;
-        Skins = skins.Prepend(MasaStackSkin.Default).DistinctBy(s => s.Id).ToArray();
-        Current = Skins.FirstOrDefault(s => s.Id == defaultSkinId) ?? MasaStackSkin.Default;
+        _options = options;
+        _isMicroFrontend = isMicroFrontend;
     }
 
     public Task InitializeAsync() => ExecuteAsync(() => Task.CompletedTask);
 
-    public Task InitializeAsync(ElementReference anchor) => ExecuteAsync(
-        () => ApplyAsync(persist: false), anchor);
-
-    private async Task InitializeCoreAsync()
-    {
-        if (_initialized) return;
-        _module ??= await _js.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Stack.Components/js/skin.js");
-        var saved = await _module.InvokeAsync<string?>("getSavedSkin");
-        Current = Skins.FirstOrDefault(s => s.Id == saved) ?? Current;
-        CustomPrimaryColor = NormalizeColor(await _module.InvokeAsync<string?>("getSavedPrimaryColor"));
-        foreach (var name in Skins.SelectMany(s => new[] { s.LightTheme, s.DarkTheme }).Distinct())
-        {
-            var theme = _masa.Theme.Themes[name];
-            _originalColors[name] = (theme.Primary, theme.OnPrimary);
-        }
-        await ApplyAsync(persist: false);
-        _initialized = true;
-    }
-
     public Task SelectAsync(string id) => ExecuteAsync(async () =>
     {
-        var skin = Skins.FirstOrDefault(s => s.Id == id);
+        var skin = Skins.FirstOrDefault(s => s.Id == NormalizeId(id));
         if (skin is null || skin == Current) return;
         Current = skin;
         await ApplyAsync(persist: true);
@@ -68,6 +77,14 @@ public sealed class SkinManager : IAsyncDisposable
         await ApplyAsync(persist: true);
     });
 
+    /// <summary>Opts in or out of the optional component layer of the current (and every later) skin.</summary>
+    public Task SetComponentLayerAsync(bool enabled) => ExecuteAsync(async () =>
+    {
+        if (ComponentLayerEnabled == enabled) return;
+        ComponentLayerEnabled = enabled;
+        await ApplyAsync(persist: true);
+    });
+
     public Task SetPrimaryColorAsync(string? color) => ExecuteAsync(async () =>
     {
         var normalized = NormalizeColor(color);
@@ -76,36 +93,143 @@ public sealed class SkinManager : IAsyncDisposable
         await ApplyAsync(persist: true);
     });
 
-    private async Task ExecuteAsync(Func<Task> action, ElementReference? anchor = null)
+    private async Task ExecuteAsync(Func<Task> action)
     {
         await _gate.WaitAsync();
         try
         {
-            if (anchor.HasValue) _anchor = anchor;
             await InitializeCoreAsync();
             await action();
         }
         finally { _gate.Release(); }
     }
 
+    private async Task InitializeCoreAsync()
+    {
+        if (_initialized) return;
+        _module ??= await _js.InvokeAsync<IJSObjectReference>("import", "./_content/Masa.Stack.Components/js/skin.js");
+        var saved = NormalizeId(await _module.InvokeAsync<string?>("getSavedSkin"));
+        CustomPrimaryColor = NormalizeColor(await _module.InvokeAsync<string?>("getSavedPrimaryColor"));
+        ComponentLayerEnabled = await _module.InvokeAsync<string?>("getSavedComponentLayer") switch
+        {
+            "1" => true,
+            "0" => false,
+            _ => _options?.ComponentLayer ?? false,
+        };
+
+        foreach (var name in new[] { LightTheme, DarkTheme })
+        {
+            var theme = _masa.Theme.Themes[name];
+            _originalPrimaries[name] = (theme.Primary, theme.OnPrimary);
+        }
+
+        if (_options is not null) await LoadCatalogAsync();
+
+        var defaultId = _catalog is null ? MasaStackSkin.DefaultId : DefaultSkinId(_catalog, _options!);
+        Current = Skins.FirstOrDefault(s => s.Id == saved)
+                  ?? Skins.FirstOrDefault(s => s.Id == defaultId)
+                  ?? MasaStackSkin.Default;
+        await ApplyAsync(persist: false);
+        _initialized = true;
+    }
+
+    private async Task LoadCatalogAsync()
+    {
+        try
+        {
+            var catalogPath = _options!.ResolveCatalogPath(_isMicroFrontend);
+            var json = await _module!.InvokeAsync<string>("loadCatalog", catalogPath);
+            var catalog = SkinCatalog.Parse(json);
+            _assetDirectory = catalogPath[..(catalogPath.LastIndexOf('/') + 1)];
+            _entries = catalog.Skins.ToDictionary(s => s.Id);
+            Skins = catalog.Skins
+                .Where(s => s.Id == catalog.Default || _options.Include is null || _options.Include.Contains(s.Id))
+                .Select(s => ToSkin(s, _assetDirectory))
+                .ToArray();
+            _catalog = catalog;
+            CatalogError = null;
+        }
+        catch (Exception ex) when (ex is JSException or JsonException or InvalidOperationException)
+        {
+            // The host keeps working with the Stack default look; the cause stays inspectable.
+            _catalog = null;
+            CatalogError = ex.Message;
+        }
+    }
+
     private async Task ApplyAsync(bool persist)
     {
         var skin = Current!;
+        var entry = _catalog is not null && _entries.TryGetValue(skin.Id, out var e) ? e : null;
+        var tokens = entry is null || string.IsNullOrEmpty(entry.Css) ? string.Empty : _assetDirectory + entry.Css;
+        var baseCss = entry is null || string.IsNullOrEmpty(_catalog!.Base) ? string.Empty : _assetDirectory + _catalog.Base;
+
+        // The optional component layer (opt-in) is a third lazy stylesheet; it is only requested while it is wanted and exists.
+        var componentsCss = ComponentLayerEnabled && entry?.Components is { Css.Length: > 0 } layer ? _assetDirectory + layer.Css : string.Empty;
+
+        // Wait for the stylesheets first; this changes nothing on screen. Everything below runs in one task, so the roles
+        // MASA writes and the appearance channel the skin css keys on become visible in the same frame.
+        await _module!.InvokeVoidAsync("prepareSkin", tokens, baseCss, componentsCss);
+
         _masa.UpdateTheme(theme =>
         {
-            foreach (var (name, original) in _originalColors)
+            if (entry is not null)
             {
-                theme.Themes[name].Primary = CustomPrimaryColor ?? original.Primary;
-                theme.Themes[name].OnPrimary = CustomPrimaryColor is null
-                    ? original.OnPrimary : GetOnPrimary(CustomPrimaryColor);
+                // The skin owns all 27 roles and the opacities of both schemes; nothing of a previous skin is left behind.
+                if (entry.Themes.TryGetValue(LightTheme, out var light)) SkinThemeMapper.Apply(theme.Themes.Light, light);
+                if (entry.Themes.TryGetValue(DarkTheme, out var dark)) SkinThemeMapper.Apply(theme.Themes.Dark, dark);
+            }
+            else
+            {
+                foreach (var (name, original) in _originalPrimaries)
+                {
+                    theme.Themes[name].Primary = original.Primary;
+                    theme.Themes[name].OnPrimary = original.OnPrimary;
+                }
+            }
+
+            if (CustomPrimaryColor is { } custom)
+            {
+                var onPrimary = GetOnPrimary(custom);
+                foreach (var scheme in new[] { theme.Themes.Light, theme.Themes.Dark })
+                {
+                    scheme.Primary = custom;
+                    scheme.OnPrimary = onPrimary;
+                }
             }
         });
-        _masa.SetTheme(IsDark ? skin.DarkTheme : skin.LightTheme);
-        await _module!.InvokeVoidAsync("applySkin", skin.Id, skin.CssHref,
-            Skins.Select(s => s.CssHref).ToArray(), IsDark, persist, CustomPrimaryColor,
-            _masa.Theme.CurrentTheme.OnPrimary, _anchor);
+        _masa.SetTheme(IsDark ? DarkTheme : LightTheme);
+
+        await _module!.InvokeVoidAsync("applySkin", skin.Id, ProfileName(skin.Profile), tokens, baseCss, IsDark, persist,
+            CustomPrimaryColor, _masa.Theme.CurrentTheme.OnPrimary, componentsCss, ComponentLayerEnabled);
         Changed?.Invoke();
     }
+
+    private static string DefaultSkinId(SkinCatalog catalog, SkinCatalogOptions options)
+    {
+        var id = NormalizeId(options.DefaultSkinId);
+        return id is not null && catalog.Skins.Any(s => s.Id == id) ? id : catalog.Default;
+    }
+
+    /// <summary>Maps empty and the pre-catalog id <c>default</c> to the catalog default; other ids pass through.</summary>
+    private static string? NormalizeId(string? id) =>
+        string.IsNullOrWhiteSpace(id) ? null : id == LegacyDefaultId ? MasaStackSkin.DefaultId : id;
+
+    private static MasaStackSkin ToSkin(SkinCatalogEntry entry, string assetDirectory) => new()
+    {
+        Id = entry.Id,
+        DisplayName = entry.Name,
+        Profile = string.Equals(entry.Profile, "identity", StringComparison.OrdinalIgnoreCase)
+            ? SkinProfile.Identity
+            : SkinProfile.Themed,
+        PrimaryColor = entry.Themes.TryGetValue(LightTheme, out var light) && light.Roles.TryGetValue("primary", out var p)
+            ? p
+            : MasaStackSkin.Default.PrimaryColor,
+        CssHref = string.IsNullOrEmpty(entry.Css) ? string.Empty : assetDirectory + entry.Css,
+        HasComponentLayer = entry.Components is { Css.Length: > 0 },
+    };
+
+    private static string ProfileName(SkinProfile profile) => profile == SkinProfile.Identity ? "identity" : "themed";
 
     private static string? NormalizeColor(string? color)
     {
@@ -133,7 +257,6 @@ public sealed class SkinManager : IAsyncDisposable
     {
         if (_module is not null)
         {
-            await _module.InvokeVoidAsync("releaseApp", _anchor);
             await _module.DisposeAsync();
         }
     }

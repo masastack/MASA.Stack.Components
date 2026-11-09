@@ -1,6 +1,6 @@
 ﻿.detail-box {
     width: 100%;
-    background: #fff;
+    background: rgba(var(--m-theme-surface-container));
     border-radius: 3px;
     box-shadow: 0px 6px 35px rgba(0, 0, 0, 0.02);
     overflow: hidden;
@@ -9,7 +9,7 @@
     .detail-box .content {
         position: relative;
         margin-top: 30px;
-        color: #333;
+        color: rgba(var(--m-theme-on-surface), var(--m-high-emphasis-opacity));
         font-size: 15px;
         line-height: 30px;
     }

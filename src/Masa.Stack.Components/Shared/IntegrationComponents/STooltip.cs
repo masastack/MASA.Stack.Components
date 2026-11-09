@@ -7,7 +7,7 @@ public class STooltip : MTooltip
         Color = "emphasis2";
         Right = true;
         ContentClass = "rounded-2";
-        ContentStyle = "border: 1px solid #E2E7F4;";
+        ContentStyle = "border: 1px solid var(--ms-border);";
 
         await base.SetParametersAsync(parameters);
     }
