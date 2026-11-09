@@ -67,4 +67,10 @@ public abstract class MasaComponentBase : MasaBlazorOpenTelemetryBasePage
 
     protected string BuildHref(string? url) =>
         NavigationUrlHelper.BuildHref(url, NavigationManager.ProjectPrefix);
+
+    /// <summary>
+    /// 与 <see cref="BuildHref"/> 配套使用：微前端下 <c>Href</c> 带项目前缀，需要同步生成 <c>MatchPattern</c> 菜单才有选中态。
+    /// </summary>
+    protected string? BuildMatchPattern(string? url, bool exact, string? matchPattern) =>
+        NavigationUrlHelper.BuildMatchPattern(url, exact, matchPattern, NavigationManager.ProjectPrefix);
 }

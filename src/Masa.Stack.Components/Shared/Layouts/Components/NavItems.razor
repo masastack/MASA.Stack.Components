@@ -29,7 +29,7 @@
                                        Href="@BuildHref(lastNav.Url)"
                                        Target="@GetNavLinkTarget(lastNav)"
                                        Exact="@lastNav.Exact"
-                                       MatchPattern="@lastNav.MatchPattern">
+                                       MatchPattern="@BuildMatchPattern(lastNav.Url, lastNav.Exact, lastNav.MatchPattern)">
                                 <ItemContent>
                                     <MListItemContent>
                                         <div class="text-truncate ml-3 @(context.Active ? "fill--text" : "text-btn regular2--text")">
@@ -64,7 +64,7 @@
                        Href="@BuildHref(subNav.Url)"
                        Target="@GetNavLinkTarget(subNav)"
                        Exact="@subNav.Exact"
-                       MatchPattern="@subNav.MatchPattern">
+                       MatchPattern="@BuildMatchPattern(subNav.Url, subNav.Exact, subNav.MatchPattern)">
                 <ItemContent>
                     <MListItemContent>
                         <div class="text-truncate @(context.Active ? "fill--text" : "text-btn regular2--text")">
