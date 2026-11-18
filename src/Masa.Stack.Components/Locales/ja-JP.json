@@ -1,4 +1,11 @@
 {
+  "Impersonation.Banner.Text": "なりすましログイン中、",
+  "Impersonation.Banner.By": "として操作しています。実行者：",
+  "Impersonation.Banner.Remaining": "残り {0}",
+  "Impersonation.Banner.End": "なりすましを終了",
+  "Impersonation.Banner.Expired": "なりすましセッションが期限切れです。ご本人の状態に戻しています",
+  "Impersonation.Banner.EndedElsewhere": "なりすましが別のタブで終了されました。ご本人の状態に戻しています",
+  "Impersonation.Banner.ChangedElsewhere": "なりすまし対象が別のタブで変更されました。再読み込みして切り替えています",
   "Appearance.Title": "外観",
   "Appearance.Mode": "カラーモード",
   "Appearance.Light": "ライト",

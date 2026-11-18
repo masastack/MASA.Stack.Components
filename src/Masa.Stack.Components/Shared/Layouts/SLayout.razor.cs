@@ -179,7 +179,7 @@ public partial class SLayout
             await JsInitVariables.SetTimezoneOffset();
             List<Nav> menus = new();
 
-            if (!CheckAuthenticated())
+            if (!await CheckAuthenticatedAsync())
             {
                 Logger.LogInformation("not CheckAuthenticated");
                 return;
@@ -424,36 +424,56 @@ public partial class SLayout
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
-        if (!CheckAuthenticated())
-        {
-            return;
-        }
+        // 事件处理器是同步签名，但 CheckAuthenticatedAsync 现在必须 await：
+        // 用 async void 会吞异常，这里改成显式派发并统一兜底。
+        _ = HandleLocationChangedAsync(e);
+    }
 
-        if (IsMiniProgramBlocked && !MiniProgramGuard.IsOnMiniProgramBlockPage())
-        {
-            MiniProgramGuard.RedirectToBlockedPage();
-            return;
-        }
-
-        if (_navInit && absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath) && !(absolutePath == NavigationManager.ProjectPrefix && NavItems.Any()))
-        {
-            NavigationManager.NavigateTo("/403");
-            return;
-        }
-
-        Logger.LogInformation("URL of new location: {Location}", e.Location);
+    private async Task HandleLocationChangedAsync(LocationChangedEventArgs e)
+    {
         try
         {
-            AuthClient.UserService.VisitedAsync(AppId, absolutePath);
+            var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
+            if (!await CheckAuthenticatedAsync())
+            {
+                return;
+            }
+
+            if (IsMiniProgramBlocked && !MiniProgramGuard.IsOnMiniProgramBlockPage())
+            {
+                MiniProgramGuard.RedirectToBlockedPage();
+                return;
+            }
+
+            if (_navInit && absolutePath.Contains("/dashboard") is false && !IsMenusUri(NavItems, absolutePath) && !(absolutePath == NavigationManager.ProjectPrefix && NavItems.Any()))
+            {
+                NavigationManager.NavigateTo("/403");
+                return;
+            }
+
+            Logger.LogInformation("URL of new location: {Location}", e.Location);
+            try
+            {
+                // 原实现没有 await，导致下面的 catch 永远收不到异常（CS4014），
+                // 访问统计失败会变成未观察的 Task 异常。这里改为真正等待。
+                await AuthClient.UserService.VisitedAsync(AppId, absolutePath);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "AuthClient.UserService.VisitedAsync");
+            }
+        }
+        catch (ObjectDisposedException)
+        {
+            // 导航离开后布局已释放，正常
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "AuthClient.UserService.VisitedAsync");
+            Logger.LogError(ex, "SLayout.HandleLocationChanged");
         }
     }
 
-    private bool CheckAuthenticated()
+    private async Task<bool> CheckAuthenticatedAsync()
     {
         var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
         if (absolutePath.Contains("/authentication/"))
@@ -461,7 +481,10 @@ public partial class SLayout
             return false;
         }
 
-        var authState = AuthenticationStateTask.Result;
+        // 不能用 AuthenticationStateTask.Result：单线程 WASM 下若该 task 尚未完成就会硬挂整个 UI。
+        // 模拟登录装饰器让 GetAuthenticationStateAsync 多了一次 localStorage 的 JS 往返，
+        // 未完成窗口变长，同步阻塞尤其危险。
+        var authState = await AuthenticationStateTask;
         if (authState.User.Identity?.IsAuthenticated != true)
         {
             NavigationManager.NavigateTo("/authentication/login");

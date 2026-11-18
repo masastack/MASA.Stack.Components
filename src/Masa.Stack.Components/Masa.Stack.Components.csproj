@@ -22,6 +22,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<InternalsVisibleTo Include="Masa.Stack.Components.Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<EmbeddedResource Include="Locales\*.json" />
 	</ItemGroup>
 

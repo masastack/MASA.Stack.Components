@@ -1,4 +1,11 @@
 {
+  "Impersonation.Banner.Text": "模拟登录中，你正在以",
+  "Impersonation.Banner.By": "的身份操作，发起人：",
+  "Impersonation.Banner.Remaining": "剩余 {0}",
+  "Impersonation.Banner.End": "结束模拟",
+  "Impersonation.Banner.Expired": "模拟会话已过期，正在恢复本人身份",
+  "Impersonation.Banner.EndedElsewhere": "模拟已在其他标签页结束，正在恢复本人身份",
+  "Impersonation.Banner.ChangedElsewhere": "模拟对象已在其他标签页变更，正在刷新以切换身份",
   "Appearance.Title": "外观",
   "Appearance.Mode": "明暗模式",
   "Appearance.Light": "浅色",

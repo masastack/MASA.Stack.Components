@@ -74,6 +74,7 @@
                             UseSappNav="@UseSappNav" />
 
                 <MMain Class="masa-main">
+                    <ImpersonationBanner />
                     <div class="@($"px-6 pb-6 max-width {@Class}")" style="@Style">
                         <MErrorHandler ErrorContent="@ErrorContent" OnHandle="@OnErrorHandleAsync" OnAfterHandle="OnErrorAfterHandle">
                             @ChildContent

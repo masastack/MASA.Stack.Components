@@ -1,3 +1,5 @@
+using Masa.Stack.Components.Infrastructure.Impersonation;
+
 namespace Masa.Stack.Components;
 
 public static class ServiceCollectionExtensions
@@ -7,6 +9,11 @@ public static class ServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(options.Project);
         ArgumentNullException.ThrowIfNull(options.Project.Name);
+
+        // SLayout 内嵌了 ImpersonationBanner，而横幅要注入 ImpersonationSession。
+        // 这里用 TryAdd 兜底，保证只用 SLayout、不走 AddMasaOpenIdConnectAsync 的宿主（Server 模式、
+        // 自建认证装配）也不会因为缺注册而在渲染布局时抛 InvalidOperationException。
+        services.TryAddScoped<ImpersonationSession>();
 
         services.TryAddScoped<CookieStorage>();
         services.TryAddScoped<LocalStorage>();

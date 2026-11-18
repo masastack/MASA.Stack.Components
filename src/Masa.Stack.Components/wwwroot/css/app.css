@@ -1057,7 +1057,7 @@ h1:focus {
 .global-nav-content__loader {
     display: flex;
     height: 100%;
-    width: calc(100% - 256px);;
+    width: calc(100% - 256px);
 }
 
 .global-nav-content__loader .m-skeleton-loader__image {

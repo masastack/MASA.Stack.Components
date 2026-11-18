@@ -10,9 +10,28 @@ public sealed class RouteUtils
 
     internal static readonly Dictionary<Type, List<string>> _routes = [];
 
+    /// <summary>
+    /// 去掉 URL 的 fragment（<c>#</c> 及其后的全部内容）。
+    /// <para>
+    /// 遥测只需要路径和查询串，不应该携带 fragment：模拟登录的短命 access_token 会以
+    /// <c>#access_token=...</c> 的形式出现在入口 URL 里。Blazor WASM 的 <see cref="NavigationManager.Uri"/>
+    /// 在 <c>WebAssemblyHostBuilder</c> 构造时就缓存了 <c>location.href</c>，之后接收端对地址栏的清理
+    /// 不会同步到它，直到第一次站内导航才刷新。因此凡是把 <c>NavigationManager.Uri</c> 写进 span 标签、
+    /// 日志作用域或页面注册表的地方，都必须先经过这里。
+    /// </para>
+    /// <para>
+    /// 同时也修正了路由匹配：fragment 会让末段变成 <c>projects#access_token=...</c>，导致多路由页面匹配失败。
+    /// </para>
+    /// </summary>
+    internal static string RemoveFragment(string uri)
+    {
+        var index = uri.IndexOf('#');
+        return index < 0 ? uri : uri[..index];
+    }
+
     internal static bool IsPage(Type type, NavigationManager navigation, string basePrefix, out string? routeTemplate)
     {
-        return IsPage(type, navigation.Uri.Replace(navigation.BaseUri, basePrefix), out routeTemplate);
+        return IsPage(type, RemoveFragment(navigation.Uri).Replace(navigation.BaseUri, basePrefix), out routeTemplate);
     }
 
     internal static bool IsPage(Type type, string url, out string? routeTemplate)

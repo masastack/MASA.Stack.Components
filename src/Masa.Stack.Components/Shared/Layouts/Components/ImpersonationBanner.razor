@@ -1,0 +1,22 @@
+@namespace Masa.Stack.Components.Layouts
+@inherits MasaComponentBase
+
+@if (_controller is { Visible: true })
+{
+    <div class="masa-impersonation-banner" style="border:1px solid #FF9800;background:#FFF3E0;color:#4E342E;border-radius:8px;padding:8px 16px;margin:8px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <MIcon Color="#EF6C00">mdi-account-switch-outline</MIcon>
+        <span class="text-pre-line">@T("Impersonation.Banner.Text")</span>
+        <strong class="mx-1">@ImpersonationSession.TargetUserName</strong>
+        <span class="mx-1">@T("Impersonation.Banner.By")</span>
+        @* 发起人显示名的解析回退链（act.userName → 本人身份比对 → Guid）见 ImpersonationBannerController.ActorDisplayName *@
+        <strong class="mx-1">@_controller.ActorDisplayName</strong>
+        <span class="mx-2">@RemainingLabel</span>
+        <div style="flex:1"></div>
+        <MButton Small
+                 Outlined
+                 Color="#EF6C00"
+                 OnClick="EndAsync">
+            @T("Impersonation.Banner.End")
+        </MButton>
+    </div>
+}
