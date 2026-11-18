@@ -35,6 +35,12 @@ public sealed class MasaBlazorWasmConstants
     public const string SessionUserId = "enduser.id";
     public const string SessionUserName = "enduser.nick_name";
 
+    /// <summary>模拟登录的操作者（发起人，RFC 8693 act.sub）。仅模拟 token 会带，普通登录不设置此标签。</summary>
+    public const string SessionActorUserId = "enduser.actor.id";
+
+    /// <summary>模拟登录操作者的显示名（act.userName 附加属性，发送端可选提供）。</summary>
+    public const string SessionActorUserName = "enduser.actor.nick_name";
+
     public const string ClientIp = "http.client_ip";
     public const string BlazorPageSessionId = "client.session_id";
 

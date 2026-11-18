@@ -45,23 +45,9 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
         if (isPage && Activity != null)
         {
             var token = await TokenProvider.GetAccessTokenAsync();
-            bool hasToken = !string.IsNullOrEmpty(token);
-            var masaToken = hasToken ? TokenProviderExtensions.GetJwtToken(token) : default;
-            if (hasToken && masaToken != null)
+            // SetUserIdentity 内部同时处理模拟审计归因（act → enduser.actor.*），详见其注释
+            if (NavControllerHelper.SetUserIdentity(Activity, token))
             {
-                var userId = TokenProviderExtensions.GetUserId(masaToken);
-                var userName = TokenProviderExtensions.GetUserName(masaToken);
-                var hash = string.Join("", SHA1.HashData(Encoding.UTF8.GetBytes(token)).Select(a => a.ToString("X2"))).ToLower();
-                if (!string.IsNullOrEmpty(userId))
-                {
-                    Activity.SetTag(MasaBlazorWasmConstants.LastLoginUserId, userId);
-                }
-                Activity.SetTag(MasaBlazorWasmConstants.SessionUserId, userId);
-                Activity.SetTag(MasaBlazorWasmConstants.SessionUserName, userName);
-                Activity.SetTag(MasaBlazorWasmConstants.BlazorPageSessionId, hash);
-
-                NavControllerHelper.RefreshCurrentUserId(userId, userName, hash);
-
                 var ip = await MasaBlazorActivityContent.GetIpAsync();
                 if (!string.IsNullOrEmpty(ip))
                     Activity.SetTag(MasaBlazorWasmConstants.ClientIp, ip);
@@ -163,6 +149,11 @@ public partial class MasaBlazorOpenTelemetryBasePage : NextTickComponentBase
         var lastUserId = currentAcitivity.GetTagItem(MasaBlazorWasmConstants.LastLoginUserId)?.ToString();
         if (!string.IsNullOrEmpty(lastUserId))
             dicSope.Add(MasaBlazorWasmConstants.LastLoginUserId, lastUserId);
+
+        // 模拟登录时把操作者一并写进日志作用域，模拟窗口内的日志才能归因到真实的操作者
+        var actorUserId = currentAcitivity.GetTagItem(MasaBlazorWasmConstants.SessionActorUserId)?.ToString();
+        if (!string.IsNullOrEmpty(actorUserId))
+            dicSope.Add(MasaBlazorWasmConstants.SessionActorUserId, actorUserId);
 
         string[] items = [
             MasaBlazorWasmConstants.BlazorPagePath,

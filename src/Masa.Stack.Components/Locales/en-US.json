@@ -1,4 +1,11 @@
 {
+  "Impersonation.Banner.Text": "You are operating as the impersonated user",
+  "Impersonation.Banner.By": "initiated by",
+  "Impersonation.Banner.Remaining": "Expires in {0}",
+  "Impersonation.Banner.End": "End impersonation",
+  "Impersonation.Banner.Expired": "Impersonation session expired, restoring your own identity",
+  "Impersonation.Banner.EndedElsewhere": "Impersonation ended in another tab, restoring your own identity",
+  "Impersonation.Banner.ChangedElsewhere": "The impersonated user was changed in another tab, reloading to switch identity",
   "Appearance.Title": "Appearance",
   "Appearance.Mode": "Color mode",
   "Appearance.Light": "Light",

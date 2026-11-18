@@ -4,6 +4,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<InternalsVisibleTo Include="Masa.Stack.Components.Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Masa.Blazor" Version="$(MasaBlazorPackageVersion)" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.*" />
 		<PackageReference Include="OpenTelemetry" Version="1.15.3" />

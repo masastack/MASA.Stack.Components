@@ -1,4 +1,11 @@
 {
+  "Impersonation.Banner.Text": "Идёт сеанс входа под другим пользователем, вы действуете как",
+  "Impersonation.Banner.By": "по запросу:",
+  "Impersonation.Banner.Remaining": "Осталось {0}",
+  "Impersonation.Banner.End": "Завершить сеанс",
+  "Impersonation.Banner.Expired": "Сеанс имитации истёк, восстанавливается ваш профиль",
+  "Impersonation.Banner.EndedElsewhere": "Сеанс имитации завершён в другой вкладке, восстанавливается ваш профиль",
+  "Impersonation.Banner.ChangedElsewhere": "Имитируемый пользователь изменён в другой вкладке, страница перезагружается для смены профиля",
   "Appearance.Title": "Внешний вид",
   "Appearance.Mode": "Цветовой режим",
   "Appearance.Light": "Светлый",
