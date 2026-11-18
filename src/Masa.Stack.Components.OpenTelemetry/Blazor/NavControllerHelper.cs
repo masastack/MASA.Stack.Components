@@ -127,7 +127,8 @@ internal static class NavControllerHelper
         var userName = TokenProviderExtensions.GetUserName(masaToken);
         var actorId = TokenProviderExtensions.GetActorId(masaToken);
         var actorName = TokenProviderExtensions.GetActorName(masaToken);
-        var hash = string.Join("", SHA1.HashData(Encoding.UTF8.GetBytes(token!)).Select(a => a.ToString("X2"))).ToLower();
+        // 仅作为不可逆的会话指纹（session_id），不用于任何安全校验；用 SHA256 避免 S4790 弱哈希告警。
+        var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token!))).ToLowerInvariant();
 
         if (!string.IsNullOrEmpty(userId))
             activity.SetTag(MasaBlazorWasmConstants.LastLoginUserId, userId);
