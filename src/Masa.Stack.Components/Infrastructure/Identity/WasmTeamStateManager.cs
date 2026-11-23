@@ -28,7 +28,7 @@ public class WasmTeamStateManager : ITeamStateManager, IScopedDependency
 
             // 清除浏览器 SessionStorage 中缓存的 OIDC Token，
             // 使下次认证时必须从 SSO 重新获取包含最新 CURRENT_TEAM claim 的 Token
-            await _jsRuntime.InvokeVoidAsync("MasaStackComponents.clearOidcTokenCache");
+            await _jsRuntime.InvokeVoidAsync(OidcClientConsts.CLEAR_TOKEN_CACHE_FUNCTION);
 
             // 强制刷新页面，框架发现无缓存 Token 后会走 OIDC 静默登录，SSO 颁发新 Token
             _navigationManager.NavigateTo(_navigationManager.Uri, true);

@@ -1,4 +1,5 @@
 ﻿using Masa.Stack.Components.Infrastructure.Impersonation;
+using Masa.Stack.Components.Infrastructure.SessionRevocation;
 
 namespace Masa.Stack.Components.Extensions.OpenIdConnect;
 
@@ -19,6 +20,12 @@ public static class ServiceCollectionExtensions
         builder.Services.AddSingleton(masaOpenIdConnectOptions);
         builder.Services.AddSingleton<LogoutSessionManager>();
         builder.Services.TryAddScoped<CookieStorage>();
+
+        // 会话撤销探测：被服务端踢下线后让浏览器端尽快登出（SLayout 在登录校验通过后启动它）。
+        // 放在这里而不是 AddMasaStackComponent：它需要 Authority，只有接入了 OIDC 的宿主才有；
+        // 未接入的宿主没有该服务，SLayout 用 GetService 取，取不到就跳过。
+        builder.Services.TryAddScoped<SessionRevocationWatcher>();
+
         return await builder.AddMasaOpenIdConnectAsync(
             masaOpenIdConnectOptions.Authority,
             masaOpenIdConnectOptions.ClientId,
