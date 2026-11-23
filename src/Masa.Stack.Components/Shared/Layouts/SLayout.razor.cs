@@ -139,6 +139,9 @@ public partial class SLayout
 
     List<Nav> NavItems = new();
     bool _navInit;
+    // 首次渲染里"登录无关"的基础初始化（全局配置、皮肤、i18n）是否已完成；之后才允许补做导航初始化。
+    bool _baseInitialized;
+    bool _navInitRunning;
     List<string> _preWhiteUris = new();
 
     List<Nav> FlattenedNavs { get; set; } = new();
@@ -189,135 +192,176 @@ public partial class SLayout
             await I18nCache.InitializeAsync();
 
             await JsInitVariables.SetTimezoneOffset();
-            List<Nav> menus = new();
+            _baseInitialized = true;
 
-            if (!await CheckAuthenticatedAsync())
+            await TryInitializeNavAsync(redirectToLogin: true);
+        }
+        else if (_baseInitialized && !_navInit)
+        {
+            // 首次渲染时还没登录（新窗口 sessionStorage 为空，要先走 /authentication/login 的重定向/静默登录），
+            // 导航初始化被跳过了。登录完成后布局并不会再次 firstRender，所以这里在后续渲染里补做，
+            // 否则菜单与内容区会一直是空白（表现为"加载卡住"）。
+            await TryInitializeNavAsync(redirectToLogin: false);
+        }
+    }
+
+    /// <summary>
+    /// 在已登录的前提下初始化导航（菜单、默认路由、访问记录）。幂等：已初始化或正在初始化时直接返回；
+    /// 未登录时不做任何事，等登录完成后由后续渲染 / 路由变化再次触发。
+    /// </summary>
+    /// <param name="redirectToLogin">未登录时是否跳转到登录页（只有首次渲染需要，其余场景只是重试，不能重复跳转）。</param>
+    private async Task TryInitializeNavAsync(bool redirectToLogin)
+    {
+        if (_navInit || _navInitRunning)
+        {
+            return;
+        }
+
+        _navInitRunning = true;
+        try
+        {
+            if (!await CheckAuthenticatedAsync(redirectToLogin))
             {
-                Logger.LogInformation("not CheckAuthenticated");
+                if (redirectToLogin)
+                {
+                    Logger.LogInformation("not CheckAuthenticated, navigation init deferred until authenticated");
+                }
+
                 return;
             }
 
             StartSessionRevocationWatcher();
 
-            if (UseSappNav)
-            {
-                try
-                {
-                    await MiniProgramGuard.ValidateAndRedirectAsync();
-                }
-                catch (Exception e)
-                {
-                    Logger.LogError(e, "MiniProgramGuard.ValidateAndRedirectAsync");
-                }
-            }
+            await InitializeNavCoreAsync();
+        }
+        finally
+        {
+            _navInitRunning = false;
+        }
+    }
 
-            if (IsMiniProgramBlocked)
-            {
-                if (!MiniProgramGuard.IsOnMiniProgramBlockPage())
-                    MiniProgramGuard.RedirectToBlockedPage();
+    private async Task InitializeNavCoreAsync()
+    {
+        List<Nav> menus = new();
 
-                _navInit = true;
-                return;
-            }
-
+        if (UseSappNav)
+        {
             try
             {
-                var appId = MiniProgramGuard.ResolveAppId();
-                if (UseSappNav)
-                {
-                    var sappMenus = await SappClient.GlobalNavService.GetMenusByPmIdentityAsync(appId);
-                    menus = sappMenus.Adapt<List<Nav>>();
-                }
-                else
-                {
-                    var authMenus = await AuthClient.PermissionService.GetMenusAsync(appId);
-                    menus = authMenus.Adapt<List<Nav>>();
-                }
+                await MiniProgramGuard.ValidateAndRedirectAsync();
             }
             catch (Exception e)
             {
-                Logger.LogError(e, UseSappNav
-                    ? "SappClient.GlobalNavService.GetMenusByPmIdentityAsync"
-                    : "AuthClient.PermissionService.GetMenusAsync");
+                Logger.LogError(e, "MiniProgramGuard.ValidateAndRedirectAsync");
             }
+        }
 
-            NavItems = menus;
-
-#if DEBUG
-            if (Debugger.IsAttached && !NavItems.Any())
-            {
-                NavItems = new List<Nav>()
-                {
-                    new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index"),
-                    new Nav("user", "User", "mdi-account", "/users"),
-                    new Nav("products", "Products", "mdi-rectangle", "/products/list", matchPattern: "/products/(list|details/)[^/]*"),
-                    new Nav("counter", "Counter", "mdi-pencil", "/counter"),
-                    new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata"),
-                    new Nav("father", "Father", null, new List<Nav>
-                    {
-                        new Nav("children2", "ChildTwo", "father", new List<Nav>()
-                        {
-                            new Nav("children", "ChildOne", default, "/children2", "children2"),
-                        }),
-                        new Nav("dialog", "dialog", default, "/dialog", "father"),
-                        new Nav("tab", "tab", default, "/tab", "father"),
-                        new Nav("sselect", "sselect", default, "/sselect", "father"),
-                        new Nav("deleteButton", "deleteButton", default, "/deleteButton", "father"),
-                        new Nav("mini", "mini", default, "/mini-components", "father"),
-                        new Nav("extend", "extend", default, "/extend", "father"),
-                        new Nav("userAutoCompleteExample", "userAutoComplete", default, "/userAutoCompleteExample", "father"),
-                        new Nav("defaultTextFieldExample", "defaultTextField", default, "/defaultTextFieldExample", "father"),
-                        new Nav("defaultButtonExample", "defaultButton", default, "/defaultButtonExample", "father"),
-                        new Nav("defaultDataTableExample", "defaultDataTable", default, "/defaultDataTableExample", "father"),
-                        new Nav("paginationExample", "pagination", default, "/defaultPaginationExample", "father"),
-                        new Nav("uploadImageExample", "uploadImage", default, "/uploadImageExample", "father"),
-                        new Nav("comboxExample", "combox", default, "/comboxExample", "father"),
-                        new Nav("paginationSelectExample", "paginationSelect", default, "/paginationSelectExample", "father"),
-                        new Nav("dateRangePickerExample", "dateRangePicker", default, "/dateRangePickerExample", "father"),
-                        new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", default, "/dateTimeRangePickerExample", "father"),
-                        new Nav("simpleModalExample", "simpleModal", default, "/simpleModalExample", "father"),
-                        new Nav("simpleConfirmExample", "simpleConfirmExample", default, "/simpleConfirmExample", "father"),
-                        new Nav("empty", "empty", default, "/empty", "father"),
-                        new Nav("icons", "icons", default, "/icons", "father"),
-                        new Nav("searchPanelExample", "searchPanelExample", default, "/searchPanelExample", "father"),
-                    }),
-                };
-            }
-#endif
-
-            GlobalConfig.Menus = NavItems;
-
-            FlattenedNavs = FlattenNavs(NavItems, true);
-            FlattenedAllNavs = FlattenNavs(NavItems, false);
+        if (IsMiniProgramBlocked)
+        {
+            if (!MiniProgramGuard.IsOnMiniProgramBlockPage())
+                MiniProgramGuard.RedirectToBlockedPage();
 
             _navInit = true;
-
-            //add home index content sould remove this code
-            if (NavigationManager.Uri == NavigationManager.BaseUri)
-            {
-                NavigationManager.NavigateTo(NavItems.GetDefaultRoute(projectPrefix: NavigationManager.ProjectPrefix));
-                return;
-            }
-
-            var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
-            if (absolutePath.Contains("dashboard") is false && !IsMenusUri(NavItems, absolutePath))
-            {
-                NavigationManager.NavigateTo("/403");
-                return;
-            }
-
-            Logger.LogInformation("URL of navigation to : {Location}", NavigationManager.Uri);
-            try
-            {
-                await AuthClient.UserService.VisitedAsync(AppId, absolutePath);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
-            }
-
-            StateHasChanged();
+            return;
         }
+
+        try
+        {
+            var appId = MiniProgramGuard.ResolveAppId();
+            if (UseSappNav)
+            {
+                var sappMenus = await SappClient.GlobalNavService.GetMenusByPmIdentityAsync(appId);
+                menus = sappMenus.Adapt<List<Nav>>();
+            }
+            else
+            {
+                var authMenus = await AuthClient.PermissionService.GetMenusAsync(appId);
+                menus = authMenus.Adapt<List<Nav>>();
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, UseSappNav
+                ? "SappClient.GlobalNavService.GetMenusByPmIdentityAsync"
+                : "AuthClient.PermissionService.GetMenusAsync");
+        }
+
+        NavItems = menus;
+
+#if DEBUG
+        if (Debugger.IsAttached && !NavItems.Any())
+        {
+            NavItems = new List<Nav>()
+            {
+                new Nav("dashboard", "Dashboard", "mdi-view-dashboard-outline", "/index"),
+                new Nav("user", "User", "mdi-account", "/users"),
+                new Nav("products", "Products", "mdi-rectangle", "/products/list", matchPattern: "/products/(list|details/)[^/]*"),
+                new Nav("counter", "Counter", "mdi-pencil", "/counter"),
+                new Nav("fetchdata", "Fetch data", "mdi-delete", "/fetchdata"),
+                new Nav("father", "Father", null, new List<Nav>
+                {
+                    new Nav("children2", "ChildTwo", "father", new List<Nav>()
+                    {
+                        new Nav("children", "ChildOne", default, "/children2", "children2"),
+                    }),
+                    new Nav("dialog", "dialog", default, "/dialog", "father"),
+                    new Nav("tab", "tab", default, "/tab", "father"),
+                    new Nav("sselect", "sselect", default, "/sselect", "father"),
+                    new Nav("deleteButton", "deleteButton", default, "/deleteButton", "father"),
+                    new Nav("mini", "mini", default, "/mini-components", "father"),
+                    new Nav("extend", "extend", default, "/extend", "father"),
+                    new Nav("userAutoCompleteExample", "userAutoComplete", default, "/userAutoCompleteExample", "father"),
+                    new Nav("defaultTextFieldExample", "defaultTextField", default, "/defaultTextFieldExample", "father"),
+                    new Nav("defaultButtonExample", "defaultButton", default, "/defaultButtonExample", "father"),
+                    new Nav("defaultDataTableExample", "defaultDataTable", default, "/defaultDataTableExample", "father"),
+                    new Nav("paginationExample", "pagination", default, "/defaultPaginationExample", "father"),
+                    new Nav("uploadImageExample", "uploadImage", default, "/uploadImageExample", "father"),
+                    new Nav("comboxExample", "combox", default, "/comboxExample", "father"),
+                    new Nav("paginationSelectExample", "paginationSelect", default, "/paginationSelectExample", "father"),
+                    new Nav("dateRangePickerExample", "dateRangePicker", default, "/dateRangePickerExample", "father"),
+                    new Nav("dateTimeRangePickerExample", "dateTimeRangePicker", default, "/dateTimeRangePickerExample", "father"),
+                    new Nav("simpleModalExample", "simpleModal", default, "/simpleModalExample", "father"),
+                    new Nav("simpleConfirmExample", "simpleConfirmExample", default, "/simpleConfirmExample", "father"),
+                    new Nav("empty", "empty", default, "/empty", "father"),
+                    new Nav("icons", "icons", default, "/icons", "father"),
+                    new Nav("searchPanelExample", "searchPanelExample", default, "/searchPanelExample", "father"),
+                }),
+            };
+        }
+#endif
+
+        GlobalConfig.Menus = NavItems;
+
+        FlattenedNavs = FlattenNavs(NavItems, true);
+        FlattenedAllNavs = FlattenNavs(NavItems, false);
+
+        _navInit = true;
+
+        //add home index content sould remove this code
+        if (NavigationManager.Uri == NavigationManager.BaseUri)
+        {
+            NavigationManager.NavigateTo(NavItems.GetDefaultRoute(projectPrefix: NavigationManager.ProjectPrefix));
+            return;
+        }
+
+        var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
+        if (absolutePath.Contains("dashboard") is false && !IsMenusUri(NavItems, absolutePath))
+        {
+            NavigationManager.NavigateTo("/403");
+            return;
+        }
+
+        Logger.LogInformation("URL of navigation to : {Location}", NavigationManager.Uri);
+        try
+        {
+            await AuthClient.UserService.VisitedAsync(AppId, absolutePath);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "AuthClient.UserService.VisitedAsync OnAfterRenderAsync");
+        }
+
+        StateHasChanged();
     }
 
     /// <summary>
@@ -458,6 +502,14 @@ public partial class SLayout
             StartSessionRevocationWatcher();
             _sessionRevocationWatcher?.NotifyLocationChanged();
 
+            // 首次渲染时未登录会跳到 /authentication/login 并放弃导航初始化；登录完成后回跳到应用页面就会走到这里，
+            // 此时补做导航初始化（菜单、默认路由、访问记录），否则页面永远没有菜单和内容。
+            if (_baseInitialized && !_navInit)
+            {
+                await TryInitializeNavAsync(redirectToLogin: false);
+                return;
+            }
+
             if (IsMiniProgramBlocked && !MiniProgramGuard.IsOnMiniProgramBlockPage())
             {
                 MiniProgramGuard.RedirectToBlockedPage();
@@ -492,7 +544,7 @@ public partial class SLayout
         }
     }
 
-    private async Task<bool> CheckAuthenticatedAsync()
+    private async Task<bool> CheckAuthenticatedAsync(bool redirectToLogin = true)
     {
         var absolutePath = NavigationManager.OriginalNavigationManager.GetAbsolutePath();
         if (absolutePath.Contains("/authentication/"))
@@ -506,7 +558,11 @@ public partial class SLayout
         var authState = await AuthenticationStateTask;
         if (authState.User.Identity?.IsAuthenticated != true)
         {
-            NavigationManager.NavigateTo(OidcClientConsts.LOGIN_PATH);
+            if (redirectToLogin)
+            {
+                NavigationManager.NavigateTo(OidcClientConsts.LOGIN_PATH);
+            }
+
             return false;
         }
 
