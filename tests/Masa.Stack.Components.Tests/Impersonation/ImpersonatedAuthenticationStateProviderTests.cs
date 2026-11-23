@@ -197,6 +197,34 @@ public class ImpersonatedAuthenticationStateProviderTests
     }
 
     [Fact]
+    public async Task GetOwnAccessToken_ReturnsTheOperatorsTokenWhileImpersonating()
+    {
+        // 会话撤销探测要问的是「操作者本人的会话还活着吗」：模拟期间 RequestAccessToken 给的是被模拟者的令牌，不能拿它探测
+        var f = new Fixture();
+        var impersonationToken = await f.StartImpersonationAsync();
+
+        var own = await f.Provider.GetOwnAccessTokenAsync();
+        var forApis = await f.Provider.RequestAccessToken();
+
+        Assert.True(own.TryGetToken(out var ownToken));
+        Assert.Equal("inner-token", ownToken.Value);
+        Assert.True(forApis.TryGetToken(out var apiToken));
+        Assert.Equal(impersonationToken, apiToken.Value);
+    }
+
+    [Fact]
+    public async Task GetOwnAccessToken_WithoutASession_IsTheInnerToken()
+    {
+        var f = new Fixture();
+
+        var own = await f.Provider.GetOwnAccessTokenAsync();
+
+        Assert.True(own.TryGetToken(out var token));
+        Assert.Equal("inner-token", token.Value);
+        Assert.Equal(1, f.Inner.AccessTokenRequests);
+    }
+
+    [Fact]
     public async Task RequestAccessToken_StopsUsingTheImpersonationTokenOnceItExpires()
     {
         var f = new Fixture();

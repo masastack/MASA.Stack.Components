@@ -202,6 +202,14 @@ public class ImpersonatedAuthenticationStateProvider
     /// </summary>
     public Task<AuthenticationState> GetOwnAuthenticationStateAsync() => _inner.GetAuthenticationStateAsync();
 
+    /// <summary>
+    /// 操作者本人（内层 OIDC）的访问令牌，不受模拟态影响（<see cref="RequestAccessToken()"/> 在模拟期间返回的是被模拟者的令牌）。
+    /// 会话撤销探测等「询问 SSO 本人会话是否还活着」的场景必须用它：
+    /// 拿被模拟者的令牌去问，得到的是被模拟者的会话状态，操作者被踢会被漏掉，被模拟者被踢又会误伤操作者。
+    /// 令牌过期时内层会自动续期；续期失败则返回 <see cref="AccessTokenResultStatus.RequiresRedirect"/>。
+    /// </summary>
+    public ValueTask<AccessTokenResult> GetOwnAccessTokenAsync() => InnerAccessTokenProvider.RequestAccessToken();
+
     private async void OnInnerStateChanged(Task<AuthenticationState> task)
     {
         try

@@ -1,3 +1,5 @@
+using Masa.Stack.Components.Infrastructure.SessionRevocation;
+
 namespace Masa.Stack.Components;
 
 public partial class SLayout
@@ -48,6 +50,16 @@ public partial class SLayout
 
     [Inject]
     private Extensions.OpenIdConnect.MasaOpenIdConnectOptions? OpenIdConnectOptions { get; set; }
+
+    [Inject]
+    private IServiceProvider ServiceProvider { get; set; } = null!;
+
+    /// <summary>
+    /// 会话撤销探测（见 <see cref="SessionRevocationWatcher"/>）。只有宿主接入了 OIDC（<c>AddMasaOpenIdConnectAsync</c>）才有，
+    /// 所以用 <c>GetService</c> 取而不是 <c>[Inject]</c>：没注册就静默跳过，不影响没接入 OIDC 的宿主。
+    /// 生命周期归 DI（scoped），布局只负责启停。
+    /// </summary>
+    private SessionRevocationWatcher? _sessionRevocationWatcher;
 
     [Parameter]
     public string? Class { get; set; }
@@ -184,6 +196,8 @@ public partial class SLayout
                 Logger.LogInformation("not CheckAuthenticated");
                 return;
             }
+
+            StartSessionRevocationWatcher();
 
             if (UseSappNav)
             {
@@ -439,6 +453,11 @@ public partial class SLayout
                 return;
             }
 
+            // Start 幂等：首次渲染时还没登录（如从 /authentication/* 回调页客户端路由进来）的情况在这里补启动；
+            // 已启动时只是按节流追加一次探测。
+            StartSessionRevocationWatcher();
+            _sessionRevocationWatcher?.NotifyLocationChanged();
+
             if (IsMiniProgramBlocked && !MiniProgramGuard.IsOnMiniProgramBlockPage())
             {
                 MiniProgramGuard.RedirectToBlockedPage();
@@ -487,7 +506,7 @@ public partial class SLayout
         var authState = await AuthenticationStateTask;
         if (authState.User.Identity?.IsAuthenticated != true)
         {
-            NavigationManager.NavigateTo("/authentication/login");
+            NavigationManager.NavigateTo(OidcClientConsts.LOGIN_PATH);
             return false;
         }
 
@@ -524,8 +543,23 @@ public partial class SLayout
         return true;
     }
 
+    private void StartSessionRevocationWatcher()
+    {
+        try
+        {
+            _sessionRevocationWatcher ??= ServiceProvider.GetService<SessionRevocationWatcher>();
+            _sessionRevocationWatcher?.Start();
+        }
+        catch (Exception e)
+        {
+            // 探测是附加能力：它的装配问题（如 Authority 配置不合法）不能拖垮布局。
+            Logger.LogWarning(e, "SessionRevocationWatcher could not be started");
+        }
+    }
+
     public void Dispose()
     {
+        _sessionRevocationWatcher?.Stop();
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 

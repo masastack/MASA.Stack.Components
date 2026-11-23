@@ -273,8 +273,20 @@ internal sealed class FakeInnerProvider
     public ClaimsPrincipal User { get; set; } = Anonymous;
     public int AccessTokenRequests { get; private set; }
 
+    /// <summary>
+    /// 读取本人身份的次数。真实的 OIDC 服务在没有用户时读身份会趁机做一次静默登录，
+    /// 所以「不该触发静默登录」的路径要断言它没被调用。
+    /// </summary>
+    public int AuthenticationStateRequests { get; private set; }
+
+    /// <summary>true 时令牌请求返回 RequiresRedirect（续期失败 / 需要重新登录），而不是成功。</summary>
+    public bool RequireRedirect { get; set; }
+
     public override Task<AuthenticationState> GetAuthenticationStateAsync()
-        => Task.FromResult(new AuthenticationState(User));
+    {
+        AuthenticationStateRequests++;
+        return Task.FromResult(new AuthenticationState(User));
+    }
 
     /// <summary>模拟本人 OIDC 会话状态变化（续期 / 登出）。</summary>
     public void RaiseStateChanged(ClaimsPrincipal user)
@@ -295,11 +307,14 @@ internal sealed class FakeInnerProvider
         return new ValueTask<AccessTokenResult>(InnerResult());
     }
 
-    private static AccessTokenResult InnerResult() => new(
-        AccessTokenResultStatus.Success,
-        new AccessToken { Value = "inner-token", Expires = DateTimeOffset.Now.AddMinutes(5) },
-        string.Empty,
-        null);
+    // 需要重定向时不带令牌（框架自己也是这样）；构造函数把 token 声明成了非空，所以这里用 null!。
+    private AccessTokenResult InnerResult() => RequireRedirect
+        ? new(AccessTokenResultStatus.RequiresRedirect, null!, "authentication/login", null)
+        : new(
+            AccessTokenResultStatus.Success,
+            new AccessToken { Value = "inner-token", Expires = DateTimeOffset.Now.AddMinutes(5) },
+            string.Empty,
+            null);
 
     public Task<RemoteAuthenticationResult<RemoteAuthenticationState>> SignInAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context) => Ok();
     public Task<RemoteAuthenticationResult<RemoteAuthenticationState>> CompleteSignInAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context) => Ok();

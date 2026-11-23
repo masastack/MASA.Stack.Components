@@ -9,6 +9,19 @@ window.MasaStackComponents.clearOidcTokenCache = () => {
     }
 }
 
+// 本标签页是否有本人的 OIDC 用户。oidc-client 把用户存在 sessionStorage 的 `oidc.user:*` 键里（按标签页隔离）。
+// 只读、无副作用：不会像 getUser()/getAccessToken() 那样在没有用户时去触发静默登录。
+// 会话撤销探测据此判断「这个标签页有没有本人会话可问」——模拟登录打开的新标签页通常没有。
+window.MasaStackComponents.hasOidcUser = () => {
+    for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key && key.startsWith('oidc.user:')) {
+            return true;
+        }
+    }
+    return false;
+}
+
 window.MasaStackComponents.scrollTo = (target, inside = 'window') => {
     const targetElement = document.querySelector(target)
     if (!targetElement) return;
