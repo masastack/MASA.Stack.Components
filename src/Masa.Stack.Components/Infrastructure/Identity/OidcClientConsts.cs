@@ -11,6 +11,7 @@ internal static class OidcClientConsts
 {
     /// <summary>清掉本标签页 sessionStorage 里的 OIDC 用户（components.js）。</summary>
     public const string CLEAR_TOKEN_CACHE_FUNCTION = "MasaStackComponents.clearOidcTokenCache";
+    public const string CLEAR_SESSION_FUNCTION = "MasaStackComponents.clearOidcSession";
 
     /// <summary>本标签页有没有本人的 OIDC 用户（components.js；只读，不像取令牌那样会触发静默登录）。</summary>
     public const string HAS_USER_FUNCTION = "MasaStackComponents.hasOidcUser";

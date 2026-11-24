@@ -904,7 +904,7 @@ public class SessionRevocationWatcherTests
                         ? ValueTask.FromException<TValue>(HasOidcUserFailure)
                         : new ValueTask<TValue>((TValue)(object)HasOidcUser);
 
-                case OidcClientConsts.CLEAR_TOKEN_CACHE_FUNCTION:
+                case OidcClientConsts.CLEAR_SESSION_FUNCTION:
                     // 先记录再失败：事件序列要体现「这一步确实执行过」
                     _events.Add("clear-oidc-cache");
                     return ClearCacheFailure is not null
