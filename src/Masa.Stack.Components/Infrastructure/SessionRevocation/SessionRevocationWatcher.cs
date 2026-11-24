@@ -471,7 +471,8 @@ public sealed class SessionRevocationWatcher : IAsyncDisposable
     /// </summary>
     internal static async Task<OwnToken> AcquireOwnAccessTokenAsync(IServiceProvider serviceProvider, IJSRuntime jsRuntime)
     {
-        if (!await jsRuntime.InvokeAsync<bool>(OidcClientConsts.HAS_USER_FUNCTION))
+        var options = serviceProvider.GetService<MasaOpenIdConnectOptions>();
+        if (!await jsRuntime.InvokeAsync<bool>(OidcClientConsts.HAS_USER_FUNCTION, options?.Authority, options?.ClientId))
         {
             return OwnToken.NotApplicable;
         }
@@ -518,7 +519,8 @@ public sealed class SessionRevocationWatcher : IAsyncDisposable
 
         try
         {
-            await jsRuntime.InvokeVoidAsync(OidcClientConsts.CLEAR_TOKEN_CACHE_FUNCTION);
+            var options = serviceProvider.GetService<MasaOpenIdConnectOptions>();
+            await jsRuntime.InvokeVoidAsync(OidcClientConsts.CLEAR_SESSION_FUNCTION, options?.Authority, options?.ClientId);
         }
         catch (Exception ex)
         {
