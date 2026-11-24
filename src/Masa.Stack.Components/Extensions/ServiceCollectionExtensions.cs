@@ -25,11 +25,8 @@ public static class ServiceCollectionExtensions
             options.SkinCatalog,
             options.IsMicroFrontend));
 
-        // 注册 Accept-Language 处理器
-        services.AddScoped<AcceptLanguageHandler>();
-
-        // .NET 6/7: 使用 IHttpMessageHandlerBuilderFilter 实现相同效果
-        services.AddSingleton<IHttpMessageHandlerBuilderFilter, AcceptLanguageHandlerFilter>();
+        // 全局为所有 HttpClient 自动附加 Accept-Language（语言取自界面 scope 的 I18n）
+        services.AddAcceptLanguageHandler();
 
         // 注册团队状态管理器 - 根据运行时环境选择合适的实现
         services.AddScoped<ITeamStateManager>(sp =>
@@ -133,6 +130,27 @@ public static class ServiceCollectionExtensions
         }
 
         options.MasaBlazorAction?.Invoke(masaBuilder);
+    }
+
+    /// <summary>
+    /// 注册 <see cref="AcceptLanguageHandler"/>，并通过 <see cref="IHttpMessageHandlerBuilderFilter"/>
+    /// 把它挂到所有由 <see cref="IHttpClientFactory"/> 创建的 HttpClient 管线上
+    /// （.NET 6/7 没有 ConfigureHttpClientDefaults，用 filter 实现相同效果）。
+    /// </summary>
+    internal static IServiceCollection AddAcceptLanguageHandler(this IServiceCollection services)
+    {
+        // 必须是 Transient：
+        // - DelegatingHandler 的 InnerHandler 只能设置一次，同一个实例不能被多条管线共享，所以不能是 Singleton；
+        // - 也不要用 Scoped：handler 是在 IHttpClientFactory 自己新建的 scope 里解析的，
+        //   那个 scope 里的 Scoped 服务（如 I18n）与界面 scope 毫无关系，所以 handler 自己也不能依赖它们
+        //   （界面语言由 AcceptLanguageHandler 通过 IClientScopeServiceProviderAccessor 读取）。
+        services.TryAddTransient<AcceptLanguageHandler>();
+
+        // TryAddEnumerable：重复调用 AddMasaStackComponent 时 filter 也只挂一次
+        services.TryAddEnumerable(
+            ServiceDescriptor.Singleton<IHttpMessageHandlerBuilderFilter, AcceptLanguageHandlerFilter>());
+
+        return services;
     }
 
     private static IEnumerable<(string cultureName, Dictionary<string, string> map)> GetLocales()
